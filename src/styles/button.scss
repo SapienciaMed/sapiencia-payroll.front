@@ -57,12 +57,6 @@
   }
 }
 
-// .button-show_password {
-//   @include generate-button(6px, $main-color, #fff, none);
-//   height: 39px;
-//   width: 60px;
-// }
-
 .button-save {
   @include generate-button(30px, #fff, $main-color, none);
 
@@ -148,7 +142,7 @@
   }
 
   &.large {
-    width: 8em;
+    width: 9em;
     height: 2.5em;
     font-size: 1rem;
   }
@@ -175,40 +169,12 @@
 }
 }
 
-.button-save {
-  @include generate-button(30px, #fff, $main-color, none);
+.button-edit {
+  @include generate-button(0, green, transparent,transparent solid 1px);
+  font-size: 2em;
+  margin: 0.2em;
 
-  margin: 0.5em;
-
-  &.tiny {
-    width: 2em;
-    height: 2.5em;
-    font-size: 0.7rem;
-  }
-
-  &.small {
-    width: 3em;
-    height: 2.5em;
-    font-size: 1rem;
-  }
-
-  &.medium {
-    width: 4em;
-    height: 2.5em;
-    font-size: 1rem;
-  }
-
-  &.big {
-    width: 6em;
-    height: 2.5em;
-    font-size: 1rem;
-  }
-
-  &.large {
-    width: 8em;
-    height: 2.5em;
-    font-size: 1rem;
-  }
+  
 
   &.hover-main:hover {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
@@ -217,53 +183,79 @@
   }
 
   &.hover-three:hover {
-    background-color: $three-color;
+    color: $three-color;
+    border: $three-color solid 1px;
     -webkit-box-shadow: 0px 0px 15px 0px $three-color;
     -moz-box-shadow: 0px 0px 15px 0px $three-color;
     box-shadow: 0px 0px 15px 0px $three-color;
   }
 
   &.disabled-black:disabled {
-    background-color: dimgrey;
-    color: linen;
+    background-color: #fff;
+    color: $color-black;
     opacity: 1;
+    border: $input-color-border solid 1px;
 }
 }
 
-.button-cancel-save {
-  @include generate-button(30px, $main-color, #fff, $main-color solid 1px);
-  
-  margin: 0.5em;
+.button-cancel-edit{
+  @include generate-button(0, #533893,transparent,transparent  solid 1px);
+  font-size: 2em;
+  margin: 0.2em;
 
-  &.tiny {
-    width: 2em;
-    height: 2.5em;
-    font-size: 0.7rem;
+  &.hover-main:hover {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
   }
 
-  &.small {
-    width: 3em;
-    height: 2.5em;
-    font-size: 1rem;
+  &.hover-three:hover {
+    color: $three-color;
+    border: $three-color solid 1px;
+    -webkit-box-shadow: 0px 0px 15px 0px $three-color;
+    -moz-box-shadow: 0px 0px 15px 0px $three-color;
+    box-shadow: 0px 0px 15px 0px $three-color;
   }
 
-  &.medium {
-    width: 4em;
-    height: 2.5em;
-    font-size: 1rem;
+  &.disabled-black:disabled {
+    background-color: #fff;
+    color: $color-black;
+    opacity: 1;
+    border: $input-color-border solid 1px;
+}
+}
+
+.button-confirm {
+  @include generate-button(0, #533893 , transparent,transparent solid 1px);
+  font-size: 2em;
+  margin: 0.2em;
+
+  &.hover-main:hover {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
   }
 
-  &.big {
-    width: 6em;
-    height: 2.5em;
-    font-size: 1rem;
+  &.hover-three:hover {
+    color: $three-color;
+    border: $three-color solid 1px;
+    -webkit-box-shadow: 0px 0px 15px 0px $three-color;
+    -moz-box-shadow: 0px 0px 15px 0px $three-color;
+    box-shadow: 0px 0px 15px 0px $three-color;
   }
 
-  &.large {
-    width: 8em;
-    height: 2.5em;
-    font-size: 1rem;
-  }
+  &.disabled-black:disabled {
+    background-color: #fff;
+    color: $color-black;
+    opacity: 1;
+    border: $input-color-border solid 1px;
+}
+}
+
+.button-delete {
+  @include generate-button(0, red, transparent, transparent solid 1px);
+  font-size: 2em;
+  margin: 0.2em;
 
   &.hover-main:hover {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);

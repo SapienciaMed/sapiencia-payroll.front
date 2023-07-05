@@ -6,6 +6,7 @@ import "./styles/_theme-prime.css";
 import "primereact/resources/primereact.min.css";
 import ModalMessageComponent from "./common/components/modal-message.component";
 import ApplicationProvider from "./application-provider";
+import PayrollForm from "./features/payroll-forms/payroll-form.component";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Router>
           <Suspense fallback={<p>Loading...</p>}>
             <Routes>
-              <Route path={"/*"} element={<div>Home</div>} />
+              <Route path={"/*"} element={<PayrollForm/>} />
             </Routes>
           </Suspense>
         </Router>

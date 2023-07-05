@@ -17,6 +17,8 @@ interface IInputProps<T> {
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: FieldErrors<any>;
+  disabled?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -37,6 +39,8 @@ function InputElement({
   placeholder,
   register,
   value,
+  disabled,
+  onChange
 }): React.JSX.Element {
   return (
     <input
@@ -46,6 +50,8 @@ function InputElement({
       className={className}
       placeholder={placeholder}
       defaultValue={value}
+      disabled={disabled}
+      onChange={onChange}
     />
   );
 }
@@ -62,6 +68,8 @@ export function InputComponent({
   direction = EDirection.column,
   children,
   errors,
+  disabled,
+  onChange
 }: IInputProps<any>): React.JSX.Element {
   return (
     <div
@@ -84,6 +92,8 @@ export function InputComponent({
           placeholder={placeholder}
           register={register}
           value={value}
+          disabled={disabled}
+          onChange={onChange}
         />
         {errors[idInput]?.message && (
           <MdOutlineError

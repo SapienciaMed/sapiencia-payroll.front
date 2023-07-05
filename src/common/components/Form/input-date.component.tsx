@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Calendar } from 'primereact/calendar';
+import calendarImg from '../../../public/images/icons/Vector.png'
+import {HiOutlineCalendar} from "react-icons/hi"
 
-interface IInputProps<T> {
+interface IDateProps<T> {
   idInput: string;
-  typeInput: string;
-  register: UseFormRegister<T>;
+  register?: UseFormRegister<T>;
   className?: string;
   placeholder?: string;
   value?: string;
@@ -15,10 +17,12 @@ interface IInputProps<T> {
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: FieldErrors<any>;
-  iconLegend?: React.JSX.Element | string;
-  containerClassname?:string;
+  setValue?: React.Dispatch<any>;
+  stateProps?: {
+    state: any,
+    setState: React.Dispatch<any>
+  };
   disabled?:boolean;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -32,52 +36,43 @@ function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
   );
 }
 
-function InputElement({
-  typeInput,
+function CalendarElement({
   idInput,
   className,
   placeholder,
-  register,
   value,
-  iconLegend,
-  containerClassname,
-  disabled,
-  onChange
+  register,
+  setValue,
+  stateProps,
+  disabled
 }): React.JSX.Element {
+  const [selectedCity, setSelectedCity] = useState(value);
+  const registerProp = register ? register : () => {};
   return (
-    <div className={containerClassname? `container-input-group ${containerClassname}` : "container-input-group"}>
-    <span className="input-group-addon text-black bold">{iconLegend}</span>
-    <input
-      {...register(idInput)}
-      name={idInput}
-      type={typeInput}
-      className={className}
-      placeholder={placeholder}
-      defaultValue={value}
-      disabled={disabled}
-      onChange={onChange}
-    />
-    </div>
+    <Calendar {...registerProp(idInput)} value={stateProps ? stateProps.state : selectedCity} onChange={(e) =>{ if (setValue) {
+      setValue(e.value); 
+    }
+    stateProps ? stateProps.setState(e.value) : setSelectedCity(e.value);
+  }} optionLabel="name" 
+      placeholder={placeholder} className={"select-basic medium"}  showIcon dateFormat="dd/mm/yy" icon={<span><HiOutlineCalendar/></span>} showButtonBar disabled={disabled}/>
   );
 }
 
-export function InputGroupComponent({
+export function DatePickerComponent({
   idInput,
-  typeInput,
   register,
-  className = "input-group-basic",
-  placeholder,
-  value,
+  className = "select-basic",
+  placeholder = "DD/MM/AAAA",
+  value = null,
   label,
   classNameLabel = "text-main",
   direction = EDirection.column,
   children,
-  errors,
-  iconLegend,
-  containerClassname,
-  disabled,
-  onChange
-}: IInputProps<any>): React.JSX.Element {
+  errors = {},
+  stateProps,
+  setValue,
+  disabled
+}: IDateProps<any>): React.JSX.Element {
   return (
     <div
       className={
@@ -92,18 +87,7 @@ export function InputGroupComponent({
         classNameLabel={classNameLabel}
       />
       <div>
-        <InputElement
-          typeInput={typeInput}
-          idInput={idInput}
-          className={errors[idInput] ? `${className} error` : className}
-          placeholder={placeholder}
-          register={register}
-          value={value}
-          iconLegend={iconLegend}
-          containerClassname = {containerClassname}
-          disabled={disabled}
-          onChange={onChange}
-        />
+        <CalendarElement idInput={idInput} className={className} setValue={setValue} placeholder={placeholder}  value={value} register={register} stateProps={stateProps} disabled={disabled}/>
         {errors[idInput]?.message && <span className="icon-error"></span>}
       </div>
       {errors[idInput]?.message && (

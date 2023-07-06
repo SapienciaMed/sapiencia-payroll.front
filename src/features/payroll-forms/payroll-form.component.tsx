@@ -5,52 +5,64 @@ import AffiliationsForm from "./affiliations.components";
 import ContractualInformationForm from "./contractual-information.component";
 import FamiliarInformationForm from "./familiar-information.component";
 import InformationPersonalForm from "./personal-information.component";
-import {  formsPayroll } from "../../common/schemas/user-schema";
+import { formsPayroll } from "../../common/schemas/employment-schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AppContext } from "../../common/contexts/app.context";
+import { ITabsMenuTemplate } from "../../common/interfaces/tabs-menu.interface";
 
 interface IItemsSteps<T> {
   id: string;
-  component: React.JSX.Element
+  component: React.JSX.Element;
   position: number;
-  title: string
+  title: string;
 }
 const PayrollForm = () => {
-  const {step} = useContext(AppContext)
-  const currentValidationSchema = formsPayroll[step]
+  const { step } = useContext(AppContext);
+
+  const currentValidationSchema = formsPayroll[step];
   const {
     register,
-    formState: { errors,isValid },
+    formState: { errors, isValid },
     watch,
-    handleSubmit
-  } = useForm({ resolver:yupResolver(currentValidationSchema), 
-    mode: "onChange",
-    });
-  const itemsf = [
+    handleSubmit,
+  } = useForm({
+    resolver: yupResolver(currentValidationSchema),
+    mode: "all",
+  });
+
+  const tabs: ITabsMenuTemplate[] = [
     {
-      id: "0",
-      component: <InformationPersonalForm register={register} errors={errors} />,
-      position: 0,
+      id: "informacion-personal",
+      title: "Informacion personal",
+      content: <InformationPersonalForm register={register} errors={errors} />,
     },
     {
-      id: "1",
-      component: <FamiliarInformationForm register={register} errors={errors}/>,
-      position: 1,
+      id: "posicion-presupuestal",
+      title: "Posición presupuestal",
+      content: <FamiliarInformationForm register={register} errors={errors} />,
     },
     {
-      id: "2",
-      component: <ContractualInformationForm register={register} errors={errors} />,
-      position: 2,
+      id: "proyectos",
+      title: "Proyectos",
+      content: (
+        <ContractualInformationForm register={register} errors={errors} />
+      ),
     },
     {
-      id: "3",
-      component: <AffiliationsForm register={register} errors={errors}/>,
-      position: 3,
+      id: "area-funcional",
+      title: "Area funcional",
+      content: <AffiliationsForm register={register} errors={errors} />,
     },
   ];
+
   return (
     <Fragment>
-      <FormSteps items={itemsf} watch={watch} valid={isValid} handle={handleSubmit}/>
+      <FormSteps
+        items={tabs}
+        watch={watch}
+        valid={isValid}
+        handle={handleSubmit}
+      />
     </Fragment>
   );
 };

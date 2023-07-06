@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from "react";
 import FormSteps from "../../common/components/Form/form-steps.component";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import AffiliationsForm from "./affiliations.components";
 import ContractualInformationForm from "./contractual-information.component";
 import FamiliarInformationForm from "./familiar-information.component";

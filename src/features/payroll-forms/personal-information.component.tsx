@@ -6,7 +6,6 @@ import { InputGroupComponent } from "../../common/components/Form/input-group.co
 import { SelectComponent } from "../../common/components/Form/select.component";
 
 const InformationPersonalForm = ({ register, errors }: any) => {
-  console.log(errors);
   return (
     <div>
       <div className="grid-form-4-container container-sections-forms">
@@ -96,7 +95,7 @@ const InformationPersonalForm = ({ register, errors }: any) => {
           />
         </div>
         <DatePickerComponent
-          idInput="date"
+          idInput="birthDate"
           label="Fecha de Nacimiento"
           register={register}
           errors={errors}

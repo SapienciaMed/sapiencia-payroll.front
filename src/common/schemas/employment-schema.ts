@@ -45,6 +45,7 @@ export const formsPayroll = [
     secondSurName: yup.string().max(50, "Solo se permiten 50 caracteres"),
     gender: yup.string().required("El campo es obligatorio"),
     bloodType: yup.string().required("El campo es obligatorio"),
+    birthDate: yup.date().required("El campo es obligatorio"),
   }),
   yup.object({ prueba2: yup.string().min(8, "Ingrese al menos 8 caracteres") }),
   yup.object({ prueba3: yup.string().min(8, "Ingrese al menos 8 caracteres") }),

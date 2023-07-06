@@ -1,28 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { Calendar } from 'primereact/calendar';
-import calendarImg from '../../../public/images/icons/Vector.png'
-import {HiOutlineCalendar} from "react-icons/hi"
+import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { Calendar } from "primereact/calendar";
+import { HiOutlineCalendar } from "react-icons/hi";
+import { DateTime } from "luxon";
 
 interface IDateProps<T> {
   idInput: string;
   register?: UseFormRegister<T>;
   className?: string;
   placeholder?: string;
-  value?: string;
+  value?: string | Date | Date[];
   label?: string;
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: FieldErrors<any>;
+  setValueRegister?: UseFormSetValue<T>;
   setValue?: React.Dispatch<any>;
   stateProps?: {
-    state: any,
-    setState: React.Dispatch<any>
+    state: any;
+    setState: React.Dispatch<any>;
   };
-  disabled?:boolean;
+  disabled?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -42,25 +43,51 @@ function CalendarElement({
   placeholder,
   value,
   register,
+  setValueRegister,
   setValue,
   stateProps,
-  disabled
-}): React.JSX.Element {
-  const [selectedCity, setSelectedCity] = useState(value);
+  disabled,
+}:IDateProps<any>): React.JSX.Element {
+  const [date, setDate] = useState<DateTime>(value);
   const registerProp = register ? register : () => {};
+
+  useEffect(() => {
+    const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
+    setValueRegisterProp(idInput, date);
+  }, [date]);
   return (
-    <Calendar {...registerProp(idInput)} value={stateProps ? stateProps.state : selectedCity} onChange={(e) =>{ if (setValue) {
-      setValue(e.value); 
-    }
-    stateProps ? stateProps.setState(e.value) : setSelectedCity(e.value);
-  }} optionLabel="name" 
-      placeholder={placeholder} className={"select-basic medium"}  showIcon dateFormat="dd/mm/yy" icon={<span><HiOutlineCalendar/></span>} showButtonBar disabled={disabled}/>
+    <div {...registerProp(idInput)}>
+      <Calendar
+      dateFormat="dd/mm/yy"
+      name={idInput}
+      value={date}
+      onChange={(e) => {
+        if(setValueRegister){
+          setDate(new Date(e.value as string).toLocaleDateString())
+        }else{
+          setDate(e.value);
+        }
+         
+      }}
+        placeholder={placeholder}
+        className={className}
+        showIcon
+        icon={
+          <span>
+            <HiOutlineCalendar />
+          </span>
+        }
+        showButtonBar
+        disabled={disabled}
+      />
+    </div>
   );
 }
 
 export function DatePickerComponent({
   idInput,
   register,
+  setValueRegister,
   className = "select-basic",
   placeholder = "DD/MM/AAAA",
   value = null,
@@ -71,7 +98,7 @@ export function DatePickerComponent({
   errors = {},
   stateProps,
   setValue,
-  disabled
+  disabled,
 }: IDateProps<any>): React.JSX.Element {
   return (
     <div
@@ -87,7 +114,17 @@ export function DatePickerComponent({
         classNameLabel={classNameLabel}
       />
       <div>
-        <CalendarElement idInput={idInput} className={className} setValue={setValue} placeholder={placeholder}  value={value} register={register} stateProps={stateProps} disabled={disabled}/>
+        <CalendarElement
+          idInput={idInput}
+          className={className}
+          setValue={setValue}
+          placeholder={placeholder}
+          value={value}
+          register={register}
+          setValueRegister={setValueRegister}
+          stateProps={stateProps}
+          disabled={disabled}
+        />
         {errors[idInput]?.message && <span className="icon-error"></span>}
       </div>
       {errors[idInput]?.message && (

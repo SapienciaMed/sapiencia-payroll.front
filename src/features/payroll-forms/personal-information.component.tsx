@@ -14,12 +14,12 @@ import {
 } from "react-hook-form";
 
 interface IPersonalInformationProp {
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors<FieldValues>;
-  control: Control<FieldValues, any>;
+  register: UseFormRegister<any>;
+  errors: FieldErrors<any>;
+  control: Control<any>;
   list: any[];
   stateList: React.Dispatch<React.SetStateAction<string>>[];
-  setValueRegister: UseFormSetValue<FieldValues>;
+  setValueRegister: UseFormSetValue<any>;
 }
 
 const InformationPersonalForm = ({
@@ -115,7 +115,11 @@ const InformationPersonalForm = ({
         <div className="display-justify gap-25">
           <SelectComponent
             idInput="bloodType"
-            label="RH"
+            label={
+              <>
+                RH <span>*</span>
+              </>
+            }
             register={register}
             errors={errors}
             data={list[1]}
@@ -125,7 +129,11 @@ const InformationPersonalForm = ({
           />
           <SelectComponent
             idInput="gender"
-            label="Género"
+            label={
+              <>
+                Genero <span>*</span>
+              </>
+            }
             register={register}
             errors={errors}
             data={list[2]}
@@ -143,7 +151,11 @@ const InformationPersonalForm = ({
                 id={field.name}
                 idInput={"birthDate"}
                 value={field.value}
-                label="Fecha de Nacimiento"
+                label={
+                  <>
+                    Fecha de Nacimiento <span>*</span>
+                  </>
+                }
                 register={register}
                 errors={errors}
                 classNameLabel="text-black big bold"
@@ -157,7 +169,11 @@ const InformationPersonalForm = ({
 
         <SelectComponent
           idInput="nationality"
-          label="Nacionalidad"
+          label={
+            <>
+              Nacionalidad <span>*</span>
+            </>
+          }
           register={register}
           errors={errors}
           className="select-basic medium"
@@ -171,18 +187,12 @@ const InformationPersonalForm = ({
           Información de localización
         </span>
         <SelectComponent
-          idInput="country"
-          label="País"
-          register={register}
-          errors={errors}
-          className="select-basic medium"
-          classNameLabel="text-black big bold"
-          data={list[3]}
-          setValueRegister={setValueRegister}
-        />
-        <SelectComponent
-          idInput="deparment"
-          label="Departamento"
+          idInput="department"
+          label={
+            <>
+              Departamento <span>*</span>
+            </>
+          }
           register={register}
           errors={errors}
           className="select-basic medium"
@@ -193,7 +203,11 @@ const InformationPersonalForm = ({
         />
         <SelectComponent
           idInput="municipality"
-          label="Municipio"
+          label={
+            <>
+              Municipio <span>*</span>
+            </>
+          }
           register={register}
           errors={errors}
           className="select-basic medium"
@@ -204,7 +218,11 @@ const InformationPersonalForm = ({
         />
         <InputComponent
           idInput="address"
-          label="Dirección"
+          label={
+            <>
+              Direccion <span>*</span>
+            </>
+          }
           typeInput={"text"}
           register={register}
           errors={errors}
@@ -213,7 +231,11 @@ const InformationPersonalForm = ({
         />
         <SelectComponent
           idInput="neighborhood"
-          label="Barrio"
+          label={
+            <>
+              Barrio <span>*</span>
+            </>
+          }
           register={register}
           errors={errors}
           className="select-basic medium"
@@ -233,7 +255,11 @@ const InformationPersonalForm = ({
         />
         <InputComponent
           idInput={"contactNumber"}
-          label="Celular"
+          label={
+            <>
+              Celular <span>*</span>
+            </>
+          }
           typeInput={"text"}
           register={register}
           errors={errors}

@@ -11,7 +11,7 @@ import { FormStebs } from "../../interfaces/tabs-menu.interface";
 interface IFormStepsProp {
   titleForm: string;
   stebs: FormStebs[];
-  triggerValidate: UseFormTrigger<FieldValues>;
+  triggerValidate: UseFormTrigger<any>;
   classFormSteb?: string;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   validForm: boolean;
@@ -26,8 +26,7 @@ const FormSteps = ({
   handleSubmit,
   validForm,
   watch,
-}: // watch,
-IFormStepsProp) => {
+}: IFormStepsProp) => {
   const { step, setStep } = useContext(AppContext);
 
   const STEPS_AMOUNT = stebs.length - 1;
@@ -85,25 +84,25 @@ IFormStepsProp) => {
                   {step === infoStep.position && infoStep.contentStep}
 
                   <div className="container-actions_formTabs">
-                    {step !== 0 && step === infoStep.position && (
+                    {step !== 0 && (
                       <ButtonComponent
                         value={"Anterior"}
                         className={`${"button-tab_save hover-three big"}`}
                         action={handleBackStep}
                       />
                     )}
-                    {step === infoStep.position && (
-                      <ButtonComponent
-                        value={step === STEPS_AMOUNT ? "Guardar" : "Siguiente"}
-                        className={`${
-                          validForm
-                            ? "button-tab_save hover-three big"
-                            : "button-tab_save invalid big"
-                        }`}
-                        type={step === STEPS_AMOUNT ? "submit" : "button"}
-                        action={handleNextStep}
-                      />
-                    )}
+                    {/* {step === infoStep.position && ( */}
+                    <ButtonComponent
+                      value={step === STEPS_AMOUNT ? "Guardar" : "Siguiente"}
+                      className={`${
+                        validForm
+                          ? "button-tab_save hover-three big"
+                          : "button-tab_save invalid big"
+                      }`}
+                      type={step === STEPS_AMOUNT ? "submit" : "button"}
+                      action={handleNextStep}
+                    />
+                    {/* // )} */}
                   </div>
                 </div>
               );

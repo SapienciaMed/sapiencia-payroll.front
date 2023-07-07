@@ -13,7 +13,7 @@ interface IDateProps<T> {
   className?: string;
   placeholder?: string;
   value?: string | Date | Date[];
-  label?: string;
+  label?: string | React.JSX.Element;
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
@@ -25,7 +25,7 @@ interface IDateProps<T> {
     setState: React.Dispatch<any>;
   };
   disabled?: boolean;
-  onchange?: (e: string|Date|Date[]) => void;
+  onchange?: (e: string | Date | Date[]) => void;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -50,34 +50,34 @@ function CalendarElement({
   setValue,
   stateProps,
   disabled,
-  onchange
-}:IDateProps<any>): React.JSX.Element {
+  onchange,
+}: IDateProps<any>): React.JSX.Element {
   const [date, setDate] = useState<DateTime>(value);
   const registerProp = register ? register : () => {};
 
   useEffect(() => {
     const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
     setValueRegisterProp(idInput, date);
-    console.log(date)
+    console.log(date);
   }, [date]);
   return (
     <div {...registerProp(idInput)}>
       <Calendar
-      id={id}
-      mask="99/99/9999"
-      dateFormat="dd/mm/yy"
-      name={idInput}
-      value={date}
-      onChange={(e) => {
-        if(setValue){
-          setValue(e.value)
-        }
-        if(onchange){
-          onchange(e.value)
-        }else{
-          setDate(e.value);
-        }
-      }}
+        id={id}
+        mask="99/99/9999"
+        dateFormat="dd/mm/yy"
+        name={idInput}
+        value={date}
+        onChange={(e) => {
+          if (setValue) {
+            setValue(e.value);
+          }
+          if (onchange) {
+            onchange(e.value);
+          } else {
+            setDate(e.value);
+          }
+        }}
         placeholder={placeholder}
         className={className}
         showIcon
@@ -88,7 +88,7 @@ function CalendarElement({
         }
         showButtonBar
         disabled={disabled}
-        inputStyle={{borderRight: 'none'}}
+        inputStyle={{ borderRight: "none" }}
       />
     </div>
   );
@@ -110,7 +110,7 @@ export function DatePickerComponent({
   stateProps,
   setValue,
   disabled,
-  onchange
+  onchange,
 }: IDateProps<any>): React.JSX.Element {
   return (
     <div

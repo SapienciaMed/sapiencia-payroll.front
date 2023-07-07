@@ -15,6 +15,7 @@ interface IFormStepsProp {
   classFormSteb?: string;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   validForm: boolean;
+  watch: any;
 }
 
 const FormSteps = ({
@@ -24,7 +25,9 @@ const FormSteps = ({
   titleForm,
   handleSubmit,
   validForm,
-}: IFormStepsProp) => {
+  watch,
+}: // watch,
+IFormStepsProp) => {
   const { step, setStep } = useContext(AppContext);
 
   const STEPS_AMOUNT = stebs.length - 1;
@@ -34,7 +37,6 @@ const FormSteps = ({
 
     if (isValid && step < STEPS_AMOUNT) {
       setStep((cur) => cur + 1);
-      return;
     }
   };
 
@@ -109,15 +111,8 @@ const FormSteps = ({
           })}
         </div>
 
-        {/* {stebs.} */}
-        {/* <TabListComponent
-            tabs={items}
-            index={step >= STEPS_AMOUNT ? STEPS_AMOUNT : step}
-            classTabContent={classTabContent}
-            childrenInContent={actionsForm}
-          />
-        {/* <p>{valid ? "Valid" : "Invalid"}</p>
-        <pre className="">{JSON.stringify(watch(), null, 2)}</pre> */}
+        <p>{validForm ? "Valid" : "Invalid"}</p>
+        <pre className="">{JSON.stringify(watch())}</pre>
       </form>
     </>
   );

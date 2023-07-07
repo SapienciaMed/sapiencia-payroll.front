@@ -12,7 +12,7 @@ interface IInputProps<T> {
   className?: string;
   placeholder?: string;
   value?: string;
-  label?: string;
+  label?: string | React.JSX.Element;
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
@@ -42,7 +42,7 @@ function InputElement({
   value,
   disabled,
   onChange,
-  id
+  id,
 }): React.JSX.Element {
   return (
     <input
@@ -73,10 +73,14 @@ export function InputComponent({
   errors,
   disabled,
   onChange,
-  id
+  id,
 }: IInputProps<any>): React.JSX.Element {
-const [firstPart, secondPart, thirdPart] = idInput.split('.');
-const errorKey = `${firstPart}[${secondPart}].${thirdPart}`;
+  const [firstPart, secondPart, thirdPart] = idInput.split(".");
+
+  const errorKey = `${firstPart}[${secondPart}].${thirdPart}`;
+
+  const index = secondPart ? errorKey : idInput;
+
   return (
     <div
       className={
@@ -94,7 +98,7 @@ const errorKey = `${firstPart}[${secondPart}].${thirdPart}`;
         <InputElement
           typeInput={typeInput}
           idInput={idInput}
-          className={errors[errorKey?errorKey:idInput] ? `${className} error` : className}
+          className={errors[index] ? `${className} error` : className}
           placeholder={placeholder}
           register={register}
           value={value}
@@ -102,7 +106,7 @@ const errorKey = `${firstPart}[${secondPart}].${thirdPart}`;
           onChange={onChange}
           id={id}
         />
-        {errors[errorKey?errorKey:idInput]?.message && (
+        {errors[index]?.message && (
           <MdOutlineError
             className="icon-error"
             fontSize={"22px"}
@@ -110,9 +114,9 @@ const errorKey = `${firstPart}[${secondPart}].${thirdPart}`;
           />
         )}
       </div>
-      {errors[errorKey?errorKey:idInput]?.message && (
+      {errors[index]?.message && (
         <p className="error-message bold not-margin-padding">
-          {errors[errorKey?errorKey:idInput]?.message}
+          {errors[index]?.message}
         </p>
       )}
       {children}

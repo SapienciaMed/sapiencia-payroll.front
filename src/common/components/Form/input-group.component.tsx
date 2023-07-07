@@ -10,16 +10,16 @@ interface IInputProps<T> {
   className?: string;
   placeholder?: string;
   value?: string;
-  label?: string;
+  label?: string | React.JSX.Element;
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: FieldErrors<any>;
   iconLegend?: React.JSX.Element | string;
-  containerClassname?:string;
-  disabled?:boolean;
+  containerClassname?: string;
+  disabled?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  id?:string;
+  id?: string;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -44,22 +44,28 @@ function InputElement({
   containerClassname,
   disabled,
   onChange,
-  id
+  id,
 }): React.JSX.Element {
   return (
-    <div className={containerClassname? `container-input-group ${containerClassname}` : "container-input-group"}>
-    <span className="input-group-addon text-black bold">{iconLegend}</span>
-    <input
-      {...register(idInput)}
-      name={idInput}
-      type={typeInput}
-      className={className}
-      placeholder={placeholder}
-      defaultValue={value}
-      disabled={disabled}
-      onChange={onChange}
-      id={id}
-    />
+    <div
+      className={
+        containerClassname
+          ? `container-input-group ${containerClassname}`
+          : "container-input-group"
+      }
+    >
+      <span className="input-group-addon text-black bold">{iconLegend}</span>
+      <input
+        {...register(idInput)}
+        name={idInput}
+        type={typeInput}
+        className={className}
+        placeholder={placeholder}
+        defaultValue={value}
+        disabled={disabled}
+        onChange={onChange}
+        id={id}
+      />
     </div>
   );
 }
@@ -80,7 +86,7 @@ export function InputGroupComponent({
   containerClassname,
   disabled,
   onChange,
-  id
+  id,
 }: IInputProps<any>): React.JSX.Element {
   return (
     <div
@@ -104,7 +110,7 @@ export function InputGroupComponent({
           register={register}
           value={value}
           iconLegend={iconLegend}
-          containerClassname = {containerClassname}
+          containerClassname={containerClassname}
           disabled={disabled}
           onChange={onChange}
           id={id}

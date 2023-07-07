@@ -40,6 +40,14 @@ const personalInformationLocalization = yup.object({
     .required("El campo es obligatorio"),
 });
 
+const familiarSchema = {
+  fullName: yup.string().required("Inserta un nombre").min(8, "Ingrese al menos 8 caracteres"),
+};
+
+export const familiarValidator = yup.object({
+  familiar: yup.array().of(yup.object().shape(familiarSchema)),
+});
+
 export const formsPayroll = [
   personalInformationLocalization,
   yup.object({ prueba2: yup.string().min(8, "Ingrese al menos 8 caracteres") }),

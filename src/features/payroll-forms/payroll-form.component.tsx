@@ -8,7 +8,10 @@ import InformationPersonalForm from "./personal-information.component";
 import { formsPayroll } from "../../common/schemas/employment-schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AppContext } from "../../common/contexts/app.context";
-import { ITabsMenuTemplate } from "../../common/interfaces/tabs-menu.interface";
+import {
+  FormStebs,
+  ITabsMenuTemplate,
+} from "../../common/interfaces/tabs-menu.interface";
 
 interface IItemsSteps<T> {
   id: string;
@@ -25,45 +28,67 @@ const PayrollForm = () => {
     formState: { errors, isValid },
     watch,
     handleSubmit,
+    trigger,
   } = useForm({
     resolver: yupResolver(currentValidationSchema),
     mode: "all",
   });
 
-  const tabs: ITabsMenuTemplate[] = [
+  const stebs: FormStebs[] = [
     {
-      id: "informacion-personal",
-      title: "Informacion personal",
-      content: <InformationPersonalForm register={register} errors={errors} />,
-    },
-    {
-      id: "posicion-presupuestal",
-      title: "Posición presupuestal",
-      content: <FamiliarInformationForm register={register} errors={errors} />,
-    },
-    {
-      id: "proyectos",
-      title: "Proyectos",
-      content: (
-        <ContractualInformationForm register={register} errors={errors} />
+      titleSteb: "1. Informacion personal",
+      contentStep: (
+        <InformationPersonalForm register={register} errors={errors} />
       ),
+      position: 0,
+      classContainerStep: "",
     },
     {
-      id: "area-funcional",
-      title: "Area funcional",
-      content: <AffiliationsForm register={register} errors={errors} />,
+      titleSteb: "2. Informacion familiar",
+      contentStep: (
+        <FamiliarInformationForm register={register} errors={errors} />
+      ),
+      position: 1,
+      classContainerStep: "",
     },
   ];
 
+  // const :  [
+  //   {
+  //     id: "informacion-personal",
+  //     titleTab: "1. Informacion personal",
+  //     contentTab: <InformationPersonalForm register={register} errors={errors} />,
+  //   },
+  //   {
+  //     id: "posicion-presupuestal",
+  //     title: "2. Posición presupuestal",
+  //     content: <FamiliarInformationForm register={register} errors={errors} />,
+  //   },
+  //   {
+  //     id: "proyectos",
+  //     title: "3. Proyectos",
+  //     content: (
+  //       <ContractualInformationForm register={register} errors={errors} />
+  //     ),
+  //   },
+  //   {
+  //     id: "area-funcional",
+  //     title: "4. Area funcional",
+  //     content: <AffiliationsForm register={register} errors={errors} />,
+  //   },
+  // ];
+
   return (
-    <Fragment>
+    <>
       <FormSteps
-        items={tabs}
-        watch={watch}
-        valid={isValid}
-        handle={handleSubmit}
+        titleForm={"Vinculacion trabajador"}
+        classFormSteb="border"
+        stebs={stebs}
+        triggerValidate={trigger}
+        handleSubmit={handleSubmit}
+        validForm={isValid}
       />
-    </Fragment>
+    </>
   );
 };
 

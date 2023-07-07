@@ -1,7 +1,6 @@
 .grid-form-4-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 16px 16px;
   align-items: stretch;
 
   .grid-span-2-columns {
@@ -12,6 +11,16 @@
   }
   .grid-span-4-columns {
     grid-column: span 4;
+  }
+
+  &.gap-15 {
+    gap: 15px;
+  }
+  &.gap-20 {
+    gap: 20px;
+  }
+  &.gap-25 {
+    gap: 25px;
   }
 }
 

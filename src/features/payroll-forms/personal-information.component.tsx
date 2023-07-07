@@ -5,16 +5,16 @@ import { EDirection } from "../../common/constants/input.enum";
 import { InputGroupComponent } from "../../common/components/Form/input-group.component";
 import { SelectComponent } from "../../common/components/Form/select.component";
 
-const InformationPersonalForm = ({ register, errors }: any) => {
+const InformationPersonalForm = ({ register, errors, className }: any) => {
   return (
-    <div>
-      <div className="grid-form-4-container container-sections-forms">
+    <>
+      <div className="grid-form-4-container gap-25 container-sections-forms">
         <span className="text-black large bold grid-span-4-columns">
           Datos personales
         </span>
         <div className="form-group column">
           <label className="text-black big bold">Documento de identidad</label>
-          <div className="display-justify-space-between">
+          <div className="display-justify gap-15">
             <SelectComponent
               idInput="typeDocument"
               register={register}
@@ -76,7 +76,7 @@ const InformationPersonalForm = ({ register, errors }: any) => {
           className="input-basic medium"
           classNameLabel="text-black big bold"
         />
-        <div className="display-justify-space-between">
+        <div className="display-justify gap-25">
           <SelectComponent
             idInput="bloodType"
             label="RH"
@@ -102,7 +102,7 @@ const InformationPersonalForm = ({ register, errors }: any) => {
           classNameLabel="text-black big bold"
         />
         <SelectComponent
-          idInput="nacionality"
+          idInput="nationality"
           label="Nacionalidad"
           register={register}
           errors={errors}
@@ -110,20 +110,12 @@ const InformationPersonalForm = ({ register, errors }: any) => {
           classNameLabel="text-black big bold"
         />
       </div>
-      <div className="grid-form-4-container container-sections-forms">
+      <div className="grid-form-4-container gap-25 container-sections-forms">
         <span className="text-black large bold grid-span-4-columns ">
           Información de localización
         </span>
         <SelectComponent
-          idInput="country"
-          label="País"
-          register={register}
-          errors={errors}
-          className="select-basic medium"
-          classNameLabel="text-black big bold"
-        />
-        <SelectComponent
-          idInput="deparment"
+          idInput="department"
           label="Departamento"
           register={register}
           errors={errors}
@@ -131,19 +123,20 @@ const InformationPersonalForm = ({ register, errors }: any) => {
           classNameLabel="text-black big bold"
         />
         <SelectComponent
-          idInput="town"
-          label="Ciudad"
+          idInput="municipality"
+          label="Municipio"
           register={register}
           errors={errors}
           className="select-basic medium"
           classNameLabel="text-black big bold"
         />
         <InputComponent
-          idInput={"adress"}
+          idInput="address"
           label="Dirección"
           typeInput={"text"}
           register={register}
           errors={errors}
+          className="input-basic medium"
           classNameLabel="text-black big bold"
         />
         <SelectComponent
@@ -155,7 +148,7 @@ const InformationPersonalForm = ({ register, errors }: any) => {
           classNameLabel="text-black big bold"
         />
         <SelectComponent
-          idInput="status"
+          idInput="socioEconomic"
           label="Estrato"
           register={register}
           errors={errors}
@@ -163,16 +156,16 @@ const InformationPersonalForm = ({ register, errors }: any) => {
           classNameLabel="text-black big bold"
         />
         <InputComponent
-          idInput={"cellphone"}
+          idInput={"contactNumber"}
           label="Celular"
-          typeInput={"number"}
+          typeInput={"text"}
           register={register}
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
         />
         <SelectComponent
-          idInput="typeHousing"
+          idInput="housingType"
           label="Tipo de vivienda"
           register={register}
           errors={errors}
@@ -188,8 +181,9 @@ const InformationPersonalForm = ({ register, errors }: any) => {
           className="input-basic medium"
           classNameLabel="text-black big bold"
         />
+        <div />
       </div>
-    </div>
+    </>
   );
 };
 

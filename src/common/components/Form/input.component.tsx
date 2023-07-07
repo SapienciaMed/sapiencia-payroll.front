@@ -40,7 +40,7 @@ function InputElement({
   register,
   value,
   disabled,
-  onChange
+  onChange,
 }): React.JSX.Element {
   return (
     <input
@@ -69,7 +69,7 @@ export function InputComponent({
   children,
   errors,
   disabled,
-  onChange
+  onChange,
 }: IInputProps<any>): React.JSX.Element {
   return (
     <div
@@ -84,7 +84,7 @@ export function InputComponent({
         idInput={idInput}
         classNameLabel={classNameLabel}
       />
-      <div>
+      <div className="flex-container-input">
         <InputElement
           typeInput={typeInput}
           idInput={idInput}

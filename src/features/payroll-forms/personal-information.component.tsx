@@ -6,14 +6,21 @@ import { InputGroupComponent } from "../../common/components/Form/input-group.co
 import { SelectComponent } from "../../common/components/Form/select.component";
 import { Controller } from "react-hook-form";
 
-const InformationPersonalForm = ({ register, errors,control,list,stateList, setvalueregister }: any) => {
+const InformationPersonalForm = ({
+  register,
+  errors,
+  control,
+  list,
+  stateList,
+  setvalueregister,
+}: any) => {
   return (
     <>
       <div className="grid-form-4-container gap-25 container-sections-forms">
         <span className="text-black large bold grid-span-4-columns">
           Datos personales
         </span>
-        <div className="form-group column">
+        <div className="form-group column grid-span-4-columns">
           <label className="text-black big bold">Documento de identidad</label>
           <div className="display-justify gap-15">
             <SelectComponent
@@ -138,16 +145,6 @@ const InformationPersonalForm = ({ register, errors,control,list,stateList, setv
           Información de localización
         </span>
         <SelectComponent
-          idInput="country"
-          label="País"
-          register={register}
-          errors={errors}
-          className="select-basic medium"
-          classNameLabel="text-black big bold"
-          data={list[3]}
-          setValueRegister={setvalueregister}
-        />
-        <SelectComponent
           idInput="deparment"
           label="Departamento"
           register={register}
@@ -169,15 +166,6 @@ const InformationPersonalForm = ({ register, errors,control,list,stateList, setv
           setValue={stateList[1]}
           setValueRegister={setvalueregister}
         />
-        <InputComponent
-          idInput="address"
-          label="Dirección"
-          typeInput={"text"}
-          register={register}
-          errors={errors}
-          className="input-basic medium"
-          classNameLabel="text-black big bold"
-        />
         <SelectComponent
           idInput="neighborhood"
           label="Barrio"
@@ -188,6 +176,16 @@ const InformationPersonalForm = ({ register, errors,control,list,stateList, setv
           data={list[6]}
           setValueRegister={setvalueregister}
         />
+        <InputComponent
+          idInput="address"
+          label="Dirección"
+          typeInput={"text"}
+          register={register}
+          errors={errors}
+          className="input-basic medium"
+          classNameLabel="text-black big bold"
+        />
+
         <SelectComponent
           idInput="socioEconomic"
           label="Estrato"

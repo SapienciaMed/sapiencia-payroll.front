@@ -3,7 +3,7 @@ import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
 import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { Calendar } from "primereact/calendar";
-import { HiOutlineCalendar } from "react-icons/hi";
+import { IoCalendarOutline } from "react-icons/io5";
 import { DateTime } from "luxon";
 
 interface IDateProps<T> {
@@ -83,7 +83,7 @@ function CalendarElement({
         showIcon
         icon={
           <span>
-            <HiOutlineCalendar />
+            <IoCalendarOutline />
           </span>
         }
         showButtonBar

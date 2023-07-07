@@ -14,7 +14,7 @@ interface ISelectProps<T> {
   placeholder?: string;
   data?: Array<IDropdownProps>;
   value?: string;
-  label?: string;
+  label?: string | React.JSX.Element;
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];

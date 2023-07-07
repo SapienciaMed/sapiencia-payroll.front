@@ -62,7 +62,7 @@ const FamiliarInformationForm = ({ register, errors1, list }: any) => {
     updatedDisabledRows[index] = true;
     setDisabledRows(updatedDisabledRows);
   };
-  console.log(errors);
+
   return (
     <div>
       <div className="container-sections-forms">

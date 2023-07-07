@@ -34,12 +34,15 @@ const PayrollForm = () => {
   const {
     register,
     watch,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
     control,
     handleSubmit,
     trigger,
     setValue: setValueRegister,
   } = useForm({
+    // defaultValues: {
+    //   worker: {},
+    // },
     resolver: yupResolver(currentValidationSchema),
     mode: "all",
   });
@@ -82,32 +85,21 @@ const PayrollForm = () => {
       position: 1,
       classContainerStep: "",
     },
+    {
+      titleSteb: "3. Proyectos",
+      contentStep: (
+        <ContractualInformationForm register={register} errors={errors} />
+      ),
+      position: 2,
+      classContainerStep: "",
+    },
+    {
+      titleSteb: "4. Area funcional",
+      contentStep: <AffiliationsForm register={register} errors={errors} />,
+      position: 3,
+      classContainerStep: "",
+    },
   ];
-
-  // const :  [
-  //   {
-  //     id: "informacion-personal",
-  //     titleTab: "1. Informacion personal",
-  //     contentTab: <InformationPersonalForm register={register} errors={errors} />,
-  //   },
-  //   {
-  //     id: "posicion-presupuestal",
-  //     title: "2. Posición presupuestal",
-  //     content: <FamiliarInformationForm register={register} errors={errors} />,
-  //   },
-  //   {
-  //     id: "proyectos",
-  //     title: "3. Proyectos",
-  //     content: (
-  //       <ContractualInformationForm register={register} errors={errors} />
-  //     ),
-  //   },
-  //   {
-  //     id: "area-funcional",
-  //     title: "4. Area funcional",
-  //     content: <AffiliationsForm register={register} errors={errors} />,
-  //   },
-  // ];
 
   return (
     <>

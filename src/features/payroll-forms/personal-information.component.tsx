@@ -14,12 +14,12 @@ import {
 } from "react-hook-form";
 
 interface IPersonalInformationProp {
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors<FieldValues>;
-  control: Control<FieldValues, any>;
+  register: UseFormRegister<any>;
+  errors: FieldErrors<any>;
+  control: Control<any>;
   list: any[];
   stateList: React.Dispatch<React.SetStateAction<string>>[];
-  setValueRegister: UseFormSetValue<FieldValues>;
+  setValueRegister: UseFormSetValue<any>;
 }
 
 const InformationPersonalForm = ({
@@ -128,7 +128,11 @@ const InformationPersonalForm = ({
               <SelectComponent
                 id={field.name}
                 idInput={field.name}
-                label="RH"
+                label={
+              <>
+                RH <span>*</span>
+              </>
+            }
                 register={register}
                 errors={errors}
                 data={list[1]}
@@ -147,7 +151,11 @@ const InformationPersonalForm = ({
               <SelectComponent
                 id={field.name}
                 idInput={field.name}
-                label="Género"
+                label={
+              <>
+                Genero <span>*</span>
+              </>
+            }
                 register={register}
                 errors={errors}
                 data={list[2]}
@@ -169,7 +177,11 @@ const InformationPersonalForm = ({
                 id={field.name}
                 idInput={"birthDate"}
                 value={field.value}
-                label="Fecha de Nacimiento"
+                label={
+                  <>
+                    Fecha de Nacimiento <span>*</span>
+                  </>
+                }
                 register={register}
                 errors={errors}
                 classNameLabel="text-black big bold"
@@ -187,7 +199,11 @@ const InformationPersonalForm = ({
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label="Nacionalidad"
+              label={
+            <>
+              Nacionalidad <span>*</span>
+            </>
+          }
               register={register}
               errors={errors}
               data={list[3]}
@@ -251,7 +267,11 @@ const InformationPersonalForm = ({
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label="Barrio"
+              label={
+            <>
+              Barrio <span>*</span>
+            </>
+          }
               register={register}
               errors={errors}
               data={list[6]}
@@ -265,7 +285,11 @@ const InformationPersonalForm = ({
         />
         <InputComponent
           idInput="address"
-          label="Dirección"
+          label={
+            <>
+              Direccion <span>*</span>
+            </>
+          }
           typeInput={"text"}
           register={register}
           errors={errors}
@@ -279,7 +303,11 @@ const InformationPersonalForm = ({
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label="Estrato"
+              label={
+            <>
+              Estrato <span>*</span>
+            </>
+          }
               register={register}
               errors={errors}
               data={list[7]}
@@ -312,7 +340,11 @@ const InformationPersonalForm = ({
         />
         <InputComponent
           idInput={"contactNumber"}
-          label="Celular"
+          label={
+            <>
+              Celular <span>*</span>
+            </>
+          }
           typeInput={"text"}
           register={register}
           errors={errors}

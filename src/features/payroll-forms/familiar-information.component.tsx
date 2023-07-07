@@ -121,29 +121,45 @@ const FamiliarInformationForm = ({ register, errors1, list }: any) => {
                 register={registerFamily}
                 value={age}
               />
-              <SelectComponent
-                idInput={`familiar.${index}.gender`}
-                placeholder="seleccione"
-                disabled={disabledRows[index]}
-                classNameLabel="text-black big bold"
-                label="Género"
-                errors={errors}
-                register={registerFamily}
-                data={list[0]}
-                className="select-basic medium"
-                setValueRegister={setValueRegister}
+              <Controller
+                name={`familiar.${index}.gender`}
+                control={control}
+                render={({ field }) => (
+                  <SelectComponent
+                    id={field.name}
+                    idInput={field.name}
+                    label="Género"
+                    register={registerFamily}
+                    errors={errors}
+                    data={list[0]}
+                    disabled={disabledRows[index]}
+                    className="select-basic medium"
+                    classNameLabel="text-black big bold"
+                    value={field.value}
+                    setValueRegister={setValueRegister}
+                    onchange={field.onChange}
+                  />
+                )}
               />
-              <SelectComponent
-                idInput={`familiar.${index}.relationship`}
-                placeholder="seleccione"
-                disabled={disabledRows[index]}
-                classNameLabel="text-black big bold"
-                label="Parentesco"
-                errors={errors}
-                register={registerFamily}
-                data={list[1]}
-                className="select-basic medium"
-                setValueRegister={setValueRegister}
+              <Controller
+                name={`familiar.${index}.relationship`}
+                control={control}
+                render={({ field }) => (
+                  <SelectComponent
+                    id={field.name}
+                    idInput={field.name}
+                    label="Parentesco"
+                    register={registerFamily}
+                    errors={errors}
+                    data={list[1]}
+                    disabled={disabledRows[index]}
+                    className="select-basic medium"
+                    classNameLabel="text-black big bold"
+                    value={field.value}
+                    setValueRegister={setValueRegister}
+                    onchange={field.onChange}
+                  />
+                )}
               />
               <div>
                 <label htmlFor="" className="text-black big bold">

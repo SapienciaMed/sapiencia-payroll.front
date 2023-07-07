@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
 import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { Dropdown } from 'primereact/dropdown';
-
-interface IDropdownProps {
-  name: string,
-  value: string | number;
-}
+import { Dropdown } from "primereact/dropdown";
+import { IDropdownProps } from "../../interfaces/select.interface";
 
 interface ISelectProps<T> {
+  id?: string;
   idInput: string;
   register?: UseFormRegister<T>;
   setValueRegister?: UseFormSetValue<T>;
@@ -24,13 +21,15 @@ interface ISelectProps<T> {
   errors?: FieldErrors<any>;
   setValue?: React.Dispatch<any>;
   stateProps?: {
-    state: any,
-    setState: React.Dispatch<any>
-  }
-  disabled?:boolean;
+    state: any;
+    setState: React.Dispatch<any>;
+  };
+  disabled?: boolean;
+  onchange?:(e:string)=>void;
 }
 
 interface ISelectElementProps<T> {
+  id?: string;
   idInput: string;
   className?: string;
   placeholder?: string;
@@ -40,10 +39,11 @@ interface ISelectElementProps<T> {
   setValueRegister?: UseFormSetValue<T>;
   setValue?: React.Dispatch<any>;
   stateProps?: {
-    state: any,
-    setState: React.Dispatch<any>
-  },
-  disabled?:boolean;
+    state: any;
+    setState: React.Dispatch<any>;
+  };
+  disabled?: boolean;
+  onchange?: (e: string) =>void;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -58,6 +58,7 @@ function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
 }
 
 function SelectElement({
+  id,
   idInput,
   className,
   placeholder,
@@ -67,31 +68,44 @@ function SelectElement({
   setValueRegister,
   setValue,
   stateProps,
-  disabled
+  disabled,
+  onchange,
 }: ISelectElementProps<any>): React.JSX.Element {
-  const [selectedCity, setSelectedCity] = useState(value);
-  const registerProp = register ? register : () => { };
+  const [selected, setSelected] = useState(value);
+  const registerProp = register ? register : () => {};
 
   useEffect(() => {
     const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
-    setValueRegisterProp(idInput, selectedCity);
-  }, [selectedCity]);
+    setValueRegisterProp(idInput, stateProps ? stateProps.state : selected);
+  }, [selected, stateProps]);
 
   return (
     <div {...registerProp(idInput)}>
-      <Dropdown value={stateProps ? stateProps.state : selectedCity} onChange={(e) => {
-        if (setValue) {
-          setValue(e.value);
-          setSelectedCity(e.value)
-        }
-        stateProps ? stateProps.setState(e.value) : setSelectedCity(e.value);
-      }} options={data} optionLabel="name"
-        placeholder={placeholder} className={className} disabled={disabled}/>
+      <Dropdown
+        id={id}
+        value={stateProps ? stateProps.state : selected}
+        onChange={(e) => {
+          if(onchange){
+            onchange(e.value)
+          }
+          if (setValue) {
+            setValue(e.value);
+            setSelected(e.value);
+          }
+          stateProps ? stateProps.setState(e.value) : setSelected(e.value);
+        }}
+        options={data}
+        optionLabel="name"
+        placeholder={placeholder}
+        className={className}
+        disabled={disabled}
+      />
     </div>
   );
 }
 
 export function SelectComponent({
+  id,
   idInput,
   register,
   setValueRegister,
@@ -106,8 +120,16 @@ export function SelectComponent({
   errors = {},
   stateProps,
   setValue,
-  disabled
+  disabled,
+  onchange
 }: ISelectProps<any>): React.JSX.Element {
+  if (data) {
+    const seleccione: IDropdownProps = { name: "Seleccione", value: null };
+    const dataSelect = data.find(
+      (item) => item.name === seleccione.name && item.value === seleccione.value
+    );
+    if (!dataSelect) data.unshift(seleccione);
+  }
   return (
     <div
       className={
@@ -122,7 +144,20 @@ export function SelectComponent({
         classNameLabel={classNameLabel}
       />
       <div>
-        <SelectElement idInput={idInput} className={className} setValue={setValue} placeholder={placeholder} data={data} value={value} register={register} setValueRegister={setValueRegister} stateProps={stateProps} disabled={disabled}/>
+        <SelectElement
+          id={id}
+          idInput={idInput}
+          className={className}
+          setValue={setValue}
+          placeholder={placeholder}
+          data={data}
+          value={value}
+          register={register}
+          setValueRegister={setValueRegister}
+          stateProps={stateProps}
+          disabled={disabled}
+          onchange={onchange}
+        />
         {errors[idInput]?.message && <span className="icon-error"></span>}
       </div>
       {errors[idInput]?.message && (

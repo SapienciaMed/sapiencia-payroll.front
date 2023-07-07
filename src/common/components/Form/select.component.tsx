@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { Dropdown } from "primereact/dropdown";
+import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { Dropdown } from 'primereact/dropdown';
 
 interface IDropdownProps {
-  name: string;
-  value: string;
+  name: string,
+  value: string | number;
 }
 
 interface ISelectProps<T> {
   idInput: string;
   register?: UseFormRegister<T>;
+  setValueRegister?: UseFormSetValue<T>;
   className?: string;
   placeholder?: string;
   data?: Array<IDropdownProps>;
@@ -23,11 +24,26 @@ interface ISelectProps<T> {
   errors?: FieldErrors<any>;
   setValue?: React.Dispatch<any>;
   stateProps?: {
-    state: any;
-    setState: React.Dispatch<any>;
-  };
-  disabled?: boolean;
-  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    state: any,
+    setState: React.Dispatch<any>
+  }
+  disabled?:boolean;
+}
+
+interface ISelectElementProps<T> {
+  idInput: string;
+  className?: string;
+  placeholder?: string;
+  data?: Array<IDropdownProps>;
+  value?: string;
+  register?: UseFormRegister<T>;
+  setValueRegister?: UseFormSetValue<T>;
+  setValue?: React.Dispatch<any>;
+  stateProps?: {
+    state: any,
+    setState: React.Dispatch<any>
+  },
+  disabled?:boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -48,35 +64,37 @@ function SelectElement({
   data,
   value,
   register,
+  setValueRegister,
   setValue,
   stateProps,
-  disabled,
-  onChange
-}): React.JSX.Element {
-  const registerProp = register ? register : () => {};
+  disabled
+}: ISelectElementProps<any>): React.JSX.Element {
+  const [selectedCity, setSelectedCity] = useState(value);
+  const registerProp = register ? register : () => { };
+
+  useEffect(() => {
+    const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
+    setValueRegisterProp(idInput, selectedCity);
+  }, [selectedCity]);
+
   return (
-    <Dropdown
-      {...registerProp(idInput)}
-      value={stateProps ? stateProps.state:''} 
-      onChange={(e) => {
-        setValue(e.value);
-        stateProps.setState(e.value);
-        if (onChange) {
-          onChange(e); // Llama a la función onChange si está definida
+    <div {...registerProp(idInput)}>
+      <Dropdown value={stateProps ? stateProps.state : selectedCity} onChange={(e) => {
+        if (setValue) {
+          setValue(e.value);
+          setSelectedCity(e.value)
         }
-      }}
-      options={data}
-      optionLabel="name"
-      placeholder={placeholder}
-      className={className}
-      disabled={disabled}
-    />
+        stateProps ? stateProps.setState(e.value) : setSelectedCity(e.value);
+      }} options={data} optionLabel="name"
+        placeholder={placeholder} className={className} disabled={disabled}/>
+    </div>
   );
 }
 
 export function SelectComponent({
   idInput,
   register,
+  setValueRegister,
   className = "select-basic",
   placeholder = "Seleccione",
   data = [{} as IDropdownProps],
@@ -88,8 +106,7 @@ export function SelectComponent({
   errors = {},
   stateProps,
   setValue,
-  disabled,
-  onChange
+  disabled
 }: ISelectProps<any>): React.JSX.Element {
   return (
     <div
@@ -105,18 +122,7 @@ export function SelectComponent({
         classNameLabel={classNameLabel}
       />
       <div>
-        <SelectElement
-          idInput={idInput}
-          className={className}
-          setValue={setValue}
-          placeholder={placeholder}
-          data={data}
-          value={value}
-          register={register}
-          stateProps={stateProps}
-          disabled={disabled}
-          onChange={onChange} 
-        />
+        <SelectElement idInput={idInput} className={className} setValue={setValue} placeholder={placeholder} data={data} value={value} register={register} setValueRegister={setValueRegister} stateProps={stateProps} disabled={disabled}/>
         {errors[idInput]?.message && <span className="icon-error"></span>}
       </div>
       {errors[idInput]?.message && (

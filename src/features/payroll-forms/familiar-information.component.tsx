@@ -1,234 +1,210 @@
 import React, { useState } from "react";
 import { InputComponent } from "../../common/components/Form/input.component";
-import TableComponent from "../../common/components/table.component";
 import { SelectComponent } from "../../common/components/Form/select.component";
-import { InputGroupComponent } from "../../common/components/Form/input-group.component";
-import { EDirection } from "../../common/constants/input.enum";
 import { ButtonComponent } from "../../common/components/Form/button.component";
-import {HiOutlinePencil, HiOutlineTrash, HiOutlineX} from "react-icons/hi"
-import {RiSave3Fill} from "react-icons/ri"
+import { HiOutlinePencil, HiOutlineTrash, HiOutlineX } from "react-icons/hi";
+import { RiSave3Fill } from "react-icons/ri";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import useYupValidationResolver from "../../common/interfaces/form-validator.hook";
+import { familiarValidator } from "../../common/schemas/employment-schema";
+import { DatePickerComponent } from "../../common/components/Form/input-date.component";
 
-const FamiliarInformationForm = ({ register, errors }: any) => {
-  const [fields, setFields] = useState([]);
+type FormValues = {
+  familiar: {
+    fullName: string;
+    birthDate: Date | string;
+    age: number;
+    gender: string;
+    relationship: string;
+  }[];
+};
 
-  // Función para agregar un nuevo campo
-  const addField = () => {
-    const newField = {
-      fullName: "",
-      birthDate: "",
-      age: "",
-      gender: "",
-      relationship: "",
-      editing: true,
-    };
-    setFields([...fields, newField]);
+const FamiliarInformationForm = ({ register, errors1, list }: any) => {
+  const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
+  const [age, setAge] = useState(null);
+  const resolver = useYupValidationResolver(familiarValidator);
+  const {
+    register: registerFamily,
+    handleSubmit,
+    control,
+    setValue: setValueRegister,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      familiar: [
+        { fullName: "", birthDate: "", age: 0, gender: "", relationship: "" },
+      ],
+    },
+    mode: "all",
+    resolver,
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "familiar",
+    rules: {
+      required: "Please append at least 1 item",
+    },
+  });
+
+  const onSubmit = handleSubmit(async (data: any) => {
+    console.log("Submit data", data);
+  });
+
+  const handleEnableRow = (index: number) => {
+    const updatedDisabledRows = [...disabledRows];
+    updatedDisabledRows[index] = false;
+    setDisabledRows(updatedDisabledRows);
   };
 
-  // Función para eliminar un campo
-  const deleteField = (index) => {
-    const updatedFields = [...fields];
-    updatedFields.splice(index, 1);
-    setFields(updatedFields);
+  const handleDisableRow = (index: number) => {
+    const updatedDisabledRows = [...disabledRows];
+    updatedDisabledRows[index] = true;
+    setDisabledRows(updatedDisabledRows);
   };
-
-  // Función para habilitar la edición de un campo
-  const enableEditing = (index) => {
-    const updatedFields = [...fields];
-    updatedFields[index].editing = true;
-    setFields(updatedFields);
-  };
-
-  // Función para guardar los cambios de un campo editado
-  const saveChanges = (index) => {
-    const updatedFields = [...fields];
-    updatedFields[index].editing = false;
-    setFields(updatedFields);
-  };
-
-  // Función para cancelar la edición de un campo
-  const cancelEditing = (index) => {
-    const updatedFields = [...fields];
-    updatedFields[index].editing = false;
-    setFields(updatedFields);
-  };
-
-  // Función para manejar los cambios en los campos
-  const handleFieldChange = (event, index, fieldName) => {
-    const updatedFields = [...fields];
-    updatedFields[index][fieldName] = event.target.value;
-    setFields(updatedFields);
-  };
+  console.log(errors);
   return (
     <div>
-      {/* <div className="grid-form-5-container container-sections-forms">
-        <InputGroupComponent
-          idInput="numberDocument"
-          className="input-group-basic medium"
-          typeInput="text"
-          register={register}
-          classNameLabel="text-black big bold"
-          direction={EDirection.row}
-          errors={errors}
-          placeholder={""}
-          iconLegend={"No."}
-          containerClassname="ml-5px big"
-        />
-        <InputComponent
-          idInput="fullName"
-          className="input-basic medium"
-          typeInput="text"
-          register={register}
-          errors={errors}
-          classNameLabel="text-black big bold"
-        />
-        <InputComponent
-          idInput="birthDate"
-          className="input-basic medium"
-          typeInput="date"
-          register={register}
-          errors={errors}
-          classNameLabel="text-black big bold"
-        />
-        <InputComponent
-          idInput="age"
-          className="input-basic medium"
-          typeInput="text"
-          register={register}
-          errors={errors}
-          classNameLabel="text-black big bold"
-        />
-        <SelectComponent
-          idInput="gender"
-          placeholder="seleccione"
-          classNameLabel="text-black big bold"
-          className="select-basic medium"
-        />
-        <SelectComponent
-          idInput="relationship"
-          placeholder="seleccione"
-          classNameLabel="text-black big bold"
-          className="select-basic medium"
-        />
-        <ButtonComponent value="agregar" id="agregar" />
-      </div>
-      <div className="container-sections-forms">
-        <TableComponent url={""} columns={[]} />
-      </div> */}
       <div className="container-sections-forms">
         <span className="text-black large bold">Datos de familiares</span>
-        {fields.map((field, index) => (
-          <div
-            key={index}
-            className={`grid-form-6-container  ${!field.editing ? "bg-disabled" :"bg-editing"}`}
-          >
-            <InputComponent
-              idInput={`fullName${index}`}
-              className="input-basic medium"
-              typeInput="text"
-              value={field.fullName}
-              onChange={(event) => handleFieldChange(event, index, "fullName")}
-              disabled={!field.editing}
-              label="Nombre completo"
-              classNameLabel="text-black big bold"
-              errors={errors}
-              register={register}
-            />
-            <InputComponent
-              idInput={`birthDate${index}`}
-              className="input-basic medium"
-              typeInput="date"
-              value={field.birthDate}
-              onChange={(event) => handleFieldChange(event, index, "birthDate")}
-              disabled={!field.editing}
-              classNameLabel="text-black big bold"
-              label="Fecha de nacimiento"
-              errors={errors}
-              register={register}
-            />
-            <InputComponent
-              idInput={`age${index}`}
-              className="input-basic medium"
-              typeInput="text"
-              value={field.age}
-              onChange={(event) => handleFieldChange(event, index, "age")}
-              disabled={!field.editing}
-              classNameLabel="text-black big bold"
-              label="Edad"
-              errors={errors}
-              register={register}
-            />
-            <SelectComponent
-              idInput={`gender${index}`}
-              placeholder="seleccione"
-              value={field.gender}
-              onChange={(event) => handleFieldChange(event, index, "gender")}
-              disabled={!field.editing}
-              classNameLabel="text-black big bold"
-              label="Género"
-              errors={errors}
-              register={register}
-              className="select-basic medium"
-            />
-            <SelectComponent
-              idInput={`relationship${index}`}
-              placeholder="seleccione"
-              value={field.relationship}
-              onChange={(event) =>
-                handleFieldChange(event, index, "relationship")
-              }
-              disabled={!field.editing}
-              classNameLabel="text-black big bold"
-              label="Parentesco"
-              errors={errors}
-              register={register}
-              className="select-basic medium"
-            />
-            <div>
-              <label htmlFor="" className="text-black big bold">Acciones</label>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {fields.map((field, index) => (
+            <div
+              key={field.id}
+              className={`grid-form-6-container  ${
+                !disabledRows[index] ? "bg-editing" : "bg-disabled"
+              }`}
+            >
+              <InputComponent
+                idInput={`familiar.${index}.fullName`}
+                id={`fullName${index}`}
+                className="input-basic medium"
+                typeInput="text"
+                disabled={disabledRows[index]}
+                label="Nombre completo"
+                classNameLabel="text-black big bold"
+                errors={errors}
+                register={registerFamily}
+              />
+              <Controller
+                control={control}
+                name={`familiar.${index}.birthDate`}
+                render={({ field }) => {
+                  return (
+                    <DatePickerComponent
+                      id={field.name}
+                      idInput={`familiar.${index}.birthDate`}
+                      value={field.value}
+                      label="Fecha de Nacimiento"
+                      register={registerFamily}
+                      errors={errors}
+                      classNameLabel="text-black big bold"
+                      setValueRegister={setValueRegister}
+                      onchange={field.onChange}
+                      disabled={disabledRows[index]}
+                      className="select-basic medium"
+                      setValue={setAge}
+                    />
+                  );
+                }}
+              />
+
+              <InputComponent
+                idInput={`familiar.${index}.age`}
+                id={`age${index}`}
+                className="input-basic medium"
+                typeInput="text"
+                classNameLabel="text-black big bold"
+                label="Edad"
+                disabled={true}
+                errors={errors}
+                register={registerFamily}
+                value={age}
+              />
+              <SelectComponent
+                idInput={`familiar.${index}.gender`}
+                placeholder="seleccione"
+                disabled={disabledRows[index]}
+                classNameLabel="text-black big bold"
+                label="Género"
+                errors={errors}
+                register={registerFamily}
+                data={list[0]}
+                className="select-basic medium"
+                setValueRegister={setValueRegister}
+              />
+              <SelectComponent
+                idInput={`familiar.${index}.relationship`}
+                placeholder="seleccione"
+                disabled={disabledRows[index]}
+                classNameLabel="text-black big bold"
+                label="Parentesco"
+                errors={errors}
+                register={registerFamily}
+                data={list[1]}
+                className="select-basic medium"
+                setValueRegister={setValueRegister}
+              />
               <div>
-                {field.editing ? (
-                  <>
-                    <ButtonComponent
-                      value={<RiSave3Fill/>}
-                      type="button"
-                      action={() => saveChanges(index)}
-                      className="button-confirm"
-                    />
-                    <ButtonComponent
-                      value={<HiOutlineX/>}
-                      type="button"
-                      action={() => cancelEditing(index)}
-                      className="button-cancel-edit"
-                    />
-                  </>
-                ) : (
-                  <>
-                    <ButtonComponent
-                      value={<HiOutlinePencil/>}
-                      type="button"
-                      action={() => enableEditing(index)}
-                      className="button-edit "
-                    />
-                    <ButtonComponent
-                      value={<HiOutlineTrash/>}
-                      type="button"
-                      action={() => deleteField(index)}
-                      className="button-delete"
-                    />
-                  </>
-                )}
+                <label htmlFor="" className="text-black big bold">
+                  Acciones
+                </label>
+                <div>
+                  {!disabledRows[index] ? (
+                    <>
+                      <ButtonComponent
+                        value={<RiSave3Fill />}
+                        type="button"
+                        action={() => {
+                          handleDisableRow(index);
+                          onSubmit();
+                        }}
+                        className="button-confirm"
+                      />
+                      <ButtonComponent
+                        value={<HiOutlineX />}
+                        type="button"
+                        action={() => handleDisableRow(index)}
+                        className="button-cancel-edit"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <ButtonComponent
+                        value={<HiOutlinePencil />}
+                        type="button"
+                        action={() => handleEnableRow(index)}
+                        className="button-edit"
+                      />
+                      <ButtonComponent
+                        value={<HiOutlineTrash />}
+                        type="button"
+                        action={() => remove(index)}
+                        className="button-delete"
+                      />
+                    </>
+                  )}
+                </div>
               </div>
             </div>
+          ))}
+          <div className="display-justify-flex-end">
+            <ButtonComponent
+              type="button"
+              value="Agregar familiar"
+              action={() =>
+                append({
+                  fullName: "",
+                  birthDate: "",
+                  age: 0,
+                  gender: "",
+                  relationship: "",
+                })
+              }
+              className="button-save large"
+            />
           </div>
-        ))}
-        <div className="display-justify-flex-end">
-          <ButtonComponent
-            type="button"
-            value="Agregar familiar"
-            action={addField}
-            className="button-save large"
-          />
-        </div>
+        </form>
       </div>
     </div>
   );

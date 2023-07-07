@@ -19,6 +19,7 @@ interface IInputProps<T> {
   containerClassname?:string;
   disabled?:boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  id?:string;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -42,7 +43,8 @@ function InputElement({
   iconLegend,
   containerClassname,
   disabled,
-  onChange
+  onChange,
+  id
 }): React.JSX.Element {
   return (
     <div className={containerClassname? `container-input-group ${containerClassname}` : "container-input-group"}>
@@ -56,6 +58,7 @@ function InputElement({
       defaultValue={value}
       disabled={disabled}
       onChange={onChange}
+      id={id}
     />
     </div>
   );
@@ -76,7 +79,8 @@ export function InputGroupComponent({
   iconLegend,
   containerClassname,
   disabled,
-  onChange
+  onChange,
+  id
 }: IInputProps<any>): React.JSX.Element {
   return (
     <div
@@ -103,6 +107,7 @@ export function InputGroupComponent({
           containerClassname = {containerClassname}
           disabled={disabled}
           onChange={onChange}
+          id={id}
         />
         {errors[idInput]?.message && <span className="icon-error"></span>}
       </div>

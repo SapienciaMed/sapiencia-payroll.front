@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
 import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
@@ -7,6 +7,7 @@ import { HiOutlineCalendar } from "react-icons/hi";
 import { DateTime } from "luxon";
 
 interface IDateProps<T> {
+  id?: string;
   idInput: string;
   register?: UseFormRegister<T>;
   className?: string;
@@ -24,6 +25,7 @@ interface IDateProps<T> {
     setState: React.Dispatch<any>;
   };
   disabled?: boolean;
+  onchange?: (e: string|Date|Date[]) => void;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -39,6 +41,7 @@ function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
 
 function CalendarElement({
   idInput,
+  id,
   className,
   placeholder,
   value,
@@ -47,6 +50,7 @@ function CalendarElement({
   setValue,
   stateProps,
   disabled,
+  onchange
 }:IDateProps<any>): React.JSX.Element {
   const [date, setDate] = useState<DateTime>(value);
   const registerProp = register ? register : () => {};
@@ -54,20 +58,25 @@ function CalendarElement({
   useEffect(() => {
     const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
     setValueRegisterProp(idInput, date);
+    console.log(date)
   }, [date]);
   return (
     <div {...registerProp(idInput)}>
       <Calendar
+      id={id}
+      mask="99/99/9999"
       dateFormat="dd/mm/yy"
       name={idInput}
       value={date}
       onChange={(e) => {
-        if(setValueRegister){
-          setDate(new Date(e.value as string).toLocaleDateString())
+        if(setValue){
+          setValue(e.value)
+        }
+        if(onchange){
+          onchange(e.value)
         }else{
           setDate(e.value);
         }
-         
       }}
         placeholder={placeholder}
         className={className}
@@ -85,6 +94,7 @@ function CalendarElement({
 }
 
 export function DatePickerComponent({
+  id,
   idInput,
   register,
   setValueRegister,
@@ -99,6 +109,7 @@ export function DatePickerComponent({
   stateProps,
   setValue,
   disabled,
+  onchange
 }: IDateProps<any>): React.JSX.Element {
   return (
     <div
@@ -115,6 +126,7 @@ export function DatePickerComponent({
       />
       <div>
         <CalendarElement
+          id={id}
           idInput={idInput}
           className={className}
           setValue={setValue}
@@ -124,6 +136,7 @@ export function DatePickerComponent({
           setValueRegister={setValueRegister}
           stateProps={stateProps}
           disabled={disabled}
+          onchange={onchange}
         />
         {errors[idInput]?.message && <span className="icon-error"></span>}
       </div>

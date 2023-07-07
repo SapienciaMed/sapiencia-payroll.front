@@ -19,6 +19,7 @@ interface IInputProps<T> {
   errors?: FieldErrors<any>;
   disabled?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  id?: string;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -41,10 +42,12 @@ function InputElement({
   value,
   disabled,
   onChange,
+  id
 }): React.JSX.Element {
   return (
     <input
       {...register(idInput)}
+      id={id}
       name={idInput}
       type={typeInput}
       className={className}
@@ -70,7 +73,10 @@ export function InputComponent({
   errors,
   disabled,
   onChange,
+  id
 }: IInputProps<any>): React.JSX.Element {
+const [firstPart, secondPart, thirdPart] = idInput.split('.');
+const errorKey = `${firstPart}[${secondPart}].${thirdPart}`;
   return (
     <div
       className={
@@ -88,14 +94,15 @@ export function InputComponent({
         <InputElement
           typeInput={typeInput}
           idInput={idInput}
-          className={errors[idInput] ? `${className} error` : className}
+          className={errors[errorKey?errorKey:idInput] ? `${className} error` : className}
           placeholder={placeholder}
           register={register}
           value={value}
           disabled={disabled}
           onChange={onChange}
+          id={id}
         />
-        {errors[idInput]?.message && (
+        {errors[errorKey?errorKey:idInput]?.message && (
           <MdOutlineError
             className="icon-error"
             fontSize={"22px"}
@@ -103,9 +110,9 @@ export function InputComponent({
           />
         )}
       </div>
-      {errors[idInput]?.message && (
+      {errors[errorKey?errorKey:idInput]?.message && (
         <p className="error-message bold not-margin-padding">
-          {errors[idInput]?.message}
+          {errors[errorKey?errorKey:idInput]?.message}
         </p>
       )}
       {children}

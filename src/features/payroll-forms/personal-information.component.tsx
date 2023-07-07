@@ -4,8 +4,9 @@ import { DatePickerComponent } from "../../common/components/Form/input-date.com
 import { EDirection } from "../../common/constants/input.enum";
 import { InputGroupComponent } from "../../common/components/Form/input-group.component";
 import { SelectComponent } from "../../common/components/Form/select.component";
+import { Controller } from "react-hook-form";
 
-const InformationPersonalForm = ({ register, errors, className }: any) => {
+const InformationPersonalForm = ({ register, errors,control,list,stateList, setvalueregister }: any) => {
   return (
     <>
       <div className="grid-form-4-container gap-25 container-sections-forms">
@@ -20,11 +21,12 @@ const InformationPersonalForm = ({ register, errors, className }: any) => {
               register={register}
               className="select-basic medium"
               placeholder="Tipo"
-              data={[]}
+              data={list[0]}
               value={null}
               classNameLabel="text-black big bold"
               direction={EDirection.column}
               errors={errors}
+              setValueRegister={setvalueregister}
             />
             <InputGroupComponent
               idInput="numberDocument"
@@ -76,31 +78,50 @@ const InformationPersonalForm = ({ register, errors, className }: any) => {
           className="input-basic medium"
           classNameLabel="text-black big bold"
         />
+
         <div className="display-justify gap-25">
           <SelectComponent
             idInput="bloodType"
             label="RH"
             register={register}
             errors={errors}
+            data={list[1]}
             className="select-basic medium"
             classNameLabel="text-black big bold"
+            setValueRegister={setvalueregister}
           />
           <SelectComponent
             idInput="gender"
             label="Género"
             register={register}
             errors={errors}
+            data={list[2]}
             className="select-basic medium"
             classNameLabel="text-black big bold"
+            setValueRegister={setvalueregister}
           />
         </div>
-        <DatePickerComponent
-          idInput="birthDate"
-          label="Fecha de Nacimiento"
-          register={register}
-          errors={errors}
-          classNameLabel="text-black big bold"
+        <Controller
+          control={control}
+          name="birthDate"
+          render={({ field }) => {
+            return (
+              <DatePickerComponent
+                id={field.name}
+                idInput={"birthDate"}
+                value={field.value}
+                label="Fecha de Nacimiento"
+                register={register}
+                errors={errors}
+                classNameLabel="text-black big bold"
+                setValueRegister={setvalueregister}
+                onchange={field.onChange}
+                className="select-basic medium"
+              />
+            );
+          }}
         />
+
         <SelectComponent
           idInput="nationality"
           label="Nacionalidad"
@@ -108,6 +129,8 @@ const InformationPersonalForm = ({ register, errors, className }: any) => {
           errors={errors}
           className="select-basic medium"
           classNameLabel="text-black big bold"
+          data={list[3]}
+          setValueRegister={setvalueregister}
         />
       </div>
       <div className="grid-form-4-container gap-25 container-sections-forms">
@@ -115,12 +138,25 @@ const InformationPersonalForm = ({ register, errors, className }: any) => {
           Información de localización
         </span>
         <SelectComponent
-          idInput="department"
+          idInput="country"
+          label="País"
+          register={register}
+          errors={errors}
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          data={list[3]}
+          setValueRegister={setvalueregister}
+        />
+        <SelectComponent
+          idInput="deparment"
           label="Departamento"
           register={register}
           errors={errors}
           className="select-basic medium"
           classNameLabel="text-black big bold"
+          data={list[4]}
+          setValue={stateList[0]}
+          setValueRegister={setvalueregister}
         />
         <SelectComponent
           idInput="municipality"
@@ -129,6 +165,9 @@ const InformationPersonalForm = ({ register, errors, className }: any) => {
           errors={errors}
           className="select-basic medium"
           classNameLabel="text-black big bold"
+          data={list[5]}
+          setValue={stateList[1]}
+          setValueRegister={setvalueregister}
         />
         <InputComponent
           idInput="address"
@@ -146,6 +185,8 @@ const InformationPersonalForm = ({ register, errors, className }: any) => {
           errors={errors}
           className="select-basic medium"
           classNameLabel="text-black big bold"
+          data={list[6]}
+          setValueRegister={setvalueregister}
         />
         <SelectComponent
           idInput="socioEconomic"
@@ -154,6 +195,8 @@ const InformationPersonalForm = ({ register, errors, className }: any) => {
           errors={errors}
           className="select-basic medium"
           classNameLabel="text-black big bold"
+          data={list[7]}
+          setValueRegister={setvalueregister}
         />
         <InputComponent
           idInput={"contactNumber"}
@@ -171,6 +214,8 @@ const InformationPersonalForm = ({ register, errors, className }: any) => {
           errors={errors}
           className="select-basic medium"
           classNameLabel="text-black big bold"
+          data={list[8]}
+          setValueRegister={setvalueregister}
         />
         <InputComponent
           idInput={"email"}

@@ -8,6 +8,7 @@ import InformationPersonalForm from "./personal-information.component";
 import { formsPayroll } from "../../common/schemas/employment-schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AppContext } from "../../common/contexts/app.context";
+import useEmploymentsData from "./hooks/Employments.hook";
 import {
   FormStebs,
   ITabsMenuTemplate,
@@ -21,12 +22,13 @@ interface IItemsSteps<T> {
 }
 const PayrollForm = () => {
   const { step } = useContext(AppContext);
-
+  const {typeDocumentList,bloodType,nacionality,genderList,deparmentList,townList,neighborhoodList,socioEconomicStatus,housingType,relationship,setDeparment,setTown} = useEmploymentsData()
   const currentValidationSchema = formsPayroll[step];
   const {
     register,
     formState: { errors, isValid },
     watch,
+    control,
     handleSubmit,
     trigger,
   } = useForm({
@@ -38,7 +40,7 @@ const PayrollForm = () => {
     {
       titleSteb: "1. Informacion personal",
       contentStep: (
-        <InformationPersonalForm register={register} errors={errors} />
+        <InformationPersonalForm register={register} errors={errors} control={control} list={[typeDocumentList,bloodType,genderList,nacionality,deparmentList,townList,neighborhoodList,socioEconomicStatus,housingType]} stateList={[setDeparment,setTown]} />
       ),
       position: 0,
       classContainerStep: "",
@@ -46,7 +48,7 @@ const PayrollForm = () => {
     {
       titleSteb: "2. Informacion familiar",
       contentStep: (
-        <FamiliarInformationForm register={register} errors={errors} />
+        <FamiliarInformationForm register={register} errors={errors}  list={[genderList,relationship]}/>
       ),
       position: 1,
       classContainerStep: "",

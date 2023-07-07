@@ -123,7 +123,7 @@ const InformationPersonalForm = ({
                 classNameLabel="text-black big bold"
                 setValueRegister={setvalueregister}
                 onchange={field.onChange}
-                className="select-basic medium"
+                className="dataPicker-basic  medium "
               />
             );
           }}

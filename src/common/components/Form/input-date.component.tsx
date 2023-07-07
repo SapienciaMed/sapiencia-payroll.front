@@ -88,6 +88,7 @@ function CalendarElement({
         }
         showButtonBar
         disabled={disabled}
+        inputStyle={{borderRight: 'none'}}
       />
     </div>
   );
@@ -98,7 +99,7 @@ export function DatePickerComponent({
   idInput,
   register,
   setValueRegister,
-  className = "select-basic",
+  className = "dataPicker-basic",
   placeholder = "DD/MM/AAAA",
   value = null,
   label,

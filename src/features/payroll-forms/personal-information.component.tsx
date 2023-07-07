@@ -267,11 +267,7 @@ const InformationPersonalForm = ({
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label={
-            <>
-              Barrio <span>*</span>
-            </>
-          }
+              label="Barrio"
               register={register}
               errors={errors}
               data={list[6]}

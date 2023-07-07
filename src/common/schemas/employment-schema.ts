@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 const personalInformationLocalization = yup.object({
   //datospersonales
-  // typeDocument: yup.string().required("El campo es obligatorio"),
+  typeDocument: yup.string().required("El campo es obligatorio"),
   numberDocument: yup
     .string()
     .matches(/^[0-9]+$/, "Solo se permiten numeros")
@@ -11,9 +11,9 @@ const personalInformationLocalization = yup.object({
     .required("El campo es obligatorio"),
   firstName: yup
     .string()
+    .required("El campo es obligatorio")
     .min(3, "Ingrese al menos 3 caracteres")
-    .max(50, "Solo se permiten 50 caracteres")
-    .required("El campo es obligatorio"),
+    .max(50, "Solo se permiten 50 caracteres"),
   secondName: yup.string().max(50, "Solo se permiten 50 caracteres"),
   surName: yup
     .string()
@@ -21,18 +21,18 @@ const personalInformationLocalization = yup.object({
     .max(50, "Solo se permiten 50 caracteres")
     .required("El campo es obligatorio"),
   secondSurName: yup.string().max(50, "Solo se permiten 50 caracteres"),
-  // gender: yup.string().required("El campo es obligatorio"),
-  // bloodType: yup.string().required("El campo es obligatorio"),
-  // // birthDate: yup.date().required("El campo es obligatorio"),
-  // nationality: yup.string().required("El campo es obligatorio"),
+  gender: yup.string().required("El campo es obligatorio"),
+  bloodType: yup.string().required("El campo es obligatorio"),
+  birthDate: yup.date().required("El campo es obligatorio"),
+  nationality: yup.string().required("El campo es obligatorio"),
   //localizacion
-  // department: yup.string().required("El campo es obligatorio"),
-  // municipality: yup.string().required("El campo es obligatorio"),
+  department: yup.string().required("El campo es obligatorio"),
+  municipality: yup.string().required("El campo es obligatorio"),
   address: yup
     .string()
     .max(100, "Solo se permiten 100 caracteres")
     .required("El campo es obligatorio"),
-  // neighborhood: yup.string().required("El campo es obligatorio"),
+  neighborhood: yup.string().required("El campo es obligatorio"),
   contactNumber: yup
     .string()
     .matches(/^[0-9]+$/, "Solo se permiten numeros")
@@ -41,7 +41,10 @@ const personalInformationLocalization = yup.object({
 });
 
 const familiarSchema = {
-  fullName: yup.string().required("Inserta un nombre").min(8, "Ingrese al menos 8 caracteres"),
+  fullName: yup
+    .string()
+    .required("Inserta un nombre")
+    .min(8, "Ingrese al menos 8 caracteres"),
 };
 
 export const familiarValidator = yup.object({

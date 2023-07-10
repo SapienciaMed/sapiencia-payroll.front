@@ -19,7 +19,7 @@ type FormValues = {
   }[];
 };
 
-const FamiliarInformationForm = ({ register, errors1, list }: any) => {
+const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
   const [age, setAge] = useState(null);
   const resolver = useYupValidationResolver(familiarValidator);
@@ -48,6 +48,7 @@ const FamiliarInformationForm = ({ register, errors1, list }: any) => {
   });
 
   const onSubmit = handleSubmit(async (data: any) => {
+    setFamilyData(data);
     console.log("Submit data", data);
   });
 

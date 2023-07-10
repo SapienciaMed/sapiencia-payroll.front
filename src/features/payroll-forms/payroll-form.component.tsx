@@ -13,8 +13,9 @@ import { FormStebs } from "../../common/interfaces/tabs-menu.interface";
 import { ICreateWorker } from "../../common/interfaces/payroll.interfaces";
 
 const PayrollForm = () => {
+  const [familyData, setFamilyData] = useState(null);
   const { step } = useContext(AppContext);
-
+console.log(familyData)
   const {
     typeDocumentList,
     bloodType,
@@ -33,6 +34,7 @@ const PayrollForm = () => {
     levelRiskList,
     typesChargesList,
     typesContracts,
+    activeWorker,
     setDeparment,
     setTown,
   } = useEmploymentsData();
@@ -110,8 +112,7 @@ const PayrollForm = () => {
       titleSteb: "2. Informacion familiar",
       contentStep: (
         <FamiliarInformationForm
-          register={register}
-          errors={errors}
+          setFamilyData={setFamilyData}
           list={[genderList, relationship]}
         />
       ),
@@ -126,7 +127,7 @@ const PayrollForm = () => {
           errors={errors}
           control={control}
           setValueRegister={setValueRegister}
-          list={[typesContracts, typesChargesList]}
+          list={[typesContracts, typesChargesList,activeWorker]}
         />
       ),
       position: 2,
@@ -156,7 +157,7 @@ const PayrollForm = () => {
         stebs={stebs}
         triggerValidate={trigger}
         handleSubmit={handleSubmit}
-        validForm={isValid}
+        validForm={true}
         watch={watch}
       />
     </>

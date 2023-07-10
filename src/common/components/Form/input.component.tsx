@@ -75,20 +75,25 @@ export function InputComponent({
   onChange,
   id,
 }: IInputProps<any>): React.JSX.Element {
-  const [firstPart, secondPart, thirdPart] = idInput.split(".");
+  const messageError = () => {
+    const keysError = idInput.split(".");
 
-  const errorKey = `${firstPart}[${secondPart}].${thirdPart}`;
+    let errs = errors;
 
-  const index = thirdPart ? errorKey : idInput;
+    for (let key of keysError) {
+      errs = errs?.[key];
+      if (!errs) {
+        break;
+      }
+    }
 
-  console.log(errors[idInput]);
+    return errs?.message ?? null;
+  };
 
   return (
     <div
       className={
-        errors[idInput]?.message
-          ? `${direction} container-icon_error`
-          : direction
+        messageError() ? `${direction} container-icon_error` : direction
       }
     >
       <LabelElement
@@ -100,7 +105,7 @@ export function InputComponent({
         <InputElement
           typeInput={typeInput}
           idInput={idInput}
-          className={errors[index] ? `${className} error` : className}
+          className={messageError() ? `${className} error` : className}
           placeholder={placeholder}
           register={register}
           value={value}
@@ -108,7 +113,7 @@ export function InputComponent({
           onChange={onChange}
           id={id}
         />
-        {errors[index]?.message && (
+        {messageError() && (
           <MdOutlineError
             className="icon-error"
             fontSize={"22px"}
@@ -116,9 +121,9 @@ export function InputComponent({
           />
         )}
       </div>
-      {errors[index]?.message && (
+      {messageError() && (
         <p className="error-message bold not-margin-padding">
-          {errors[index]?.message}
+          {messageError()}
         </p>
       )}
       {children}

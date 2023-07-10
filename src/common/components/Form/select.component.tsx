@@ -18,7 +18,7 @@ interface ISelectProps<T> {
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
-  errors?: FieldErrors<any>;
+  errors?: any;
   setValue?: React.Dispatch<any>;
   stateProps?: {
     state: any;
@@ -130,11 +130,24 @@ export function SelectComponent({
     );
     if (!dataSelect) data.unshift(seleccione);
   }
+  const messageError = () => {
+    const keysError = idInput.split(".");
+
+    let errs = errors;
+
+    for (let key of keysError) {
+      errs = errs?.[key];
+      if (!errs) {
+        break;
+      }
+    }
+
+    return errs?.message ?? null;
+  };
   return (
     <div
       className={
-        errors[idInput]?.message
-          ? `${direction} container-icon_error`
+        messageError() ?  `${direction} container-icon_error`
           : direction
       }
     >
@@ -147,7 +160,7 @@ export function SelectComponent({
         <SelectElement
           id={id}
           idInput={idInput}
-          className={className}
+          className={messageError() ? `${className} error` : className}
           setValue={setValue}
           placeholder={placeholder}
           data={data}
@@ -158,11 +171,11 @@ export function SelectComponent({
           disabled={disabled}
           onchange={onchange}
         />
-        {errors[idInput]?.message && <span className="icon-error"></span>}
+        {messageError() && <span className="icon-error"></span>}
       </div>
-      {errors[idInput]?.message && (
+      {messageError() &&(
         <p className="error-message bold not-margin-padding">
-          {errors[idInput]?.message}
+          {messageError()}
         </p>
       )}
       {children}

@@ -17,7 +17,7 @@ interface IDateProps<T> {
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
-  errors?: FieldErrors<any>;
+  errors?:any;
   setValueRegister?: UseFormSetValue<T>;
   setValue?: React.Dispatch<any>;
   stateProps?: {
@@ -67,7 +67,7 @@ function CalendarElement({
         mask="99/99/9999"
         dateFormat="dd/mm/yy"
         name={idInput}
-        value={date}
+        value={value}
         onChange={(e) => {
           if (setValue) {
             setValue(e.value);
@@ -101,7 +101,7 @@ export function DatePickerComponent({
   setValueRegister,
   className = "dataPicker-basic",
   placeholder = "DD/MM/AAAA",
-  value = null,
+  value = new Date(),
   label,
   classNameLabel = "text-main",
   direction = EDirection.column,
@@ -112,10 +112,24 @@ export function DatePickerComponent({
   disabled,
   onchange,
 }: IDateProps<any>): React.JSX.Element {
+  const messageError = () => {
+    const keysError = idInput.split(".");
+
+    let errs = errors;
+
+    for (let key of keysError) {
+      errs = errs?.[key];
+      if (!errs) {
+        break;
+      }
+    }
+
+    return errs?.message ?? null;
+  };
   return (
     <div
       className={
-        errors[idInput]?.message
+        messageError()
           ? `${direction} container-icon_error`
           : direction
       }
@@ -129,7 +143,7 @@ export function DatePickerComponent({
         <CalendarElement
           id={id}
           idInput={idInput}
-          className={className}
+          className={messageError() ? `${className} error` : className}
           setValue={setValue}
           placeholder={placeholder}
           value={value}
@@ -139,11 +153,11 @@ export function DatePickerComponent({
           disabled={disabled}
           onchange={onchange}
         />
-        {errors[idInput]?.message && <span className="icon-error"></span>}
+        {messageError() && <span className="icon-error"></span>}
       </div>
-      {errors[idInput]?.message && (
+      {messageError() && (
         <p className="error-message bold not-margin-padding">
-          {errors[idInput]?.message}
+          {messageError()}
         </p>
       )}
       {children}

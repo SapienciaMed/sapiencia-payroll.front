@@ -42,7 +42,7 @@ const InformationPersonalForm = ({
           </label>
           <div className="display-justify gap-15">
             <Controller
-              name="worker?.typeDocument"
+              name="worker.typeDocument"
               control={control}
               render={({ field }) => (
                 <SelectComponent
@@ -76,7 +76,7 @@ const InformationPersonalForm = ({
           </div>
         </div>
         <InputComponent
-          idInput={"worker?.firstName"}
+          idInput={"worker.firstName"}
           label={
             <>
               Primer nombre <span>*</span>

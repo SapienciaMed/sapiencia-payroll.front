@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FormSteps from "../../common/components/Form/form-steps.component";
 import { useForm } from "react-hook-form";
 import AffiliationsForm from "./affiliations.components";
@@ -38,6 +38,8 @@ const PayrollForm = () => {
   } = useEmploymentsData();
 
   const currentValidationSchema = formsPayroll[step];
+
+  
 
   const {
     register,

@@ -14,7 +14,7 @@ interface IInputProps<T> {
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
-  errors?: FieldErrors<any>;
+  errors?: any;
   iconLegend?: React.JSX.Element | string;
   containerClassname?: string;
   disabled?: boolean;
@@ -88,10 +88,24 @@ export function InputGroupComponent({
   onChange,
   id,
 }: IInputProps<any>): React.JSX.Element {
+  const messageError = () => {
+    const keysError = idInput.split(".");
+
+    let errs = errors;
+
+    for (let key of keysError) {
+      errs = errs?.[key];
+      if (!errs) {
+        break;
+      }
+    }
+
+    return errs?.message ?? null;
+  };
   return (
     <div
       className={
-        errors[idInput]?.message
+        messageError() 
           ? `${direction} container-icon_error`
           : direction
       }
@@ -105,7 +119,7 @@ export function InputGroupComponent({
         <InputElement
           typeInput={typeInput}
           idInput={idInput}
-          className={errors[idInput] ? `${className} error` : className}
+          className={messageError() ? `${className} error` : className}
           placeholder={placeholder}
           register={register}
           value={value}
@@ -115,11 +129,11 @@ export function InputGroupComponent({
           onChange={onChange}
           id={id}
         />
-        {errors[idInput]?.message && <span className="icon-error"></span>}
+        {messageError() && <span className="icon-error"></span>}
       </div>
-      {errors[idInput]?.message && (
+      {messageError() && (
         <p className="error-message bold not-margin-padding">
-          {errors[idInput]?.message}
+          {messageError()}
         </p>
       )}
       {children}

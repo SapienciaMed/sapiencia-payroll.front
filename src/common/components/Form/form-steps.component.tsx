@@ -111,8 +111,8 @@ const FormSteps = ({
           })}
         </div>
 
-        <p>{validForm ? "Valid" : "Invalid"}</p>
-        <pre className="">{JSON.stringify(watch())}</pre>
+        {/* <p>{validForm ? "Valid" : "Invalid"}</p>
+        <pre className="">{JSON.stringify(watch())}</pre> */}
       </form>
     </>
   );

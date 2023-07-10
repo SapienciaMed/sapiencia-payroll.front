@@ -28,7 +28,7 @@ interface IDateProps<T> {
   onchange?: (e: string | Date | Date[]) => void;
   maxDate?: Date;
   minDate?: Date;
-
+  fieldArray?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -55,7 +55,7 @@ function CalendarElement({
   disabled,
   onchange,
   maxDate,
-  minDate
+  minDate,
 }: IDateProps<any>): React.JSX.Element {
   const [date, setDate] = useState<DateTime>(value);
   const registerProp = register ? register : () => {};
@@ -129,21 +129,24 @@ export function DatePickerComponent({
   disabled,
   onchange,
   maxDate,
-  minDate
+  minDate,
+  fieldArray,
 }: IDateProps<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");
-
     let errs = errors;
-
-    for (let key of keysError) {
-      errs = errs?.[key];
-      if (!errs) {
-        break;
+    if (fieldArray) {
+      const errorKey = `${keysError[0]}[${keysError[1]}].${keysError[2]}`;
+      return errors[errorKey]?.message;
+    } else {
+      for (let key of keysError) {
+        errs = errs?.[key];
+        if (!errs) {
+          break;
+        }
       }
+      return errs?.message ?? null;
     }
-
-    return errs?.message ?? null;
   };
   return (
     <div

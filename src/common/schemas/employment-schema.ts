@@ -52,7 +52,7 @@ const personalInformationLocalization = yup.object({
 });
 
 const familiarSchema = {
-  fullName: yup
+  name: yup
     .string()
     .required("Inserta un nombre")
     .min(8, "Ingrese al menos 8 caracteres"),

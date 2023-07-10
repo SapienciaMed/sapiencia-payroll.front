@@ -8,7 +8,7 @@ import { MdOutlineError } from "react-icons/md";
 interface IInputProps<T> {
   idInput: string;
   typeInput: string;
-  register: UseFormRegister<T>;
+  register?: UseFormRegister<T>;
   className?: string;
   placeholder?: string;
   value?: string;
@@ -21,6 +21,7 @@ interface IInputProps<T> {
   disabled?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   id?: string;
+  fieldArray?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -48,7 +49,7 @@ function InputElement({
 }): React.JSX.Element {
   return (
     <input
-      {...register(idInput)}
+      {...(register ? register(idInput) : {})}
       id={id}
       name={idInput}
       type={typeInput}
@@ -78,20 +79,23 @@ export function InputComponent({
   onChange,
   defaultValue,
   id,
+  fieldArray,
 }: IInputProps<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");
-
     let errs = errors;
-
-    for (let key of keysError) {
-      errs = errs?.[key];
-      if (!errs) {
-        break;
+    if (fieldArray) {
+      const errorKey = `${keysError[0]}[${keysError[1]}].${keysError[2]}`;
+      return errors[errorKey]?.message;
+    } else {
+      for (let key of keysError) {
+        errs = errs?.[key];
+        if (!errs) {
+          break;
+        }
       }
+      return errs?.message ?? null;
     }
-
-    return errs?.message ?? null;
   };
 
   return (

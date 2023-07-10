@@ -25,7 +25,8 @@ interface ISelectProps<T> {
     setState: React.Dispatch<any>;
   };
   disabled?: boolean;
-  onchange?:(e:string)=>void;
+  onchange?: (e: string) => void;
+  fieldArray?: boolean;
 }
 
 interface ISelectElementProps<T> {
@@ -43,7 +44,7 @@ interface ISelectElementProps<T> {
     setState: React.Dispatch<any>;
   };
   disabled?: boolean;
-  onchange?: (e: string) =>void;
+  onchange?: (e: string) => void;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -85,8 +86,8 @@ function SelectElement({
         id={id}
         value={stateProps ? stateProps.state : selected}
         onChange={(e) => {
-          if(onchange){
-            onchange(e.value)
+          if (onchange) {
+            onchange(e.value);
           }
           if (setValue) {
             setValue(e.value);
@@ -121,7 +122,8 @@ export function SelectComponent({
   stateProps,
   setValue,
   disabled,
-  onchange
+  onchange,
+  fieldArray,
 }: ISelectProps<any>): React.JSX.Element {
   if (data) {
     const seleccione: IDropdownProps = { name: "Seleccione", value: null };
@@ -132,23 +134,24 @@ export function SelectComponent({
   }
   const messageError = () => {
     const keysError = idInput.split(".");
-
     let errs = errors;
-
-    for (let key of keysError) {
-      errs = errs?.[key];
-      if (!errs) {
-        break;
+    if (fieldArray) {
+      const errorKey = `${keysError[0]}[${keysError[1]}].${keysError[2]}`;
+      return errors[errorKey]?.message;
+    } else {
+      for (let key of keysError) {
+        errs = errs?.[key];
+        if (!errs) {
+          break;
+        }
       }
+      return errs?.message ?? null;
     }
-
-    return errs?.message ?? null;
   };
   return (
     <div
       className={
-        messageError() ?  `${direction} container-icon_error`
-          : direction
+        messageError() ? `${direction} container-icon_error` : direction
       }
     >
       <LabelElement
@@ -173,7 +176,7 @@ export function SelectComponent({
         />
         {messageError() && <span className="icon-error"></span>}
       </div>
-      {messageError() &&(
+      {messageError() && (
         <p className="error-message bold not-margin-padding">
           {messageError()}
         </p>

@@ -37,6 +37,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   });
 
   const onSubmit = handleSubmit(async (data: any) => {
+    debugger
     setFamilyData(data);
     console.log("Submit data", data);
   });
@@ -78,6 +79,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 classNameLabel="text-black big bold"
                 errors={errors}
                 register={registerFamily}
+                fieldArray = {true}
               />
               <Controller
                 control={control}
@@ -112,7 +114,6 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 label="Edad"
                 disabled={true}
                 errors={errors}
-                register={registerFamily}
                 value={age ? age :'0'}
               />
               <Controller

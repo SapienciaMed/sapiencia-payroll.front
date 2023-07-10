@@ -8,16 +8,7 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 import useYupValidationResolver from "../../common/interfaces/form-validator.hook";
 import { familiarValidator } from "../../common/schemas/employment-schema";
 import { DatePickerComponent } from "../../common/components/Form/input-date.component";
-
-type FormValues = {
-  familiar: {
-    fullName: string;
-    birthDate: Date | string;
-    age: number;
-    gender: string;
-    relationship: string;
-  }[];
-};
+import { IRelative } from "../../common/interfaces/payroll.interfaces";
 
 const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
@@ -29,11 +20,9 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
     control,
     setValue: setValueRegister,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<{ familiar: IRelative[] }>({
     defaultValues: {
-      familiar: [
-        { fullName: "", birthDate: "", age: 0, gender: "", relationship: "" },
-      ],
+      familiar: [{ name: "", birthDate: "", gender: "", relationship: "" }],
     },
     mode: "all",
     resolver,
@@ -80,7 +69,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
               }`}
             >
               <InputComponent
-                idInput={`familiar.${index}.fullName`}
+                idInput={`familiar.${index}.name`}
                 id={`fullName${index}`}
                 className="input-basic medium"
                 typeInput="text"
@@ -215,9 +204,8 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
               value="Agregar familiar"
               action={() =>
                 append({
-                  fullName: "",
+                  name: "",
                   birthDate: "",
-                  age: 0,
                   gender: "",
                   relationship: "",
                 })

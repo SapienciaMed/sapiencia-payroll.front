@@ -118,7 +118,7 @@ export function DatePickerComponent({
   setValueRegister,
   className = "dataPicker-basic",
   placeholder = "DD/MM/AAAA",
-  value = new Date(),
+  value,
   label,
   classNameLabel = "text-main",
   direction = EDirection.column,

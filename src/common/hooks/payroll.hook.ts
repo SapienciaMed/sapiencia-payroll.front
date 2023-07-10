@@ -1,6 +1,10 @@
 import { EResponseCodes } from "../constants/api.enum";
 import { IAuthorization } from "../interfaces/auth.interfaces";
-import { ICreateWorker, ITypesCharges, ITypesContracts } from "../interfaces/payroll.interfaces";
+import {
+  ICreateWorker,
+  ITypesCharges,
+  ITypesContracts,
+} from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
 
@@ -39,7 +43,7 @@ export function usePayrollService() {
   async function createWorker(data:ICreateWorker): Promise<ApiResponse<ICreateWorker>> {
     try {
       const endpoint: string = `/`;
-      return await post(`${authUrl}${endpoint}`,data);
+      return await post(`${authUrl}${endpoint}`, data);
     } catch (error) {
       return new ApiResponse(
         {} as ICreateWorker,
@@ -52,7 +56,7 @@ export function usePayrollService() {
   return {
     getTypesContracts,
     getTypesCharges,
-    createWorker
+    createWorker,
   };
 }
 

@@ -122,7 +122,7 @@ const PayrollForm = () => {
           setValueRegister={setValueRegister}
         />
       ),
-      position: 1,
+      position: 0,
       classContainerStep: "",
     },
     {
@@ -133,7 +133,7 @@ const PayrollForm = () => {
           list={[genderList, relationship]}
         />
       ),
-      position: 0,
+      position: 1,
       classContainerStep: "",
     },
     {

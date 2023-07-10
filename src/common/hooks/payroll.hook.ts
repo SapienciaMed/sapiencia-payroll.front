@@ -36,7 +36,7 @@ export function usePayrollService() {
     }
   }
 
-  async function createWorker(data): Promise<ApiResponse<ICreateWorker>> {
+  async function createWorker(data:ICreateWorker): Promise<ApiResponse<ICreateWorker>> {
     try {
       const endpoint: string = `/`;
       return await post(`${authUrl}${endpoint}`,data);

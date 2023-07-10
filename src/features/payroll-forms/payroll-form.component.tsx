@@ -103,7 +103,7 @@ const PayrollForm = () => {
           setValueRegister={setValueRegister}
         />
       ),
-      position: 0,
+      position: 1,
       classContainerStep: "",
     },
     {
@@ -114,11 +114,11 @@ const PayrollForm = () => {
           list={[genderList, relationship]}
         />
       ),
-      position: 1,
+      position: 0,
       classContainerStep: "",
     },
     {
-      titleSteb: "3. Proyectos",
+      titleSteb: "3. Información contractual",
       contentStep: (
         <ContractualInformationForm
           register={register}
@@ -132,7 +132,7 @@ const PayrollForm = () => {
       classContainerStep: "",
     },
     {
-      titleSteb: "4. Area funcional",
+      titleSteb: "4. Afiliaciones",
       contentStep: (
         <AffiliationsForm
           register={register}

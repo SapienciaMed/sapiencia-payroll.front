@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InputComponent } from "../../common/components/Form/input.component";
 import { SelectComponent } from "../../common/components/Form/select.component";
 import { ButtonComponent } from "../../common/components/Form/button.component";
@@ -21,7 +21,7 @@ type FormValues = {
 
 const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
-  const [age, setAge] = useState(null);
+  const [age, setAge] = useState('0');
   const resolver = useYupValidationResolver(familiarValidator);
   const {
     register: registerFamily,
@@ -63,7 +63,10 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
     updatedDisabledRows[index] = true;
     setDisabledRows(updatedDisabledRows);
   };
-
+   useEffect(() => {
+    console.log(age)
+   }, [age])
+   
   return (
     <div>
       <div className="container-sections-forms">
@@ -105,6 +108,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                       disabled={disabledRows[index]}
                       className="select-basic medium"
                       setValue={setAge}
+                      maxDate={new Date()}
                     />
                   );
                 }}
@@ -120,7 +124,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 disabled={true}
                 errors={errors}
                 register={registerFamily}
-                value={age}
+                value={age ? age :'0'}
               />
               <Controller
                 name={`familiar.${index}.gender`}

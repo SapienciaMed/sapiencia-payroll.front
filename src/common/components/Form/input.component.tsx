@@ -12,6 +12,7 @@ interface IInputProps<T> {
   className?: string;
   placeholder?: string;
   value?: string;
+  defaultValue?: string;
   label?: string | React.JSX.Element;
   classNameLabel?: string;
   direction?: EDirection;
@@ -42,6 +43,7 @@ function InputElement({
   value,
   disabled,
   onChange,
+  defaultValue,
   id,
 }): React.JSX.Element {
   return (
@@ -52,9 +54,10 @@ function InputElement({
       type={typeInput}
       className={className}
       placeholder={placeholder}
-      defaultValue={value}
+      defaultValue={defaultValue}
       disabled={disabled}
       onChange={onChange}
+      value={value}
     />
   );
 }
@@ -73,6 +76,7 @@ export function InputComponent({
   errors,
   disabled,
   onChange,
+  defaultValue,
   id,
 }: IInputProps<any>): React.JSX.Element {
   const messageError = () => {
@@ -111,6 +115,7 @@ export function InputComponent({
           value={value}
           disabled={disabled}
           onChange={onChange}
+          defaultValue={defaultValue}
           id={id}
         />
         {messageError() && (

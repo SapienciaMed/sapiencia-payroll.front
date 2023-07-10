@@ -17,7 +17,7 @@ interface IDateProps<T> {
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
-  errors?:any;
+  errors?: any;
   setValueRegister?: UseFormSetValue<T>;
   setValue?: React.Dispatch<any>;
   stateProps?: {
@@ -26,6 +26,9 @@ interface IDateProps<T> {
   };
   disabled?: boolean;
   onchange?: (e: string | Date | Date[]) => void;
+  maxDate?: Date;
+  minDate?: Date;
+
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -51,13 +54,27 @@ function CalendarElement({
   stateProps,
   disabled,
   onchange,
+  maxDate,
+  minDate
 }: IDateProps<any>): React.JSX.Element {
   const [date, setDate] = useState<DateTime>(value);
   const registerProp = register ? register : () => {};
 
+  function calculateDifference(dateInit: string | Date) {
+    const currentDate = new Date();
+    const differenceInMilliseconds =
+      currentDate.getTime() - new Date(dateInit).getTime();
+    const differenceInYears =
+      differenceInMilliseconds / (24 * 60 * 60 * 1000 * 365);
+    return Math.floor(differenceInYears);
+  }
+
   useEffect(() => {
     const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
     setValueRegisterProp(idInput, date);
+    if (setValue) {
+      setValue(calculateDifference(date as Date));
+    }
     console.log(date);
   }, [date]);
   return (
@@ -69,11 +86,9 @@ function CalendarElement({
         name={idInput}
         value={value}
         onChange={(e) => {
-          if (setValue) {
-            setValue(e.value);
-          }
           if (onchange) {
             onchange(e.value);
+            setDate(e.value);
           } else {
             setDate(e.value);
           }
@@ -89,6 +104,8 @@ function CalendarElement({
         showButtonBar
         disabled={disabled}
         inputStyle={{ borderRight: "none" }}
+        maxDate={maxDate}
+        minDate={minDate}
       />
     </div>
   );
@@ -111,6 +128,8 @@ export function DatePickerComponent({
   setValue,
   disabled,
   onchange,
+  maxDate,
+  minDate
 }: IDateProps<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");
@@ -129,9 +148,7 @@ export function DatePickerComponent({
   return (
     <div
       className={
-        messageError()
-          ? `${direction} container-icon_error`
-          : direction
+        messageError() ? `${direction} container-icon_error` : direction
       }
     >
       <LabelElement
@@ -152,6 +169,8 @@ export function DatePickerComponent({
           stateProps={stateProps}
           disabled={disabled}
           onchange={onchange}
+          minDate={minDate}
+          maxDate={maxDate}
         />
         {messageError() && <span className="icon-error"></span>}
       </div>

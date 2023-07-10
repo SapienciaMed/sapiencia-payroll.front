@@ -303,7 +303,7 @@ export default function useEmploymentsData() {
   }, []);
   /*Functions*/
 
-  const CancelFunction = () => {
+  const cancelFunction = () => {
     setMessage({
       show: true,
       title: "Crear usuario",
@@ -321,7 +321,7 @@ export default function useEmploymentsData() {
   return {
     genderList,
     typeDocumentList,
-    CancelFunction,
+    cancelFunction,
     setDeparment,
     setTown,
     authorization,

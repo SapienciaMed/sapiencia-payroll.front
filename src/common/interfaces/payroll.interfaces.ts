@@ -29,7 +29,7 @@ export interface IWorker {
   secondSurname?: string;
   gender: string;
   bloodType: string;
-  birthDate: Date;
+  birthDate: Date | string;
   nationality: string;
   email?: string;
   contactNumber: string;

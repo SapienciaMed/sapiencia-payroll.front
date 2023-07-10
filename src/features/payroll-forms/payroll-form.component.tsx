@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import FormSteps from "../../common/components/Form/form-steps.component";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import AffiliationsForm from "./affiliations.components";
 import ContractualInformationForm from "./contractual-information.component";
 import FamiliarInformationForm from "./familiar-information.component";
@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { AppContext } from "../../common/contexts/app.context";
 import useEmploymentsData from "./hooks/Employments.hook";
 import { FormStebs } from "../../common/interfaces/tabs-menu.interface";
+import { ICreateWorker } from "../../common/interfaces/payroll.interfaces";
 
 const PayrollForm = () => {
   const { step } = useContext(AppContext);
@@ -41,13 +42,38 @@ const PayrollForm = () => {
     handleSubmit,
     trigger,
     setValue: setValueRegister,
-  } = useForm({
-    // defaultValues: {
-    //   worker: {},
-    // },
+  } = useForm<ICreateWorker>({
+    defaultValues: {
+      worker: {
+        typeDocument: "",
+        numberDocument: "",
+        firstName: "",
+        secondName: "",
+        surName: "",
+        secondSurname: "",
+        gender: "",
+        bloodType: "",
+        birthDate: "",
+        nationality: "",
+        email: "",
+        contactNumber: "",
+        department: "",
+        municipality: "",
+        neighborhood: "",
+        address: "",
+        socioEconomic: "",
+        eps: "",
+        severanceFund: "",
+        arl: "",
+        riskLevel: "",
+        housingType: "",
+      },
+    },
     resolver: yupResolver(currentValidationSchema),
     mode: "all",
   });
+
+  console.log(errors);
 
   const stebs: FormStebs[] = [
     {
@@ -94,6 +120,7 @@ const PayrollForm = () => {
           register={register}
           errors={errors}
           control={control}
+          setValueRegister={setValueRegister}
           list={[typesContracts,typesChargesList ]}
         />
       ),
@@ -102,7 +129,14 @@ const PayrollForm = () => {
     },
     {
       titleSteb: "4. Area funcional",
-      contentStep: <AffiliationsForm register={register} errors={errors} />,
+      contentStep: (
+        <AffiliationsForm
+          register={register}
+          errors={errors}
+          control={control}
+          setValueRegister={setValueRegister}
+        />
+      ),
       position: 3,
       classContainerStep: "",
     },

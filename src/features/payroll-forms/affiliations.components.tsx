@@ -11,9 +11,8 @@ const AffiliationsForm = ({
 }: any) => {
   return (
     <div>
-      <div className="grid-form-3-container container-sections-forms ">
+      <div className="grid-form-3-container gap-25 container-sections-forms ">
         <span className="text-black large bold grid-span-3-columns">
-          {" "}
           Parafiscales
         </span>
         <Controller

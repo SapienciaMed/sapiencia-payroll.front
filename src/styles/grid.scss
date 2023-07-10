@@ -67,13 +67,23 @@
 .grid-form-3-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 0px 16px;
   align-items: stretch;
+
   .grid-span-2-columns {
     grid-column: span 2;
   }
   .grid-span-3-columns {
     grid-column: span 3;
+  }
+
+  &.gap-15 {
+    gap: 15px;
+  }
+  &.gap-20 {
+    gap: 20px;
+  }
+  &.gap-25 {
+    gap: 25px;
   }
 }
 

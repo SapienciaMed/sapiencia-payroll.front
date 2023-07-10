@@ -42,7 +42,7 @@ const InformationPersonalForm = ({
           </label>
           <div className="display-justify gap-15">
             <Controller
-              name="typeDocument"
+              name="worker?.typeDocument"
               control={control}
               render={({ field }) => (
                 <SelectComponent
@@ -62,7 +62,7 @@ const InformationPersonalForm = ({
             />
 
             <InputGroupComponent
-              idInput="numberDocument"
+              idInput="worker.numberDocument"
               className="input-group-basic medium"
               typeInput="text"
               register={register}
@@ -76,7 +76,7 @@ const InformationPersonalForm = ({
           </div>
         </div>
         <InputComponent
-          idInput={"firstName"}
+          idInput={"worker?.firstName"}
           label={
             <>
               Primer nombre <span>*</span>
@@ -89,7 +89,7 @@ const InformationPersonalForm = ({
           classNameLabel="text-black big bold"
         />
         <InputComponent
-          idInput={"secondName"}
+          idInput={"worker.secondName"}
           label={<>Segundo nombre</>}
           typeInput={"text"}
           register={register}
@@ -98,7 +98,7 @@ const InformationPersonalForm = ({
           classNameLabel="text-black big bold"
         />
         <InputComponent
-          idInput={"surName"}
+          idInput={"worker.surName"}
           label={
             <>
               Primer apellido <span>*</span>
@@ -111,7 +111,7 @@ const InformationPersonalForm = ({
           classNameLabel="text-black big bold"
         />
         <InputComponent
-          idInput={"secondSurname"}
+          idInput={"worker.secondSurname"}
           label="Segundo apellido"
           typeInput={"text"}
           register={register}
@@ -122,17 +122,17 @@ const InformationPersonalForm = ({
 
         <div className="display-justify gap-25">
           <Controller
-            name="bloodType"
+            name="worker.bloodType"
             control={control}
             render={({ field }) => (
               <SelectComponent
                 id={field.name}
                 idInput={field.name}
                 label={
-              <>
-                RH <span>*</span>
-              </>
-            }
+                  <>
+                    RH <span>*</span>
+                  </>
+                }
                 register={register}
                 errors={errors}
                 data={list[1]}
@@ -145,17 +145,17 @@ const InformationPersonalForm = ({
             )}
           />
           <Controller
-            name="gender"
+            name="worker.gender"
             control={control}
             render={({ field }) => (
               <SelectComponent
                 id={field.name}
                 idInput={field.name}
                 label={
-              <>
-                Genero <span>*</span>
-              </>
-            }
+                  <>
+                    Genero <span>*</span>
+                  </>
+                }
                 register={register}
                 errors={errors}
                 data={list[2]}
@@ -170,12 +170,12 @@ const InformationPersonalForm = ({
         </div>
         <Controller
           control={control}
-          name="birthDate"
+          name="worker.birthDate"
           render={({ field }) => {
             return (
               <DatePickerComponent
                 id={field.name}
-                idInput={"birthDate"}
+                idInput={field.name}
                 value={field.value}
                 label={
                   <>
@@ -193,17 +193,17 @@ const InformationPersonalForm = ({
           }}
         />
         <Controller
-          name="nationality"
+          name="worker.nationality"
           control={control}
           render={({ field }) => (
             <SelectComponent
               id={field.name}
               idInput={field.name}
               label={
-            <>
-              Nacionalidad <span>*</span>
-            </>
-          }
+                <>
+                  Nacionalidad <span>*</span>
+                </>
+              }
               register={register}
               errors={errors}
               data={list[3]}
@@ -221,13 +221,17 @@ const InformationPersonalForm = ({
           Información de localización
         </span>
         <Controller
-          name="department"
+          name="worker.department"
           control={control}
           render={({ field }) => (
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label="Departamento"
+              label={
+                <>
+                  Departamento <span>*</span>
+                </>
+              }
               register={register}
               errors={errors}
               data={list[4]}
@@ -241,13 +245,17 @@ const InformationPersonalForm = ({
           )}
         />
         <Controller
-          name="municipality"
+          name="worker.municipality"
           control={control}
           render={({ field }) => (
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label="Municipio"
+              label={
+                <>
+                  Municipio <span>*</span>
+                </>
+              }
               register={register}
               errors={errors}
               data={list[5]}
@@ -261,13 +269,17 @@ const InformationPersonalForm = ({
           )}
         />
         <Controller
-          name="neighborhood"
+          name="worker.neighborhood"
           control={control}
           render={({ field }) => (
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label="Barrio"
+              label={
+                <>
+                  Barrio <span>*</span>
+                </>
+              }
               register={register}
               errors={errors}
               data={list[6]}
@@ -280,7 +292,7 @@ const InformationPersonalForm = ({
           )}
         />
         <InputComponent
-          idInput="address"
+          idInput="worker.address"
           label={
             <>
               Direccion <span>*</span>
@@ -293,17 +305,13 @@ const InformationPersonalForm = ({
           classNameLabel="text-black big bold"
         />
         <Controller
-          name="socioEconomic"
+          name="worker.socioEconomic"
           control={control}
           render={({ field }) => (
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label={
-            <>
-              Estrato <span>*</span>
-            </>
-          }
+              label={<>Estrato</>}
               register={register}
               errors={errors}
               data={list[7]}
@@ -316,7 +324,7 @@ const InformationPersonalForm = ({
           )}
         />
         <Controller
-          name="housingType"
+          name="worker.housingType"
           control={control}
           render={({ field }) => (
             <SelectComponent
@@ -335,7 +343,7 @@ const InformationPersonalForm = ({
           )}
         />
         <InputComponent
-          idInput={"contactNumber"}
+          idInput={"worker.contactNumber"}
           label={
             <>
               Celular <span>*</span>
@@ -348,7 +356,7 @@ const InformationPersonalForm = ({
           classNameLabel="text-black big bold"
         />
         <InputComponent
-          idInput={"email"}
+          idInput={"worker.email"}
           label="Correo electrónico"
           typeInput={"email"}
           register={register}

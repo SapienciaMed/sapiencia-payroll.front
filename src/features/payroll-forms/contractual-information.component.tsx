@@ -167,7 +167,6 @@ const ContractualInformationForm = ({
           idInput="antiquity"
           typeInput="text"
           label="Antiguedad"
-          register={register}
           errors={errors}
           value={antiquity ? antiquity : '0'}
           classNameLabel="text-black big bold"

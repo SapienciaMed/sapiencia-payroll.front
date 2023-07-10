@@ -2,17 +2,30 @@ import React from "react";
 import { InputComponent } from "../../common/components/Form/input.component";
 import { SelectComponent } from "../../common/components/Form/select.component";
 import { DatePickerComponent } from "../../common/components/Form/input-date.component";
-import { Controller } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
+
+interface IContractualInformationProp {
+  register: UseFormRegister<any>;
+  errors: FieldErrors<any>;
+  control: Control<any>;
+  setValueRegister: UseFormSetValue<any>;
+}
 
 const ContractualInformationForm = ({
   register,
   errors,
   control,
   setValueRegister,
-}: any) => {
+}: IContractualInformationProp) => {
   return (
     <div>
-      <div className="grid-form-4-container container-sections-forms ">
+      <div className="grid-form-4-container gap-25 container-sections-forms ">
         <span className="text-black large bold grid-span-4-columns">
           Información contractual
         </span>

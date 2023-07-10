@@ -34,6 +34,9 @@ const FormSteps = ({
   const handleNextStep = async () => {
     const isValid = await triggerValidate();
 
+    console.log(isValid);
+    console.log(validForm);
+
     if (isValid && step < STEPS_AMOUNT) {
       setStep((cur) => cur + 1);
     }
@@ -91,7 +94,6 @@ const FormSteps = ({
                         action={handleBackStep}
                       />
                     )}
-                    {/* {step === infoStep.position && ( */}
                     <ButtonComponent
                       value={step === STEPS_AMOUNT ? "Guardar" : "Siguiente"}
                       className={`${
@@ -102,7 +104,6 @@ const FormSteps = ({
                       type={step === STEPS_AMOUNT ? "submit" : "button"}
                       action={handleNextStep}
                     />
-                    {/* // )} */}
                   </div>
                 </div>
               );

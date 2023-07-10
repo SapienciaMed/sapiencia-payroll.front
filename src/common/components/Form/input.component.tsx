@@ -16,7 +16,7 @@ interface IInputProps<T> {
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
-  errors?: FieldErrors<any>;
+  errors?: any;
   disabled?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   id?: string;
@@ -79,7 +79,9 @@ export function InputComponent({
 
   const errorKey = `${firstPart}[${secondPart}].${thirdPart}`;
 
-  const index = secondPart ? errorKey : idInput;
+  const index = thirdPart ? errorKey : idInput;
+
+  console.log(errors[idInput]);
 
   return (
     <div

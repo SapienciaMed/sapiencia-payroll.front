@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
 import { IGenericList } from "../../../common/interfaces/global.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
+import usePayrollService from "../../../common/hooks/payroll.hook";
+import { ITypesCharges, ITypesContracts } from "../../../common/interfaces/payroll.interfaces";
 
 export default function useEmploymentsData() {
     /*States*/
@@ -21,13 +23,15 @@ export default function useEmploymentsData() {
     const [bloodType, setBloodType] = useState([])
     const [relationship, setRelationship] = useState([])
     const [housingType, setHousingType] = useState([])
+    const [typesChargesList,setTypesChargesList] = useState([])
+    const [typesContracts,setTypesContracts] = useState([])
     /*instances*/
     const { getListByParent, getListByGroupers } = useGenericListService();
   
     const navigate = useNavigate();
   
     const { setMessage, authorization } = useContext(AppContext);
-  
+    const {getTypesCharges,getTypesContracts} = usePayrollService()
     /*UseEffects*/
     useEffect(() => {
       const groupers = ["GENEROS", "TIPOS_DOCUMENTOS","TIPO_SANGUINEO","ESTRATO","PARENTESCO","TIPO_VIVIENDA","PAISES"];
@@ -172,6 +176,41 @@ export default function useEmploymentsData() {
         .catch((err) => {});
     }, [town, deparment]);
   
+    useEffect(() => {
+      getTypesContracts()
+        .then((response: ApiResponse<ITypesContracts[]>) => {
+          if (response && response?.operation?.code === EResponseCodes.OK) {
+            setTypesContracts(
+              response.data.map((item) => {
+                const list = {
+                  name: item.name,
+                  value: item.id,
+                };
+                return list;
+              })
+            );
+          }
+        })
+        .catch((err) => {});
+    }, []);
+
+    useEffect(() => {
+      getTypesCharges()
+        .then((response: ApiResponse<ITypesCharges[]>) => {
+          if (response && response?.operation?.code === EResponseCodes.OK) {
+            setTypesChargesList(
+              response.data.map((item) => {
+                const list = {
+                  name: item.name,
+                  value: item.id,
+                };
+                return list;
+              })
+            );
+          }
+        })
+        .catch((err) => {});
+    }, []);
     /*Functions*/
   
     const CancelFunction = () => {
@@ -204,6 +243,8 @@ export default function useEmploymentsData() {
       housingType,
       socioEconomicStatus,
       relationship,
-      nacionality
+      nacionality,
+      typesChargesList,
+      typesContracts
     };
   }

@@ -54,3 +54,14 @@ export interface ICreateWorker {
   relatives: IRelative[];
   employment: IEmployment;
 }
+
+export interface ITypesContracts {
+  id: number;
+  name: string;
+  temporary: boolean;
+}
+
+export interface ITypesCharges{
+  id: number;
+  name: string;
+  }

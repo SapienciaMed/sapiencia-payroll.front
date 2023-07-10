@@ -221,7 +221,7 @@ const InformationPersonalForm = ({
           Información de localización
         </span>
         <Controller
-          name="deparment"
+          name="department"
           control={control}
           render={({ field }) => (
             <SelectComponent

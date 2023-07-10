@@ -25,6 +25,8 @@ const PayrollForm = () => {
     socioEconomicStatus,
     housingType,
     relationship,
+    typesChargesList,
+    typesContracts,
     setDeparment,
     setTown,
   } = useEmploymentsData();
@@ -88,7 +90,12 @@ const PayrollForm = () => {
     {
       titleSteb: "3. Proyectos",
       contentStep: (
-        <ContractualInformationForm register={register} errors={errors} />
+        <ContractualInformationForm
+          register={register}
+          errors={errors}
+          control={control}
+          list={[typesContracts,typesChargesList ]}
+        />
       ),
       position: 2,
       classContainerStep: "",

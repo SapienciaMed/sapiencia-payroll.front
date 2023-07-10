@@ -9,6 +9,7 @@ const ContractualInformationForm = ({
   errors,
   control,
   setValueRegister,
+  list
 }: any) => {
   return (
     <div>
@@ -26,7 +27,7 @@ const ContractualInformationForm = ({
               label="Tipo de trabajador"
               register={register}
               errors={errors}
-              data={[]}
+              data={list[0]}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               value={field.value}
@@ -75,7 +76,7 @@ const ContractualInformationForm = ({
               label="Cargo"
               register={register}
               errors={errors}
-              data={[]}
+              data={list[1]}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               value={field.value}

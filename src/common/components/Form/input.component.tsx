@@ -12,11 +12,14 @@ interface IInputProps<T> {
   className?: string;
   placeholder?: string;
   value?: string;
-  label?: string;
+  label?: string | React.JSX.Element;
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: FieldErrors<any>;
+  disabled?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  id?: string;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -37,15 +40,21 @@ function InputElement({
   placeholder,
   register,
   value,
+  disabled,
+  onChange,
+  id,
 }): React.JSX.Element {
   return (
     <input
       {...register(idInput)}
+      id={id}
       name={idInput}
       type={typeInput}
       className={className}
       placeholder={placeholder}
       defaultValue={value}
+      disabled={disabled}
+      onChange={onChange}
     />
   );
 }
@@ -62,7 +71,16 @@ export function InputComponent({
   direction = EDirection.column,
   children,
   errors,
+  disabled,
+  onChange,
+  id,
 }: IInputProps<any>): React.JSX.Element {
+  const [firstPart, secondPart, thirdPart] = idInput.split(".");
+
+  const errorKey = `${firstPart}[${secondPart}].${thirdPart}`;
+
+  const index = secondPart ? errorKey : idInput;
+
   return (
     <div
       className={
@@ -76,16 +94,19 @@ export function InputComponent({
         idInput={idInput}
         classNameLabel={classNameLabel}
       />
-      <div>
+      <div className="flex-container-input">
         <InputElement
           typeInput={typeInput}
           idInput={idInput}
-          className={errors[idInput] ? `${className} error` : className}
+          className={errors[index] ? `${className} error` : className}
           placeholder={placeholder}
           register={register}
           value={value}
+          disabled={disabled}
+          onChange={onChange}
+          id={id}
         />
-        {errors[idInput]?.message && (
+        {errors[index]?.message && (
           <MdOutlineError
             className="icon-error"
             fontSize={"22px"}
@@ -93,9 +114,9 @@ export function InputComponent({
           />
         )}
       </div>
-      {errors[idInput]?.message && (
+      {errors[index]?.message && (
         <p className="error-message bold not-margin-padding">
-          {errors[idInput]?.message}
+          {errors[index]?.message}
         </p>
       )}
       {children}

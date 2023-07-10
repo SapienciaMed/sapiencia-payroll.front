@@ -1,3 +1,5 @@
+@import "./mixins.scss";
+
 .main-page {
   padding: 20px;
 }
@@ -13,6 +15,18 @@
   grid-template-columns: 1fr;
   align-items: center;
   font-size: 11px;
+}
+
+.bg-editing {
+  background: #f7f4f4;
+  border-radius: 8px;
+  padding: 2em;
+}
+
+.bg-disabled {
+  background: transparent;
+  border-radius: 8px;
+  padding: 2em;
 }
 
 .welcome-container {
@@ -41,13 +55,15 @@
   $columns: repeat(auto-fit, $card-width);
   $cursor: pointer;
   $padding: 10px;
-  @include multiple-card-component($columns,
+  @include multiple-card-component(
+    $columns,
     $margin-horizontal,
     $margin-vertical,
     $card-height,
     $card-width,
     $padding,
-    $cursor );
+    $cursor
+  );
 }
 
 .container-form {
@@ -59,12 +75,11 @@
 }
 
 .container-sections-forms {
-  box-shadow: inset 0px 3px 6px #00000029, 0px 3px 6px #00000029;
-  border: 1px solid #e2e2e2;
+  border: 1px solid #e0e0e0;
   border-radius: 15px;
   opacity: 1;
   padding: 2em;
-  margin: 2em;
+  margin: 1.5em 0em;
 }
 
 .container-button-bot {
@@ -98,7 +113,7 @@
     margin: 3em 0em;
     align-items: center;
   }
-  
+
   .label-transfer-role {
     width: 100%;
     display: flex;
@@ -123,7 +138,7 @@
   .th-title {
     text-align: start;
     padding: 0em 2em;
-    background-color: #D6D6D6;
+    background-color: #d6d6d6;
   }
   .th-content {
     font-weight: 100;
@@ -155,13 +170,15 @@
     $columns: repeat(auto-fit, $card-width);
     $cursor: pointer;
     $padding: 10px;
-    @include multiple-card-component($columns,
+    @include multiple-card-component(
+      $columns,
       $margin-horizontal,
       $margin-vertical,
       $card-height,
       $card-width,
       $padding,
-      $cursor );
+      $cursor
+    );
   }
 
   .select-applications {
@@ -191,5 +208,54 @@
       display: contents;
       margin-bottom: 0em;
     }
+  }
+}
+
+.stebs-selection {
+  display: flex;
+  overflow: scroll;
+  width: 100%;
+  margin-left: 2em;
+  padding-top: 1em;
+  user-select: none;
+
+  .steb-option {
+    background-color: #f2f2f2;
+    border: none;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+    margin-right: 1em;
+    border-radius: 100px;
+    text-align: center;
+    text-wrap: nowrap;
+  }
+
+  .steb-option.active {
+    background-color: $three-color;
+    color: #ffffff;
+  }
+
+  &::-webkit-scrollbar {
+    width: 100%; /* Ancho de la barra de desplazamiento */
+    height: 0px;
+    background-color: transparent; /* Color de fondo transparente */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Color transparente del pulgar */
+  }
+}
+
+.container-actions_formTabs {
+  @include generate-flex-container(row, null, space-around, null, null, 0.62em);
+}
+
+.form-steps {
+  padding: 1em 3em;
+  margin: 2em;
+  border-radius: 20px;
+
+  &.border {
+    border: 1px solid #e0e0e0;
   }
 }

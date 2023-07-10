@@ -1,41 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
 import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { Dropdown } from "primereact/dropdown";
-import { IDropdownProps } from "../../interfaces/select.interface";
+import { Calendar } from "primereact/calendar";
+import { IoCalendarOutline } from "react-icons/io5";
+import { DateTime } from "luxon";
 
-interface ISelectProps<T> {
+interface IDateProps<T> {
   id?: string;
   idInput: string;
   register?: UseFormRegister<T>;
-  setValueRegister?: UseFormSetValue<T>;
   className?: string;
   placeholder?: string;
-  data?: Array<IDropdownProps>;
-  value?: string;
+  value?: string | Date | Date[];
   label?: string | React.JSX.Element;
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: FieldErrors<any>;
-  setValue?: React.Dispatch<any>;
-  stateProps?: {
-    state: any;
-    setState: React.Dispatch<any>;
-  };
-  disabled?: boolean;
-  onchange?:(e:string)=>void;
-}
-
-interface ISelectElementProps<T> {
-  id?: string;
-  idInput: string;
-  className?: string;
-  placeholder?: string;
-  data?: Array<IDropdownProps>;
-  value?: string;
-  register?: UseFormRegister<T>;
   setValueRegister?: UseFormSetValue<T>;
   setValue?: React.Dispatch<any>;
   stateProps?: {
@@ -43,7 +25,7 @@ interface ISelectElementProps<T> {
     setState: React.Dispatch<any>;
   };
   disabled?: boolean;
-  onchange?: (e: string) =>void;
+  onchange?: (e: string | Date | Date[]) => void;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -57,12 +39,11 @@ function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
   );
 }
 
-function SelectElement({
-  id,
+function CalendarElement({
   idInput,
+  id,
   className,
   placeholder,
-  data,
   value,
   register,
   setValueRegister,
@@ -70,48 +51,56 @@ function SelectElement({
   stateProps,
   disabled,
   onchange,
-}: ISelectElementProps<any>): React.JSX.Element {
-  const [selected, setSelected] = useState(value);
+}: IDateProps<any>): React.JSX.Element {
+  const [date, setDate] = useState<DateTime>(value);
   const registerProp = register ? register : () => {};
 
   useEffect(() => {
     const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
-    setValueRegisterProp(idInput, stateProps ? stateProps.state : selected);
-  }, [selected, stateProps]);
-
+    setValueRegisterProp(idInput, date);
+    console.log(date);
+  }, [date]);
   return (
     <div {...registerProp(idInput)}>
-      <Dropdown
+      <Calendar
         id={id}
-        value={stateProps ? stateProps.state : selected}
+        mask="99/99/9999"
+        dateFormat="dd/mm/yy"
+        name={idInput}
+        value={date}
         onChange={(e) => {
-          if(onchange){
-            onchange(e.value)
-          }
           if (setValue) {
             setValue(e.value);
-            setSelected(e.value);
           }
-          stateProps ? stateProps.setState(e.value) : setSelected(e.value);
+          if (onchange) {
+            onchange(e.value);
+          } else {
+            setDate(e.value);
+          }
         }}
-        options={data}
-        optionLabel="name"
         placeholder={placeholder}
         className={className}
+        showIcon
+        icon={
+          <span>
+            <IoCalendarOutline />
+          </span>
+        }
+        showButtonBar
         disabled={disabled}
+        inputStyle={{ borderRight: "none" }}
       />
     </div>
   );
 }
 
-export function SelectComponent({
+export function DatePickerComponent({
   id,
   idInput,
   register,
   setValueRegister,
-  className = "select-basic",
-  placeholder = "Seleccione",
-  data = [{} as IDropdownProps],
+  className = "dataPicker-basic",
+  placeholder = "DD/MM/AAAA",
   value = null,
   label,
   classNameLabel = "text-main",
@@ -121,15 +110,8 @@ export function SelectComponent({
   stateProps,
   setValue,
   disabled,
-  onchange
-}: ISelectProps<any>): React.JSX.Element {
-  if (data) {
-    const seleccione: IDropdownProps = { name: "Seleccione", value: null };
-    const dataSelect = data.find(
-      (item) => item.name === seleccione.name && item.value === seleccione.value
-    );
-    if (!dataSelect) data.unshift(seleccione);
-  }
+  onchange,
+}: IDateProps<any>): React.JSX.Element {
   return (
     <div
       className={
@@ -144,13 +126,12 @@ export function SelectComponent({
         classNameLabel={classNameLabel}
       />
       <div>
-        <SelectElement
+        <CalendarElement
           id={id}
           idInput={idInput}
           className={className}
           setValue={setValue}
           placeholder={placeholder}
-          data={data}
           value={value}
           register={register}
           setValueRegister={setValueRegister}

@@ -1,6 +1,32 @@
 .grid-form-4-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  align-items: stretch;
+
+  .grid-span-2-columns {
+    grid-column: span 2 !important;
+  }
+  .grid-span-3-columns {
+    grid-column: span 3;
+  }
+  .grid-span-4-columns {
+    grid-column: span 4;
+  }
+
+  &.gap-15 {
+    gap: 15px;
+  }
+  &.gap-20 {
+    gap: 20px;
+  }
+  &.gap-25 {
+    gap: 25px;
+  }
+}
+
+.grid-form-5-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   grid-gap: 16px 16px;
   align-items: stretch;
 
@@ -12,6 +38,29 @@
   }
   .grid-span-4-columns {
     grid-column: span 4;
+  }
+  .grid-span-5-columns {
+    grid-column: span 5;
+  }
+}
+
+.grid-form-6-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 16px 16px;
+  align-items: stretch;
+
+  .grid-span-2-columns {
+    grid-column: span 2 !important;
+  }
+  .grid-span-3-columns {
+    grid-column: span 3;
+  }
+  .grid-span-4-columns {
+    grid-column: span 4;
+  }
+  .grid-span-5-columns {
+    grid-column: span 5;
   }
 }
 
@@ -45,6 +94,25 @@
     }
   }
 
+  .grid-form-5-container {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    .grid-span-2-columns,
+    .grid-span-3-columns,
+    .grid-span-4-columns {
+      grid-column: auto;
+    }
+  }
+
+  .grid-form-6-container {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    .grid-span-2-columns,
+    .grid-span-3-columns,
+    .grid-span-4-columns,
+    .grid-span-5-columns {
+      grid-column: auto;
+    }
+  }
+
   .grid-form-3-container {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     .grid-span-2-columns,
@@ -64,6 +132,25 @@
     .grid-span-2-columns,
     .grid-span-3-columns,
     .grid-span-4-columns {
+      grid-column: auto;
+    }
+  }
+
+  .grid-form-5-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    .grid-span-2-columns,
+    .grid-span-3-columns,
+    .grid-span-4-columns {
+      grid-column: auto;
+    }
+  }
+
+  .grid-form-6-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    .grid-span-2-columns,
+    .grid-span-3-columns,
+    .grid-span-4-columns,
+    .grid-span-5-columns {
       grid-column: auto;
     }
   }
@@ -95,6 +182,24 @@
     .grid-span-2-columns,
     .grid-span-3-columns,
     .grid-span-4-columns {
+      grid-column: auto;
+    }
+  }
+  .grid-form-5-container {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    .grid-span-2-columns,
+    .grid-span-3-columns,
+    .grid-span-4-columns {
+      grid-column: auto;
+    }
+  }
+
+  .grid-form-6-container {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    .grid-span-2-columns,
+    .grid-span-3-columns,
+    .grid-span-4-columns,
+    .grid-span-5-columns {
       grid-column: auto;
     }
   }

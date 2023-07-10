@@ -10,13 +10,16 @@ interface IInputProps<T> {
   className?: string;
   placeholder?: string;
   value?: string;
-  label?: string;
+  label?: string | React.JSX.Element;
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: FieldErrors<any>;
   iconLegend?: React.JSX.Element | string;
-  containerClassname?:string;
+  containerClassname?: string;
+  disabled?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  id?: string;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -38,19 +41,31 @@ function InputElement({
   register,
   value,
   iconLegend,
-  containerClassname
+  containerClassname,
+  disabled,
+  onChange,
+  id,
 }): React.JSX.Element {
   return (
-    <div className={containerClassname? `container-input-group ${containerClassname}` : "container-input-group"}>
-    <span className="input-group-addon text-black bold">{iconLegend}</span>
-    <input
-      {...register(idInput)}
-      name={idInput}
-      type={typeInput}
-      className={className}
-      placeholder={placeholder}
-      defaultValue={value}
-    />
+    <div
+      className={
+        containerClassname
+          ? `container-input-group ${containerClassname}`
+          : "container-input-group"
+      }
+    >
+      <span className="input-group-addon text-black bold">{iconLegend}</span>
+      <input
+        {...register(idInput)}
+        name={idInput}
+        type={typeInput}
+        className={className}
+        placeholder={placeholder}
+        defaultValue={value}
+        disabled={disabled}
+        onChange={onChange}
+        id={id}
+      />
     </div>
   );
 }
@@ -69,6 +84,9 @@ export function InputGroupComponent({
   errors,
   iconLegend,
   containerClassname,
+  disabled,
+  onChange,
+  id,
 }: IInputProps<any>): React.JSX.Element {
   return (
     <div
@@ -92,7 +110,10 @@ export function InputGroupComponent({
           register={register}
           value={value}
           iconLegend={iconLegend}
-          containerClassname = {containerClassname}
+          containerClassname={containerClassname}
+          disabled={disabled}
+          onChange={onChange}
+          id={id}
         />
         {errors[idInput]?.message && <span className="icon-error"></span>}
       </div>

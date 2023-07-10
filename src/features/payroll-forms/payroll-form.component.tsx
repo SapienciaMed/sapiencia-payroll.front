@@ -13,7 +13,8 @@ import { FormStebs } from "../../common/interfaces/tabs-menu.interface";
 import { ICreateWorker } from "../../common/interfaces/payroll.interfaces";
 
 const PayrollForm = () => {
-  const { step } = useContext(AppContext);
+  const [familyData, setFamilyData] = useState({})
+  const { step,setStep } = useContext(AppContext);
 
   const {
     typeDocumentList,

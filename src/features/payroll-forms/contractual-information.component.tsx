@@ -15,6 +15,7 @@ interface IContractualInformationProp {
   errors: FieldErrors<any>;
   control: Control<any>;
   setValueRegister: UseFormSetValue<any>;
+  list: any[][];
 }
 
 const ContractualInformationForm = ({

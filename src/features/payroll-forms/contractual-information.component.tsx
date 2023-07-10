@@ -23,7 +23,7 @@ const ContractualInformationForm = ({
   errors,
   control,
   setValueRegister,
-  list
+  list,
 }: IContractualInformationProp) => {
   return (
     <div>
@@ -32,13 +32,17 @@ const ContractualInformationForm = ({
           Información contractual
         </span>
         <Controller
-          name="workerType"
+          name="employment.idTypeContract"
           control={control}
           render={({ field }) => (
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label="Tipo de trabajador"
+              label={
+                <>
+                  Tipo de vinculacion <span>*</span>
+                </>
+              }
               register={register}
               errors={errors}
               data={list[0]}
@@ -52,22 +56,30 @@ const ContractualInformationForm = ({
           )}
         />
         <InputComponent
-          idInput="contractNumber"
+          idInput="employment.contractNumber"
           typeInput="text"
-          label="Número de contracto"
+          label={
+            <>
+              Numero de contrato <span>*</span>
+            </>
+          }
           register={register}
           errors={errors}
           classNameLabel="text-black big bold"
           className="input-basic medium"
         />
         <Controller
-          name="statusWorker"
+          name="employment.state"
           control={control}
           render={({ field }) => (
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label="Estado"
+              label={
+                <>
+                  Estado <span>*</span>
+                </>
+              }
               register={register}
               errors={errors}
               data={list[2]}
@@ -81,13 +93,17 @@ const ContractualInformationForm = ({
           )}
         />
         <Controller
-          name="chargeWorker"
+          name="employment.idCharge"
           control={control}
           render={({ field }) => (
             <SelectComponent
               id={field.name}
               idInput={field.name}
-              label="Cargo"
+              label={
+                <>
+                  Cargo <span>*</span>
+                </>
+              }
               register={register}
               errors={errors}
               data={list[1]}
@@ -102,14 +118,18 @@ const ContractualInformationForm = ({
         />
         <Controller
           control={control}
-          name="startDate"
+          name="employment.startDate"
           render={({ field }) => {
             return (
               <DatePickerComponent
                 id={field.name}
                 idInput={field.name}
                 value={field.value}
-                label="Fecha inicio de contrato"
+                label={
+                  <>
+                    Fecha inicio de contrato <span>*</span>
+                  </>
+                }
                 register={register}
                 errors={errors}
                 classNameLabel="text-black big bold"
@@ -122,14 +142,14 @@ const ContractualInformationForm = ({
         />
         <Controller
           control={control}
-          name="endDate"
+          name="employment.endDate"
           render={({ field }) => {
             return (
               <DatePickerComponent
                 id={field.name}
                 idInput={field.name}
                 value={field.value}
-                label="Fecha fin de contrato"
+                label={<>Fecha fin de contrato</>}
                 register={register}
                 errors={errors}
                 classNameLabel="text-black big bold"
@@ -150,9 +170,13 @@ const ContractualInformationForm = ({
           className="input-basic medium"
         />
         <InputComponent
-          idInput="institucionalEmail"
+          idInput="employment.institutionalMail"
           typeInput="email"
-          label="Correo institucional"
+          label={
+            <>
+              Correo institucional <span>*</span>
+            </>
+          }
           register={register}
           errors={errors}
           classNameLabel="text-black big bold"

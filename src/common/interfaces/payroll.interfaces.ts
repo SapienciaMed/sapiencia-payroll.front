@@ -1,16 +1,14 @@
 import { DateTime } from "luxon";
 
 export interface IEmployment {
-  idCharge: number;
+  idCharge: string;
+  institutionalMail: string;
+  idTypeContract: string;
   contractNumber: string;
   startDate: DateTime;
   endDate: DateTime;
   state: string;
-  idReasonRetirement: number;
-  userModified: string;
-  dateModified?: DateTime;
-  userCreate: string;
-  dateCreate?: DateTime;
+  idReasonRetirement: string;
 }
 
 export interface IRelative {
@@ -43,6 +41,7 @@ export interface IWorker {
   arl?: string;
   riskLevel?: string;
   housingType?: string;
+  fundPension?: string;
   userModified?: string;
   dateModified?: DateTime;
   userCreate?: string;
@@ -61,7 +60,7 @@ export interface ITypesContracts {
   temporary: boolean;
 }
 
-export interface ITypesCharges{
+export interface ITypesCharges {
   id: number;
   name: string;
-  }
+}

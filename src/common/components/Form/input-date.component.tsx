@@ -17,7 +17,7 @@ interface IDateProps<T> {
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
-  errors?:any;
+  errors?: any;
   setValueRegister?: UseFormSetValue<T>;
   setValue?: React.Dispatch<any>;
   stateProps?: {
@@ -101,7 +101,7 @@ export function DatePickerComponent({
   setValueRegister,
   className = "dataPicker-basic",
   placeholder = "DD/MM/AAAA",
-  value = new Date(),
+  value,
   label,
   classNameLabel = "text-main",
   direction = EDirection.column,
@@ -129,9 +129,7 @@ export function DatePickerComponent({
   return (
     <div
       className={
-        messageError()
-          ? `${direction} container-icon_error`
-          : direction
+        messageError() ? `${direction} container-icon_error` : direction
       }
     >
       <LabelElement

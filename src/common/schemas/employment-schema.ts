@@ -42,7 +42,7 @@ const personalInformationLocalization = yup.object({
       .string()
       .max(100, "Solo se permiten 100 caracteres")
       .required("El campo es obligatorio"),
-    // neighborhood: yup.string().required("El campo es obligatorio"),
+    neighborhood: yup.string().required("El campo es obligatorio"),
     contactNumber: yup
       .string()
       .matches(/^[0-9]+$/, "Solo se permiten numeros")
@@ -62,9 +62,33 @@ export const familiarValidator = yup.object({
   familiar: yup.array().of(yup.object().shape(familiarSchema)),
 });
 
+const contractualInformation = yup.object({
+  employment: yup.object({
+    idTypeContract: yup.string().required("El campo es obligatorio"),
+    contractNumber: yup
+      .string()
+      .required("El campo es obligatorio")
+      .max(10, "Solo se permiten 10 caracteres"),
+    state: yup.string().required("El campo es obligatorio"),
+    idCharge: yup.string().required("El campo es obligatorio"),
+    startDate: yup
+      .date()
+      .required("El campo es obligatorio")
+      .typeError("Fecha invalida"),
+    endDate: yup
+      .date()
+      .required("El campo es obligatorio")
+      .typeError("Fecha invalida"),
+    institutionalMail: yup
+      .string()
+      .required("El campo es obligatorio")
+      .email("El correo es invalido"),
+  }),
+});
+
 export const formsPayroll = [
   personalInformationLocalization,
-  yup.object({ prueba2: yup.string().min(8, "Ingrese al menos 8 caracteres") }),
-  yup.object({ prueba3: yup.string().min(8, "Ingrese al menos 8 caracteres") }),
+  yup.object({}),
+  contractualInformation,
   yup.object({ prueba4: yup.string().min(8, "Ingrese al menos 8 caracteres") }),
 ];

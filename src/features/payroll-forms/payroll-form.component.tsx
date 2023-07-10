@@ -10,11 +10,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { AppContext } from "../../common/contexts/app.context";
 import useEmploymentsData from "./hooks/Employments.hook";
 import { FormStebs } from "../../common/interfaces/tabs-menu.interface";
-import { ICreateWorker } from "../../common/interfaces/payroll.interfaces";
+import {
+  ICreateWorker,
+  IRelative,
+} from "../../common/interfaces/payroll.interfaces";
+import usePayrollService from "../../common/hooks/payroll.hook";
 
 const PayrollForm = () => {
-  const [familyData, setFamilyData] = useState({})
-  const { step,setStep } = useContext(AppContext);
+  const [familyData, setFamilyData] = useState<{ familiar: IRelative[] }>();
+
+  const { step, setStep } = useContext(AppContext);
 
   const {
     typeDocumentList,
@@ -38,6 +43,8 @@ const PayrollForm = () => {
     setDeparment,
     setTown,
   } = useEmploymentsData();
+
+  const { createWorker } = usePayrollService();
 
   const currentValidationSchema = formsPayroll[step];
 
@@ -70,10 +77,22 @@ const PayrollForm = () => {
         address: "",
         socioEconomic: "",
         eps: "",
+        fundPension: "",
         severanceFund: "",
         arl: "",
         riskLevel: "",
         housingType: "",
+      },
+      relatives: [{}],
+      employment: {
+        idTypeContract: "",
+        contractNumber: "",
+        institutionalMail: "",
+        startDate: "",
+        endDate: "",
+        idCharge: "",
+        idReasonRetirement: "",
+        state: "",
       },
     },
     resolver: yupResolver(currentValidationSchema),
@@ -125,7 +144,7 @@ const PayrollForm = () => {
           errors={errors}
           control={control}
           setValueRegister={setValueRegister}
-          list={[typesContracts, typesChargesList,activeWorker]}
+          list={[typesContracts, typesChargesList, activeWorker]}
         />
       ),
       position: 2,
@@ -147,12 +166,17 @@ const PayrollForm = () => {
     },
   ];
 
-  const STEPS_AMOUNT = stebs.length - 1;
+  const stepsAmount = stebs.length - 1;
 
   const handleNextStep = async () => {
     const isValid = await trigger();
 
-    if (isValid && step < STEPS_AMOUNT) {
+    if (step === 1) {
+      if (familyData?.familiar)
+        setValueRegister("relatives", familyData.familiar);
+    }
+
+    if (isValid && step < stepsAmount) {
       setStep((cur) => cur + 1);
     }
   };
@@ -173,7 +197,8 @@ const PayrollForm = () => {
         handleNextStep={handleNextStep}
         handleBackStep={handleBackStep}
         validForm={isValid}
-        stepsAmount={STEPS_AMOUNT}
+        stepsAmount={stepsAmount}
+        actionSubmit={createWorker}
         watch={watch}
       />
     </>

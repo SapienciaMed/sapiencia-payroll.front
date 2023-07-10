@@ -13,6 +13,7 @@ interface IFormStepsProp {
   handleNextStep: () => Promise<void>;
   handleBackStep: () => Promise<void>;
   stepsAmount: number;
+  actionSubmit: any;
   watch?: any;
 }
 
@@ -25,12 +26,16 @@ const FormSteps = ({
   handleNextStep,
   handleBackStep,
   stepsAmount,
+  actionSubmit,
   watch,
 }: IFormStepsProp) => {
   const { step } = useContext(AppContext);
 
-  const onSubmit = handleSubmit((values): void => {
+  const onSubmit = handleSubmit(async (values) => {
     console.log(values);
+    const response = await actionSubmit(values);
+
+    console.log(response);
   });
 
   return (

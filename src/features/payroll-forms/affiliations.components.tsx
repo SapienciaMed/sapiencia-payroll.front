@@ -8,7 +8,7 @@ const AffiliationsForm = ({
   errors,
   control,
   setValueRegister,
-  list
+  list,
 }: any) => {
   return (
     <div>
@@ -17,7 +17,7 @@ const AffiliationsForm = ({
           Parafiscales
         </span>
         <Controller
-          name="eps"
+          name="worker.eps"
           control={control}
           render={({ field }) => (
             <SelectComponent
@@ -37,7 +37,7 @@ const AffiliationsForm = ({
           )}
         />
         <Controller
-          name="pension"
+          name="worker.fundPension"
           control={control}
           render={({ field }) => (
             <SelectComponent
@@ -57,7 +57,7 @@ const AffiliationsForm = ({
           )}
         />
         <Controller
-          name="arl"
+          name="worker.arl"
           control={control}
           render={({ field }) => (
             <SelectComponent
@@ -77,7 +77,7 @@ const AffiliationsForm = ({
           )}
         />
         <Controller
-          name="levelRisk"
+          name="worker.riskLevel"
           control={control}
           render={({ field }) => (
             <SelectComponent
@@ -97,7 +97,7 @@ const AffiliationsForm = ({
           )}
         />
         <Controller
-          name="retirementFund"
+          name="worker.severanceFund"
           control={control}
           render={({ field }) => (
             <SelectComponent

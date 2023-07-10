@@ -1,52 +1,33 @@
 import { useContext } from "react";
 import { AppContext } from "../../contexts/app.context";
 import { ButtonComponent } from "./button.component";
-import {
-  FieldValues,
-  UseFormHandleSubmit,
-  UseFormTrigger,
-} from "react-hook-form";
+import { FieldValues, UseFormHandleSubmit } from "react-hook-form";
 import { FormStebs } from "../../interfaces/tabs-menu.interface";
 
 interface IFormStepsProp {
   titleForm: string;
   stebs: FormStebs[];
-  triggerValidate: UseFormTrigger<any>;
   classFormSteb?: string;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   validForm: boolean;
-  watch: any;
+  handleNextStep: () => Promise<void>;
+  handleBackStep: () => Promise<void>;
+  stepsAmount: number;
+  watch?: any;
 }
 
 const FormSteps = ({
-  stebs,
-  triggerValidate,
-  classFormSteb,
   titleForm,
+  stebs,
+  classFormSteb,
   handleSubmit,
   validForm,
+  handleNextStep,
+  handleBackStep,
+  stepsAmount,
   watch,
 }: IFormStepsProp) => {
-  const { step, setStep } = useContext(AppContext);
-
-  const STEPS_AMOUNT = stebs.length - 1;
-
-  const handleNextStep = async () => {
-    const isValid = await triggerValidate();
-
-    console.log(isValid);
-    console.log(validForm);
-
-    if (isValid && step < STEPS_AMOUNT) {
-      setStep((cur) => cur + 1);
-    }
-  };
-
-  const handleBackStep = () => {
-    if (step >= 0) {
-      setStep((cur) => cur - 1);
-    }
-  };
+  const { step } = useContext(AppContext);
 
   const onSubmit = handleSubmit((values): void => {
     console.log(values);
@@ -95,13 +76,13 @@ const FormSteps = ({
                       />
                     )}
                     <ButtonComponent
-                      value={step === STEPS_AMOUNT ? "Guardar" : "Siguiente"}
+                      value={step === stepsAmount ? "Guardar" : "Siguiente"}
                       className={`${
                         validForm
                           ? "button-tab_save hover-three big"
                           : "button-tab_save invalid big"
                       }`}
-                      type={step === STEPS_AMOUNT ? "submit" : "button"}
+                      type={step === stepsAmount ? "submit" : "button"}
                       action={handleNextStep}
                     />
                   </div>

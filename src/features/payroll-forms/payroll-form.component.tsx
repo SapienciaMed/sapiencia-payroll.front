@@ -13,9 +13,8 @@ import { FormStebs } from "../../common/interfaces/tabs-menu.interface";
 import { ICreateWorker } from "../../common/interfaces/payroll.interfaces";
 
 const PayrollForm = () => {
-  const [familyData, setFamilyData] = useState(null);
   const { step } = useContext(AppContext);
-console.log(familyData)
+
   const {
     typeDocumentList,
     bloodType,
@@ -41,12 +40,10 @@ console.log(familyData)
 
   const currentValidationSchema = formsPayroll[step];
 
-  
-
   const {
     register,
     watch,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid },
     control,
     handleSubmit,
     trigger,
@@ -149,15 +146,33 @@ console.log(familyData)
     },
   ];
 
+  const STEPS_AMOUNT = stebs.length - 1;
+
+  const handleNextStep = async () => {
+    const isValid = await trigger();
+
+    if (isValid && step < STEPS_AMOUNT) {
+      setStep((cur) => cur + 1);
+    }
+  };
+
+  const handleBackStep = async () => {
+    if (step >= 0) {
+      setStep((cur) => cur - 1);
+    }
+  };
+
   return (
     <>
       <FormSteps
         titleForm={"Vinculacion trabajador"}
         classFormSteb="border"
         stebs={stebs}
-        triggerValidate={trigger}
         handleSubmit={handleSubmit}
-        validForm={true}
+        handleNextStep={handleNextStep}
+        handleBackStep={handleBackStep}
+        validForm={isValid}
+        stepsAmount={STEPS_AMOUNT}
         watch={watch}
       />
     </>

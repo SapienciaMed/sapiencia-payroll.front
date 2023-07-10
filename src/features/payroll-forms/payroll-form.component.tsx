@@ -78,8 +78,6 @@ const PayrollForm = () => {
     mode: "all",
   });
 
-  console.log(errors);
-
   const stebs: FormStebs[] = [
     {
       titleSteb: "1. Informacion personal",

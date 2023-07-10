@@ -24,7 +24,13 @@ export default function useEmploymentsData() {
     const [relationship, setRelationship] = useState([])
     const [housingType, setHousingType] = useState([])
     const [typesChargesList,setTypesChargesList] = useState([])
+    const [epsList,setEpsList] = useState([])
+    const [arlList,setArlList] = useState([])
+    const [pensionList,setPensionList] = useState([])
+    const [layoffList,setLayoffList] = useState([])
+    const [levelRiskList,setLevelRiskList] = useState([])
     const [typesContracts,setTypesContracts] = useState([])
+
     /*instances*/
     const { getListByParent, getListByGroupers } = useGenericListService();
   
@@ -34,7 +40,7 @@ export default function useEmploymentsData() {
     const {getTypesCharges,getTypesContracts} = usePayrollService()
     /*UseEffects*/
     useEffect(() => {
-      const groupers = ["GENEROS", "TIPOS_DOCUMENTOS","TIPO_SANGUINEO","ESTRATO","PARENTESCO","TIPO_VIVIENDA","PAISES"];
+      const groupers = ["GENEROS", "TIPOS_DOCUMENTOS","TIPO_SANGUINEO","ESTRATO","PARENTESCO","TIPO_VIVIENDA","PAISES","EPS","ARL","FONDO_PENSIONES","FONDO_CESANTIAS","RIESGO_LABORAL"];
       getListByGroupers(groupers)
         .then((response: ApiResponse<IGenericList[]>) => {
           if (response && response?.operation?.code === EResponseCodes.OK) {
@@ -107,6 +113,61 @@ export default function useEmploymentsData() {
               setNacionality(
                 response.data
                   .filter((grouper) => grouper.grouper == "PAISES")
+                  .map((item) => {
+                    const list = {
+                      name: item.itemDescription,
+                      value: item.itemCode,
+                    };
+                    return list;
+                  })
+              );
+              setEpsList(
+                response.data
+                  .filter((grouper) => grouper.grouper == "EPS")
+                  .map((item) => {
+                    const list = {
+                      name: item.itemDescription,
+                      value: item.itemCode,
+                    };
+                    return list;
+                  })
+              );
+              setArlList(
+                response.data
+                  .filter((grouper) => grouper.grouper == "ARL")
+                  .map((item) => {
+                    const list = {
+                      name: item.itemDescription,
+                      value: item.itemCode,
+                    };
+                    return list;
+                  })
+              );
+              setPensionList(
+                response.data
+                  .filter((grouper) => grouper.grouper == "FONDO_PENSIONES")
+                  .map((item) => {
+                    const list = {
+                      name: item.itemDescription,
+                      value: item.itemCode,
+                    };
+                    return list;
+                  })
+              );
+              setLayoffList(
+                response.data
+                  .filter((grouper) => grouper.grouper == "FONDO_CESANTIAS")
+                  .map((item) => {
+                    const list = {
+                      name: item.itemDescription,
+                      value: item.itemCode,
+                    };
+                    return list;
+                  })
+              );
+              setLevelRiskList(
+                response.data
+                  .filter((grouper) => grouper.grouper == "RIESGO_LABORAL")
                   .map((item) => {
                     const list = {
                       name: item.itemDescription,
@@ -245,6 +306,11 @@ export default function useEmploymentsData() {
       relationship,
       nacionality,
       typesChargesList,
-      typesContracts
+      typesContracts,
+      arlList,
+      epsList,
+      layoffList,
+      pensionList,
+      levelRiskList
     };
   }

@@ -26,6 +26,11 @@ const PayrollForm = () => {
     socioEconomicStatus,
     housingType,
     relationship,
+    arlList,
+    epsList,
+    layoffList,
+    pensionList,
+    levelRiskList,
     typesChargesList,
     typesContracts,
     setDeparment,
@@ -121,7 +126,7 @@ const PayrollForm = () => {
           errors={errors}
           control={control}
           setValueRegister={setValueRegister}
-          list={[typesContracts,typesChargesList ]}
+          list={[typesContracts, typesChargesList]}
         />
       ),
       position: 2,
@@ -135,6 +140,7 @@ const PayrollForm = () => {
           errors={errors}
           control={control}
           setValueRegister={setValueRegister}
+          list={[epsList, pensionList, arlList, levelRiskList, layoffList]}
         />
       ),
       position: 3,

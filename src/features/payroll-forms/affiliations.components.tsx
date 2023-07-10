@@ -8,6 +8,7 @@ const AffiliationsForm = ({
   errors,
   control,
   setValueRegister,
+  list
 }: any) => {
   return (
     <div>
@@ -25,7 +26,7 @@ const AffiliationsForm = ({
               label="EPS"
               register={register}
               errors={errors}
-              data={[]}
+              data={list[0]}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               value={field.value}
@@ -45,7 +46,7 @@ const AffiliationsForm = ({
               label="Pension"
               register={register}
               errors={errors}
-              data={[]}
+              data={list[1]}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               value={field.value}
@@ -65,7 +66,7 @@ const AffiliationsForm = ({
               label="ARL"
               register={register}
               errors={errors}
-              data={[]}
+              data={list[2]}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               value={field.value}
@@ -85,7 +86,7 @@ const AffiliationsForm = ({
               label="Riesgo"
               register={register}
               errors={errors}
-              data={[]}
+              data={list[3]}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               value={field.value}
@@ -105,7 +106,7 @@ const AffiliationsForm = ({
               label="Fondo de cesantías"
               register={register}
               errors={errors}
-              data={[]}
+              data={list[4]}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               value={field.value}

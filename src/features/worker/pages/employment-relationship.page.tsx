@@ -44,7 +44,7 @@ const EmploymentRelationshipPage = () => {
     setTown,
   } = useEmploymentsData();
 
-  const { createWorker } = usePayrollService();
+  const { handleCreateWorker } = useEmploymentsData();
 
   const currentValidationSchema = formsPayroll[step];
 
@@ -198,7 +198,7 @@ const EmploymentRelationshipPage = () => {
         handleBackStep={handleBackStep}
         validForm={isValid}
         stepsAmount={stepsAmount}
-        actionSubmit={createWorker}
+        actionSubmit={handleCreateWorker}
       />
     </>
   );

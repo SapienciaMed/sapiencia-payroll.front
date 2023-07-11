@@ -170,6 +170,7 @@ const ContractualInformationForm = ({
           value={antiquity ? antiquity : "0"}
           classNameLabel="text-black big bold"
           className="input-basic medium"
+          disabled={true}
         />
         <InputComponent
           idInput="employment.institutionalMail"

@@ -3,7 +3,6 @@ import { IAuthorization } from "../interfaces/auth.interfaces";
 import {
   ICharge,
   ICreateWorker,
-  ITypesCharges,
   ITypesContracts,
 } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";

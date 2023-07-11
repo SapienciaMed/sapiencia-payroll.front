@@ -121,7 +121,7 @@ const InformationPersonalForm = ({
           classNameLabel="text-black big bold"
         />
 
-        <div className="display-justify gap-25">
+        <div className="fields-container gap-25">
           <Controller
             name="worker.bloodType"
             control={control}

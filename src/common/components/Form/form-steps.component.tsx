@@ -1,7 +1,11 @@
 import { useContext } from "react";
 import { AppContext } from "../../contexts/app.context";
 import { ButtonComponent } from "./button.component";
-import { FieldValues, UseFormHandleSubmit } from "react-hook-form";
+import {
+  FieldValues,
+  UseFormHandleSubmit,
+  UseFormRegister,
+} from "react-hook-form";
 import { FormStebs } from "../../interfaces/tabs-menu.interface";
 
 interface IFormStepsProp {
@@ -13,8 +17,8 @@ interface IFormStepsProp {
   handleNextStep: () => Promise<void>;
   handleBackStep: () => Promise<void>;
   stepsAmount: number;
+  register: UseFormRegister<any>;
   actionSubmit: any;
-  watch?: any;
 }
 
 const FormSteps = ({
@@ -27,7 +31,7 @@ const FormSteps = ({
   handleBackStep,
   stepsAmount,
   actionSubmit,
-  watch,
+  register,
 }: IFormStepsProp) => {
   const { step } = useContext(AppContext);
 
@@ -69,6 +73,7 @@ const FormSteps = ({
                 <div
                   className={infoStep.classContainerStep}
                   key={infoStep.position}
+                  {...register(`step-$${step}`, { shouldUnregister: true })}
                 >
                   {step === infoStep.position && infoStep.contentStep}
 

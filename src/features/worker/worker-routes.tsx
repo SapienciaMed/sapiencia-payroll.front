@@ -14,7 +14,7 @@ function WorkerRoutes() {
         element={
           <PrivateRoute
             element={<EmploymentRelationshipPage />}
-            allowedAction={"USUARIOS_CREAR"}
+            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }
       />

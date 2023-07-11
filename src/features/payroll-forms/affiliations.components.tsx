@@ -1,5 +1,3 @@
-import React from "react";
-import { InputComponent } from "../../common/components/Form/input.component";
 import { SelectComponent } from "../../common/components/Form/select.component";
 import { Controller } from "react-hook-form";
 

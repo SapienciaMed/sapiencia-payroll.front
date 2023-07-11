@@ -86,9 +86,19 @@ const contractualInformation = yup.object({
   }),
 });
 
+const afiliaciones = yup.object({
+  worker: yup.object({
+    eps: yup.string().required("El campo es obligatorio"),
+    fundPension: yup.string().required("El campo es obligatorio"),
+    arl: yup.string().required("El campo es obligatorio"),
+    riskLevel: yup.string().required("El campo es obligatorio"),
+    severanceFund: yup.string().required("El campo es obligatorio"),
+  }),
+});
+
 export const formsPayroll = [
   personalInformationLocalization,
   yup.object({}),
   contractualInformation,
-  yup.object({ prueba4: yup.string().min(8, "Ingrese al menos 8 caracteres") }),
+  afiliaciones,
 ];

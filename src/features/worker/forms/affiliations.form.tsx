@@ -1,5 +1,6 @@
-import { SelectComponent } from "../../common/components/Form/select.component";
+import React from "react";
 import { Controller } from "react-hook-form";
+import { SelectComponent } from "../../../common/components/Form/select.component";
 
 const AffiliationsForm = ({
   register,
@@ -119,4 +120,4 @@ const AffiliationsForm = ({
   );
 };
 
-export default AffiliationsForm;
+export default React.memo(AffiliationsForm);

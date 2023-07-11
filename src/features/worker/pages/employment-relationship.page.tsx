@@ -1,22 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
-import FormSteps from "../../common/components/Form/form-steps.component";
+import React, { useContext, useState } from "react";
+import FormSteps from "../../../common/components/Form/form-steps.component";
 import { useForm } from "react-hook-form";
-import AffiliationsForm from "./affiliations.components";
-import ContractualInformationForm from "./contractual-information.component";
-import FamiliarInformationForm from "./familiar-information.component";
-import InformationPersonalForm from "./personal-information.component";
-import { formsPayroll } from "../../common/schemas/employment-schema";
+import { formsPayroll } from "../../../common/schemas/employment-schema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AppContext } from "../../common/contexts/app.context";
-import useEmploymentsData from "./hooks/Employments.hook";
-import { FormStebs } from "../../common/interfaces/tabs-menu.interface";
+import { AppContext } from "../../../common/contexts/app.context";
+import { FormStebs } from "../../../common/interfaces/tabs-menu.interface";
+import useEmploymentsData from "../hooks/employment.hook";
 import {
   ICreateWorker,
   IRelative,
-} from "../../common/interfaces/payroll.interfaces";
-import usePayrollService from "../../common/hooks/payroll.hook";
+} from "../../../common/interfaces/payroll.interfaces";
+import usePayrollService from "../../../common/hooks/payroll.hook";
+import AffiliationsForm from "../forms/affiliations.form";
+import ContractualInformationForm from "../forms/contractual-information.form";
+import FamiliarInformationForm from "../forms/familiar-information.form";
+import InformationPersonalForm from "../forms/personal-information.form";
 
-const PayrollForm = () => {
+const EmploymentRelationshipPage = () => {
   const [familyData, setFamilyData] = useState<{ familiar: IRelative[] }>();
 
   const { step, setStep } = useContext(AppContext);
@@ -204,4 +204,4 @@ const PayrollForm = () => {
   );
 };
 
-export default PayrollForm;
+export default React.memo(EmploymentRelationshipPage);

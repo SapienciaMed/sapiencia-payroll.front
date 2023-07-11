@@ -10,7 +10,7 @@ import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
 
 export function usePayrollService() {
-  const baseURL: string = "http://localhost:4203";
+  const baseURL: string = process.env.urlApiPayroll;
   const authUrl: string = "/api/v1/employment";
 
   const { get, post } = useCrudService(null, baseURL);
@@ -41,7 +41,9 @@ export function usePayrollService() {
     }
   }
 
-  async function createWorker(data:ICreateWorker): Promise<ApiResponse<ICreateWorker>> {
+  async function createWorker(
+    data: ICreateWorker
+  ): Promise<ApiResponse<ICreateWorker>> {
     try {
       const endpoint: string = `/`;
       return await post(`${authUrl}${endpoint}`, data);

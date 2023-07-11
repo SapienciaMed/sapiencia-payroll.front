@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { InputComponent } from "../../common/components/Form/input.component";
-import { SelectComponent } from "../../common/components/Form/select.component";
-import { ButtonComponent } from "../../common/components/Form/button.component";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineX } from "react-icons/hi";
 import { RiSave3Fill } from "react-icons/ri";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { familiarValidator } from "../../common/schemas/employment-schema";
-import { DatePickerComponent } from "../../common/components/Form/input-date.component";
-import { IRelative } from "../../common/interfaces/payroll.interfaces";
-import useYupValidationResolver from "../../common/hooks/form-validator.hook";
+import { InputComponent, SelectComponent, ButtonComponent } from "../../../common/components/Form";
+import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
+import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
+import { IRelative } from "../../../common/interfaces/payroll.interfaces";
+import { familiarValidator } from "../../../common/schemas";
+
 
 const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
-  const [age, setAge] = useState('0');
+  const [age, setAge] = useState("0");
   const resolver = useYupValidationResolver(familiarValidator);
   const {
     register: registerFamily,
@@ -37,7 +36,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   });
 
   const onSubmit = handleSubmit(async (data: any) => {
-    debugger
+    debugger;
     setFamilyData(data);
     console.log("Submit data", data);
   });
@@ -53,10 +52,10 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
     updatedDisabledRows[index] = true;
     setDisabledRows(updatedDisabledRows);
   };
-   useEffect(() => {
-    console.log(age)
-   }, [age])
-   
+  useEffect(() => {
+    console.log(age);
+  }, [age]);
+
   return (
     <div>
       <div className="container-sections-forms">
@@ -79,7 +78,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 classNameLabel="text-black big bold"
                 errors={errors}
                 register={registerFamily}
-                fieldArray = {true}
+                fieldArray={true}
               />
               <Controller
                 control={control}
@@ -114,7 +113,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 label="Edad"
                 disabled={true}
                 errors={errors}
-                value={age ? age :'0'}
+                value={age ? age : "0"}
               />
               <Controller
                 name={`familiar.${index}.gender`}
@@ -220,4 +219,4 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   );
 };
 
-export default FamiliarInformationForm;
+export default React.memo(FamiliarInformationForm);

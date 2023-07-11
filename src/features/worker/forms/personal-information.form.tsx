@@ -1,17 +1,18 @@
 import React from "react";
-import { InputComponent } from "../../common/components/Form/input.component";
-import { DatePickerComponent } from "../../common/components/Form/input-date.component";
-import { EDirection } from "../../common/constants/input.enum";
-import { InputGroupComponent } from "../../common/components/Form/input-group.component";
-import { SelectComponent } from "../../common/components/Form/select.component";
 import {
   Control,
   Controller,
   FieldErrors,
-  FieldValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
+import {
+  SelectComponent,
+  InputComponent,
+} from "../../../common/components/Form";
+import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
+import { InputGroupComponent } from "../../../common/components/Form/input-group.component";
+import { EDirection } from "../../../common/constants/input.enum";
 
 interface IPersonalInformationProp {
   register: UseFormRegister<any>;
@@ -370,4 +371,4 @@ const InformationPersonalForm = ({
   );
 };
 
-export default InformationPersonalForm;
+export default React.memo(InformationPersonalForm);

@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppContextProvider } from "./common/contexts/app.context";
 import "./styles/_app.scss";
@@ -6,9 +6,11 @@ import "./styles/_theme-prime.css";
 import "primereact/resources/primereact.min.css";
 import ModalMessageComponent from "./common/components/modal-message.component";
 import ApplicationProvider from "./application-provider";
-import PayrollForm from "./features/payroll-forms/payroll-form.component";
+import WorkerRoutes from "./features/worker/worker-routes";
 
 function App() {
+  const HomePage = lazy(() => import("./common/components/home.page"));
+
   return (
     <AppContextProvider>
       <ModalMessageComponent />
@@ -16,7 +18,8 @@ function App() {
         <Router>
           <Suspense fallback={<p>Loading...</p>}>
             <Routes>
-              <Route path={"/*"} element={<PayrollForm />} />
+              <Route path={"/nomina/"} element={<HomePage />} />;
+              <Route path={"/nomina/trabajadores/*"} element={<WorkerRoutes />} />
             </Routes>
           </Suspense>
         </Router>
@@ -25,4 +28,4 @@ function App() {
   );
 }
 
-export default App;
+export default React.memo(App);

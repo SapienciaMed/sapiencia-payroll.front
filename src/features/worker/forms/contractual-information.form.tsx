@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { InputComponent } from "../../common/components/Form/input.component";
-import { SelectComponent } from "../../common/components/Form/select.component";
-import { DatePickerComponent } from "../../common/components/Form/input-date.component";
 import {
   Control,
   Controller,
@@ -9,6 +6,8 @@ import {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
+import { SelectComponent, InputComponent } from "../../../common/components/Form";
+import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 
 interface IContractualInformationProp {
   register: UseFormRegister<any>;
@@ -25,7 +24,7 @@ const ContractualInformationForm = ({
   setValueRegister,
   list,
 }: IContractualInformationProp) => {
-  const [antiquity, setAntiquity] = useState('0')
+  const [antiquity, setAntiquity] = useState("0");
   return (
     <div>
       <div className="grid-form-4-container gap-25 container-sections-forms ">
@@ -168,7 +167,7 @@ const ContractualInformationForm = ({
           typeInput="text"
           label="Antiguedad"
           errors={errors}
-          value={antiquity ? antiquity : '0'}
+          value={antiquity ? antiquity : "0"}
           classNameLabel="text-black big bold"
           className="input-basic medium"
         />
@@ -190,4 +189,4 @@ const ContractualInformationForm = ({
   );
 };
 
-export default ContractualInformationForm;
+export default React.memo(ContractualInformationForm);

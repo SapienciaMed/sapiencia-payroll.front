@@ -5,10 +5,10 @@ import { ButtonComponent } from "../../common/components/Form/button.component";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineX } from "react-icons/hi";
 import { RiSave3Fill } from "react-icons/ri";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import useYupValidationResolver from "../../common/interfaces/form-validator.hook";
 import { familiarValidator } from "../../common/schemas/employment-schema";
 import { DatePickerComponent } from "../../common/components/Form/input-date.component";
 import { IRelative } from "../../common/interfaces/payroll.interfaces";
+import useYupValidationResolver from "../../common/hooks/form-validator.hook";
 
 const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);

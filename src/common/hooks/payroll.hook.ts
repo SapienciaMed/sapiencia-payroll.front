@@ -1,6 +1,7 @@
 import { EResponseCodes } from "../constants/api.enum";
 import { IAuthorization } from "../interfaces/auth.interfaces";
 import {
+  ICharge,
   ICreateWorker,
   ITypesCharges,
   ITypesContracts,
@@ -27,13 +28,13 @@ export function usePayrollService() {
     }
   }
 
-  async function getTypesCharges(): Promise<ApiResponse<ITypesCharges[]>> {
+  async function getCharges(): Promise<ApiResponse<ICharge[]>> {
     try {
-      const endpoint: string = `/typesCharges`;
+      const endpoint: string = `/charges`;
       return await get(`${authUrl}${endpoint}`);
     } catch (error) {
       return new ApiResponse(
-        {} as ITypesCharges[],
+        {} as ICharge[],
         EResponseCodes.FAIL,
         "Error no controlado"
       );
@@ -55,7 +56,7 @@ export function usePayrollService() {
 
   return {
     getTypesContracts,
-    getTypesCharges,
+    getCharges,
     createWorker,
   };
 }

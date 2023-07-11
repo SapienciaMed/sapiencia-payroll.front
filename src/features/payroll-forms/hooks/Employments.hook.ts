@@ -7,6 +7,7 @@ import { IGenericList } from "../../../common/interfaces/global.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 import usePayrollService from "../../../common/hooks/payroll.hook";
 import {
+  ICharge,
   ITypesCharges,
   ITypesContracts,
 } from "../../../common/interfaces/payroll.interfaces";
@@ -41,7 +42,7 @@ export default function useEmploymentsData() {
   const navigate = useNavigate();
 
   const { setMessage, authorization } = useContext(AppContext);
-  const { getTypesCharges, getTypesContracts } = usePayrollService();
+  const { getCharges, getTypesContracts } = usePayrollService();
   /*UseEffects*/
   useEffect(() => {
     const groupers = [
@@ -285,8 +286,8 @@ export default function useEmploymentsData() {
   }, []);
 
   useEffect(() => {
-    getTypesCharges()
-      .then((response: ApiResponse<ITypesCharges[]>) => {
+    getCharges()
+      .then((response: ApiResponse<ICharge[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           setTypesChargesList(
             response.data.map((item) => {

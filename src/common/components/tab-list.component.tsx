@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ITabsMenuTemplate } from "../../../../sapiencia-financial.front/src/common/interfaces/tabs-menu.interface";
+import { ITabsMenuTemplate } from "../interfaces/tabs-menu.interface";
 
 interface IAppProps {
   tabs: ITabsMenuTemplate[];

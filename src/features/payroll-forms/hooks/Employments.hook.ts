@@ -8,9 +8,11 @@ import { EResponseCodes } from "../../../common/constants/api.enum";
 import usePayrollService from "../../../common/hooks/payroll.hook";
 import {
   ICharge,
-  ITypesCharges,
+  ICreateWorker,
   ITypesContracts,
+  IWorker,
 } from "../../../common/interfaces/payroll.interfaces";
+import useAppCominicator from "../../../common/hooks/app-communicator.hook";
 
 export default function useEmploymentsData() {
   /*States*/
@@ -42,7 +44,26 @@ export default function useEmploymentsData() {
   const navigate = useNavigate();
 
   const { setMessage, authorization } = useContext(AppContext);
-  const { getCharges, getTypesContracts } = usePayrollService();
+  const { getCharges, getTypesContracts ,createWorker} = usePayrollService();
+  const { publish, subscribe, unsubscribe } = useAppCominicator();
+
+  const handleModal = () => {
+    setMessage({
+      title: "Vincular Trabajador",
+      description: "Trabajador Vinculado con exito",
+      show: true,
+      OkTitle: "Aceptar",
+      onOk: () => {
+        navigate("/");
+        setMessage((prev) => {return{...prev,show:false}});
+      },
+      onClose: () => {
+        setMessage({});
+      },
+      background: true,
+    })
+  };
+
   /*UseEffects*/
   useEffect(() => {
     const groupers = [
@@ -303,6 +324,28 @@ export default function useEmploymentsData() {
       .catch((err) => {});
   }, []);
   /*Functions*/
+  const handleCreateWorker = (async (data: ICreateWorker) => {
+    setSending(true);
+    await createWorker(data)
+      .then((response: ApiResponse<ICreateWorker>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          handleModal();
+          setSending(false);
+        }
+      })
+      .catch((err) => {
+        setMessage({
+          type: EResponseCodes.FAIL,
+          title: "Crear Usuario",
+          description: "El usuario ya se encuentra registrado en el sistema",
+          show: true,
+          OkTitle: "Aceptar",
+          background: true,
+        });
+        setSending(false);
+      });
+  });
+
 
   const cancelFunction = () => {
     setMessage({
@@ -342,6 +385,7 @@ export default function useEmploymentsData() {
     layoffList,
     pensionList,
     levelRiskList,
-    activeWorker
+    activeWorker,
+    handleCreateWorker
   };
 }

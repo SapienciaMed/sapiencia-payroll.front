@@ -112,6 +112,10 @@
     font-size: 2em;
   }
 
+  &.break-line{
+    white-space: pre;
+  }
+
   span {
     color: $alert-failed-color;
   }

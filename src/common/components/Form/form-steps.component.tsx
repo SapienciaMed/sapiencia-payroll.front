@@ -48,7 +48,9 @@ const FormSteps = ({
         className={`form-steps ${classFormSteb}`}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1>{titleForm}</h1>
+        <div className="title-area">
+          <div className="text-black extra-large bold">{titleForm}</div>
+        </div>
         <div className="stebs-selection">
           {stebs.map((infoSteb: FormStebs) => {
             return (

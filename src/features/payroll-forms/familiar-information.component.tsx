@@ -12,14 +12,14 @@ import useYupValidationResolver from "../../common/hooks/form-validator.hook";
 
 const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
-  const [age, setAge] = useState('0');
+  const [age, setAge] = useState("0");
   const resolver = useYupValidationResolver(familiarValidator);
   const {
     register: registerFamily,
     handleSubmit,
     control,
     setValue: setValueRegister,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<{ familiar: IRelative[] }>({
     defaultValues: {
       familiar: [{ name: "", birthDate: "", gender: "", relationship: "" }],
@@ -37,7 +37,6 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   });
 
   const onSubmit = handleSubmit(async (data: any) => {
-    debugger
     setFamilyData(data);
     console.log("Submit data", data);
   });
@@ -53,10 +52,10 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
     updatedDisabledRows[index] = true;
     setDisabledRows(updatedDisabledRows);
   };
-   useEffect(() => {
-    console.log(age)
-   }, [age])
-   
+  useEffect(() => {
+    console.log(isValid);
+  }, [isValid]);
+
   return (
     <div>
       <div className="container-sections-forms">
@@ -79,7 +78,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 classNameLabel="text-black big bold"
                 errors={errors}
                 register={registerFamily}
-                fieldArray = {true}
+                fieldArray={true}
               />
               <Controller
                 control={control}
@@ -93,11 +92,11 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                       label="Fecha de Nacimiento"
                       register={registerFamily}
                       errors={errors}
-                      classNameLabel="text-black big bold"
+                      classNameLabel="text-black big break-line bold"
                       setValueRegister={setValueRegister}
                       onchange={field.onChange}
                       disabled={disabledRows[index]}
-                      className="select-basic medium"
+                      className="dataPicker-basic medium"
                       setValue={setAge}
                       maxDate={new Date()}
                     />
@@ -114,7 +113,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 label="Edad"
                 disabled={true}
                 errors={errors}
-                value={age ? age :'0'}
+                value={age ? age : "0"}
               />
               <Controller
                 name={`familiar.${index}.gender`}
@@ -157,18 +156,20 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 )}
               />
               <div>
-                <label htmlFor="" className="text-black big bold">
+                <label htmlFor="" className="text-black big bold display-justify-flex-center">
                   Acciones
                 </label>
-                <div>
+                <div className="button-container-display">
                   {!disabledRows[index] ? (
                     <>
                       <ButtonComponent
                         value={<RiSave3Fill />}
                         type="button"
                         action={() => {
+                          if(isValid){
                           handleDisableRow(index);
                           onSubmit();
+                          }
                         }}
                         className="button-confirm"
                       />
@@ -199,7 +200,7 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
               </div>
             </div>
           ))}
-          <div className="display-justify-flex-end">
+          <div className="button-save-container-display">
             <ButtonComponent
               type="button"
               value="Agregar familiar"

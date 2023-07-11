@@ -1,5 +1,8 @@
 @import "./mixins.scss";
-
+div[id="single-spa-application:payroll"] {
+  height: 100%;
+  width: 100vw;
+}
 .main-page {
   padding: 20px;
 }
@@ -20,13 +23,15 @@
 .bg-editing {
   background: #f7f4f4;
   border-radius: 8px;
-  padding: 2em;
+  padding: 0;
+  margin: 0.5em;
 }
 
 .bg-disabled {
   background: transparent;
   border-radius: 8px;
-  padding: 2em;
+  padding: 0;
+  margin: 0.5em;
 }
 
 .welcome-container {
@@ -149,8 +154,97 @@
   display: grid;
   grid-template-rows: 1fr 3em;
 }
+.title-area {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.stebs-selection {
+  display: flex;
+  overflow: scroll;
+  width: 100%;
+  margin-left: 0;
+  padding-top: 1em;
+  user-select: none;
+
+  .steb-option {
+    background-color: #f2f2f2;
+    border: none;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+    margin-right: 1em;
+    border-radius: 100px;
+    text-align: center;
+    text-wrap: nowrap;
+  }
+
+  .steb-option.active {
+    background-color: $main-color;
+    color: #ffffff;
+  }
+
+  &::-webkit-scrollbar {
+    width: 100%; /* Ancho de la barra de desplazamiento */
+    height: 0px;
+    background-color: transparent; /* Color de fondo transparente */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Color transparente del pulgar */
+  }
+}
+
+.container-actions_formTabs {
+  @include generate-flex-container(row, null, space-around, null, null, 0.62em);
+}
+
+.form-steps {
+  padding: 1em 3em;
+  margin: 2em;
+  border-radius: 20px;
+
+  &.border {
+    border: 1px solid #e0e0e0;
+  }
+}
+
+.fields-container {
+  display: flex;
+  flex-direction: column;
+
+  &.gap-15 {
+    gap: 15px;
+  }
+
+  &.gap-25 {
+    gap: 25px;
+  }
+
+  &.space-between {
+    justify-content: space-between;
+  }
+}
+
+.button-container-display {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.button-save-container-display {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
 
 @media (min-width: 1024px) {
+  div[id="single-spa-application:payroll"] {
+    width: initial;
+  }
+
   .dashboard-margin {
     grid-template-rows: 16em 1fr;
     font-size: inherit;
@@ -209,53 +303,101 @@
       margin-bottom: 0em;
     }
   }
-}
 
-.stebs-selection {
-  display: flex;
-  overflow: scroll;
-  width: 100%;
-  margin-left: 2em;
-  padding-top: 1em;
-  user-select: none;
+  .stebs-selection {
+    display: flex;
+    overflow: scroll;
+    width: 100%;
+    margin-left: 2em;
+    padding-top: 1em;
+    user-select: none;
 
-  .steb-option {
-    background-color: #f2f2f2;
-    border: none;
-    padding: 10px 20px;
-    transition: background-color 0.3s ease;
-    margin-right: 1em;
-    border-radius: 100px;
-    text-align: center;
-    text-wrap: nowrap;
+    .steb-option {
+      background-color: #f2f2f2;
+      border: none;
+      padding: 10px 20px;
+      transition: background-color 0.3s ease;
+      margin-right: 1em;
+      border-radius: 100px;
+      text-align: center;
+      text-wrap: nowrap;
+    }
+
+    .steb-option.active {
+      background-color: $main-color;
+      color: #ffffff;
+    }
+
+    &::-webkit-scrollbar {
+      width: 100%; /* Ancho de la barra de desplazamiento */
+      height: 0px;
+      background-color: transparent; /* Color de fondo transparente */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent; /* Color transparente del pulgar */
+    }
   }
 
-  .steb-option.active {
-    background-color: $main-color;
-    color: #ffffff;
+  .container-actions_formTabs {
+    @include generate-flex-container(
+      row,
+      null,
+      space-around,
+      null,
+      null,
+      0.62em
+    );
   }
 
-  &::-webkit-scrollbar {
-    width: 100%; /* Ancho de la barra de desplazamiento */
-    height: 0px;
-    background-color: transparent; /* Color de fondo transparente */
+  .form-steps {
+    padding: 1em 3em;
+    margin: 2em;
+    border-radius: 20px;
+
+    &.border {
+      border: 1px solid #e0e0e0;
+    }
+  }
+  .fields-container {
+    display: flex;
+    flex-direction: row;
+
+    &.gap-15 {
+      gap: 15px;
+    }
+
+    &.gap-25 {
+      gap: 25px;
+    }
+
+    &.space-between {
+      justify-content: space-between;
+    }
   }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: transparent; /* Color transparente del pulgar */
+  .bg-editing {
+    background: #f7f4f4;
+    border-radius: 8px;
+    padding: 2em;
+    margin: 0.5em;
   }
-}
 
-.container-actions_formTabs {
-  @include generate-flex-container(row, null, space-around, null, null, 0.62em);
-}
+  .bg-disabled {
+    background: transparent;
+    border-radius: 8px;
+    padding: 2em;
+    margin: 0.5em;
+  }
+  .button-container-display {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
 
-.form-steps {
-  padding: 1em 3em;
-  margin: 2em;
-  border-radius: 20px;
-
-  &.border {
-    border: 1px solid #e0e0e0;
+  .button-save-container-display {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
   }
 }

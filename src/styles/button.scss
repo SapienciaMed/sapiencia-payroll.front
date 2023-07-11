@@ -278,7 +278,7 @@
 }
 
 .button-tab_save {
-  @include generate-button(30px, #fff, $three-color, none);
+  @include generate-button(30px, #fff, $fourth-color, none);
 
   &.tiny {
     width: 2em;
@@ -312,10 +312,10 @@
 
   &.hover-three:hover {
     color: #fff;
-    border: $three-color solid 1px;
-    -webkit-box-shadow: 0px 0px 15px 0px $three-color;
-    -moz-box-shadow: 0px 0px 15px 0px $three-color;
-    box-shadow: 0px 0px 15px 0px $three-color;
+    border: $fourth-color solid 1px;
+    -webkit-box-shadow: 0px 0px 15px 0px $fourth-color;
+    -moz-box-shadow: 0px 0px 15px 0px $fourth-color;
+    box-shadow: 0px 0px 15px 0px $fourth-color;
   }
 
   &.invalid {

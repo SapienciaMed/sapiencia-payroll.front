@@ -50,7 +50,6 @@ const PayrollForm = () => {
 
   const {
     register,
-    watch,
     formState: { errors, isValid },
     control,
     handleSubmit,
@@ -193,13 +192,13 @@ const PayrollForm = () => {
         titleForm={"Vinculacion trabajador"}
         classFormSteb="border"
         stebs={stebs}
+        register={register}
         handleSubmit={handleSubmit}
         handleNextStep={handleNextStep}
         handleBackStep={handleBackStep}
         validForm={isValid}
         stepsAmount={stepsAmount}
         actionSubmit={createWorker}
-        watch={watch}
       />
     </>
   );

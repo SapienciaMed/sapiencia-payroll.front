@@ -11,7 +11,7 @@ import {
   IRelative,
 } from "../../../common/interfaces/payroll.interfaces";
 import usePayrollService from "../../../common/hooks/payroll.hook";
-import AffiliationsForm from "../forms/affiliations.form";
+import AffiliationsForm from "../forms/other-fields.form";
 import ContractualInformationForm from "../forms/contractual-information.form";
 import FamiliarInformationForm from "../forms/familiar-information.form";
 import InformationPersonalForm from "../forms/personal-information.form";

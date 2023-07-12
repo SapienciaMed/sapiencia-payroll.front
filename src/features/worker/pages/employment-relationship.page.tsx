@@ -11,7 +11,7 @@ import {
   IRelative,
 } from "../../../common/interfaces/payroll.interfaces";
 import usePayrollService from "../../../common/hooks/payroll.hook";
-import AffiliationsForm from "../forms/affiliations.form";
+import AffiliationsForm from "../forms/other-fields.form";
 import ContractualInformationForm from "../forms/contractual-information.form";
 import FamiliarInformationForm from "../forms/familiar-information.form";
 import InformationPersonalForm from "../forms/personal-information.form";
@@ -121,7 +121,7 @@ const EmploymentRelationshipPage = () => {
           setValueRegister={setValueRegister}
         />
       ),
-      position: 0,
+      position: 3,
       classContainerStep: "",
     },
     {
@@ -160,7 +160,7 @@ const EmploymentRelationshipPage = () => {
           list={[epsList, pensionList, arlList, levelRiskList, layoffList]}
         />
       ),
-      position: 3,
+      position: 0,
       classContainerStep: "",
     },
   ];

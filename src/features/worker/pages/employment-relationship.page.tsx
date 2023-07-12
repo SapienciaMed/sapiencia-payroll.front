@@ -121,7 +121,7 @@ const EmploymentRelationshipPage = () => {
           setValueRegister={setValueRegister}
         />
       ),
-      position: 0,
+      position: 3,
       classContainerStep: "",
     },
     {
@@ -160,7 +160,7 @@ const EmploymentRelationshipPage = () => {
           list={[epsList, pensionList, arlList, levelRiskList, layoffList]}
         />
       ),
-      position: 3,
+      position: 0,
       classContainerStep: "",
     },
   ];

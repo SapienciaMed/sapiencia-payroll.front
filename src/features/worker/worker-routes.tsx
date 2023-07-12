@@ -6,6 +6,9 @@ function WorkerRoutes() {
   const EmploymentRelationshipPage = lazy(
     () => import("./pages/employment-relationship.page")
   );
+  const EmploymentRecordsPage = lazy(
+    () => import("./pages/employment-records.page")
+  );
 
   return (
     <Routes>
@@ -14,6 +17,15 @@ function WorkerRoutes() {
         element={
           <PrivateRoute
             element={<EmploymentRelationshipPage />}
+            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+          />
+        }
+      />
+      <Route
+        path={"/expedientes"}
+        element={
+          <PrivateRoute
+            element={<EmploymentRecordsPage />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

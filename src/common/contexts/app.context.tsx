@@ -16,6 +16,8 @@ interface IAppContext {
   setMessage: Dispatch<SetStateAction<IMessage>>;
   step: number;
   setStep: Dispatch<SetStateAction<number>>;
+  disabledFields: boolean;
+  setDisabledFields: Dispatch<SetStateAction<boolean>>;
 }
 
 interface IProps {
@@ -29,6 +31,8 @@ export const AppContext = createContext<IAppContext>({
   setMessage: () => {},
   step: {} as number,
   setStep: () => {},
+  disabledFields: {} as boolean,
+  setDisabledFields: () => {},
 });
 
 export function AppContextProvider({ children }: IProps) {
@@ -38,6 +42,7 @@ export function AppContextProvider({ children }: IProps) {
     {} as IAuthorization
   );
   const [step, setStep] = useState<number>(0);
+  const [disabledFields, setDisabledFields] = useState<boolean>(false);
 
   const values = useMemo<IAppContext>(() => {
     return {
@@ -47,8 +52,19 @@ export function AppContextProvider({ children }: IProps) {
       setMessage,
       step,
       setStep,
+      disabledFields,
+      setDisabledFields,
     };
-  }, [message, setMessage, authorization, setAuthorization, step, setStep]);
+  }, [
+    message,
+    setMessage,
+    authorization,
+    setAuthorization,
+    step,
+    setStep,
+    disabledFields,
+    setDisabledFields,
+  ]);
 
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;
 }

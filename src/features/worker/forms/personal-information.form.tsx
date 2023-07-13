@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   Control,
   Controller,
@@ -13,6 +13,7 @@ import {
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import { InputGroupComponent } from "../../../common/components/Form/input-group.component";
 import { EDirection } from "../../../common/constants/input.enum";
+import { AppContext } from "../../../common/contexts/app.context";
 
 interface IPersonalInformationProp {
   register: UseFormRegister<any>;
@@ -21,6 +22,7 @@ interface IPersonalInformationProp {
   list: any[];
   stateList: React.Dispatch<React.SetStateAction<string>>[];
   setValueRegister: UseFormSetValue<any>;
+  action: string;
 }
 
 const InformationPersonalForm = ({
@@ -30,7 +32,10 @@ const InformationPersonalForm = ({
   list,
   stateList,
   setValueRegister,
+  action
 }: IPersonalInformationProp) => {
+  const { setDisabledFields, disabledFields } = useContext(AppContext);
+  setDisabledFields(action == "view" ? true : false )
   return (
     <>
       <div className="grid-form-4-container gap-25 container-sections-forms">

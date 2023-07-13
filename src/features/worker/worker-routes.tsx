@@ -6,6 +6,9 @@ function WorkerRoutes() {
   const EmploymentRelationshipPage = lazy(
     () => import("./pages/employment-relationship.page")
   );
+  const EmploymentRecordsPage = lazy(
+    () => import("./pages/employment-records.page")
+  );
 
   return (
     <Routes>
@@ -13,7 +16,43 @@ function WorkerRoutes() {
         path={"/vinculacion-laboral"}
         element={
           <PrivateRoute
-            element={<EmploymentRelationshipPage />}
+            element={<EmploymentRelationshipPage action="new" />}
+            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+          />
+        }
+      />
+      <Route
+        path={"/vinculacion-laboral"}
+        element={
+          <PrivateRoute
+            element={<EmploymentRelationshipPage action="new" />}
+            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+          />
+        }
+      />
+      <Route
+        path={"/vinculacion-laboral/edit/:id"}
+        element={
+          <PrivateRoute
+            element={<EmploymentRelationshipPage action="edit" />}
+            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+          />
+        }
+      />
+      <Route
+        path={"/vinculacion-laboral/view/:id"}
+        element={
+          <PrivateRoute
+            element={<EmploymentRelationshipPage action="view" />}
+            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+          />
+        }
+      />
+      <Route
+        path={"/expedientes"}
+        element={
+          <PrivateRoute
+            element={<EmploymentRecordsPage />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

@@ -51,7 +51,7 @@ export interface IWorker {
   dateCreate?: DateTime;
 }
 
-export interface ICreateWorker {
+export interface IVinculation {
   worker: IWorker;
   relatives: IRelative[];
   employment: IEmployment;
@@ -79,4 +79,14 @@ export interface ICharge {
   dateModified?: DateTime;
   userCreate?: string;
   dateCreate?: DateTime;
+}
+
+export interface IFilterVinculation {
+  page: number;
+  perPage: number;
+  documentNumber?: number;
+  state?: string;
+  vinculationType?:string;
+  name?:string;
+  lastName?:string;
 }

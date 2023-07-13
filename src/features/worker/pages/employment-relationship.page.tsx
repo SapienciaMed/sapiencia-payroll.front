@@ -7,7 +7,7 @@ import { AppContext } from "../../../common/contexts/app.context";
 import { FormStebs } from "../../../common/interfaces/tabs-menu.interface";
 import useEmploymentsData from "../hooks/employment.hook";
 import {
-  ICreateWorker,
+  IVinculation,
   IRelative,
 } from "../../../common/interfaces/payroll.interfaces";
 import usePayrollService from "../../../common/hooks/payroll.hook";
@@ -15,12 +15,16 @@ import AffiliationsForm from "../forms/other-fields.form";
 import ContractualInformationForm from "../forms/contractual-information.form";
 import FamiliarInformationForm from "../forms/familiar-information.form";
 import InformationPersonalForm from "../forms/personal-information.form";
+import { useParams } from "react-router-dom";
 
-const EmploymentRelationshipPage = () => {
+interface IAppProps {
+  action: "new" | "edit" | "view";
+}
+const EmploymentRelationshipPage = ({ action }: IAppProps) => {
+  const {id} = useParams()
   const [familyData, setFamilyData] = useState<{ familiar: IRelative[] }>();
-
-  const { step, setStep } = useContext(AppContext);
-
+  const { step, setStep,setDisabledFields } = useContext(AppContext);
+  setDisabledFields(action === "view" ? true : false)
   const {
     typeDocumentList,
     bloodType,
@@ -42,9 +46,9 @@ const EmploymentRelationshipPage = () => {
     activeWorker,
     setDeparment,
     setTown,
-  } = useEmploymentsData();
+    handleCreateWorker
+  } = useEmploymentsData( action, id);
 
-  const { handleCreateWorker } = useEmploymentsData();
 
   const currentValidationSchema = formsPayroll[step];
 
@@ -55,7 +59,7 @@ const EmploymentRelationshipPage = () => {
     handleSubmit,
     trigger,
     setValue: setValueRegister,
-  } = useForm<ICreateWorker>({
+  } = useForm<IVinculation>({
     defaultValues: {
       worker: {
         typeDocument: "",
@@ -119,6 +123,7 @@ const EmploymentRelationshipPage = () => {
           ]}
           stateList={[setDeparment, setTown]}
           setValueRegister={setValueRegister}
+          action={action}
         />
       ),
       position: 0,
@@ -130,6 +135,7 @@ const EmploymentRelationshipPage = () => {
         <FamiliarInformationForm
           setFamilyData={setFamilyData}
           list={[genderList, relationship]}
+          action={action}
         />
       ),
       position: 1,
@@ -144,13 +150,14 @@ const EmploymentRelationshipPage = () => {
           control={control}
           setValueRegister={setValueRegister}
           list={[typesContracts, typesChargesList, activeWorker]}
+          action={action}
         />
       ),
       position: 2,
       classContainerStep: "",
     },
     {
-      titleSteb: "4. Afiliaciones",
+      titleSteb: "4. Otros datos",
       contentStep: (
         <AffiliationsForm
           register={register}
@@ -158,7 +165,7 @@ const EmploymentRelationshipPage = () => {
           control={control}
           setValueRegister={setValueRegister}
           list={[epsList, pensionList, arlList, levelRiskList, layoffList]}
-        />
+          action={action} />
       ),
       position: 3,
       classContainerStep: "",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Control,
   Controller,
@@ -6,8 +6,13 @@ import {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
-import { SelectComponent, InputComponent } from "../../../common/components/Form";
+import {
+  SelectComponent,
+  InputComponent,
+} from "../../../common/components/Form";
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
+import TableComponent from "../../../common/components/table.component";
+import { AppContext } from "../../../common/contexts/app.context";
 
 interface IContractualInformationProp {
   register: UseFormRegister<any>;
@@ -15,6 +20,7 @@ interface IContractualInformationProp {
   control: Control<any>;
   setValueRegister: UseFormSetValue<any>;
   list: any[][];
+  action: string;
 }
 
 const ContractualInformationForm = ({
@@ -23,7 +29,10 @@ const ContractualInformationForm = ({
   control,
   setValueRegister,
   list,
+  action
 }: IContractualInformationProp) => {
+  const { setDisabledFields, disabledFields } = useContext(AppContext);
+  setDisabledFields(action == "new" ? false : true )
   const [antiquity, setAntiquity] = useState("0");
   return (
     <div>
@@ -52,6 +61,7 @@ const ContractualInformationForm = ({
               setValueRegister={setValueRegister}
               onchange={field.onChange}
               placeholder="Seleccione"
+              disabled={disabledFields}
             />
           )}
         />
@@ -67,6 +77,7 @@ const ContractualInformationForm = ({
           errors={errors}
           classNameLabel="text-black big bold"
           className="input-basic medium"
+          disabled={disabledFields}
         />
         <Controller
           name="employment.state"
@@ -89,6 +100,7 @@ const ContractualInformationForm = ({
               setValueRegister={setValueRegister}
               onchange={field.onChange}
               placeholder="Seleccione"
+              disabled={disabledFields}
             />
           )}
         />
@@ -113,6 +125,7 @@ const ContractualInformationForm = ({
               setValueRegister={setValueRegister}
               onchange={field.onChange}
               placeholder="Seleccione"
+              disabled={disabledFields}
             />
           )}
         />
@@ -138,6 +151,7 @@ const ContractualInformationForm = ({
                 className="dataPicker-basic  medium "
                 setValue={setAntiquity}
                 maxDate={new Date()}
+                disabled={disabledFields}
               />
             );
           }}
@@ -158,6 +172,7 @@ const ContractualInformationForm = ({
                 setValueRegister={setValueRegister}
                 onchange={field.onChange}
                 className="dataPicker-basic  medium "
+                disabled={disabledFields}
               />
             );
           }}
@@ -184,7 +199,40 @@ const ContractualInformationForm = ({
           errors={errors}
           classNameLabel="text-black big bold"
           className="input-basic medium"
+          disabled={disabledFields}
         />
+        <InputComponent
+          idInput="employment.totalValue"
+          typeInput="text"
+          label={
+            <>
+              Valor total
+            </>
+          }
+          register={register}
+          errors={errors}
+          classNameLabel="text-black big bold"
+          className="input-basic medium"
+          disabled={disabledFields}
+        />
+        <InputComponent
+          idInput="employment.salary"
+          typeInput="text"
+          label={
+            <>
+              Salario
+            </>
+          }
+          register={register}
+          errors={errors}
+          classNameLabel="text-black big bold"
+          className="input-basic medium"
+          disabled={disabledFields}
+        />
+        <textarea name="" id="" disabled={disabledFields}></textarea >
+      </div>
+      <div className="container-sections-forms">
+        <TableComponent url={""} columns={[]} isShowModal={false} />
       </div>
     </div>
   );

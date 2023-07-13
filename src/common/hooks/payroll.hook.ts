@@ -2,7 +2,7 @@ import { EResponseCodes } from "../constants/api.enum";
 import { IAuthorization } from "../interfaces/auth.interfaces";
 import {
   ICharge,
-  ICreateWorker,
+  IVinculation,
   ITypesContracts,
 } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
@@ -41,14 +41,14 @@ export function usePayrollService() {
   }
 
   async function createWorker(
-    data: ICreateWorker
-  ): Promise<ApiResponse<ICreateWorker>> {
+    data: IVinculation
+  ): Promise<ApiResponse<IVinculation>> {
     try {
       const endpoint: string = `/`;
       return await post(`${authUrl}${endpoint}`, data);
     } catch (error) {
       return new ApiResponse(
-        {} as ICreateWorker,
+        {} as IVinculation,
         EResponseCodes.FAIL,
         "Error no controlado"
       );

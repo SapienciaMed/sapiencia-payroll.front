@@ -1,15 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineX } from "react-icons/hi";
 import { RiSave3Fill } from "react-icons/ri";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { InputComponent, SelectComponent, ButtonComponent } from "../../../common/components/Form";
+import {
+  InputComponent,
+  SelectComponent,
+  ButtonComponent,
+} from "../../../common/components/Form";
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import { IRelative } from "../../../common/interfaces/payroll.interfaces";
 import { familiarValidator } from "../../../common/schemas";
+import { AppContext } from "../../../common/contexts/app.context";
 
-
-const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
+interface IFamiliarInformationProp {
+  setFamilyData: React.Dispatch<
+    React.SetStateAction<{
+      familiar: IRelative[];
+    }>
+  >;
+  list: any[][];
+  action: string;
+}
+const FamiliarInformationForm = ({
+  setFamilyData,
+  list,
+  action
+}: IFamiliarInformationProp) => {
+  const { setDisabledFields, disabledFields } = useContext(AppContext);
+  setDisabledFields(action == "view" ? true : false )
   const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
   const [age, setAge] = useState("0");
   const resolver = useYupValidationResolver(familiarValidator);
@@ -155,7 +174,10 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 )}
               />
               <div>
-                <label htmlFor="" className="text-black big bold display-justify-flex-center">
+                <label
+                  htmlFor=""
+                  className="text-black big bold display-justify-flex-center"
+                >
                   Acciones
                 </label>
                 <div className="button-container-display">
@@ -165,9 +187,9 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                         value={<RiSave3Fill />}
                         type="button"
                         action={() => {
-                          if(isValid){
-                          handleDisableRow(index);
-                          onSubmit();
+                          if (isValid) {
+                            handleDisableRow(index);
+                            onSubmit();
                           }
                         }}
                         className="button-confirm"

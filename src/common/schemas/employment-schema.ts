@@ -97,9 +97,9 @@ const afiliaciones = yup.object({
 });
 
 export const searchRecord = yup.object({
-  name: yup.string().required("El nombre de usuario es obligatorio"),
-  lastName: yup.string().required("El apellido del usuario es obligatorio"),
-  documentNumber: yup.string().required("El tipo de documento es obligatorio"),  
+  name: yup.string().max(15,"máximo 15 caracteres"),
+  lastName: yup.string().max(15,"máximo 15 caracteres"),
+  documentNumber: yup.string().max(15,"máximo 15 caracteres"),  
 });
 
 export const formsPayroll = [

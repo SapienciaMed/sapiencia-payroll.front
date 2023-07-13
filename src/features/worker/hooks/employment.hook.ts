@@ -1,20 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import { ApiResponse } from "../../../common/utils/api-response";
 import { AppContext } from "../../../common/contexts/app.context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
 import { IGenericList } from "../../../common/interfaces/global.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 import usePayrollService from "../../../common/hooks/payroll.hook";
 import {
   ICharge,
-  ICreateWorker,
+  IVinculation,
   ITypesContracts,
   IWorker,
 } from "../../../common/interfaces/payroll.interfaces";
 import useAppCominicator from "../../../common/hooks/app-communicator.hook";
 
-export default function useEmploymentsData() {
+export default function useEmploymentsData(action, id) {
   /*States*/
   const [genderList, setGenderList] = useState([]);
   const [typeDocumentList, setTypeDocumentList] = useState([]);
@@ -44,7 +44,7 @@ export default function useEmploymentsData() {
   const navigate = useNavigate();
 
   const { setMessage, authorization } = useContext(AppContext);
-  const { getCharges, getTypesContracts ,createWorker} = usePayrollService();
+  const { getCharges, getTypesContracts, createWorker } = usePayrollService();
   const { publish, subscribe, unsubscribe } = useAppCominicator();
 
   const handleModal = () => {
@@ -55,14 +55,18 @@ export default function useEmploymentsData() {
       OkTitle: "Aceptar",
       onOk: () => {
         navigate("/");
-        setMessage((prev) => {return{...prev,show:false}});
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
       },
       onClose: () => {
         setMessage({});
       },
       background: true,
-    })
+    });
   };
+
+  useParams
 
   /*UseEffects*/
   useEffect(() => {
@@ -79,7 +83,7 @@ export default function useEmploymentsData() {
       "FONDO_PENSIONES",
       "FONDO_CESANTIAS",
       "RIESGO_LABORAL",
-      "ESTADO_TRABAJADOR"
+      "ESTADO_TRABAJADOR",
     ];
     getListByGroupers(groupers)
       .then((response: ApiResponse<IGenericList[]>) => {
@@ -182,7 +186,7 @@ export default function useEmploymentsData() {
                 };
                 return list;
               })
-          ); 
+          );
           setPensionList(
             response.data
               .filter((grouper) => grouper.grouper == "FONDO_PENSIONES")
@@ -324,10 +328,10 @@ export default function useEmploymentsData() {
       .catch((err) => {});
   }, []);
   /*Functions*/
-  const handleCreateWorker = (async (data: ICreateWorker) => {
+  const handleCreateWorker = async (data: IVinculation) => {
     setSending(true);
     await createWorker(data)
-      .then((response: ApiResponse<ICreateWorker>) => {
+      .then((response: ApiResponse<IVinculation>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           handleModal();
           setSending(false);
@@ -344,8 +348,7 @@ export default function useEmploymentsData() {
         });
         setSending(false);
       });
-  });
-
+  };
 
   const cancelFunction = () => {
     setMessage({
@@ -386,6 +389,6 @@ export default function useEmploymentsData() {
     pensionList,
     levelRiskList,
     activeWorker,
-    handleCreateWorker
+    handleCreateWorker,
   };
 }

@@ -1,15 +1,27 @@
-import React from "react";
-import { Controller } from "react-hook-form";
+import React, { useContext } from "react";
+import { Control, Controller, FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { SelectComponent } from "../../../common/components/Form/select.component";
 import { InputComponent } from "../../../common/components/Form/input.component";
+import { AppContext } from "../../../common/contexts/app.context";
 
+interface IOtherInformationProp {
+  register: UseFormRegister<any>;
+  errors: FieldErrors<any>;
+  control: Control<any>;
+  list: any[];
+  setValueRegister: UseFormSetValue<any>;
+  action: string;
+}
 const AffiliationsForm = ({
   register,
   errors,
   control,
   setValueRegister,
   list,
-}: any) => {
+  action
+}: IOtherInformationProp) => {
+  const { setDisabledFields, disabledFields } = useContext(AppContext);
+  setDisabledFields(action == "view" ? true : false )
   return (
     <div>
       <div className="grid-form-3-container gap-25 container-sections-forms ">

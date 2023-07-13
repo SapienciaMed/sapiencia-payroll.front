@@ -18,9 +18,11 @@ import {
   IVinculation,
   IWorker,
 } from "../../../common/interfaces/payroll.interfaces";
+import { useNavigate } from "react-router-dom";
 
 const EmploymentRecordsPage = () => {
   const tableComponentRef = useRef(null);
+  const navigate = useNavigate()
   const resolver = useYupValidationResolver(searchRecord);
   const {
     handleSubmit,
@@ -56,13 +58,13 @@ const EmploymentRecordsPage = () => {
     {
       icon: "Detail",
       onClick: (row) => {
-        console.log(row);
+        navigate(`./view/${row.worker.id}`);
       },
     },
     {
       icon: "Edit",
       onClick: (row) => {
-        console.log(row);
+        navigate(`./edit/${row.worker.id}`);
       },
     },
   ];

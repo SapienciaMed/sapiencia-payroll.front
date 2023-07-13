@@ -19,6 +19,7 @@ export interface IRelative {
 }
 
 export interface IWorker {
+  id?: number;
   typeDocument: string;
   numberDocument: string;
   firstName: string;

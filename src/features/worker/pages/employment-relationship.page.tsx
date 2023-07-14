@@ -1,30 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import FormSteps from "../../../common/components/Form/form-steps.component";
-import { useForm } from "react-hook-form";
-import { formsPayroll } from "../../../common/schemas/employment-schema";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { AppContext } from "../../../common/contexts/app.context";
 import { FormStebs } from "../../../common/interfaces/tabs-menu.interface";
 import useEmploymentsData from "../hooks/employment.hook";
-import {
-  IVinculation,
-  IRelative,
-} from "../../../common/interfaces/payroll.interfaces";
-// import usePayrollService from "../../../common/hooks/payroll.hook";
+import { IRelative } from "../../../common/interfaces/payroll.interfaces";
 import AffiliationsForm from "../forms/other-fields.form";
 import ContractualInformationForm from "../forms/contractual-information.form";
 import FamiliarInformationForm from "../forms/familiar-information.form";
 import InformationPersonalForm from "../forms/personal-information.form";
-import { useParams } from "react-router-dom";
 
 interface IAppProps {
   action: "new" | "edit" | "view";
 }
 const EmploymentRelationshipPage = ({ action }: IAppProps) => {
-  const { id } = useParams();
   const [familyData, setFamilyData] = useState<{ familiar: IRelative[] }>();
-  const { step, setStep, setDisabledFields } = useContext(AppContext);
-  setDisabledFields(action === "view" ? true : false);
+
   const {
     typeDocumentList,
     bloodType,
@@ -44,26 +33,20 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     typesChargesList,
     typesContracts,
     activeWorker,
-    objectDataVinculation,
     setDeparment,
     setTown,
-    handleCreateWorker,
-  } = useEmploymentsData({ action, id });
-
-  const currentValidationSchema = formsPayroll[step];
-
-  const {
     register,
-    formState: { errors, isValid },
     control,
-    handleSubmit,
+    isValid,
+    errors,
     trigger,
-    setValue: setValueRegister,
-  } = useForm<IVinculation>({
-    defaultValues: async () => objectDataVinculation(),
-    resolver: yupResolver(currentValidationSchema),
-    mode: "all",
-  });
+    handleSubmit,
+    setValueRegister,
+    step,
+    setStep,
+    //vinculation,
+    handleCreateWorker,
+  } = useEmploymentsData({ action });
 
   const stebs: FormStebs[] = [
     {

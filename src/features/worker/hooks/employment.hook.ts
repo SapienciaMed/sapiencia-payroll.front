@@ -13,16 +13,21 @@ import {
   IWorker,
 } from "../../../common/interfaces/payroll.interfaces";
 import useAppCominicator from "../../../common/hooks/app-communicator.hook";
+import { useForm } from "react-hook-form";
+import { formsPayroll } from "../../../common/schemas/employment-schema";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface IUseEmploymentsDataProps {
   action: string;
-  id: string;
 }
 
 export default function useEmploymentsData({
   action,
-  id,
 }: IUseEmploymentsDataProps) {
+  const { id } = useParams();
+  const { step, setStep } = useContext(AppContext);
+  const currentValidationSchema = formsPayroll[step];
+
   /*States*/
   const [vinculation, setVinculation] = useState<IVinculation>({
     worker: {
@@ -62,6 +67,20 @@ export default function useEmploymentsData({
       state: "",
     },
   } as IVinculation);
+
+  const {
+    register,
+    formState: { errors, isValid },
+    control,
+    handleSubmit,
+    trigger,
+    setValue: setValueRegister,
+  } = useForm<IVinculation>({
+    defaultValues: vinculation,
+    resolver: yupResolver(currentValidationSchema),
+    mode: "all",
+  });
+
   const [genderList, setGenderList] = useState([]);
   const [typeDocumentList, setTypeDocumentList] = useState([]);
   const [deparmentList, setDeparmentList] = useState([]);
@@ -410,36 +429,22 @@ export default function useEmploymentsData({
     });
   };
 
-  const objectDataVinculation = async () => {
-    try {
-      if (action != "new") {
-        const { data, operation } = await getVinculationById(Number(id));
-
-        if (operation.code === EResponseCodes.OK) {
-          setVinculation(data);
-        }
-      } else {
-        return vinculation;
-      }
-    } catch (error) {
-      navigate("/");
+  useEffect(() => {
+    if (action != "new") {
+      getVinculationById(Number(id))
+        .then(({ data, operation }: ApiResponse<IVinculation>) => {
+          if (operation.code === EResponseCodes.OK) {
+            setVinculation(data);
+            setValueRegister("worker", data.worker);
+            setValueRegister("relatives", data.relatives);
+            setValueRegister("employment", data.employment);
+          }
+        })
+        .catch((err) => {
+          navigate("/");
+        });
     }
-  };
-
-  // useEffect(() => {
-  //   if (action != "new") {
-  //     console.log("entro");
-  //     getVinculationById(Number(id))
-  //       .then((response: ApiResponse<IVinculation>) => {
-  //         if (response && response?.operation?.code === EResponseCodes.OK) {
-  //           setVinculation(response.data);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         navigate("/");
-  //       });
-  //   }
-  // }, []);
+  }, []);
 
   return {
     genderList,
@@ -465,7 +470,16 @@ export default function useEmploymentsData({
     pensionList,
     levelRiskList,
     activeWorker,
-    objectDataVinculation,
+    vinculation,
+    register,
+    errors,
+    isValid,
+    trigger,
+    control,
+    handleSubmit,
+    setValueRegister,
+    step,
+    setStep,
     handleCreateWorker,
   };
 }

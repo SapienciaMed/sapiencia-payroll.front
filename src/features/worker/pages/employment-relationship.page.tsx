@@ -10,7 +10,7 @@ import {
   IVinculation,
   IRelative,
 } from "../../../common/interfaces/payroll.interfaces";
-import usePayrollService from "../../../common/hooks/payroll.hook";
+// import usePayrollService from "../../../common/hooks/payroll.hook";
 import AffiliationsForm from "../forms/other-fields.form";
 import ContractualInformationForm from "../forms/contractual-information.form";
 import FamiliarInformationForm from "../forms/familiar-information.form";
@@ -44,11 +44,11 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     typesChargesList,
     typesContracts,
     activeWorker,
-    vinculation,
+    objectDataVinculation,
     setDeparment,
     setTown,
     handleCreateWorker,
-  } = useEmploymentsData(action, id);
+  } = useEmploymentsData({ action, id });
 
   const currentValidationSchema = formsPayroll[step];
 
@@ -60,44 +60,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     trigger,
     setValue: setValueRegister,
   } = useForm<IVinculation>({
-    defaultValues: {
-      worker: {
-        typeDocument: vinculation?.worker?.typeDocument,
-        numberDocument: vinculation?.worker?.numberDocument,
-        firstName: "",
-        secondName: "",
-        surName: "",
-        secondSurname: "",
-        gender: "",
-        bloodType: "",
-        birthDate: "",
-        nationality: "",
-        email: "",
-        contactNumber: "",
-        department: "",
-        municipality: "",
-        neighborhood: "",
-        address: "",
-        socioEconomic: "",
-        eps: "",
-        fundPension: "",
-        severanceFund: "",
-        arl: "",
-        riskLevel: "",
-        housingType: "",
-      },
-      relatives: [{}],
-      employment: {
-        idTypeContract: "",
-        contractNumber: "",
-        institutionalMail: "",
-        startDate: "",
-        endDate: "",
-        idCharge: "",
-        idReasonRetirement: "",
-        state: "",
-      },
-    },
+    defaultValues: async () => objectDataVinculation(),
     resolver: yupResolver(currentValidationSchema),
     mode: "all",
   });

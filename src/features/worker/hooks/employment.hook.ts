@@ -14,9 +14,54 @@ import {
 } from "../../../common/interfaces/payroll.interfaces";
 import useAppCominicator from "../../../common/hooks/app-communicator.hook";
 
-export default function useEmploymentsData(action, id) {
+interface IUseEmploymentsDataProps {
+  action: string;
+  id: string;
+}
+
+export default function useEmploymentsData({
+  action,
+  id,
+}: IUseEmploymentsDataProps) {
   /*States*/
-  const [vinculation, setVinculation] = useState<IVinculation>({} as IVinculation);
+  const [vinculation, setVinculation] = useState<IVinculation>({
+    worker: {
+      typeDocument: "",
+      numberDocument: "",
+      firstName: "",
+      secondName: "",
+      surName: "",
+      secondSurname: "",
+      gender: "",
+      bloodType: "",
+      birthDate: "",
+      nationality: "",
+      email: "",
+      contactNumber: "",
+      department: "",
+      municipality: "",
+      neighborhood: "",
+      address: "",
+      socioEconomic: "",
+      eps: "",
+      fundPension: "",
+      severanceFund: "",
+      arl: "",
+      riskLevel: "",
+      housingType: "",
+    },
+    relatives: [{}],
+    employment: {
+      idTypeContract: "",
+      contractNumber: "",
+      institutionalMail: "",
+      startDate: "",
+      endDate: "",
+      idCharge: "",
+      idReasonRetirement: "",
+      state: "",
+    },
+  } as IVinculation);
   const [genderList, setGenderList] = useState([]);
   const [typeDocumentList, setTypeDocumentList] = useState([]);
   const [deparmentList, setDeparmentList] = useState([]);
@@ -67,8 +112,6 @@ export default function useEmploymentsData(action, id) {
       background: true,
     });
   };
-
-  useParams;
 
   /*UseEffects*/
   useEffect(() => {
@@ -367,18 +410,36 @@ export default function useEmploymentsData(action, id) {
     });
   };
 
-  useEffect(() => {
-    if (action != "new") {
-      console.log("entro")
-      getVinculationById(id)
-        .then((response: ApiResponse<IVinculation>) => {
-          if (response && response?.operation?.code === EResponseCodes.OK) {
-            setVinculation(response.data)
-          }
-        })
-        .catch((err) => {});
+  const objectDataVinculation = async () => {
+    try {
+      if (action != "new") {
+        const { data, operation } = await getVinculationById(Number(id));
+
+        if (operation.code === EResponseCodes.OK) {
+          setVinculation(data);
+        }
+      } else {
+        return vinculation;
+      }
+    } catch (error) {
+      navigate("/");
     }
-  }, []);
+  };
+
+  // useEffect(() => {
+  //   if (action != "new") {
+  //     console.log("entro");
+  //     getVinculationById(Number(id))
+  //       .then((response: ApiResponse<IVinculation>) => {
+  //         if (response && response?.operation?.code === EResponseCodes.OK) {
+  //           setVinculation(response.data);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         navigate("/");
+  //       });
+  //   }
+  // }, []);
 
   return {
     genderList,
@@ -404,7 +465,7 @@ export default function useEmploymentsData(action, id) {
     pensionList,
     levelRiskList,
     activeWorker,
-    vinculation,
+    objectDataVinculation,
     handleCreateWorker,
   };
 }

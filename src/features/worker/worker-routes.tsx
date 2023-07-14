@@ -31,7 +31,7 @@ function WorkerRoutes() {
         }
       />
       <Route
-        path={"/vinculacion-laboral/edit/:id"}
+        path={"/expedientes/edit/:id"}
         element={
           <PrivateRoute
             element={<EmploymentRelationshipPage action="edit" />}
@@ -40,7 +40,7 @@ function WorkerRoutes() {
         }
       />
       <Route
-        path={"/vinculacion-laboral/view/:id"}
+        path={"/expedientes/view/:id"}
         element={
           <PrivateRoute
             element={<EmploymentRelationshipPage action="view" />}

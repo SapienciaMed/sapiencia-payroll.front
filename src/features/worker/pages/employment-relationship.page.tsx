@@ -21,10 +21,10 @@ interface IAppProps {
   action: "new" | "edit" | "view";
 }
 const EmploymentRelationshipPage = ({ action }: IAppProps) => {
-  const {id} = useParams()
+  const { id } = useParams();
   const [familyData, setFamilyData] = useState<{ familiar: IRelative[] }>();
-  const { step, setStep,setDisabledFields } = useContext(AppContext);
-  setDisabledFields(action === "view" ? true : false)
+  const { step, setStep, setDisabledFields } = useContext(AppContext);
+  setDisabledFields(action === "view" ? true : false);
   const {
     typeDocumentList,
     bloodType,
@@ -44,11 +44,11 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     typesChargesList,
     typesContracts,
     activeWorker,
+    vinculation,
     setDeparment,
     setTown,
-    handleCreateWorker
-  } = useEmploymentsData( action, id);
-
+    handleCreateWorker,
+  } = useEmploymentsData(action, id);
 
   const currentValidationSchema = formsPayroll[step];
 
@@ -62,8 +62,8 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
   } = useForm<IVinculation>({
     defaultValues: {
       worker: {
-        typeDocument: "",
-        numberDocument: "",
+        typeDocument: vinculation?.worker?.typeDocument,
+        numberDocument: vinculation?.worker?.numberDocument,
         firstName: "",
         secondName: "",
         surName: "",
@@ -165,7 +165,8 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           control={control}
           setValueRegister={setValueRegister}
           list={[epsList, pensionList, arlList, levelRiskList, layoffList]}
-          action={action} />
+          action={action}
+        />
       ),
       position: 3,
       classContainerStep: "",

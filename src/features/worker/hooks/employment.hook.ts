@@ -16,6 +16,7 @@ import useAppCominicator from "../../../common/hooks/app-communicator.hook";
 
 export default function useEmploymentsData(action, id) {
   /*States*/
+  const [vinculation, setVinculation] = useState<IVinculation>({} as IVinculation);
   const [genderList, setGenderList] = useState([]);
   const [typeDocumentList, setTypeDocumentList] = useState([]);
   const [deparmentList, setDeparmentList] = useState([]);
@@ -44,7 +45,8 @@ export default function useEmploymentsData(action, id) {
   const navigate = useNavigate();
 
   const { setMessage, authorization } = useContext(AppContext);
-  const { getCharges, getTypesContracts, createWorker } = usePayrollService();
+  const { getVinculationById, getCharges, getTypesContracts, createWorker } =
+    usePayrollService();
   const { publish, subscribe, unsubscribe } = useAppCominicator();
 
   const handleModal = () => {
@@ -66,7 +68,7 @@ export default function useEmploymentsData(action, id) {
     });
   };
 
-  useParams
+  useParams;
 
   /*UseEffects*/
   useEffect(() => {
@@ -365,6 +367,19 @@ export default function useEmploymentsData(action, id) {
     });
   };
 
+  useEffect(() => {
+    if (action != "new") {
+      console.log("entro")
+      getVinculationById(id)
+        .then((response: ApiResponse<IVinculation>) => {
+          if (response && response?.operation?.code === EResponseCodes.OK) {
+            setVinculation(response.data)
+          }
+        })
+        .catch((err) => {});
+    }
+  }, []);
+
   return {
     genderList,
     typeDocumentList,
@@ -389,6 +404,7 @@ export default function useEmploymentsData(action, id) {
     pensionList,
     levelRiskList,
     activeWorker,
+    vinculation,
     handleCreateWorker,
   };
 }

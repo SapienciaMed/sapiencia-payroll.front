@@ -14,6 +14,19 @@ export function usePayrollService() {
 
   const { get, post } = useCrudService(null, baseURL);
 
+  async function getVinculationById(id:number): Promise<ApiResponse<IVinculation>> {
+    try {
+      const endpoint: string = `/`;
+      return await get(`${authUrl}${endpoint}${id}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IVinculation,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   async function getTypesContracts(): Promise<ApiResponse<ITypesContracts[]>> {
     try {
       const endpoint: string = `/typesContracts`;
@@ -59,6 +72,7 @@ export function usePayrollService() {
     getTypesContracts,
     getCharges,
     createWorker,
+    getVinculationById
   };
 }
 

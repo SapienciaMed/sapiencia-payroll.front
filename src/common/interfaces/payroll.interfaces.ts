@@ -58,6 +58,41 @@ export interface IVinculation {
   employment: IEmployment;
 }
 
+export interface IGetVinculation {
+  id?: number;
+  typeDocument: string;
+  numberDocument: string;
+  firstName: string;
+  secondName?: string;
+  surname: string;
+  secondSurname?: string;
+  gender: string;
+  bloodType: string;
+  birthDate: Date | string;
+  nationality: string;
+  email?: string;
+  contactNumber: string;
+  department: string;
+  municipality: string;
+  neighborhood: string;
+  address: string;
+  socioEconomic?: string;
+  eps?: string;
+  severanceFund?: string;
+  arl?: string;
+  riskLevel?: string;
+  housingType?: string;
+  fundPension?: string;
+  bank?: string;
+  accountType?: string;
+  accountNumber?: string;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+  employment: IEmployment;
+}
+
 export interface ITypesContracts {
   id: number;
   name: string;

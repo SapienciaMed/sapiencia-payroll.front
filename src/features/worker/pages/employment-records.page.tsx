@@ -4,6 +4,7 @@ import { InputComponent } from "../../../common/components/Form/input.component"
 import { Controller, useForm } from "react-hook-form";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import { searchRecord } from "../../../common/schemas";
+import { DateTime } from "luxon";
 import {
   ButtonComponent,
   FormComponent,
@@ -15,6 +16,7 @@ import {
 } from "../../../common/interfaces/table.interfaces";
 import {
   IFilterVinculation,
+  IGetVinculation,
   IVinculation,
   IWorker,
 } from "../../../common/interfaces/payroll.interfaces";
@@ -32,39 +34,51 @@ const EmploymentRecordsPage = () => {
     control,
     reset,
   } = useForm<IFilterVinculation>({ resolver });
-  const tableColumns: ITableElement<IVinculation>[] = [
+  const tableColumns: ITableElement<IGetVinculation>[] = [
     {
-      fieldName: "document",
+      fieldName: "numberDocument",
       header: "Tipo y # documento",
+      renderCell: (row) => {
+        return <>{row.typeDocument+' '+row.numberDocument}</>;
+    }
     },
     {
-      fieldName: "name",
+      fieldName: "firstName",
       header: "Nombres y Apellidos",
+        renderCell: (row) => {
+        return <>{row.firstName+' '+row.secondName+' '+row.surname+' '+row.secondSurname}</>;
+    }
     },
     {
-      fieldName: "number",
+      fieldName: "employment.idTypeContract",
       header: "Tipo de vinculación",
     },
     {
-      fieldName: "startDate",
+      fieldName: "employment.startDate",
       header: "Fecha inicio",
+      renderCell: (row) => {
+        return <>{DateTime.fromISO(row.employment.startDate).toLocaleString()}</>;
+    }
     },
     {
-      fieldName: "endDate",
+      fieldName: "employment.endDate",
       header: "Fecha fin",
+      renderCell: (row) => {
+        return <>{DateTime.fromISO(row.employment.endDate).toLocaleString()}</>;
+    }
     },
   ];
-  const tableActions: ITableAction<IVinculation>[] = [
+  const tableActions: ITableAction<IGetVinculation>[] = [
     {
       icon: "Detail",
       onClick: (row) => {
-        navigate(`./view/${row.worker.id}`);
+        navigate(`./view/${row?.id}`);
       },
     },
     {
       icon: "Edit",
       onClick: (row) => {
-        navigate(`./edit/${row.worker.id}`);
+        navigate(`./edit/${row.id}`);
       },
     },
   ];

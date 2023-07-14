@@ -75,7 +75,6 @@ function CalendarElement({
     if (setValue) {
       setValue(calculateDifference(date as Date));
     }
-    console.log(date);
   }, [date]);
   return (
     <div {...registerProp(idInput)}>

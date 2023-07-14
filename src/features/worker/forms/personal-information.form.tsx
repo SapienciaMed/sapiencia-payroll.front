@@ -14,6 +14,7 @@ import { DatePickerComponent } from "../../../common/components/Form/input-date.
 import { InputGroupComponent } from "../../../common/components/Form/input-group.component";
 import { EDirection } from "../../../common/constants/input.enum";
 import { AppContext } from "../../../common/contexts/app.context";
+import { IVinculation } from "../../../common/interfaces/payroll.interfaces";
 
 interface IPersonalInformationProp {
   register: UseFormRegister<any>;
@@ -23,6 +24,7 @@ interface IPersonalInformationProp {
   stateList: React.Dispatch<React.SetStateAction<string>>[];
   setValueRegister: UseFormSetValue<any>;
   action: string;
+  data: IVinculation;
 }
 
 const InformationPersonalForm = ({
@@ -32,10 +34,11 @@ const InformationPersonalForm = ({
   list,
   stateList,
   setValueRegister,
-  action
+  action,
+  data,
 }: IPersonalInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
-  setDisabledFields(action == "view" ? true : false )
+  setDisabledFields(action == "view" ? true : false);
   return (
     <>
       <div className="grid-form-4-container gap-25 container-sections-forms">

@@ -44,7 +44,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     setValueRegister,
     step,
     setStep,
-    //vinculation,
+    vinculation,
     handleCreateWorker,
   } = useEmploymentsData({ action });
 
@@ -70,6 +70,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           stateList={[setDeparment, setTown]}
           setValueRegister={setValueRegister}
           action={action}
+          data={vinculation}
         />
       ),
       position: 0,

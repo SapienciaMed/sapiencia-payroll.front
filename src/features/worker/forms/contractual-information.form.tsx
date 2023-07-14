@@ -13,6 +13,7 @@ import {
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import TableComponent from "../../../common/components/table.component";
 import { AppContext } from "../../../common/contexts/app.context";
+import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
 
 interface IContractualInformationProp {
   register: UseFormRegister<any>;
@@ -29,10 +30,10 @@ const ContractualInformationForm = ({
   control,
   setValueRegister,
   list,
-  action
+  action,
 }: IContractualInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
-  setDisabledFields(action == "new" ? false : true )
+  setDisabledFields(action == "new" ? false : true);
   const [antiquity, setAntiquity] = useState("0");
   return (
     <div>
@@ -201,39 +202,51 @@ const ContractualInformationForm = ({
           className="input-basic medium"
           disabled={disabledFields}
         />
-        <InputComponent
-          idInput="employment.totalValue"
-          typeInput="text"
-          label={
-            <>
-              Valor total
-            </>
-          }
-          register={register}
-          errors={errors}
-          classNameLabel="text-black big bold"
-          className="input-basic medium"
-          disabled={disabledFields}
-        />
-        <InputComponent
-          idInput="employment.salary"
-          typeInput="text"
-          label={
-            <>
-              Salario
-            </>
-          }
-          register={register}
-          errors={errors}
-          classNameLabel="text-black big bold"
-          className="input-basic medium"
-          disabled={disabledFields}
-        />
-        <textarea name="" id="" disabled={disabledFields}></textarea >
+
+        {true ? (
+          <InputComponent
+            idInput="employment.salary"
+            typeInput="text"
+            label={<>Salario</>}
+            register={register}
+            errors={errors}
+            classNameLabel="text-black big bold"
+            className="input-basic medium"
+            disabled={disabledFields}
+          />
+        ) : (
+          <>
+            <InputComponent
+              idInput="employment.totalValue"
+              typeInput="text"
+              label={<>Valor total</>}
+              register={register}
+              errors={errors}
+              classNameLabel="text-black big bold"
+              className="input-basic medium"
+              disabled={disabledFields}
+            />
+            <div className="grid-span-4-columns">
+              <TextAreaComponent
+                label={"Observaciones"}
+                idInput={"observation"}
+                disabled={disabledFields}
+                className="text-area-basic"
+                classNameLabel="text-black big bold"
+                register={register}
+                errors={errors}
+                rows={5}
+              />
+            </div>
+          </>
+        )}
       </div>
-      <div className="container-sections-forms">
+      {action !== "new" ? (
+        <div className="container-sections-forms">
         <TableComponent url={""} columns={[]} isShowModal={false} />
-      </div>
+      </div>) :(<></>)
+      }
+      
     </div>
   );
 };

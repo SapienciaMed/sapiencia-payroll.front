@@ -60,45 +60,8 @@ export default function useEmploymentsData() {
     });
   };
 
-  /*UseEffects*/
-  useEffect(() => {
-    setTown("");
-    getListByParent({ grouper: "MUNICIPIOS", parentItemCode: deparment })
-      .then((response: ApiResponse<IGenericList[]>) => {
-        if (response && response?.operation?.code === EResponseCodes.OK) {
-          setTownList(
-            response.data.map((item) => {
-              const list = {
-                name: item.itemDescription,
-                value: item.itemCode,
-              };
 
-              return list;
-            })
-          );
-        }
-      })
-      .catch((err) => {});
-  }, [deparment]);
-
-  useEffect(() => {
-    getListByParent({ grouper: "BARRIOS", parentItemCode: town })
-      .then((response: ApiResponse<IGenericList[]>) => {
-        if (response && response?.operation?.code === EResponseCodes.OK) {
-          setneighborhoodList(
-            response.data.map((item) => {
-              const list = {
-                name: item.itemDescription,
-                value: item.itemCode,
-              };
-              return list;
-            })
-          );
-        }
-      })
-      .catch((err) => {});
-  }, [town, deparment]);
-
+  /* Metodo que carga los listados */
   async function loadInitList(): Promise<void> {
     const groupers = [
       "GENEROS",
@@ -291,6 +254,47 @@ export default function useEmploymentsData() {
       );
     }
   }
+
+
+  /*UseEffects*/
+  useEffect(() => {
+    setTown("");
+    getListByParent({ grouper: "MUNICIPIOS", parentItemCode: deparment })
+      .then((response: ApiResponse<IGenericList[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setTownList(
+            response.data.map((item) => {
+              const list = {
+                name: item.itemDescription,
+                value: item.itemCode,
+              };
+
+              return list;
+            })
+          );
+        }
+      })
+      .catch((err) => {});
+  }, [deparment]);
+
+  useEffect(() => {
+    getListByParent({ grouper: "BARRIOS", parentItemCode: town })
+      .then((response: ApiResponse<IGenericList[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setneighborhoodList(
+            response.data.map((item) => {
+              const list = {
+                name: item.itemDescription,
+                value: item.itemCode,
+              };
+              return list;
+            })
+          );
+        }
+      })
+      .catch((err) => {});
+  }, [town, deparment]);
+
 
   /*Functions*/
   const handleCreateWorker = async (data: ICreateWorker) => {

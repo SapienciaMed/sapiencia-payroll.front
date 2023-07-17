@@ -70,5 +70,3 @@ dist
 *.sln
 *.sw?
 .DS_Store
-.env
-.gitignore

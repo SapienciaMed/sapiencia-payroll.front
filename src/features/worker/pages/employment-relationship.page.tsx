@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import FormSteps from "../../../common/components/Form/form-steps.component";
 import { useForm } from "react-hook-form";
 import { formsPayroll } from "../../../common/schemas/employment-schema";
@@ -10,7 +10,6 @@ import {
   ICreateWorker,
   IRelative,
 } from "../../../common/interfaces/payroll.interfaces";
-import usePayrollService from "../../../common/hooks/payroll.hook";
 import AffiliationsForm from "../forms/affiliations.form";
 import ContractualInformationForm from "../forms/contractual-information.form";
 import FamiliarInformationForm from "../forms/familiar-information.form";
@@ -18,10 +17,10 @@ import InformationPersonalForm from "../forms/personal-information.form";
 
 const EmploymentRelationshipPage = () => {
   const [familyData, setFamilyData] = useState<{ familiar: IRelative[] }>();
-
   const { step, setStep } = useContext(AppContext);
 
   const {
+    loadInitList,
     typeDocumentList,
     bloodType,
     nacionality,
@@ -47,6 +46,14 @@ const EmploymentRelationshipPage = () => {
   const { handleCreateWorker } = useEmploymentsData();
 
   const currentValidationSchema = formsPayroll[step];
+
+
+  useEffect(()=>{
+    loadInitList().then(()=> {
+      // iniciar set values
+    })
+
+  },[])
 
   const {
     register,
@@ -164,8 +171,8 @@ const EmploymentRelationshipPage = () => {
       classContainerStep: "",
     },
   ];
-
   const stepsAmount = stebs.length - 1;
+
 
   const handleNextStep = async () => {
     const isValid = await trigger();

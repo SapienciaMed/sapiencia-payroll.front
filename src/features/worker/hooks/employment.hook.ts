@@ -6,12 +6,7 @@ import { useGenericListService } from "../../../common/hooks/generic-list-servic
 import { IGenericList } from "../../../common/interfaces/global.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 import usePayrollService from "../../../common/hooks/payroll.hook";
-import {
-  ICharge,
-  ICreateWorker,
-  ITypesContracts,
-  IWorker,
-} from "../../../common/interfaces/payroll.interfaces";
+import { ICreateWorker } from "../../../common/interfaces/payroll.interfaces";
 import useAppCominicator from "../../../common/hooks/app-communicator.hook";
 
 export default function useEmploymentsData() {
@@ -44,8 +39,7 @@ export default function useEmploymentsData() {
   const navigate = useNavigate();
 
   const { setMessage, authorization } = useContext(AppContext);
-  const { getCharges, getTypesContracts ,createWorker} = usePayrollService();
-  const { publish, subscribe, unsubscribe } = useAppCominicator();
+  const { getCharges, createWorker } = usePayrollService();
 
   const handleModal = () => {
     setMessage({
@@ -55,201 +49,18 @@ export default function useEmploymentsData() {
       OkTitle: "Aceptar",
       onOk: () => {
         navigate("/");
-        setMessage((prev) => {return{...prev,show:false}});
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
       },
       onClose: () => {
         setMessage({});
       },
       background: true,
-    })
+    });
   };
 
   /*UseEffects*/
-  useEffect(() => {
-    const groupers = [
-      "GENEROS",
-      "TIPOS_DOCUMENTOS",
-      "TIPO_SANGUINEO",
-      "ESTRATO",
-      "PARENTESCO",
-      "TIPO_VIVIENDA",
-      "PAISES",
-      "EPS",
-      "ARL",
-      "FONDO_PENSIONES",
-      "FONDO_CESANTIAS",
-      "RIESGO_LABORAL",
-      "ESTADO_TRABAJADOR"
-    ];
-    getListByGroupers(groupers)
-      .then((response: ApiResponse<IGenericList[]>) => {
-        if (response && response?.operation?.code === EResponseCodes.OK) {
-          setTypeDocumentList(
-            response.data
-              .filter((grouper) => grouper.grouper == "TIPOS_DOCUMENTOS")
-              .map((item) => {
-                const list = {
-                  name: item.itemCode,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setGenderList(
-            response.data
-              .filter((grouper) => grouper.grouper == "GENEROS")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setBloodType(
-            response.data
-              .filter((grouper) => grouper.grouper == "TIPO_SANGUINEO")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setSocioEconomicStatus(
-            response.data
-              .filter((grouper) => grouper.grouper == "ESTRATO")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setRelationship(
-            response.data
-              .filter((grouper) => grouper.grouper == "PARENTESCO")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setHousingType(
-            response.data
-              .filter((grouper) => grouper.grouper == "TIPO_VIVIENDA")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setNacionality(
-            response.data
-              .filter((grouper) => grouper.grouper == "PAISES")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setEpsList(
-            response.data
-              .filter((grouper) => grouper.grouper == "EPS")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setArlList(
-            response.data
-              .filter((grouper) => grouper.grouper == "ARL")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          ); 
-          setPensionList(
-            response.data
-              .filter((grouper) => grouper.grouper == "FONDO_PENSIONES")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setLayoffList(
-            response.data
-              .filter((grouper) => grouper.grouper == "FONDO_CESANTIAS")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setLevelRiskList(
-            response.data
-              .filter((grouper) => grouper.grouper == "RIESGO_LABORAL")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setActiveWorker(
-            response.data
-              .filter((grouper) => grouper.grouper == "ESTADO_TRABAJADOR")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-        }
-      })
-      .catch((e) => {});
-  }, []);
-
-  useEffect(() => {
-    getListByParent({ grouper: "DEPARTAMENTOS", parentItemCode: "COL" })
-      .then((response: ApiResponse<IGenericList[]>) => {
-        if (response && response?.operation?.code === EResponseCodes.OK) {
-          setDeparmentList(
-            response.data.map((item) => {
-              const list = {
-                name: item.itemDescription,
-                value: item.itemCode,
-              };
-              return list;
-            })
-          );
-        }
-      })
-      .catch((e) => {});
-  }, []);
-
   useEffect(() => {
     setTown("");
     getListByParent({ grouper: "MUNICIPIOS", parentItemCode: deparment })
@@ -288,43 +99,201 @@ export default function useEmploymentsData() {
       .catch((err) => {});
   }, [town, deparment]);
 
-  useEffect(() => {
-    getTypesContracts()
-      .then((response: ApiResponse<ITypesContracts[]>) => {
-        if (response && response?.operation?.code === EResponseCodes.OK) {
-          setTypesContracts(
-            response.data.map((item) => {
-              const list = {
-                name: item.name,
-                value: item.id,
-              };
-              return list;
-            })
-          );
-        }
-      })
-      .catch((err) => {});
-  }, []);
+  async function loadInitList(): Promise<void> {
+    const groupers = [
+      "GENEROS",
+      "TIPOS_DOCUMENTOS",
+      "TIPO_SANGUINEO",
+      "ESTRATO",
+      "PARENTESCO",
+      "TIPO_VIVIENDA",
+      "PAISES",
+      "EPS",
+      "ARL",
+      "FONDO_PENSIONES",
+      "FONDO_CESANTIAS",
+      "RIESGO_LABORAL",
+      "ESTADO_TRABAJADOR",
+    ];
+    const response = await getListByGroupers(groupers);
+    if (response && response?.operation?.code === EResponseCodes.OK) {
+      setTypeDocumentList(
+        response.data
+          .filter((grouper) => grouper.grouper == "TIPOS_DOCUMENTOS")
+          .map((item) => {
+            const list = {
+              name: item.itemCode,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setGenderList(
+        response.data
+          .filter((grouper) => grouper.grouper == "GENEROS")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setBloodType(
+        response.data
+          .filter((grouper) => grouper.grouper == "TIPO_SANGUINEO")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setSocioEconomicStatus(
+        response.data
+          .filter((grouper) => grouper.grouper == "ESTRATO")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setRelationship(
+        response.data
+          .filter((grouper) => grouper.grouper == "PARENTESCO")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setHousingType(
+        response.data
+          .filter((grouper) => grouper.grouper == "TIPO_VIVIENDA")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setNacionality(
+        response.data
+          .filter((grouper) => grouper.grouper == "PAISES")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setEpsList(
+        response.data
+          .filter((grouper) => grouper.grouper == "EPS")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setArlList(
+        response.data
+          .filter((grouper) => grouper.grouper == "ARL")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setPensionList(
+        response.data
+          .filter((grouper) => grouper.grouper == "FONDO_PENSIONES")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setLayoffList(
+        response.data
+          .filter((grouper) => grouper.grouper == "FONDO_CESANTIAS")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setLevelRiskList(
+        response.data
+          .filter((grouper) => grouper.grouper == "RIESGO_LABORAL")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setActiveWorker(
+        response.data
+          .filter((grouper) => grouper.grouper == "ESTADO_TRABAJADOR")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+    }
 
-  useEffect(() => {
-    getCharges()
-      .then((response: ApiResponse<ICharge[]>) => {
-        if (response && response?.operation?.code === EResponseCodes.OK) {
-          setTypesChargesList(
-            response.data.map((item) => {
-              const list = {
-                name: item.name,
-                value: item.id,
-              };
-              return list;
-            })
-          );
-        }
-      })
-      .catch((err) => {});
-  }, []);
+    const res2 = await getListByParent({
+      grouper: "DEPARTAMENTOS",
+      parentItemCode: "COL",
+    });
+    if (res2 && res2?.operation?.code === EResponseCodes.OK) {
+      setDeparmentList(
+        res2.data.map((item) => {
+          const list = {
+            name: item.itemDescription,
+            value: item.itemCode,
+          };
+          return list;
+        })
+      );
+    }
+
+    const res3 = await getCharges();
+    if (res3 && res3?.operation?.code === EResponseCodes.OK) {
+      setTypesChargesList(
+        res3.data.map((item) => {
+          const list = {
+            name: item.name,
+            value: item.id,
+          };
+          return list;
+        })
+      );
+    }
+  }
+
   /*Functions*/
-  const handleCreateWorker = (async (data: ICreateWorker) => {
+  const handleCreateWorker = async (data: ICreateWorker) => {
     setSending(true);
     await createWorker(data)
       .then((response: ApiResponse<ICreateWorker>) => {
@@ -344,8 +313,7 @@ export default function useEmploymentsData() {
         });
         setSending(false);
       });
-  });
-
+  };
 
   const cancelFunction = () => {
     setMessage({
@@ -363,6 +331,7 @@ export default function useEmploymentsData() {
   };
 
   return {
+    loadInitList,
     genderList,
     typeDocumentList,
     cancelFunction,
@@ -386,6 +355,6 @@ export default function useEmploymentsData() {
     pensionList,
     levelRiskList,
     activeWorker,
-    handleCreateWorker
+    handleCreateWorker,
   };
 }

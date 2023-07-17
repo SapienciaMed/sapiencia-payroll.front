@@ -91,7 +91,7 @@ const FamiliarInformationForm = ({
                 id={`fullName${index}`}
                 className="input-basic medium"
                 typeInput="text"
-                disabled={disabledRows[index]}
+                disabled={disabledRows[index]||disabledFields}
                 label="Nombre completo"
                 classNameLabel="text-black big bold"
                 errors={errors}
@@ -113,7 +113,7 @@ const FamiliarInformationForm = ({
                       classNameLabel="text-black big break-line bold"
                       setValueRegister={setValueRegister}
                       onchange={field.onChange}
-                      disabled={disabledRows[index]}
+                      disabled={disabledRows[index]||disabledFields}
                       className="dataPicker-basic medium"
                       setValue={setAge}
                       maxDate={new Date()}
@@ -144,7 +144,7 @@ const FamiliarInformationForm = ({
                     register={registerFamily}
                     errors={errors}
                     data={list[0]}
-                    disabled={disabledRows[index]}
+                    disabled={disabledRows[index]||disabledFields}
                     className="select-basic medium"
                     classNameLabel="text-black big bold"
                     value={field.value}
@@ -164,7 +164,7 @@ const FamiliarInformationForm = ({
                     register={registerFamily}
                     errors={errors}
                     data={list[1]}
-                    disabled={disabledRows[index]}
+                    disabled={disabledRows[index]||disabledFields}
                     className="select-basic medium"
                     classNameLabel="text-black big bold"
                     value={field.value}
@@ -193,12 +193,14 @@ const FamiliarInformationForm = ({
                           }
                         }}
                         className="button-confirm"
+                        disabled={disabledFields}
                       />
                       <ButtonComponent
                         value={<HiOutlineX />}
                         type="button"
                         action={() => handleDisableRow(index)}
                         className="button-cancel-edit"
+                        disabled={disabledFields}
                       />
                     </>
                   ) : (
@@ -208,12 +210,14 @@ const FamiliarInformationForm = ({
                         type="button"
                         action={() => handleEnableRow(index)}
                         className="button-edit"
+                        disabled={disabledFields}
                       />
                       <ButtonComponent
                         value={<HiOutlineTrash />}
                         type="button"
                         action={() => remove(index)}
                         className="button-delete"
+                        disabled={disabledFields}
                       />
                     </>
                   )}
@@ -234,6 +238,7 @@ const FamiliarInformationForm = ({
                 })
               }
               className="button-save large"
+              disabled={disabledFields}
             />
           </div>
         </form>

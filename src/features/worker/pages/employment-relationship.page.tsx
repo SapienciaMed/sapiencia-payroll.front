@@ -45,7 +45,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     step,
     setStep,
     vinculation,
-    handleCreateWorker,
+    handleCreateWorker
   } = useEmploymentsData({ action });
 
   const stebs: FormStebs[] = [
@@ -73,7 +73,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           data={vinculation}
         />
       ),
-      position: 3,
+      position: 0,
       classContainerStep: "",
     },
     {
@@ -100,7 +100,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           action={action}
         />
       ),
-      position: 0,
+      position: 2,
       classContainerStep: "",
     },
     {

@@ -15,6 +15,7 @@ import { InputGroupComponent } from "../../../common/components/Form/input-group
 import { EDirection } from "../../../common/constants/input.enum";
 import { AppContext } from "../../../common/contexts/app.context";
 import { IVinculation } from "../../../common/interfaces/payroll.interfaces";
+import useEmploymentsData from "../hooks/employment.hook";
 
 interface IPersonalInformationProp {
   register: UseFormRegister<any>;
@@ -39,6 +40,27 @@ const InformationPersonalForm = ({
 }: IPersonalInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
   setDisabledFields(action == "view" ? true : false);
+
+  const {
+    typeDocumentSelected,
+    setTypeDocumentSelected,
+    bloodTypeSelected,
+    setBloodTypeSelected,
+    genderSelected,
+    setGenderSelected,
+    nacionalitySelected,
+    setNacionalitySelected,
+    socioEconomicStatusSelected,
+    setSocioEconomicStatusSelected,
+    deparmentSelected,
+    setDeparmentSelected,
+    townSelected,
+    setTownSelected,
+    neighborhoodSelected,
+    setneighborhoodSelected,
+    housingTypeSelected,
+    setHousingTypeSelected,
+  } = useEmploymentsData({ action });
   return (
     <>
       <div className="grid-form-4-container gap-25 container-sections-forms">
@@ -64,8 +86,13 @@ const InformationPersonalForm = ({
                   classNameLabel="text-black big bold"
                   value={field.value}
                   setValueRegister={setValueRegister}
+                  stateProps={{
+                    state: typeDocumentSelected,
+                    setState: setTypeDocumentSelected,
+                  }}
                   onchange={field.onChange}
                   placeholder="Tipo"
+                  disabled={disabledFields}
                 />
               )}
             />
@@ -81,6 +108,7 @@ const InformationPersonalForm = ({
               placeholder={""}
               iconLegend={"No."}
               containerClassname="ml-5px big"
+              disabled={disabledFields}
             />
           </div>
         </div>
@@ -96,6 +124,7 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <InputComponent
           idInput={"worker.secondName"}
@@ -105,9 +134,10 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <InputComponent
-          idInput={"worker.surName"}
+          idInput={"worker.surname"}
           label={
             <>
               Primer apellido <span>*</span>
@@ -118,6 +148,7 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <InputComponent
           idInput={"worker.secondSurname"}
@@ -127,6 +158,7 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
 
         <div className="fields-container gap-25">
@@ -150,6 +182,11 @@ const InformationPersonalForm = ({
                 value={field.value}
                 setValueRegister={setValueRegister}
                 onchange={field.onChange}
+                stateProps={{
+                  state: bloodTypeSelected,
+                  setState: setBloodTypeSelected,
+                }}
+                disabled={disabledFields}
               />
             )}
           />
@@ -173,6 +210,11 @@ const InformationPersonalForm = ({
                 value={field.value}
                 setValueRegister={setValueRegister}
                 onchange={field.onChange}
+                stateProps={{
+                  state: genderSelected,
+                  setState: setGenderSelected,
+                }}
+                disabled={disabledFields}
               />
             )}
           />
@@ -197,6 +239,7 @@ const InformationPersonalForm = ({
                 setValueRegister={setValueRegister}
                 onchange={field.onChange}
                 className="dataPicker-basic  medium "
+                disabled={disabledFields}
               />
             );
           }}
@@ -221,6 +264,11 @@ const InformationPersonalForm = ({
               value={field.value}
               setValueRegister={setValueRegister}
               onchange={field.onChange}
+              stateProps={{
+                state: nacionalitySelected,
+                setState: setNacionalitySelected,
+              }}
+              disabled={disabledFields}
             />
           )}
         />
@@ -250,6 +298,11 @@ const InformationPersonalForm = ({
               value={field.value}
               setValueRegister={setValueRegister}
               onchange={field.onChange}
+              stateProps={{
+                state: deparmentSelected,
+                setState: setDeparmentSelected,
+              }}
+              disabled={disabledFields}
             />
           )}
         />
@@ -274,6 +327,11 @@ const InformationPersonalForm = ({
               value={field.value}
               setValueRegister={setValueRegister}
               onchange={field.onChange}
+              stateProps={{
+                state: townSelected,
+                setState: setTownSelected,
+              }}
+              disabled={disabledFields}
             />
           )}
         />
@@ -297,6 +355,11 @@ const InformationPersonalForm = ({
               value={field.value}
               setValueRegister={setValueRegister}
               onchange={field.onChange}
+              stateProps={{
+                state: neighborhoodSelected,
+                setState: setneighborhoodSelected,
+              }}
+              disabled={disabledFields}
             />
           )}
         />
@@ -312,6 +375,7 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <Controller
           name="worker.socioEconomic"
@@ -329,6 +393,11 @@ const InformationPersonalForm = ({
               value={field.value}
               setValueRegister={setValueRegister}
               onchange={field.onChange}
+              stateProps={{
+                state: socioEconomicStatusSelected,
+                setState: setSocioEconomicStatusSelected,
+              }}
+              disabled={disabledFields}
             />
           )}
         />
@@ -348,6 +417,11 @@ const InformationPersonalForm = ({
               value={field.value}
               setValueRegister={setValueRegister}
               onchange={field.onChange}
+              stateProps={{
+                state: housingTypeSelected,
+                setState: setHousingTypeSelected,
+              }}
+              disabled={disabledFields}
             />
           )}
         />
@@ -363,6 +437,7 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <InputComponent
           idInput={"worker.email"}
@@ -372,6 +447,7 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <div />
       </div>

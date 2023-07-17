@@ -14,6 +14,7 @@ import { DatePickerComponent } from "../../../common/components/Form/input-date.
 import TableComponent from "../../../common/components/table.component";
 import { AppContext } from "../../../common/contexts/app.context";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
+import useEmploymentsData from "../hooks/employment.hook";
 
 interface IContractualInformationProp {
   register: UseFormRegister<any>;
@@ -35,6 +36,13 @@ const ContractualInformationForm = ({
   const { setDisabledFields, disabledFields } = useContext(AppContext);
   setDisabledFields(action == "new" ? false : true);
   const [antiquity, setAntiquity] = useState("0");
+  const {typesChargesSelected,
+    setTypesChargesSelected,
+    typesContractsSelected,
+    setTypesContractsSelected,
+    activeWorkerSelected,
+    setActiveWorkerSelected
+  } = useEmploymentsData({ action });
   return (
     <div>
       <div className="grid-form-4-container gap-25 container-sections-forms ">
@@ -63,7 +71,11 @@ const ContractualInformationForm = ({
               onchange={field.onChange}
               placeholder="Seleccione"
               disabled={disabledFields}
-            />
+              stateProps={{
+                state: typesContractsSelected,
+                setState: setTypesContractsSelected,
+              }}
+              />
           )}
         />
         <InputComponent
@@ -102,6 +114,10 @@ const ContractualInformationForm = ({
               onchange={field.onChange}
               placeholder="Seleccione"
               disabled={disabledFields}
+              stateProps={{
+                state: activeWorkerSelected,
+                setState: setActiveWorkerSelected,
+              }}
             />
           )}
         />
@@ -127,6 +143,10 @@ const ContractualInformationForm = ({
               onchange={field.onChange}
               placeholder="Seleccione"
               disabled={disabledFields}
+              stateProps={{
+                state: typesChargesSelected,
+                setState: setTypesChargesSelected,
+              }}
             />
           )}
         />
@@ -178,7 +198,7 @@ const ContractualInformationForm = ({
             );
           }}
         />
-        <InputComponent
+        {action !== "new" ?(<InputComponent
           idInput="antiquity"
           typeInput="text"
           label="Antiguedad"
@@ -187,7 +207,8 @@ const ContractualInformationForm = ({
           classNameLabel="text-black big bold"
           className="input-basic medium"
           disabled={true}
-        />
+        />):<></>}
+        
         <InputComponent
           idInput="employment.institutionalMail"
           typeInput="email"

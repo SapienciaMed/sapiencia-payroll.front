@@ -19,7 +19,7 @@ const personalInformationLocalization = yup.object({
       .string()
       .optional()
       .max(50, "Solo se permiten 50 caracteres"),
-    surName: yup
+    surname: yup
       .string()
       .required("El campo es obligatorio")
       .min(3, "Ingrese al menos 3 caracteres")

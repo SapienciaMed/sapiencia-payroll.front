@@ -10,7 +10,6 @@ import {
   ICharge,
   IVinculation,
   ITypesContracts,
-  IWorker,
 } from "../../../common/interfaces/payroll.interfaces";
 import useAppCominicator from "../../../common/hooks/app-communicator.hook";
 import { useForm } from "react-hook-form";
@@ -103,6 +102,27 @@ export default function useEmploymentsData({
   const [typesContracts, setTypesContracts] = useState([]);
   const [activeWorker, setActiveWorker] = useState([]);
 
+  /****states for selects components updates or view****/
+  const [typeDocumentSelected, setTypeDocumentSelected] = useState("");
+  const [bloodTypeSelected, setBloodTypeSelected] = useState("");
+  const [genderSelected, setGenderSelected] = useState("");
+  const [nacionalitySelected, setNacionalitySelected] = useState("");
+  const [socioEconomicStatusSelected, setSocioEconomicStatusSelected] =
+    useState("");
+  const [deparmentSelected, setDeparmentSelected] = useState("");
+  const [townSelected, setTownSelected] = useState("");
+  const [neighborhoodSelected, setneighborhoodSelected] = useState("");
+  const [housingTypeSelected, setHousingTypeSelected] = useState("");
+  const [typesChargesSelected, setTypesChargesSelected] = useState("");
+  const [typesContractsSelected, setTypesContractsSelected] = useState("");
+  const [activeWorkerSelected, setActiveWorkerSelected] = useState("");
+  const [epsSelected, setEpsSelected] = useState("");
+  const [arlSelected, setArlSelected] = useState("");
+  const [pensionSelected, setPensionSelected] = useState("");
+  const [layoffSelected, setLayoffSelected] = useState("");
+  const [levelRiskSelected, setLevelRiskSelected] = useState("");
+  const [typeBankAccountSelected, setTypeBankAccountSelected] = useState("");
+  const [bankSelected, setBankSelected] = useState("");
   /*instances*/
   const { getListByParent, getListByGroupers } = useGenericListService();
 
@@ -434,10 +454,31 @@ export default function useEmploymentsData({
       getVinculationById(Number(id))
         .then(({ data, operation }: ApiResponse<IVinculation>) => {
           if (operation.code === EResponseCodes.OK) {
-            setVinculation(data);
-            setValueRegister("worker", data.worker);
-            setValueRegister("relatives", data.relatives);
-            setValueRegister("employment", data.employment);
+            setTimeout(() => {
+              setVinculation(data);
+              setValueRegister("worker", data.worker);
+              setTypeDocumentSelected(data?.worker?.typeDocument);
+              setBloodTypeSelected(data?.worker?.bloodType);
+              setGenderSelected(data?.worker?.gender);
+              setNacionalitySelected(data?.worker?.nationality);
+              setDeparmentSelected(data?.worker?.department);
+              setTownSelected(data?.worker?.municipality);
+              setneighborhoodSelected(data?.worker?.neighborhood);
+              setHousingTypeSelected(data?.worker?.housingType);
+              setSocioEconomicStatusSelected(data?.worker?.socioEconomic);
+              setArlSelected(data?.worker?.arl);
+              setEpsSelected(data?.worker?.eps);
+              setPensionSelected(data?.worker?.fundPension);
+              setLayoffSelected(data?.worker?.severanceFund);
+              setLevelRiskSelected(data?.worker?.riskLevel);
+              setBankSelected(data?.worker?.bank);
+              setTypeBankAccountSelected(data?.worker?.accountType);
+              setValueRegister("relatives", data.relatives);
+              setValueRegister("employment", data.employment);
+              setActiveWorkerSelected(data?.employment?.state);
+              setTypesContractsSelected(data?.employment?.idTypeContract);
+              setTypesChargesSelected(data?.employment?.idCharge);
+            }, 500);
           }
         })
         .catch((err) => {
@@ -481,5 +522,43 @@ export default function useEmploymentsData({
     step,
     setStep,
     handleCreateWorker,
+    typeDocumentSelected,
+    setTypeDocumentSelected,
+    bloodTypeSelected,
+    setBloodTypeSelected,
+    genderSelected,
+    setGenderSelected,
+    nacionalitySelected,
+    setNacionalitySelected,
+    socioEconomicStatusSelected,
+    setSocioEconomicStatusSelected,
+    deparmentSelected,
+    setDeparmentSelected,
+    townSelected,
+    setTownSelected,
+    neighborhoodSelected,
+    setneighborhoodSelected,
+    housingTypeSelected,
+    setHousingTypeSelected,
+    typesChargesSelected,
+    setTypesChargesSelected,
+    typesContractsSelected,
+    setTypesContractsSelected,
+    activeWorkerSelected,
+    setActiveWorkerSelected,
+    epsSelected,
+    setEpsSelected,
+    arlSelected,
+    setArlSelected,
+    pensionSelected,
+    setPensionSelected,
+    layoffSelected,
+    setLayoffSelected,
+    levelRiskSelected,
+    setLevelRiskSelected,
+    typeBankAccountSelected,
+    setTypeBankAccountSelected,
+    bankSelected,
+    setBankSelected,
   };
 }

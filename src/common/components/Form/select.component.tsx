@@ -84,7 +84,8 @@ function SelectElement({
     <div {...registerProp(idInput)}>
       <Dropdown
         id={id}
-        value={stateProps ? stateProps.state : selected}
+         value={stateProps ? stateProps.state : selected}
+        //value={data.find((c)=>{c.value === value })}
         onChange={(e) => {
           if (onchange) {
             onchange(e.value);

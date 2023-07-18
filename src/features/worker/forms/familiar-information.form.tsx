@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineX } from "react-icons/hi";
 import { RiSave3Fill } from "react-icons/ri";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, UseFormGetValues, useFieldArray, useForm } from "react-hook-form";
 import {
   InputComponent,
   SelectComponent,
@@ -9,7 +9,7 @@ import {
 } from "../../../common/components/Form";
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { IRelative } from "../../../common/interfaces/payroll.interfaces";
+import { IRelative, IVinculation } from "../../../common/interfaces/payroll.interfaces";
 import { familiarValidator } from "../../../common/schemas";
 import { AppContext } from "../../../common/contexts/app.context";
 
@@ -21,14 +21,18 @@ interface IFamiliarInformationProp {
   >;
   list: any[][];
   action: string;
+  changedData:number;
+  getValueRegister:UseFormGetValues<IVinculation>;
 }
 const FamiliarInformationForm = ({
   setFamilyData,
   list,
-  action
+  action,
+  getValueRegister,
+  changedData
 }: IFamiliarInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
-  setDisabledFields(action == "view" ? true : false )
+  setDisabledFields(action == "view" ? true : false);
   const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
   const [age, setAge] = useState("0");
   const resolver = useYupValidationResolver(familiarValidator);
@@ -91,7 +95,7 @@ const FamiliarInformationForm = ({
                 id={`fullName${index}`}
                 className="input-basic medium"
                 typeInput="text"
-                disabled={disabledRows[index]||disabledFields}
+                disabled={disabledRows[index] || disabledFields}
                 label="Nombre completo"
                 classNameLabel="text-black big bold"
                 errors={errors}
@@ -113,7 +117,7 @@ const FamiliarInformationForm = ({
                       classNameLabel="text-black big break-line bold"
                       setValueRegister={setValueRegister}
                       onchange={field.onChange}
-                      disabled={disabledRows[index]||disabledFields}
+                      disabled={disabledRows[index] || disabledFields}
                       className="dataPicker-basic medium"
                       setValue={setAge}
                       maxDate={new Date()}
@@ -144,11 +148,13 @@ const FamiliarInformationForm = ({
                     register={registerFamily}
                     errors={errors}
                     data={list[0]}
-                    disabled={disabledRows[index]||disabledFields}
+                    disabled={disabledRows[index] || disabledFields}
                     className="select-basic medium"
                     classNameLabel="text-black big bold"
                     value={field.value}
                     setValueRegister={setValueRegister}
+                    getValueRegister={getValueRegister}
+                    change={changedData}
                     onchange={field.onChange}
                   />
                 )}
@@ -164,11 +170,13 @@ const FamiliarInformationForm = ({
                     register={registerFamily}
                     errors={errors}
                     data={list[1]}
-                    disabled={disabledRows[index]||disabledFields}
+                    disabled={disabledRows[index] || disabledFields}
                     className="select-basic medium"
                     classNameLabel="text-black big bold"
                     value={field.value}
                     setValueRegister={setValueRegister}
+                    getValueRegister={getValueRegister}
+                    change={changedData}
                     onchange={field.onChange}
                   />
                 )}

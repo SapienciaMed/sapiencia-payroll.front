@@ -3,6 +3,7 @@ import {
   Control,
   Controller,
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
@@ -26,6 +27,8 @@ interface IPersonalInformationProp {
   setValueRegister: UseFormSetValue<any>;
   action: string;
   data: IVinculation;
+  changedData: number;
+  getValueRegister: UseFormGetValues<IVinculation>;
 }
 
 const InformationPersonalForm = ({
@@ -37,30 +40,11 @@ const InformationPersonalForm = ({
   setValueRegister,
   action,
   data,
+  changedData,
+  getValueRegister,
 }: IPersonalInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
   setDisabledFields(action == "view" ? true : false);
-
-  const {
-    typeDocumentSelected,
-    setTypeDocumentSelected,
-    bloodTypeSelected,
-    setBloodTypeSelected,
-    genderSelected,
-    setGenderSelected,
-    nacionalitySelected,
-    setNacionalitySelected,
-    socioEconomicStatusSelected,
-    setSocioEconomicStatusSelected,
-    deparmentSelected,
-    setDeparmentSelected,
-    townSelected,
-    setTownSelected,
-    neighborhoodSelected,
-    setneighborhoodSelected,
-    housingTypeSelected,
-    setHousingTypeSelected,
-  } = useEmploymentsData({ action });
   return (
     <>
       <div className="grid-form-4-container gap-25 container-sections-forms">
@@ -86,10 +70,8 @@ const InformationPersonalForm = ({
                   classNameLabel="text-black big bold"
                   value={field.value}
                   setValueRegister={setValueRegister}
-                  stateProps={{
-                    state: typeDocumentSelected,
-                    setState: setTypeDocumentSelected,
-                  }}
+                  getValueRegister={getValueRegister}
+                  change={changedData}
                   onchange={field.onChange}
                   placeholder="Tipo"
                   disabled={disabledFields}
@@ -181,11 +163,9 @@ const InformationPersonalForm = ({
                 classNameLabel="text-black big bold"
                 value={field.value}
                 setValueRegister={setValueRegister}
+                getValueRegister={getValueRegister}
+                change={changedData}
                 onchange={field.onChange}
-                stateProps={{
-                  state: bloodTypeSelected,
-                  setState: setBloodTypeSelected,
-                }}
                 disabled={disabledFields}
               />
             )}
@@ -209,11 +189,9 @@ const InformationPersonalForm = ({
                 classNameLabel="text-black big bold"
                 value={field.value}
                 setValueRegister={setValueRegister}
+                getValueRegister={getValueRegister}
+                change={changedData}
                 onchange={field.onChange}
-                stateProps={{
-                  state: genderSelected,
-                  setState: setGenderSelected,
-                }}
                 disabled={disabledFields}
               />
             )}
@@ -263,11 +241,9 @@ const InformationPersonalForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
-              stateProps={{
-                state: nacionalitySelected,
-                setState: setNacionalitySelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -297,11 +273,9 @@ const InformationPersonalForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
-              stateProps={{
-                state: deparmentSelected,
-                setState: setDeparmentSelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -326,11 +300,9 @@ const InformationPersonalForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
-              stateProps={{
-                state: townSelected,
-                setState: setTownSelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -354,11 +326,9 @@ const InformationPersonalForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
-              stateProps={{
-                state: neighborhoodSelected,
-                setState: setneighborhoodSelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -392,11 +362,9 @@ const InformationPersonalForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
-              stateProps={{
-                state: socioEconomicStatusSelected,
-                setState: setSocioEconomicStatusSelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -416,11 +384,9 @@ const InformationPersonalForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
-              stateProps={{
-                state: housingTypeSelected,
-                setState: setHousingTypeSelected,
-              }}
               disabled={disabledFields}
             />
           )}

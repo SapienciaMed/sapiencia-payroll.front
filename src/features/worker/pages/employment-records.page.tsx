@@ -21,8 +21,10 @@ import {
   IWorker,
 } from "../../../common/interfaces/payroll.interfaces";
 import { useNavigate } from "react-router-dom";
+import useEmploymentsData from "../hooks/employment.hook";
 
 const EmploymentRecordsPage = () => {
+  const {typesContracts,activeWorker} = useEmploymentsData()
   const tableComponentRef = useRef(null);
   const navigate = useNavigate()
   const resolver = useYupValidationResolver(searchRecord);
@@ -32,7 +34,7 @@ const EmploymentRecordsPage = () => {
     formState: { errors },
     setValue: setValueRegister,
     control,
-    reset,
+    reset
   } = useForm<IFilterVinculation>({ resolver });
   const tableColumns: ITableElement<IGetVinculation>[] = [
     {
@@ -50,8 +52,11 @@ const EmploymentRecordsPage = () => {
     }
     },
     {
-      fieldName: "employment.idTypeContract",
+      fieldName: "employment.typesContracts",
       header: "Tipo de vinculación",
+      renderCell: (row) => {
+        return <>{row.employment?.typesContracts[0].name}</>;
+    }
     },
     {
       fieldName: "employment.startDate",
@@ -128,7 +133,7 @@ const EmploymentRecordsPage = () => {
                       label={<>Estado</>}
                       register={register}
                       errors={errors}
-                      data={[]}
+                      data={activeWorker}
                       className="select-basic medium"
                       classNameLabel="text-black big bold"
                       value={field.value}
@@ -148,7 +153,7 @@ const EmploymentRecordsPage = () => {
                       label={<>Tipo de vinculación</>}
                       register={register}
                       errors={errors}
-                      data={[]}
+                      data={typesContracts}
                       className="select-basic medium"
                       classNameLabel="text-black big bold"
                       value={field.value}

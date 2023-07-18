@@ -1,9 +1,17 @@
 import React, { useContext } from "react";
-import { Control, Controller, FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 import { SelectComponent } from "../../../common/components/Form/select.component";
 import { InputComponent } from "../../../common/components/Form/input.component";
 import { AppContext } from "../../../common/contexts/app.context";
 import useEmploymentsData from "../hooks/employment.hook";
+import { IVinculation } from "../../../common/interfaces/payroll.interfaces";
 
 interface IOtherInformationProp {
   register: UseFormRegister<any>;
@@ -12,6 +20,8 @@ interface IOtherInformationProp {
   list: any[];
   setValueRegister: UseFormSetValue<any>;
   action: string;
+  changedData: number;
+  getValueRegister: UseFormGetValues<IVinculation>;
 }
 
 const AffiliationsForm = ({
@@ -20,26 +30,12 @@ const AffiliationsForm = ({
   control,
   setValueRegister,
   list,
-  action
+  action,
+  changedData,
+  getValueRegister,
 }: IOtherInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
-  setDisabledFields(action == "view" ? true : false )
-  const {
-    epsSelected,
-    setEpsSelected,
-    arlSelected,
-    setArlSelected,
-    pensionSelected,
-    setPensionSelected,
-    layoffSelected,
-    setLayoffSelected,
-    levelRiskSelected,
-    setLevelRiskSelected,
-    typeBankAccountSelected,
-    setTypeBankAccountSelected,
-    bankSelected,
-    setBankSelected,
-    } = useEmploymentsData({ action });
+  setDisabledFields(action == "view" ? true : false);
   return (
     <div>
       <div className="grid-form-3-container gap-25 container-sections-forms ">
@@ -61,12 +57,10 @@ const AffiliationsForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
               placeholder="Seleccione"
-              stateProps={{
-                state: epsSelected,
-                setState: setEpsSelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -86,12 +80,10 @@ const AffiliationsForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
               placeholder="Seleccione"
-              stateProps={{
-                state: pensionSelected,
-                setState: setPensionSelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -111,12 +103,10 @@ const AffiliationsForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
               placeholder="Seleccione"
-              stateProps={{
-                state: arlSelected,
-                setState: setArlSelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -136,12 +126,10 @@ const AffiliationsForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
               placeholder="Seleccione"
-              stateProps={{
-                state: levelRiskSelected,
-                setState: setLevelRiskSelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -161,12 +149,10 @@ const AffiliationsForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
               placeholder="Seleccione"
-              stateProps={{
-                state: layoffSelected,
-                setState: setLayoffSelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -178,11 +164,7 @@ const AffiliationsForm = ({
         </span>
         <InputComponent
           idInput={"worker.accountBankNumber"}
-          label={
-            <>
-              No. de cuenta
-            </>
-          }
+          label={<>No. de cuenta</>}
           typeInput={"text"}
           register={register}
           errors={errors}
@@ -205,12 +187,10 @@ const AffiliationsForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
               placeholder="Seleccione"
-              stateProps={{
-                state: typeBankAccountSelected,
-                setState: setTypeBankAccountSelected,
-              }}
               disabled={disabledFields}
             />
           )}
@@ -230,12 +210,10 @@ const AffiliationsForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
               placeholder="Seleccione"
-              stateProps={{
-                state: bankSelected,
-                setState: setBankSelected,
-              }}
               disabled={disabledFields}
             />
           )}

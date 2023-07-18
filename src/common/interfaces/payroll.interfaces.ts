@@ -90,7 +90,15 @@ export interface IGetVinculation {
   dateModified?: DateTime;
   userCreate?: string;
   dateCreate?: DateTime;
-  employment: IEmployment;
+  employment: {idCharge: string;
+    institutionalMail: string;
+    idTypeContract: string;
+    contractNumber: string;
+    startDate: DateTime;
+    endDate: DateTime;
+    state: string;
+    idReasonRetirement: string;
+    typesContracts?:ITypesContracts[];};
 }
 
 export interface ITypesContracts {

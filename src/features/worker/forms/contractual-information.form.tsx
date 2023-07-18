@@ -3,6 +3,7 @@ import {
   Control,
   Controller,
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
@@ -15,6 +16,7 @@ import TableComponent from "../../../common/components/table.component";
 import { AppContext } from "../../../common/contexts/app.context";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
 import useEmploymentsData from "../hooks/employment.hook";
+import { IVinculation } from "../../../common/interfaces/payroll.interfaces";
 
 interface IContractualInformationProp {
   register: UseFormRegister<any>;
@@ -23,6 +25,8 @@ interface IContractualInformationProp {
   setValueRegister: UseFormSetValue<any>;
   list: any[][];
   action: string;
+  changedData: number;
+  getValueRegister: UseFormGetValues<IVinculation>;
 }
 
 const ContractualInformationForm = ({
@@ -32,17 +36,12 @@ const ContractualInformationForm = ({
   setValueRegister,
   list,
   action,
+  changedData,
+  getValueRegister,
 }: IContractualInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
   setDisabledFields(action == "new" ? false : true);
   const [antiquity, setAntiquity] = useState("0");
-  const {typesChargesSelected,
-    setTypesChargesSelected,
-    typesContractsSelected,
-    setTypesContractsSelected,
-    activeWorkerSelected,
-    setActiveWorkerSelected
-  } = useEmploymentsData({ action });
   return (
     <div>
       <div className="grid-form-4-container gap-25 container-sections-forms ">
@@ -68,14 +67,12 @@ const ContractualInformationForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
               placeholder="Seleccione"
               disabled={disabledFields}
-              stateProps={{
-                state: typesContractsSelected,
-                setState: setTypesContractsSelected,
-              }}
-              />
+            />
           )}
         />
         <InputComponent
@@ -111,13 +108,11 @@ const ContractualInformationForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
               placeholder="Seleccione"
               disabled={disabledFields}
-              stateProps={{
-                state: activeWorkerSelected,
-                setState: setActiveWorkerSelected,
-              }}
             />
           )}
         />
@@ -140,13 +135,11 @@ const ContractualInformationForm = ({
               classNameLabel="text-black big bold"
               value={field.value}
               setValueRegister={setValueRegister}
+              getValueRegister={getValueRegister}
+              change={changedData}
               onchange={field.onChange}
               placeholder="Seleccione"
               disabled={disabledFields}
-              stateProps={{
-                state: typesChargesSelected,
-                setState: setTypesChargesSelected,
-              }}
             />
           )}
         />
@@ -198,17 +191,21 @@ const ContractualInformationForm = ({
             );
           }}
         />
-        {action !== "new" ?(<InputComponent
-          idInput="antiquity"
-          typeInput="text"
-          label="Antiguedad"
-          errors={errors}
-          value={antiquity ? antiquity : "0"}
-          classNameLabel="text-black big bold"
-          className="input-basic medium"
-          disabled={true}
-        />):<></>}
-        
+        {action !== "new" ? (
+          <InputComponent
+            idInput="antiquity"
+            typeInput="text"
+            label="Antiguedad"
+            errors={errors}
+            value={antiquity ? antiquity : "0"}
+            classNameLabel="text-black big bold"
+            className="input-basic medium"
+            disabled={true}
+          />
+        ) : (
+          <></>
+        )}
+
         <InputComponent
           idInput="employment.institutionalMail"
           typeInput="email"
@@ -224,7 +221,7 @@ const ContractualInformationForm = ({
           disabled={disabledFields}
         />
 
-        {true ? (
+        {false ? (
           <InputComponent
             idInput="employment.salary"
             typeInput="text"
@@ -264,10 +261,11 @@ const ContractualInformationForm = ({
       </div>
       {action !== "new" ? (
         <div className="container-sections-forms">
-        <TableComponent url={""} columns={[]} isShowModal={false} />
-      </div>) :(<></>)
-      }
-      
+          <TableComponent url={""} columns={[]} isShowModal={false} />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

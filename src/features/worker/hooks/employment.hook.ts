@@ -16,13 +16,7 @@ import { useForm } from "react-hook-form";
 import { formsPayroll } from "../../../common/schemas/employment-schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-interface IUseEmploymentsDataProps {
-  action: string;
-}
-
-export default function useEmploymentsData({
-  action,
-}: IUseEmploymentsDataProps) {
+export default function useEmploymentsData() {
   const { id } = useParams();
   const { step, setStep } = useContext(AppContext);
   const currentValidationSchema = formsPayroll[step];
@@ -71,15 +65,17 @@ export default function useEmploymentsData({
     register,
     formState: { errors, isValid },
     control,
+    getValues: getValueRegister,
     handleSubmit,
     trigger,
+    watch,
     setValue: setValueRegister,
   } = useForm<IVinculation>({
     defaultValues: vinculation,
     resolver: yupResolver(currentValidationSchema),
     mode: "all",
   });
-
+  const [changedData, changeData] = useState<number>(null);
   const [genderList, setGenderList] = useState([]);
   const [typeDocumentList, setTypeDocumentList] = useState([]);
   const [deparmentList, setDeparmentList] = useState([]);
@@ -102,27 +98,6 @@ export default function useEmploymentsData({
   const [typesContracts, setTypesContracts] = useState([]);
   const [activeWorker, setActiveWorker] = useState([]);
 
-  /****states for selects components updates or view****/
-  const [typeDocumentSelected, setTypeDocumentSelected] = useState("");
-  const [bloodTypeSelected, setBloodTypeSelected] = useState("");
-  const [genderSelected, setGenderSelected] = useState("");
-  const [nacionalitySelected, setNacionalitySelected] = useState("");
-  const [socioEconomicStatusSelected, setSocioEconomicStatusSelected] =
-    useState("");
-  const [deparmentSelected, setDeparmentSelected] = useState("");
-  const [townSelected, setTownSelected] = useState("");
-  const [neighborhoodSelected, setneighborhoodSelected] = useState("");
-  const [housingTypeSelected, setHousingTypeSelected] = useState("");
-  const [typesChargesSelected, setTypesChargesSelected] = useState("");
-  const [typesContractsSelected, setTypesContractsSelected] = useState("");
-  const [activeWorkerSelected, setActiveWorkerSelected] = useState("");
-  const [epsSelected, setEpsSelected] = useState("");
-  const [arlSelected, setArlSelected] = useState("");
-  const [pensionSelected, setPensionSelected] = useState("");
-  const [layoffSelected, setLayoffSelected] = useState("");
-  const [levelRiskSelected, setLevelRiskSelected] = useState("");
-  const [typeBankAccountSelected, setTypeBankAccountSelected] = useState("");
-  const [bankSelected, setBankSelected] = useState("");
   /*instances*/
   const { getListByParent, getListByGroupers } = useGenericListService();
 
@@ -153,172 +128,172 @@ export default function useEmploymentsData({
   };
 
   /*UseEffects*/
-  useEffect(() => {
-    const groupers = [
-      "GENEROS",
-      "TIPOS_DOCUMENTOS",
-      "TIPO_SANGUINEO",
-      "ESTRATO",
-      "PARENTESCO",
-      "TIPO_VIVIENDA",
-      "PAISES",
-      "EPS",
-      "ARL",
-      "FONDO_PENSIONES",
-      "FONDO_CESANTIAS",
-      "RIESGO_LABORAL",
-      "ESTADO_TRABAJADOR",
-    ];
-    getListByGroupers(groupers)
-      .then((response: ApiResponse<IGenericList[]>) => {
-        if (response && response?.operation?.code === EResponseCodes.OK) {
-          setTypeDocumentList(
-            response.data
-              .filter((grouper) => grouper.grouper == "TIPOS_DOCUMENTOS")
-              .map((item) => {
-                const list = {
-                  name: item.itemCode,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setGenderList(
-            response.data
-              .filter((grouper) => grouper.grouper == "GENEROS")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setBloodType(
-            response.data
-              .filter((grouper) => grouper.grouper == "TIPO_SANGUINEO")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setSocioEconomicStatus(
-            response.data
-              .filter((grouper) => grouper.grouper == "ESTRATO")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setRelationship(
-            response.data
-              .filter((grouper) => grouper.grouper == "PARENTESCO")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setHousingType(
-            response.data
-              .filter((grouper) => grouper.grouper == "TIPO_VIVIENDA")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setNacionality(
-            response.data
-              .filter((grouper) => grouper.grouper == "PAISES")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setEpsList(
-            response.data
-              .filter((grouper) => grouper.grouper == "EPS")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setArlList(
-            response.data
-              .filter((grouper) => grouper.grouper == "ARL")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setPensionList(
-            response.data
-              .filter((grouper) => grouper.grouper == "FONDO_PENSIONES")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setLayoffList(
-            response.data
-              .filter((grouper) => grouper.grouper == "FONDO_CESANTIAS")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setLevelRiskList(
-            response.data
-              .filter((grouper) => grouper.grouper == "RIESGO_LABORAL")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-          setActiveWorker(
-            response.data
-              .filter((grouper) => grouper.grouper == "ESTADO_TRABAJADOR")
-              .map((item) => {
-                const list = {
-                  name: item.itemDescription,
-                  value: item.itemCode,
-                };
-                return list;
-              })
-          );
-        }
-      })
-      .catch((e) => {});
-  }, []);
+  // useEffect(() => {
+  //   const groupers = [
+  //     "GENEROS",
+  //     "TIPOS_DOCUMENTOS",
+  //     "TIPO_SANGUINEO",
+  //     "ESTRATO",
+  //     "PARENTESCO",
+  //     "TIPO_VIVIENDA",
+  //     "PAISES",
+  //     "EPS",
+  //     "ARL",
+  //     "FONDO_PENSIONES",
+  //     "FONDO_CESANTIAS",
+  //     "RIESGO_LABORAL",
+  //     "ESTADO_TRABAJADOR",
+  //   ];
+  //   getListByGroupers(groupers)
+  //     .then((response: ApiResponse<IGenericList[]>) => {
+  //       if (response && response?.operation?.code === EResponseCodes.OK) {
+  //         setTypeDocumentList(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "TIPOS_DOCUMENTOS")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemCode,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setGenderList(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "GENEROS")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setBloodType(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "TIPO_SANGUINEO")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setSocioEconomicStatus(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "ESTRATO")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setRelationship(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "PARENTESCO")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setHousingType(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "TIPO_VIVIENDA")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setNacionality(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "PAISES")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setEpsList(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "EPS")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setArlList(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "ARL")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setPensionList(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "FONDO_PENSIONES")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setLayoffList(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "FONDO_CESANTIAS")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setLevelRiskList(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "RIESGO_LABORAL")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //         setActiveWorker(
+  //           response.data
+  //             .filter((grouper) => grouper.grouper == "ESTADO_TRABAJADOR")
+  //             .map((item) => {
+  //               const list = {
+  //                 name: item.itemDescription,
+  //                 value: item.itemCode,
+  //               };
+  //               return list;
+  //             })
+  //         );
+  //       }
+  //     })
+  //     .catch((e) => {});
+  // }, []);
 
   useEffect(() => {
     getListByParent({ grouper: "DEPARTAMENTOS", parentItemCode: "COL" })
@@ -412,6 +387,197 @@ export default function useEmploymentsData({
       .catch((err) => {});
   }, []);
   /*Functions*/
+
+  async function loadInitList(): Promise<void> {
+    const groupers = [
+      "GENEROS",
+      "TIPOS_DOCUMENTOS",
+      "TIPO_SANGUINEO",
+      "ESTRATO",
+      "PARENTESCO",
+      "TIPO_VIVIENDA",
+      "PAISES",
+      "EPS",
+      "ARL",
+      "FONDO_PENSIONES",
+      "FONDO_CESANTIAS",
+      "RIESGO_LABORAL",
+      "ESTADO_TRABAJADOR",
+    ];
+
+    const response = await getListByGroupers(groupers);
+    if (response.operation.code === EResponseCodes.OK) {
+      setTypeDocumentList(
+        response.data
+          .filter((grouper) => grouper.grouper == "TIPOS_DOCUMENTOS")
+          .map((item) => {
+            const list = {
+              name: item.itemCode,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setGenderList(
+        response.data
+          .filter((grouper) => grouper.grouper == "GENEROS")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setBloodType(
+        response.data
+          .filter((grouper) => grouper.grouper == "TIPO_SANGUINEO")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setSocioEconomicStatus(
+        response.data
+          .filter((grouper) => grouper.grouper == "ESTRATO")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setRelationship(
+        response.data
+          .filter((grouper) => grouper.grouper == "PARENTESCO")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setHousingType(
+        response.data
+          .filter((grouper) => grouper.grouper == "TIPO_VIVIENDA")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setNacionality(
+        response.data
+          .filter((grouper) => grouper.grouper == "PAISES")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setEpsList(
+        response.data
+          .filter((grouper) => grouper.grouper == "EPS")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setArlList(
+        response.data
+          .filter((grouper) => grouper.grouper == "ARL")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setPensionList(
+        response.data
+          .filter((grouper) => grouper.grouper == "FONDO_PENSIONES")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setLayoffList(
+        response.data
+          .filter((grouper) => grouper.grouper == "FONDO_CESANTIAS")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setLevelRiskList(
+        response.data
+          .filter((grouper) => grouper.grouper == "RIESGO_LABORAL")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setActiveWorker(
+        response.data
+          .filter((grouper) => grouper.grouper == "ESTADO_TRABAJADOR")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+    }
+  }
+
+  useEffect(() => {
+    loadInitList().then(() => {
+      if (id) {
+        getVinculationById(Number(id)).then(
+          ({ data, operation }: ApiResponse<IVinculation>) => {
+            if (operation.code === EResponseCodes.OK) {
+              setVinculation(data);
+            }
+          }
+        );
+      }
+    });
+  }, [id]);
+
+  useEffect(() => {
+    if (!vinculation) return;
+
+    setValueRegister("worker", vinculation?.worker);
+    setValueRegister("relatives", vinculation?.relatives);
+    setValueRegister("employment", vinculation?.employment[0]);
+    changeData((prev) => {
+      return prev + 1;
+    });
+  }, [vinculation]);
+
   const handleCreateWorker = async (data: IVinculation) => {
     setSending(true);
     await createWorker(data)
@@ -449,44 +615,6 @@ export default function useEmploymentsData({
     });
   };
 
-  useEffect(() => {
-    if (action != "new") {
-      getVinculationById(Number(id))
-        .then(({ data, operation }: ApiResponse<IVinculation>) => {
-          if (operation.code === EResponseCodes.OK) {
-            setTimeout(() => {
-              setVinculation(data);
-              setValueRegister("worker", data.worker);
-              setTypeDocumentSelected(data?.worker?.typeDocument);
-              setBloodTypeSelected(data?.worker?.bloodType);
-              setGenderSelected(data?.worker?.gender);
-              setNacionalitySelected(data?.worker?.nationality);
-              setDeparmentSelected(data?.worker?.department);
-              setTownSelected(data?.worker?.municipality);
-              setneighborhoodSelected(data?.worker?.neighborhood);
-              setHousingTypeSelected(data?.worker?.housingType);
-              setSocioEconomicStatusSelected(data?.worker?.socioEconomic);
-              setArlSelected(data?.worker?.arl);
-              setEpsSelected(data?.worker?.eps);
-              setPensionSelected(data?.worker?.fundPension);
-              setLayoffSelected(data?.worker?.severanceFund);
-              setLevelRiskSelected(data?.worker?.riskLevel);
-              setBankSelected(data?.worker?.bank);
-              setTypeBankAccountSelected(data?.worker?.accountType);
-              setValueRegister("relatives", data.relatives);
-              setValueRegister("employment", data.employment);
-              setActiveWorkerSelected(data?.employment?.state);
-              setTypesContractsSelected(data?.employment?.idTypeContract);
-              setTypesChargesSelected(data?.employment?.idCharge);
-            }, 500);
-          }
-        })
-        .catch((err) => {
-          navigate("/");
-        });
-    }
-  }, []);
-
   return {
     genderList,
     typeDocumentList,
@@ -522,43 +650,7 @@ export default function useEmploymentsData({
     step,
     setStep,
     handleCreateWorker,
-    typeDocumentSelected,
-    setTypeDocumentSelected,
-    bloodTypeSelected,
-    setBloodTypeSelected,
-    genderSelected,
-    setGenderSelected,
-    nacionalitySelected,
-    setNacionalitySelected,
-    socioEconomicStatusSelected,
-    setSocioEconomicStatusSelected,
-    deparmentSelected,
-    setDeparmentSelected,
-    townSelected,
-    setTownSelected,
-    neighborhoodSelected,
-    setneighborhoodSelected,
-    housingTypeSelected,
-    setHousingTypeSelected,
-    typesChargesSelected,
-    setTypesChargesSelected,
-    typesContractsSelected,
-    setTypesContractsSelected,
-    activeWorkerSelected,
-    setActiveWorkerSelected,
-    epsSelected,
-    setEpsSelected,
-    arlSelected,
-    setArlSelected,
-    pensionSelected,
-    setPensionSelected,
-    layoffSelected,
-    setLayoffSelected,
-    levelRiskSelected,
-    setLevelRiskSelected,
-    typeBankAccountSelected,
-    setTypeBankAccountSelected,
-    bankSelected,
-    setBankSelected,
+    changedData,
+    getValueRegister,
   };
 }

@@ -45,8 +45,10 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     step,
     setStep,
     vinculation,
-    handleCreateWorker
-  } = useEmploymentsData({ action });
+    handleCreateWorker,
+    changedData,
+    getValueRegister,
+  } = useEmploymentsData();
 
   const stebs: FormStebs[] = [
     {
@@ -71,6 +73,8 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           setValueRegister={setValueRegister}
           action={action}
           data={vinculation}
+          changedData={changedData}
+          getValueRegister={getValueRegister}
         />
       ),
       position: 0,
@@ -83,6 +87,8 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           setFamilyData={setFamilyData}
           list={[genderList, relationship]}
           action={action}
+          changedData={changedData}
+          getValueRegister={getValueRegister}
         />
       ),
       position: 1,
@@ -98,6 +104,8 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           setValueRegister={setValueRegister}
           list={[typesContracts, typesChargesList, activeWorker]}
           action={action}
+          changedData={changedData}
+          getValueRegister={getValueRegister}
         />
       ),
       position: 2,
@@ -113,6 +121,8 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           setValueRegister={setValueRegister}
           list={[epsList, pensionList, arlList, levelRiskList, layoffList]}
           action={action}
+          changedData={changedData}
+          getValueRegister={getValueRegister}
         />
       ),
       position: 3,

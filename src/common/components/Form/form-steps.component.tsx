@@ -19,6 +19,7 @@ interface IFormStepsProp {
   stepsAmount: number;
   register: UseFormRegister<any>;
   actionSubmit: any;
+  // watch: any;
 }
 
 const FormSteps = ({
@@ -32,11 +33,12 @@ const FormSteps = ({
   stepsAmount,
   actionSubmit,
   register,
-}: IFormStepsProp) => {
+}: // watch,
+IFormStepsProp) => {
   const { step } = useContext(AppContext);
 
   const onSubmit = handleSubmit(async (values) => {
-    const response = await actionSubmit(values);
+    await actionSubmit(values);
   });
 
   return (
@@ -72,7 +74,9 @@ const FormSteps = ({
                 <div
                   className={infoStep.classContainerStep}
                   key={infoStep.position}
-                  {...register(`step-$${step}`, { shouldUnregister: true })}
+                  {...register(`step-$${step}`, {
+                    shouldUnregister: true,
+                  })}
                 >
                   {step === infoStep.position && infoStep.contentStep}
 
@@ -100,8 +104,8 @@ const FormSteps = ({
             }
           })}
         </div>
-
-        {/* <p>{validForm ? "Valid" : "Invalid"}</p>
+        {/* 
+        <p>{validForm ? "Valid" : "Invalid"}</p>
         <pre className="">{JSON.stringify(watch())}</pre> */}
       </form>
     </>

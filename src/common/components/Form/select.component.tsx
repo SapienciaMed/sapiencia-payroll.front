@@ -156,6 +156,9 @@ export function SelectComponent({
     );
     if (!dataSelect) data.unshift(seleccione);
   }
+
+  console.log(value);
+
   const messageError = () => {
     const keysError = idInput.split(".");
     let errs = errors;

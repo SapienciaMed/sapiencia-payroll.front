@@ -10,6 +10,7 @@ import {
   ICharge,
   IVinculation,
   ITypesContracts,
+  IRelative,
 } from "../../../common/interfaces/payroll.interfaces";
 import useAppCominicator from "../../../common/hooks/app-communicator.hook";
 import { useForm } from "react-hook-form";
@@ -24,6 +25,7 @@ export default function useEmploymentsData() {
   /*States*/
   const [vinculation, setVinculation] = useState<IVinculation>({
     worker: {
+      id: null,
       typeDocument: "",
       numberDocument: "",
       firstName: "",
@@ -48,7 +50,7 @@ export default function useEmploymentsData() {
       riskLevel: "",
       housingType: "",
     },
-    relatives: [{}],
+    relatives: [],
     employment: {
       idTypeContract: "",
       contractNumber: "",
@@ -60,6 +62,10 @@ export default function useEmploymentsData() {
       state: "",
     },
   } as IVinculation);
+
+  const [familyData, setFamilyData] = useState<{ familiar: IRelative[] }>({
+    familiar: vinculation.relatives,
+  });
 
   const {
     register,
@@ -570,9 +576,15 @@ export default function useEmploymentsData() {
   useEffect(() => {
     if (!vinculation) return;
 
-    setValueRegister("worker", vinculation?.worker);
+    if (vinculation.worker.id) {
+      setValueRegister("worker", vinculation?.worker, { shouldValidate: true });
+    }
+
     setValueRegister("relatives", vinculation?.relatives);
     setValueRegister("employment", vinculation?.employment[0]);
+
+    setFamilyData({ familiar: vinculation?.relatives });
+
     changeData((prev) => {
       return prev + 1;
     });
@@ -651,6 +663,10 @@ export default function useEmploymentsData() {
     setStep,
     handleCreateWorker,
     changedData,
+    changeData,
     getValueRegister,
+    familyData,
+    setFamilyData,
+    watch,
   };
 }

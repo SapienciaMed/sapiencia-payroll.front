@@ -95,7 +95,8 @@ export interface IGetVinculation {
   dateModified?: DateTime;
   userCreate?: string;
   dateCreate?: DateTime;
-  employment: {idCharge: string;
+  employment: {
+    idCharge: string;
     institutionalMail: string;
     idTypeContract: string;
     contractNumber: string;
@@ -103,7 +104,8 @@ export interface IGetVinculation {
     endDate: DateTime;
     state: string;
     idReasonRetirement: string;
-    typesContracts?:ITypesContracts[];};
+    typesContracts?: ITypesContracts[];
+  };
 }
 
 export interface ITypesContracts {
@@ -135,9 +137,9 @@ export interface IFilterVinculation {
   perPage: number;
   documentNumber?: number;
   state?: string;
-  vinculationType?:string;
-  name?:string;
-  lastName?:string;
+  vinculationType?: string;
+  name?: string;
+  lastName?: string;
 }
 
 export interface IFilterVinculation {

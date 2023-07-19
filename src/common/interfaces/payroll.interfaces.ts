@@ -8,7 +8,12 @@ export interface IEmployment {
   startDate: DateTime;
   endDate: DateTime;
   state: string;
+  observation?:string;
+  salary?:number;
+  totalValue?:number;
   idReasonRetirement: string;
+  charges?: ICharge[]
+  typesContracts?: ITypesContracts[]
 }
 
 export interface IRelative {
@@ -133,4 +138,10 @@ export interface IFilterVinculation {
   vinculationType?:string;
   name?:string;
   lastName?:string;
+}
+
+export interface IFilterVinculation {
+  page: number;
+  perPage: number;
+  id?:number;
 }

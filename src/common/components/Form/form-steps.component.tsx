@@ -36,10 +36,7 @@ const FormSteps = ({
   const { step } = useContext(AppContext);
 
   const onSubmit = handleSubmit(async (values) => {
-    console.log(values);
     const response = await actionSubmit(values);
-
-    console.log(response);
   });
 
   return (

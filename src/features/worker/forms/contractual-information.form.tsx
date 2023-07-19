@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Control,
   Controller,
@@ -15,8 +15,18 @@ import { DatePickerComponent } from "../../../common/components/Form/input-date.
 import TableComponent from "../../../common/components/table.component";
 import { AppContext } from "../../../common/contexts/app.context";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
+import { DateTime } from "luxon";
 import useEmploymentsData from "../hooks/employment.hook";
-import { IVinculation } from "../../../common/interfaces/payroll.interfaces";
+import {
+  IEmployment,
+  IVinculation,
+} from "../../../common/interfaces/payroll.interfaces";
+import {
+  ITableAction,
+  ITableElement,
+} from "../../../common/interfaces/table.interfaces";
+import { useParams } from "react-router";
+import { calculateDifference } from "../../../common/utils/helpers";
 
 interface IContractualInformationProp {
   register: UseFormRegister<any>;
@@ -39,9 +49,163 @@ const ContractualInformationForm = ({
   changedData,
   getValueRegister,
 }: IContractualInformationProp) => {
+  const tableComponentRef = useRef(null);
+  const id = useParams();
   const { setDisabledFields, disabledFields } = useContext(AppContext);
   setDisabledFields(action == "new" ? false : true);
   const [antiquity, setAntiquity] = useState("0");
+  const { setMessage, authorization } = useContext(AppContext);
+  const handleModal = (data:IEmployment) => {
+    setMessage({
+      title: "Información contractual",
+      description: (
+        <div className="grid-form-4-container gap-25">
+          <InputComponent
+            idInput={"vinculationType"}
+            typeInput={"text"}
+            label={"Tipo de vinculación"}
+            className="input-basic medium"
+            classNameLabel="text-black big bold"
+            value={data.typesContracts[0].name}
+            disabled={true}
+          />
+          <InputComponent
+            idInput={"salary"}
+            typeInput={"text"}
+            label={"Salario"}
+            className="input-basic medium"
+            classNameLabel="text-black big bold"
+            value={`${data.salary}`}
+            disabled={true}
+          />
+          <InputComponent
+            idInput={"status"}
+            typeInput={"text"}
+            label={"Estado"}
+            className="input-basic medium"
+            classNameLabel="text-black big bold"
+            value={data.state == '1' ? "Activo" : "Inactivo"}
+            disabled={true}
+          />
+          <InputComponent
+            idInput={"charge"}
+            typeInput={"text"}
+            label={"Cargo"}
+            className="input-basic medium"
+            classNameLabel="text-black big bold"
+            value={data.charges[0].name}
+            disabled={true}
+          />
+          <InputComponent
+            idInput={"startDate"}
+            typeInput={"text"}
+            label={"Fecha de inicio"}
+            className="input-basic medium"
+            classNameLabel="text-black big bold"
+            value={data.startDate}
+            disabled={true}
+          />
+          <InputComponent
+            idInput={"endDate"}
+            typeInput={"text"}
+            label={"Fecha de fin"}
+            className="input-basic medium"
+            classNameLabel="text-black big bold"
+            value={data.endDate}
+            disabled={true}
+          />
+          <InputComponent
+            idInput={"antiquity"}
+            typeInput={"text"}
+            label={"Antigüedad"}
+            className="input-basic medium"
+            classNameLabel="text-black big bold"
+            value={`${calculateDifference(data.startDate, data.endDate)}`}
+            disabled={true}
+          />
+          <InputComponent
+            idInput={"instutionalMail"}
+            typeInput={"text"}
+            label={"Correo institucional"}
+            className="input-basic medium"
+            classNameLabel="text-black big bold"
+            value={data.institutionalMail}
+            disabled={true}
+          />
+          <div className="grid-span-4-columns">
+            <TextAreaComponent
+              label={"Observaciones"}
+              idInput={"observation"}
+              value={data.observation}
+              disabled={true}
+              className="text-area-basic"
+              classNameLabel="text-black big bold"
+              rows={5}
+            />
+          </div>
+        </div>
+      ),
+      show: true,
+      OkTitle: "Aceptar",
+      onClose: () => {
+        setMessage({});
+      },
+      background: true,
+      size:"large"
+    });
+  };
+  const tableColumns: ITableElement<IEmployment>[] = [
+    {
+      fieldName: "idTypeContract",
+      header: "Tipo de vinculación",
+      renderCell: (row) => {
+        return <>{row.typesContracts[0].name}</>;
+    }
+    },
+    {
+      fieldName: "salary",
+      header: "Salario",
+    },
+    {
+      fieldName: "idCharge",
+      header: "Cargo",
+      renderCell: (row) => {
+        return <>{row.charges[0].name}</>;
+    }
+    },
+    {
+      fieldName: "startDate",
+      header: "Fecha inicio",
+      renderCell: (row) => {
+        return <>{DateTime.fromISO(row.startDate).toLocaleString()}</>;
+    }
+    },
+    {
+      fieldName: "endDate",
+      header: "Fecha fin",
+      renderCell: (row) => {
+        return <>{DateTime.fromISO(row.endDate).toLocaleString()}</>;
+    }
+    },
+  ];
+  const tableActions: ITableAction<IEmployment>[] = [
+    {
+      icon: "Detail",
+      onClick: (row) => {
+        handleModal(row);
+      },
+    },
+  ];
+
+  function loadTableData(searchCriteria?: object): void {
+    if (tableComponentRef.current) {
+      tableComponentRef.current.loadData(searchCriteria);
+    }
+  }
+  useEffect(() => {
+    loadTableData(id);
+  }, []);
+
   return (
     <div>
       <div className="grid-form-4-container gap-25 container-sections-forms ">
@@ -261,7 +425,13 @@ const ContractualInformationForm = ({
       </div>
       {action !== "new" ? (
         <div className="container-sections-forms">
-          <TableComponent url={""} columns={[]} isShowModal={false} />
+          <TableComponent
+            url={`${process.env.urlApiPayroll}/api/v1/employment/employment/get-paginated`}
+            ref={tableComponentRef}
+            columns={tableColumns}
+            actions={tableActions}
+            isShowModal={false}
+          />
         </div>
       ) : (
         <></>

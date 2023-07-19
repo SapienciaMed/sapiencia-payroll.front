@@ -12,6 +12,7 @@ export interface IMessage {
   onClickOutClose?: boolean;
   onClose?: () => void;
   background?: boolean;
+  size?: string;
 }
 
 export interface IGenericList {

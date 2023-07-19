@@ -142,7 +142,7 @@ export interface IFilterVinculation {
   lastName?: string;
 }
 
-export interface IFilterVinculation {
+export interface IFilterEmployment{
   page: number;
   perPage: number;
   id?:number;

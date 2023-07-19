@@ -12,8 +12,6 @@ interface IAppProps {
   action: "new" | "edit" | "view";
 }
 const EmploymentRelationshipPage = ({ action }: IAppProps) => {
-  const [familyData, setFamilyData] = useState<{ familiar: IRelative[] }>();
-
   const {
     typeDocumentList,
     bloodType,
@@ -47,7 +45,11 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     vinculation,
     handleCreateWorker,
     changedData,
+    changeData,
     getValueRegister,
+    familyData,
+    setFamilyData,
+    watch,
   } = useEmploymentsData();
 
   const stebs: FormStebs[] = [
@@ -88,7 +90,10 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           list={[genderList, relationship]}
           action={action}
           changedData={changedData}
+          changeData={changeData}
           getValueRegister={getValueRegister}
+          data={vinculation}
+          familyData={familyData}
         />
       ),
       position: 1,
@@ -164,6 +169,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
         validForm={isValid}
         stepsAmount={stepsAmount}
         actionSubmit={handleCreateWorker}
+        // watch={watch}
       />
     </>
   );

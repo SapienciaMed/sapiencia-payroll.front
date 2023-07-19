@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineX } from "react-icons/hi";
 import { RiSave3Fill } from "react-icons/ri";
-import { Controller, UseFormGetValues, useFieldArray, useForm } from "react-hook-form";
+import {
+  Controller,
+  UseFormGetValues,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import {
   InputComponent,
   SelectComponent,
@@ -9,7 +14,10 @@ import {
 } from "../../../common/components/Form";
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { IRelative, IVinculation } from "../../../common/interfaces/payroll.interfaces";
+import {
+  IRelative,
+  IVinculation,
+} from "../../../common/interfaces/payroll.interfaces";
 import { familiarValidator } from "../../../common/schemas";
 import { AppContext } from "../../../common/contexts/app.context";
 
@@ -19,17 +27,23 @@ interface IFamiliarInformationProp {
       familiar: IRelative[];
     }>
   >;
+  familyData: { familiar: IRelative[] };
   list: any[][];
   action: string;
-  changedData:number;
-  getValueRegister:UseFormGetValues<IVinculation>;
+  changedData: number;
+  changeData: any;
+  getValueRegister: UseFormGetValues<IVinculation>;
+  data: IVinculation;
 }
 const FamiliarInformationForm = ({
   setFamilyData,
   list,
   action,
   getValueRegister,
-  changedData
+  changedData,
+  data,
+  familyData,
+  changeData,
 }: IFamiliarInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
   setDisabledFields(action == "view" ? true : false);
@@ -44,18 +58,17 @@ const FamiliarInformationForm = ({
     formState: { errors, isValid },
   } = useForm<{ familiar: IRelative[] }>({
     defaultValues: {
-      familiar: [{ name: "", birthDate: "", gender: "", relationship: "" }],
+      familiar: familyData.familiar,
     },
     mode: "all",
     resolver,
   });
 
+  console.log(familyData);
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "familiar",
-    rules: {
-      required: "Please append at least 1 item",
-    },
   });
 
   const onSubmit = handleSubmit(async (data: any) => {
@@ -74,9 +87,16 @@ const FamiliarInformationForm = ({
     updatedDisabledRows[index] = true;
     setDisabledRows(updatedDisabledRows);
   };
+
   useEffect(() => {
-    console.log(isValid);
-  }, [isValid]);
+    if (familyData.familiar.length > 0) {
+      setValueRegister("familiar", familyData.familiar);
+
+      changeData((prev: any) => {
+        return prev + 1;
+      });
+    }
+  }, []);
 
   return (
     <div>

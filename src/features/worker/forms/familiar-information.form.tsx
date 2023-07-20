@@ -40,21 +40,21 @@ const FamiliarInformationForm = ({
   list,
   action,
   getValueRegister,
-  changedData,
   data,
   familyData,
-  changeData,
 }: IFamiliarInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
   setDisabledFields(action == "view" ? true : false);
   const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
   const [age, setAge] = useState("0");
+  const [changedData, changeData] = useState<number>(null);
   const resolver = useYupValidationResolver(familiarValidator);
   const {
     register: registerFamily,
     handleSubmit,
     control,
     setValue: setValueRegister,
+    getValues: getValues,
     formState: { errors, isValid },
   } = useForm<{ familiar: IRelative[] }>({
     defaultValues: {
@@ -89,14 +89,14 @@ const FamiliarInformationForm = ({
   };
 
   useEffect(() => {
-    if (familyData.familiar.length > 0) {
+    if (familyData?.familiar?.length > 0) {
       setValueRegister("familiar", familyData.familiar);
 
       changeData((prev: any) => {
         return prev + 1;
       });
     }
-  }, []);
+  }, [familyData]);
 
   return (
     <div>
@@ -104,12 +104,14 @@ const FamiliarInformationForm = ({
         <span className="text-black large bold">Datos de familiares</span>
         <form onSubmit={handleSubmit(onSubmit)}>
           {fields.map((field, index) => (
+            
             <div
               key={field.id}
               className={`grid-form-6-container  ${
                 !disabledRows[index] ? "bg-editing" : "bg-disabled"
               }`}
             >
+              {console.log(disabledRows[index])}
               <InputComponent
                 idInput={`familiar.${index}.name`}
                 id={`fullName${index}`}
@@ -173,7 +175,7 @@ const FamiliarInformationForm = ({
                     classNameLabel="text-black big bold"
                     value={field.value}
                     setValueRegister={setValueRegister}
-                    getValueRegister={getValueRegister}
+                    getValueRegister={getValues}
                     change={changedData}
                     onchange={field.onChange}
                   />
@@ -195,7 +197,7 @@ const FamiliarInformationForm = ({
                     classNameLabel="text-black big bold"
                     value={field.value}
                     setValueRegister={setValueRegister}
-                    getValueRegister={getValueRegister}
+                    getValueRegister={getValues}
                     change={changedData}
                     onchange={field.onChange}
                   />

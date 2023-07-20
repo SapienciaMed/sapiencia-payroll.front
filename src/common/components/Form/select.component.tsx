@@ -89,6 +89,7 @@ function SelectElement({
   useEffect(() => {
     if (getValueRegister)
       setTimeout(() => {
+        console.log(getValueRegister(idInput))
         setSelected(getValueRegister(idInput));
         if (setValue) {
           setValue(getValueRegister(idInput));
@@ -100,12 +101,13 @@ function SelectElement({
     const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
     setValueRegisterProp(idInput, stateProps ? stateProps.state : selected);
   }, [selected, stateProps]);
-
+console.log(value)
   return (
     <div {...registerProp(idInput)}>
       <Dropdown
         id={id}
-        value={stateProps ? stateProps.state : selected}
+        value={ stateProps?.state ?? selected
+        }
         //value={data.find((c)=>{c.value === value })}
         onChange={(e) => {
           if (onchange) {
@@ -157,7 +159,6 @@ export function SelectComponent({
     if (!dataSelect) data.unshift(seleccione);
   }
 
-  console.log(value);
 
   const messageError = () => {
     const keysError = idInput.split(".");

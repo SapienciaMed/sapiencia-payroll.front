@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
 import { IGenericList } from "../../../common/interfaces/global.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
-import usePayrollService from "../../../common/hooks/payroll.hook";
+import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import {
   ICharge,
   IVinculation,
@@ -110,7 +110,7 @@ export default function useEmploymentsData() {
   const navigate = useNavigate();
 
   const { setMessage, authorization } = useContext(AppContext);
-  const { getVinculationById, getCharges, getTypesContracts, createWorker } =
+  const { getVinculationById, getCharges, getTypesContracts, createWorker, updateWorker } =
     usePayrollService();
   const { publish, subscribe, unsubscribe } = useAppCominicator();
 
@@ -597,6 +597,16 @@ export default function useEmploymentsData() {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           handleModal();
           setSending(false);
+        }else{
+          setMessage({
+            type: EResponseCodes.FAIL,
+            title: "Crear Usuario",
+            description: "El usuario ya se encuentra registrado en el sistema",
+            show: true,
+            OkTitle: "Aceptar",
+            background: true,
+          });
+          setSending(false);
         }
       })
       .catch((err) => {
@@ -611,6 +621,39 @@ export default function useEmploymentsData() {
         setSending(false);
       });
   };
+
+  const handleUpdateWorker = async (data: IVinculation) => {
+    setSending(true);
+    await updateWorker(data)
+      .then((response: ApiResponse<IVinculation>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          handleModal();
+          setSending(false);
+        } else{
+          setMessage({
+            type: EResponseCodes.FAIL,
+            title: "Crear Usuario",
+            description: "El usuario ya se encuentra registrado en el sistema",
+            show: true,
+            OkTitle: "Aceptar",
+            background: true,
+          });
+          setSending(false);
+        }
+      })
+      .catch((err) => {
+        setMessage({
+          type: EResponseCodes.FAIL,
+          title: "Crear Usuario",
+          description: "El usuario ya se encuentra registrado en el sistema",
+          show: true,
+          OkTitle: "Aceptar",
+          background: true,
+        });
+        setSending(false);
+      });
+  };
+
 
   const cancelFunction = () => {
     setMessage({
@@ -662,6 +705,7 @@ export default function useEmploymentsData() {
     step,
     setStep,
     handleCreateWorker,
+    handleUpdateWorker,
     changedData,
     changeData,
     getValueRegister,

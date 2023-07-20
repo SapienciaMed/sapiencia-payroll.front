@@ -49,6 +49,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     getValueRegister,
     familyData,
     setFamilyData,
+    handleUpdateWorker,
     watch,
   } = useEmploymentsData();
 
@@ -168,7 +169,9 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
         handleBackStep={handleBackStep}
         validForm={isValid}
         stepsAmount={stepsAmount}
-        actionSubmit={handleCreateWorker}
+        actionSubmit={
+          action === "edit" ? handleUpdateWorker : handleCreateWorker
+        }
         // watch={watch}
       />
     </>

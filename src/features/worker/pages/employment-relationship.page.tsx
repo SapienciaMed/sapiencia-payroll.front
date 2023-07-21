@@ -172,6 +172,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
         actionSubmit={
           action === "edit" ? handleUpdateWorker : handleCreateWorker
         }
+        action={action}
         // watch={watch}
       />
     </>

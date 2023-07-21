@@ -19,6 +19,7 @@ interface IFormStepsProp {
   stepsAmount: number;
   register: UseFormRegister<any>;
   actionSubmit: any;
+  action: string;
   // watch: any;
 }
 
@@ -33,6 +34,7 @@ const FormSteps = ({
   stepsAmount,
   actionSubmit,
   register,
+  action
 }: // watch,
 IFormStepsProp) => {
   const { step } = useContext(AppContext);
@@ -94,7 +96,7 @@ IFormStepsProp) => {
                         validForm
                           ? "button-tab_save hover-three big"
                           : "button-tab_save invalid big"
-                      }`}
+                      } ${step === stepsAmount && action ==="view"?"disabled":""}`}
                       type={step === stepsAmount ? "submit" : "button"}
                       action={handleNextStep}
                     />

@@ -383,6 +383,15 @@
   &.error {
     border: 1px solid $alert-failed-color;
   }
+  &::-webkit-scrollbar {
+    width: 100%; /* Ancho de la barra de desplazamiento */
+    height: 0px;
+    background-color: transparent; /* Color de fondo transparente */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Color transparente del pulgar */
+  }
 
  
 }

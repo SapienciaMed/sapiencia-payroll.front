@@ -67,7 +67,7 @@ const ContractualInformationForm = ({
             className="input-basic medium"
             classNameLabel="text-black big bold"
             value={data.typesContracts[0].name}
-            disabled={true}
+            disabled={disabledFields}
           />
           <InputComponent
             idInput={"salary"}
@@ -76,7 +76,7 @@ const ContractualInformationForm = ({
             className="input-basic medium"
             classNameLabel="text-black big bold"
             value={`${data.salary}`}
-            disabled={true}
+            disabled={disabledFields}
           />
           <InputComponent
             idInput={"status"}
@@ -85,7 +85,7 @@ const ContractualInformationForm = ({
             className="input-basic medium"
             classNameLabel="text-black big bold"
             value={data.state == '1' ? "Activo" : "Inactivo"}
-            disabled={true}
+            disabled={disabledFields}
           />
           <InputComponent
             idInput={"charge"}
@@ -94,7 +94,7 @@ const ContractualInformationForm = ({
             className="input-basic medium"
             classNameLabel="text-black big bold"
             value={data.charges[0].name}
-            disabled={true}
+            disabled={disabledFields}
           />
           <InputComponent
             idInput={"startDate"}
@@ -103,7 +103,7 @@ const ContractualInformationForm = ({
             className="input-basic medium"
             classNameLabel="text-black big bold"
             value={data.startDate}
-            disabled={true}
+            disabled={disabledFields}
           />
           <InputComponent
             idInput={"endDate"}
@@ -112,7 +112,7 @@ const ContractualInformationForm = ({
             className="input-basic medium"
             classNameLabel="text-black big bold"
             value={data.endDate}
-            disabled={true}
+            disabled={disabledFields}
           />
           <InputComponent
             idInput={"antiquity"}
@@ -130,16 +130,16 @@ const ContractualInformationForm = ({
             className="input-basic medium"
             classNameLabel="text-black big bold"
             value={data.institutionalMail}
-            disabled={true}
+            disabled={disabledFields}
           />
           <div className="grid-span-4-columns">
             <TextAreaComponent
               label={"Observaciones"}
               idInput={"observation"}
               value={data.observation}
-              disabled={true}
               className="text-area-basic"
               classNameLabel="text-black big bold"
+              disabled={disabledFields}
               rows={5}
             />
           </div>

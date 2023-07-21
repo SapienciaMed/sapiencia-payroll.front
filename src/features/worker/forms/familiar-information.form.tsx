@@ -20,7 +20,8 @@ import {
 } from "../../../common/interfaces/payroll.interfaces";
 import { familiarValidator } from "../../../common/schemas";
 import { AppContext } from "../../../common/contexts/app.context";
-
+import { calculateDifference } from "../../../common/utils/helpers";
+import { DateTime } from "luxon";
 interface IFamiliarInformationProp {
   setFamilyData: React.Dispatch<
     React.SetStateAction<{
@@ -157,7 +158,7 @@ const FamiliarInformationForm = ({
                 label="Edad"
                 disabled={true}
                 errors={errors}
-                value={age ? age : "0"}
+                value={`${calculateDifference(field.birthDate)}`}
               />
               <Controller
                 name={`familiar.${index}.gender`}

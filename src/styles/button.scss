@@ -337,6 +337,10 @@
     font-size: 1rem;
   }
 
+  &.disabled{
+    display: none;
+  }
+
   &.hover-three:hover {
     color: #fff;
     border: $fourth-color solid 1px;

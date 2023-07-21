@@ -89,7 +89,6 @@ function SelectElement({
   useEffect(() => {
     if (getValueRegister)
       setTimeout(() => {
-        console.log(getValueRegister(idInput))
         setSelected(getValueRegister(idInput));
         if (setValue) {
           setValue(getValueRegister(idInput));
@@ -101,7 +100,6 @@ function SelectElement({
     const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
     setValueRegisterProp(idInput, stateProps ? stateProps.state : selected);
   }, [selected, stateProps]);
-console.log(value)
   return (
     <div {...registerProp(idInput)}>
       <Dropdown

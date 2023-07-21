@@ -46,8 +46,6 @@ const FamiliarInformationForm = ({
 }: IFamiliarInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
   setDisabledFields(action == "view" ? true : false);
-  const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
-  const [age, setAge] = useState("0");
   const [changedData, changeData] = useState<number>(null);
   const resolver = useYupValidationResolver(familiarValidator);
   const {
@@ -65,16 +63,14 @@ const FamiliarInformationForm = ({
     resolver,
   });
 
-  console.log(familyData);
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "familiar",
   });
-
+  const [disabledRows, setDisabledRows] = useState<boolean[]>(Array.from({ length: fields?.length }, () => true));
   const onSubmit = handleSubmit(async (data: any) => {
     setFamilyData(data);
-    console.log("Submit data", data);
   });
 
   const handleEnableRow = (index: number) => {
@@ -112,7 +108,6 @@ const FamiliarInformationForm = ({
                 !disabledRows[index] ? "bg-editing" : "bg-disabled"
               }`}
             >
-              {console.log(disabledRows[index])}
               <InputComponent
                 idInput={`familiar.${index}.name`}
                 id={`fullName${index}`}
@@ -142,7 +137,6 @@ const FamiliarInformationForm = ({
                       onchange={field.onChange}
                       disabled={disabledRows[index] || disabledFields}
                       className="dataPicker-basic medium"
-                      setValue={setAge}
                       maxDate={new Date()}
                     />
                   );
@@ -158,7 +152,7 @@ const FamiliarInformationForm = ({
                 label="Edad"
                 disabled={true}
                 errors={errors}
-                value={`${calculateDifference(field.birthDate)}`}
+                value={`${field.birthDate ? calculateDifference(field.birthDate):0}`}
               />
               <Controller
                 name={`familiar.${index}.gender`}
@@ -212,6 +206,7 @@ const FamiliarInformationForm = ({
                   Acciones
                 </label>
                 <div className="button-container-display">
+                  {console.log(disabledRows[index]) }
                   {!disabledRows[index] ? (
                     <>
                       <ButtonComponent

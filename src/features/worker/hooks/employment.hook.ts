@@ -30,7 +30,7 @@ export default function useEmploymentsData() {
       numberDocument: "",
       firstName: "",
       secondName: "",
-      surName: "",
+      surname: "",
       secondSurname: "",
       gender: "",
       bloodType: "",

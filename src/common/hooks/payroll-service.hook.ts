@@ -4,6 +4,7 @@ import {
   ICharge,
   IVinculation,
   ITypesContracts,
+  IWorker,
 } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
@@ -53,6 +54,21 @@ export function usePayrollService() {
     }
   }
 
+  async function getWorkers(): Promise<ApiResponse<IWorker[]>> {
+    try {
+      const endpoint: string = `/worker`;
+      return await get(`${authUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IWorker[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+
+
   async function createWorker(
     data: IVinculation
   ): Promise<ApiResponse<IVinculation>> {
@@ -82,12 +98,15 @@ export function usePayrollService() {
       );
     }
   }
+
+
   return {
     getTypesContracts,
     getCharges,
     createWorker,
     getVinculationById,
-    updateWorker
+    updateWorker,
+    getWorkers
   };
 }
 

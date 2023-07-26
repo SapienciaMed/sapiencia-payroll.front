@@ -29,7 +29,7 @@ export interface IWorker {
   numberDocument: string;
   firstName: string;
   secondName?: string;
-  surName: string;
+  surname: string;
   secondSurname?: string;
   gender: string;
   bloodType: string;
@@ -146,4 +146,77 @@ export interface IFilterEmployment{
   page: number;
   perPage: number;
   id?:number;
+}
+
+export interface IFilterVacation{
+  page: number;
+  perPage: number;
+  documentWorker?: string;
+  period?: string;
+}
+
+export interface IWorkersVacation{
+  id?:number;
+  documentWorker: string;
+  idWorker: number;
+  nameWorker?: string;
+  period: string;
+  startDate: DateTime;
+  endDate: DateTime;
+  startDateCompensatedDays: DateTime;
+  totalCompensatoryDays: number;
+  observation:string;
+  charge?: string;
+  salary?: number;
+  refundDays?: number;
+  previousBalance?: number;
+  daysEarned?: number;
+  currentBalance?: number;
+  endingPeriod?: boolean;
+  pendingDays?:number;
+  checkCompensatoryDays?: boolean;
+  checkEnjoyedDays?: boolean;
+}
+
+export interface IWorkersVacationDetail{
+  id?:number;
+  worker:{
+  documentWorker: string;
+  nameWorker?: string;
+  period: string;
+  charge?: string;
+  salary?: number;
+  }
+  enjoyedDays:{
+  startDate: DateTime;
+  endDate: DateTime;
+  totalDays:number;
+  }
+  compensatedDays:{
+    startDateCompensatedDays: DateTime;
+    totalCompensatoryDays: number;
+  }
+  refund:{
+    pendingDays?:number;
+    refundDays?: number;
+  }
+  balances:{
+    previousBalance?: number;
+    daysEarned?: number;
+    currentBalance?: number;
+  }
+  observation:string;
+}
+
+export interface IVacation { 
+  id?: number;
+  codEmployment: string;
+  period: string;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  periodFormer: string;
+  enjoyed: string;
+  available: string;
+  days: string;
+  periodClosed: boolean;
 }

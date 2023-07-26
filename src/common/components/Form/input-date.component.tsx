@@ -5,7 +5,7 @@ import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { Calendar } from "primereact/calendar";
 import { IoCalendarOutline } from "react-icons/io5";
 import { DateTime } from "luxon";
-import { calculateDifference } from "../../utils/helpers";
+import { calculateDifferenceYear } from "../../utils/helpers";
 
 interface IDateProps<T> {
   id?: string;
@@ -67,7 +67,7 @@ function CalendarElement({
     const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
     setValueRegisterProp(idInput, date);
     if (setValue) {
-      setValue(calculateDifference(date as Date));
+      setValue(calculateDifferenceYear(date as Date));
     }
   }, [date]);
   return (

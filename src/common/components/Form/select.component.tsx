@@ -34,6 +34,7 @@ interface ISelectProps<T> {
   disabled?: boolean;
   onchange?: (e: string) => void;
   fieldArray?: boolean;
+  filter?:boolean;
 }
 
 interface ISelectElementProps<T> {
@@ -54,6 +55,7 @@ interface ISelectElementProps<T> {
   };
   disabled?: boolean;
   onchange?: (e: string) => void;
+  filter?:boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -82,6 +84,7 @@ function SelectElement({
   stateProps,
   disabled,
   onchange,
+  filter
 }: ISelectElementProps<any>): React.JSX.Element {
   const [selected, setSelected] = useState(value);
   const registerProp = register ? register : () => {};
@@ -117,6 +120,7 @@ function SelectElement({
           }
           stateProps ? stateProps.setState(e.value) : setSelected(e.value);
         }}
+        filter={filter}
         options={data}
         optionLabel="name"
         placeholder={placeholder}
@@ -148,6 +152,7 @@ export function SelectComponent({
   disabled,
   onchange,
   fieldArray,
+  filter
 }: ISelectProps<any>): React.JSX.Element {
   if (data) {
     const seleccione: IDropdownProps = { name: "Seleccione", value: null };
@@ -201,6 +206,7 @@ export function SelectComponent({
           stateProps={stateProps}
           disabled={disabled}
           onchange={onchange}
+          filter={filter}
         />
         {messageError() && <span className="icon-error"></span>}
       </div>

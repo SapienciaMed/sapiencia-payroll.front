@@ -26,7 +26,7 @@ import {
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
 import { useParams } from "react-router";
-import { calculateDifference } from "../../../common/utils/helpers";
+import { calculateDifferenceYear } from "../../../common/utils/helpers";
 
 interface IContractualInformationProp {
   register: UseFormRegister<any>;
@@ -120,7 +120,7 @@ const ContractualInformationForm = ({
             label={"Antigüedad"}
             className="input-basic medium"
             classNameLabel="text-black big bold"
-            value={`${calculateDifference(data.startDate, data.endDate)}`}
+            value={`${calculateDifferenceYear(data.startDate, data.endDate)}`}
             disabled={true}
           />
           <InputComponent

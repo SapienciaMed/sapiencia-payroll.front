@@ -1,8 +1,9 @@
 import React from 'react'
+import SearchWorker from '../forms/vacationWorker'
 
 const createVacationPage = () => {
   return (
-    <div>create-vacation.page</div>
+    <div><SearchWorker/></div>
   )
 }
 

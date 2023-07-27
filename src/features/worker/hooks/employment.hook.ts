@@ -60,6 +60,9 @@ export default function useEmploymentsData() {
       idCharge: "",
       idReasonRetirement: "",
       state: "",
+      salary: null,
+      observation: "",
+      totalValue: null,
     },
   } as IVinculation);
 
@@ -69,7 +72,7 @@ export default function useEmploymentsData() {
 
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors, isValid, dirtyFields },
     control,
     getValues: getValueRegister,
     handleSubmit,
@@ -86,10 +89,8 @@ export default function useEmploymentsData() {
   const [typeDocumentList, setTypeDocumentList] = useState([]);
   const [deparmentList, setDeparmentList] = useState([]);
   const [nacionality, setNacionality] = useState([]);
-  const [deparment, setDeparment] = useState("");
   const [townList, setTownList] = useState([]);
-  const [town, setTown] = useState("");
-  const [neighborhoodList, setneighborhoodList] = useState([]);
+  const [neighborhoodList, setNeighborhoodList] = useState([]);
   const [sending, setSending] = useState(false);
   const [socioEconomicStatus, setSocioEconomicStatus] = useState([]);
   const [bloodType, setBloodType] = useState([]);
@@ -110,14 +111,20 @@ export default function useEmploymentsData() {
   const navigate = useNavigate();
 
   const { setMessage, authorization } = useContext(AppContext);
-  const { getVinculationById, getCharges, getTypesContracts, createWorker, updateWorker } =
-    usePayrollService();
+  const {
+    getVinculationById,
+    getCharges,
+    getTypesContracts,
+    createWorker,
+    updateWorker,
+  } = usePayrollService();
+
   const { publish, subscribe, unsubscribe } = useAppCominicator();
 
   const handleModal = () => {
     setMessage({
       title: "Vincular Trabajador",
-      description: "Trabajador Vinculado con exito",
+      description: `Trabajador ${id ? "editado" : "vinculado"} con exito`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -127,179 +134,32 @@ export default function useEmploymentsData() {
         });
       },
       onClose: () => {
+        navigate("/");
         setMessage({});
       },
       background: true,
     });
   };
 
-  /*UseEffects*/
-  // useEffect(() => {
-  //   const groupers = [
-  //     "GENEROS",
-  //     "TIPOS_DOCUMENTOS",
-  //     "TIPO_SANGUINEO",
-  //     "ESTRATO",
-  //     "PARENTESCO",
-  //     "TIPO_VIVIENDA",
-  //     "PAISES",
-  //     "EPS",
-  //     "ARL",
-  //     "FONDO_PENSIONES",
-  //     "FONDO_CESANTIAS",
-  //     "RIESGO_LABORAL",
-  //     "ESTADO_TRABAJADOR",
-  //   ];
-  //   getListByGroupers(groupers)
-  //     .then((response: ApiResponse<IGenericList[]>) => {
-  //       if (response && response?.operation?.code === EResponseCodes.OK) {
-  //         setTypeDocumentList(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "TIPOS_DOCUMENTOS")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemCode,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setGenderList(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "GENEROS")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setBloodType(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "TIPO_SANGUINEO")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setSocioEconomicStatus(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "ESTRATO")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setRelationship(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "PARENTESCO")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setHousingType(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "TIPO_VIVIENDA")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setNacionality(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "PAISES")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setEpsList(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "EPS")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setArlList(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "ARL")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setPensionList(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "FONDO_PENSIONES")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setLayoffList(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "FONDO_CESANTIAS")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setLevelRiskList(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "RIESGO_LABORAL")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //         setActiveWorker(
-  //           response.data
-  //             .filter((grouper) => grouper.grouper == "ESTADO_TRABAJADOR")
-  //             .map((item) => {
-  //               const list = {
-  //                 name: item.itemDescription,
-  //                 value: item.itemCode,
-  //               };
-  //               return list;
-  //             })
-  //         );
-  //       }
-  //     })
-  //     .catch((e) => {});
-  // }, []);
+  const [department, municipality] = watch([
+    "worker.department",
+    "worker.municipality",
+  ]);
+
+  const idTypeContract = watch("employment.idTypeContract");
+
+  useEffect(() => {
+    if (dirtyFields.employment?.idTypeContract && idTypeContract != "4") {
+      setValueRegister("employment.observation", "");
+      setValueRegister("employment.totalValue", null);
+
+      return;
+    }
+
+    if (dirtyFields.employment?.idTypeContract && idTypeContract == "4") {
+      setValueRegister("employment.salary", null);
+    }
+  }, [idTypeContract]);
 
   useEffect(() => {
     getListByParent({ grouper: "DEPARTAMENTOS", parentItemCode: "COL" })
@@ -320,8 +180,14 @@ export default function useEmploymentsData() {
   }, []);
 
   useEffect(() => {
-    setTown("");
-    getListByParent({ grouper: "MUNICIPIOS", parentItemCode: deparment })
+    if (dirtyFields.worker?.department) {
+      setValueRegister("worker.municipality", "");
+      setValueRegister("worker.neighborhood", "");
+    }
+    setTownList([]);
+    setNeighborhoodList([]);
+
+    getListByParent({ grouper: "MUNICIPIOS", parentItemCode: department })
       .then((response: ApiResponse<IGenericList[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           setTownList(
@@ -337,13 +203,18 @@ export default function useEmploymentsData() {
         }
       })
       .catch((err) => {});
-  }, [deparment]);
+  }, [department]);
 
   useEffect(() => {
-    getListByParent({ grouper: "BARRIOS", parentItemCode: town })
+    if (dirtyFields.worker?.municipality) {
+      setValueRegister("worker.neighborhood", "");
+    }
+    setNeighborhoodList([]);
+
+    getListByParent({ grouper: "BARRIOS", parentItemCode: municipality })
       .then((response: ApiResponse<IGenericList[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
-          setneighborhoodList(
+          setNeighborhoodList(
             response.data.map((item) => {
               const list = {
                 name: item.itemDescription,
@@ -355,7 +226,7 @@ export default function useEmploymentsData() {
         }
       })
       .catch((err) => {});
-  }, [town, deparment]);
+  }, [municipality]);
 
   useEffect(() => {
     getTypesContracts()
@@ -392,6 +263,36 @@ export default function useEmploymentsData() {
       })
       .catch((err) => {});
   }, []);
+
+  useEffect(() => {
+    loadInitList().then(() => {
+      if (id) {
+        getVinculationById(Number(id)).then(
+          ({ data, operation }: ApiResponse<IVinculation>) => {
+            if (operation.code === EResponseCodes.OK) {
+              setVinculation(data);
+            }
+          }
+        );
+      }
+    });
+  }, [id]);
+
+  useEffect(() => {
+    if (!vinculation) return;
+
+    if (vinculation.worker.id) {
+      setValueRegister("worker", vinculation?.worker, {
+        shouldValidate: true,
+      });
+    }
+
+    setValueRegister("relatives", vinculation?.relatives);
+    setValueRegister("employment", vinculation?.employment[0]);
+
+    setFamilyData({ familiar: vinculation?.relatives });
+  }, [vinculation]);
+
   /*Functions*/
 
   async function loadInitList(): Promise<void> {
@@ -558,38 +459,6 @@ export default function useEmploymentsData() {
       );
     }
   }
-
-  useEffect(() => {
-    loadInitList().then(() => {
-      if (id) {
-        getVinculationById(Number(id)).then(
-          ({ data, operation }: ApiResponse<IVinculation>) => {
-            if (operation.code === EResponseCodes.OK) {
-              setVinculation(data);
-            }
-          }
-        );
-      }
-    });
-  }, [id]);
-
-  useEffect(() => {
-    if (!vinculation) return;
-
-    if (vinculation.worker.id) {
-      setValueRegister("worker", vinculation?.worker, { shouldValidate: true });
-    }
-
-    setValueRegister("relatives", vinculation?.relatives);
-    setValueRegister("employment", vinculation?.employment[0]);
-
-    setFamilyData({ familiar: vinculation?.relatives });
-
-    changeData((prev) => {
-      return prev + 1;
-    });
-  }, [vinculation]);
-
   const handleCreateWorker = async (data: IVinculation) => {
     setSending(true);
     await createWorker(data)
@@ -597,11 +466,12 @@ export default function useEmploymentsData() {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           handleModal();
           setSending(false);
-        }else{
+        } else {
           setMessage({
             type: EResponseCodes.FAIL,
-            title: "Crear Usuario",
-            description: "El usuario ya se encuentra registrado en el sistema",
+            title: "Error al registrar la vinculacion.",
+            description:
+              "Se ha presentado un error, por favor vuelve a intentarlo.",
             show: true,
             OkTitle: "Aceptar",
             background: true,
@@ -612,8 +482,9 @@ export default function useEmploymentsData() {
       .catch((err) => {
         setMessage({
           type: EResponseCodes.FAIL,
-          title: "Crear Usuario",
-          description: "El usuario ya se encuentra registrado en el sistema",
+          title: "Error al registrar la vinculacion.",
+          description:
+            "Se ha presentado un error, por favor vuelve a intentarlo.",
           show: true,
           OkTitle: "Aceptar",
           background: true,
@@ -629,11 +500,12 @@ export default function useEmploymentsData() {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           handleModal();
           setSending(false);
-        } else{
+        } else {
           setMessage({
             type: EResponseCodes.FAIL,
-            title: "Crear Usuario",
-            description: "El usuario ya se encuentra registrado en el sistema",
+            title: "Error al editar la vinculacion.",
+            description:
+              "Se ha presentado un error, por favor vuelve a intentarlo.",
             show: true,
             OkTitle: "Aceptar",
             background: true,
@@ -644,8 +516,9 @@ export default function useEmploymentsData() {
       .catch((err) => {
         setMessage({
           type: EResponseCodes.FAIL,
-          title: "Crear Usuario",
-          description: "El usuario ya se encuentra registrado en el sistema",
+          title: "Error al editar la vinculacion.",
+          description:
+            "Se ha presentado un error, por favor vuelve a intentarlo.",
           show: true,
           OkTitle: "Aceptar",
           background: true,
@@ -654,28 +527,9 @@ export default function useEmploymentsData() {
       });
   };
 
-
-  const cancelFunction = () => {
-    setMessage({
-      show: true,
-      title: "Crear usuario",
-      description: "¿Seguro que desea cancelar la creación de usuario?",
-      OkTitle: "Continuar",
-      cancelTitle: "Si,Cancelar",
-      onCancel() {
-        navigate("/");
-        setMessage((prev) => ({ ...prev, show: false }));
-      },
-      background: true,
-    });
-  };
-
   return {
     genderList,
     typeDocumentList,
-    cancelFunction,
-    setDeparment,
-    setTown,
     authorization,
     deparmentList,
     townList,

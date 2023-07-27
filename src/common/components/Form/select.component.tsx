@@ -1,61 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
-import {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+
+import { Control, Controller } from "react-hook-form";
 import { Dropdown } from "primereact/dropdown";
 import { IDropdownProps } from "../../interfaces/select.interface";
 
 interface ISelectProps<T> {
-  id?: string;
   idInput: string;
-  register?: UseFormRegister<T>;
-  getValueRegister?: UseFormGetValues<T>;
-  setValueRegister?: UseFormSetValue<T>;
-  change?: number;
+  control: Control<any>;
   className?: string;
   placeholder?: string;
   data?: Array<IDropdownProps>;
-  value?: string;
   label?: string | React.JSX.Element;
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: any;
-  setValue?: React.Dispatch<any>;
-  stateProps?: {
-    state: any;
-    setState: React.Dispatch<any>;
-  };
   disabled?: boolean;
-  onchange?: (e: string) => void;
   fieldArray?: boolean;
-  filter?:boolean;
-}
-
-interface ISelectElementProps<T> {
-  id?: string;
-  idInput: string;
-  className?: string;
-  placeholder?: string;
-  data?: Array<IDropdownProps>;
-  value?: string;
-  register?: UseFormRegister<T>;
-  getValueRegister?: UseFormGetValues<T>;
-  setValueRegister?: UseFormSetValue<T>;
-  change?: number;
-  setValue?: React.Dispatch<any>;
-  stateProps?: {
-    state: any;
-    setState: React.Dispatch<any>;
-  };
-  disabled?: boolean;
-  onchange?: (e: string) => void;
-  filter?:boolean;
+  filter?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -69,90 +33,20 @@ function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
   );
 }
 
-function SelectElement({
-  id,
-  idInput,
-  className,
-  placeholder,
-  data,
-  value,
-  register,
-  setValueRegister,
-  getValueRegister,
-  change,
-  setValue,
-  stateProps,
-  disabled,
-  onchange,
-  filter
-}: ISelectElementProps<any>): React.JSX.Element {
-  const [selected, setSelected] = useState(value);
-  const registerProp = register ? register : () => {};
-
-  useEffect(() => {
-    if (getValueRegister)
-      setTimeout(() => {
-        setSelected(getValueRegister(idInput));
-        if (setValue) {
-          setValue(getValueRegister(idInput));
-        }
-      }, 0);
-  }, [change]);
-
-  useEffect(() => {
-    const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
-    setValueRegisterProp(idInput, stateProps ? stateProps.state : selected);
-  }, [selected, stateProps]);
-  return (
-    <div {...registerProp(idInput)}>
-      <Dropdown
-        id={id}
-        value={ stateProps?.state ?? selected
-        }
-        //value={data.find((c)=>{c.value === value })}
-        onChange={(e) => {
-          if (onchange) {
-            onchange(e.value);
-          }
-          if (setValue) {
-            setValue(e.value);
-            setSelected(e.value);
-          }
-          stateProps ? stateProps.setState(e.value) : setSelected(e.value);
-        }}
-        filter={filter}
-        options={data}
-        optionLabel="name"
-        placeholder={placeholder}
-        className={className}
-        disabled={disabled}
-      />
-    </div>
-  );
-}
-
 export function SelectComponent({
-  id,
   idInput,
-  register,
-  setValueRegister,
-  getValueRegister,
-  change,
+  control,
   className = "select-basic",
   placeholder = "Seleccione",
   data = [{} as IDropdownProps],
-  value = null,
   label,
   classNameLabel = "text-main",
   direction = EDirection.column,
   children,
   errors = {},
-  stateProps,
-  setValue,
   disabled,
-  onchange,
   fieldArray,
-  filter
+  filter,
 }: ISelectProps<any>): React.JSX.Element {
   if (data) {
     const seleccione: IDropdownProps = { name: "Seleccione", value: null };
@@ -161,7 +55,6 @@ export function SelectComponent({
     );
     if (!dataSelect) data.unshift(seleccione);
   }
-
 
   const messageError = () => {
     const keysError = idInput.split(".");
@@ -179,6 +72,7 @@ export function SelectComponent({
       return errs?.message ?? null;
     }
   };
+
   return (
     <div
       className={
@@ -191,22 +85,22 @@ export function SelectComponent({
         classNameLabel={classNameLabel}
       />
       <div>
-        <SelectElement
-          id={id}
-          idInput={idInput}
-          className={messageError() ? `${className} error` : className}
-          setValue={setValue}
-          placeholder={placeholder}
-          data={data}
-          change={change}
-          value={value}
-          register={register}
-          getValueRegister={getValueRegister}
-          setValueRegister={setValueRegister}
-          stateProps={stateProps}
-          disabled={disabled}
-          onchange={onchange}
-          filter={filter}
+        <Controller
+          name={idInput}
+          control={control}
+          render={({ field }) => (
+            <Dropdown
+              id={field.name}
+              value={data.find((row) => row.value === field.value)?.value}
+              onChange={(e) => field.onChange(e.value)}
+              options={data}
+              optionLabel="name"
+              placeholder={placeholder}
+              className={`${className} ${messageError() ? "p-invalid" : ""}`}
+              disabled={disabled}
+              filter={filter}
+            />
+          )}
         />
         {messageError() && <span className="icon-error"></span>}
       </div>

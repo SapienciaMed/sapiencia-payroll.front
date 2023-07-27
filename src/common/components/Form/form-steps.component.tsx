@@ -20,7 +20,7 @@ interface IFormStepsProp {
   register: UseFormRegister<any>;
   actionSubmit: any;
   action: string;
-  // watch: any;
+  watch: any;
 }
 
 const FormSteps = ({
@@ -34,7 +34,8 @@ const FormSteps = ({
   stepsAmount,
   actionSubmit,
   register,
-  action
+  action,
+  watch,
 }: // watch,
 IFormStepsProp) => {
   const { step } = useContext(AppContext);
@@ -96,7 +97,11 @@ IFormStepsProp) => {
                         validForm
                           ? "button-tab_save hover-three big"
                           : "button-tab_save invalid big"
-                      } ${step === stepsAmount && action ==="view"?"disabled":""}`}
+                      } ${
+                        step === stepsAmount && action === "view"
+                          ? "disabled"
+                          : ""
+                      }`}
                       type={step === stepsAmount ? "submit" : "button"}
                       action={handleNextStep}
                     />
@@ -106,9 +111,9 @@ IFormStepsProp) => {
             }
           })}
         </div>
-        {/* 
-        <p>{validForm ? "Valid" : "Invalid"}</p>
-        <pre className="">{JSON.stringify(watch())}</pre> */}
+
+        {/* <p>{validForm ? "Valid" : "Invalid"}</p>
+        <p>{JSON.stringify(watch())}</p> */}
       </form>
     </>
   );

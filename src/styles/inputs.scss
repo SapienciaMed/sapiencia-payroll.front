@@ -270,12 +270,11 @@
     100%,
     41px,
     6px !important,
-    1px solid $input-color-border !important,
+    null,
     $secondary-color,
     null,
     15px
   );
-
 
   &:focus {
     outline: none;
@@ -304,19 +303,19 @@
     height: 3em;
   }
 }
-.dataPicker-basic > .p-button{
-  color: $fourth-color !important;
-  background: #fff !important;
-  border-left: none !important;
-  border-top: $input-color-border solid 1px;
-  border-right: $input-color-border solid 1px;
-  border-bottom: $input-color-border solid 1px;
+.dataPicker-basic > .p-button {
+  color: #fff !important;
+  background: $fourth-color !important;
+  // border-left: none !important;
+  // border-top: $input-color-border solid 1px;
+  // border-right: $input-color-border solid 1px;
+  // border-bottom: $input-color-border solid 1px;
   padding: 0.5rem 1rem !important;
   font-size: 1rem !important;
-  &:hover{
-    background-color: $fourth-color !important;
+  &:hover {
     border: $fourth-color solid 1px !important;
     color: #fff !important;
+    background: $fourth-color !important;
   }
 }
 
@@ -392,8 +391,6 @@
   &::-webkit-scrollbar-thumb {
     background-color: transparent; /* Color transparente del pulgar */
   }
-
- 
 }
 
 @media (min-width: 1024px) {
@@ -413,5 +410,44 @@
     $height: null;
     $padding: 20px;
     @include card-component($width, $height, $padding, false);
+  }
+}
+
+.inputNumber-basic {
+  @include generate-input(
+    100%,
+    41px,
+    6px !important,
+    null,
+    $secondary-color,
+    null,
+    15px
+  );
+
+  &:focus {
+    outline: none;
+  }
+
+  &.error {
+    border: 1px solid $alert-failed-color !important;
+  }
+  &.tiny {
+    height: 1em;
+  }
+
+  &.small {
+    height: 1.5em;
+  }
+
+  &.medium {
+    height: 2em;
+  }
+
+  &.big {
+    height: 2.5em;
+  }
+
+  &.large {
+    height: 3em;
   }
 }

@@ -190,7 +190,7 @@ const EmploymentRecordsPage = () => {
         <div className="container-sections-forms">
           <TableComponent
             ref={tableComponentRef}
-            url={`${process.env.urlApiPayroll}/api/v1/employment/get-paginated`}
+            url={`${process.env.urlApiPayroll}/api/v1/vinculation/get-paginated`}
             columns={tableColumns}
             actions={tableActions}
             isShowModal={false}

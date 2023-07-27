@@ -409,7 +409,7 @@ const ContractualInformationForm = ({
       {action !== "new" ? (
         <div className="container-sections-forms">
           <TableComponent
-            url={`${process.env.urlApiPayroll}/api/v1/employment/employment/get-paginated`}
+            url={`${process.env.urlApiPayroll}/api/v1/vinculation/employment/get-paginated`}
             ref={tableComponentRef}
             columns={tableColumns}
             actions={tableActions}

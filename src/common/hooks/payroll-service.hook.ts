@@ -11,7 +11,7 @@ import useCrudService from "./crud-service.hook";
 
 export function usePayrollService() {
   const baseURL: string = process.env.urlApiPayroll;
-  const authUrl: string = "/api/v1/employment";
+  const authUrl: string = "/api/v1/vinculation";
 
   const { get, post, put} = useCrudService(null, baseURL);
 

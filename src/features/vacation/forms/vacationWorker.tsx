@@ -12,11 +12,7 @@ import { searchRecord } from "../../../common/schemas";
 import { IWorkersVacation } from "../../../common/interfaces/payroll.interfaces";
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
-import {
-  calculateBusinessDays,
-  calculateDifferenceDays,
-  calculateDifferenceYear,
-} from "../../../common/utils/helpers";
+import { calculateBusinessDays } from "../../../common/utils/helpers";
 import useListData from "../hooks/list.hook";
 import useVacationService from "../../../common/hooks/vacation-service.hook";
 
@@ -32,9 +28,7 @@ const SearchWorker = () => {
     handleSubmit,
     register,
     formState: { errors },
-    setValue: setValueRegister,
     control,
-    reset,
     watch,
   } = useForm<IWorkersVacation>({ resolver });
   const [checkEnjoyedDays, checkCompensatoryDays] = watch([
@@ -50,11 +44,12 @@ const SearchWorker = () => {
   useEffect(() => {
     const days = calculateBusinessDays(startVacation, endVacation);
     setTotalDays(`${days ? days : 0}`);
-    
   }, [startVacation, endVacation]);
 
   useEffect(() => {
-    setPendingDays(`${compensatoryDays ? vacation?.data?.available - compensatoryDays: 0}`);
+    setPendingDays(
+      `${compensatoryDays ? vacation?.data?.available - compensatoryDays : 0}`
+    );
   }, [compensatoryDays]);
 
   const onSubmit = handleSubmit(async (data: IWorkersVacation) => {
@@ -82,46 +77,27 @@ const SearchWorker = () => {
             >
               <div className="container-sections-forms">
                 <div className="grid-form-2-container gap-25">
-                  <Controller
-                    name="idWorker"
+                  <SelectComponent
+                    idInput={"idWorker"}
                     control={control}
-                    render={({ field }) => (
-                      <SelectComponent
-                        id={field.name}
-                        idInput={field.name}
-                        label={<>Colaborador</>}
-                        register={register}
-                        errors={errors}
-                        data={activeWorkerList}
-                        className="select-basic medium"
-                        classNameLabel="text-black big bold"
-                        value={`${field.value}`}
-                        setValueRegister={setValueRegister}
-                        onchange={field.onChange}
-                        placeholder="Seleccione"
-                        filter={true}
-                      />
-                    )}
+                    errors={errors}
+                    data={activeWorkerList}
+                    label={"Empleado"}
+                    className="select-basic medium"
+                    classNameLabel="text-black big bold"
+                    placeholder="Seleccione"
+                    filter={true}
                   />
-                  <Controller
-                    name="period"
+
+                  <SelectComponent
+                    idInput={"period"}
                     control={control}
-                    render={({ field }) => (
-                      <SelectComponent
-                        id={field.name}
-                        idInput={field.name}
-                        label={<>Periodo</>}
-                        register={register}
-                        errors={errors}
-                        data={listPeriods}
-                        className="select-basic medium"
-                        classNameLabel="text-black big bold"
-                        value={field.value}
-                        setValueRegister={setValueRegister}
-                        onchange={field.onChange}
-                        placeholder="Seleccione"
-                      />
-                    )}
+                    errors={errors}
+                    data={listPeriods}
+                    label={"Periodo"}
+                    className="select-basic medium"
+                    classNameLabel="text-black big bold"
+                    placeholder="Seleccione"
                   />
                 </div>
               </div>
@@ -156,47 +132,27 @@ const SearchWorker = () => {
             />{" "}
             <span className="text-black large bold">Dias disfrutados</span>
           </div>
-          <Controller
+          <DatePickerComponent
+            idInput={"startDate"}
             control={control}
-            name={"startDate"}
-            render={({ field }) => {
-              return (
-                <DatePickerComponent
-                  id={field.name}
-                  idInput={field.name}
-                  value={field.value}
-                  label="Desde"
-                  register={register}
-                  errors={errors}
-                  classNameLabel="text-black big break-line bold"
-                  setValueRegister={setValueRegister}
-                  onchange={field.onChange}
-                  className="dataPicker-basic medium"
-                  disabled={!checkEnjoyedDays}
-                />
-              );
-            }}
+            label={"Desde"}
+            errors={errors}
+            classNameLabel="text-black big break-line bold"
+            className="dataPicker-basic  medium "
+            disabled={!checkEnjoyedDays}
+            placeholder="DD/MM/YYYY"
+            dateFormat="dd/mm/yy"
           />
-          <Controller
+          <DatePickerComponent
+            idInput={"endDate"}
             control={control}
-            name={"endDate"}
-            render={({ field }) => {
-              return (
-                <DatePickerComponent
-                  id={field.name}
-                  idInput={field.name}
-                  value={field.value}
-                  label="Hasta"
-                  register={register}
-                  errors={errors}
-                  classNameLabel="text-black big break-line bold"
-                  setValueRegister={setValueRegister}
-                  onchange={field.onChange}
-                  className="dataPicker-basic medium"
-                  disabled={!checkEnjoyedDays}
-                />
-              );
-            }}
+            label={"Hasta"}
+            errors={errors}
+            classNameLabel="text-black big break-line bold"
+            className="dataPicker-basic  medium "
+            disabled={!checkEnjoyedDays}
+            placeholder="DD/MM/YYYY"
+            dateFormat="dd/mm/yy"
           />
           <InputComponent
             idInput={"totalDays"}
@@ -219,27 +175,18 @@ const SearchWorker = () => {
             />
             <span className="text-black large bold">Dias compensados</span>
           </div>
-          <Controller
+          <DatePickerComponent
+            idInput={"startDateCompensatedDays"}
             control={control}
-            name={"startDateCompensatedDays"}
-            render={({ field }) => {
-              return (
-                <DatePickerComponent
-                  id={field.name}
-                  idInput={field.name}
-                  value={field.value}
-                  label="Días compensatorios"
-                  register={register}
-                  errors={errors}
-                  classNameLabel="text-black big break-line bold"
-                  setValueRegister={setValueRegister}
-                  onchange={field.onChange}
-                  className="dataPicker-basic medium"
-                  disabled={!checkCompensatoryDays}
-                />
-              );
-            }}
+            label={"Días compensatorios"}
+            errors={errors}
+            classNameLabel="text-black big break-line bold"
+            className="dataPicker-basic  medium "
+            disabled={!checkCompensatoryDays}
+            placeholder="DD/MM/YYYY"
+            dateFormat="dd/mm/yy"
           />
+
           <Controller
             control={control}
             name={"totalCompensatoryDays"}

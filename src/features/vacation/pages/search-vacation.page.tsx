@@ -67,16 +67,16 @@ const SearchVacationPage = () => {
       fieldName: "endingPeriod",
       header: "Finalizado",
       renderCell: (row) => {
-        return <>{row ? "si":"No" }</>;
+        return <>{row ? "si" : "No"}</>;
       },
     },
     {
-        fieldName: "pendingDays",
-        header: "Días",
-        renderCell: (row) => {
-          return <>{row}</>;
-        },
+      fieldName: "pendingDays",
+      header: "Días",
+      renderCell: (row) => {
+        return <>{row}</>;
       },
+    },
   ];
   const tableActions: ITableAction<IWorkersVacationDetail>[] = [
     {
@@ -91,7 +91,7 @@ const SearchVacationPage = () => {
             salary: row.worker.salary,
           },
         };
-  
+
         const enjoyedDays = {
           enjoyedDays: {
             startDate: DateTime.fromISO(row.enjoyedDays.startDate),
@@ -99,21 +99,22 @@ const SearchVacationPage = () => {
             totalDays: 0,
           },
         };
-  
+
         const compensatedDays = {
           compensatedDays: {
-            startDateCompensatedDays: row.compensatedDays.startDateCompensatedDays,
+            startDateCompensatedDays:
+              row.compensatedDays.startDateCompensatedDays,
             totalCompensatoryDays: row.compensatedDays.totalCompensatoryDays,
           },
         };
-  
+
         const refund = {
           refund: {
             pendingDays: row.refund.pendingDays,
             refundDays: row.refund.refundDays ? 1 : 0,
           },
         };
-  
+
         const balances = {
           balances: {
             previousBalance: row.balances.previousBalance,
@@ -121,11 +122,11 @@ const SearchVacationPage = () => {
             currentBalance: row.balances.currentBalance,
           },
         };
-  
+
         const observation = {
           observation: row.observation,
         };
-  
+
         const rows = [
           worker,
           enjoyedDays,
@@ -134,19 +135,19 @@ const SearchVacationPage = () => {
           balances,
           observation,
         ];
-  
+
         setMessage({
           title: "Detalle posición presupuestaria",
           show: true,
           OkTitle: "Aceptar",
-          description: <VacationTable rows={rows as IWorkersVacationDetail[]} />,
+          description: (
+            <VacationTable rows={rows as IWorkersVacationDetail[]} />
+          ),
           background: true,
         });
       },
     },
   ];
-  
-  
 
   function loadTableData(searchCriteria?: object): void {
     if (tableComponentRef.current) {
@@ -158,14 +159,12 @@ const SearchVacationPage = () => {
     loadTableData(data);
   });
 
-  const {listPeriods,activeWorkerList} = useListData()
+  const { listPeriods, activeWorkerList } = useListData();
   return (
     <>
       <div className="container-sections-forms m-24px">
         <div>
-          <span className="text-black extra-large bold">
-            Vacaciones
-          </span>
+          <span className="text-black extra-large bold">Vacaciones</span>
         </div>
         <div>
           <FormComponent
@@ -175,46 +174,26 @@ const SearchVacationPage = () => {
           >
             <div className="container-sections-forms">
               <div className="grid-form-2-container gap-25">
-                <Controller
-                  name="documentWorker"
+                <SelectComponent
+                  idInput={"documentWorker"}
                   control={control}
-                  render={({ field }) => (
-                    <SelectComponent
-                      id={field.name}
-                      idInput={field.name}
-                      label={<>Colaborador</>}
-                      register={register}
-                      errors={errors}
-                      data={activeWorkerList}
-                      className="select-basic medium"
-                      classNameLabel="text-black big bold"
-                      value={field.value}
-                      setValueRegister={setValueRegister}
-                      onchange={field.onChange}
-                      placeholder="Seleccione"
-                      filter={true}
-                    />
-                  )}
+                  errors={errors}
+                  data={activeWorkerList}
+                  label={"Colaborador"}
+                  className="select-basic medium"
+                  classNameLabel="text-black big bold"
+                  placeholder="Seleccione"
+                  filter={true}
                 />
-                <Controller
-                  name="period"
+                <SelectComponent
+                  idInput={"period"}
                   control={control}
-                  render={({ field }) => (
-                    <SelectComponent
-                      id={field.name}
-                      idInput={field.name}
-                      label={<>Periodo</>}
-                      register={register}
-                      errors={errors}
-                      data={listPeriods}
-                      className="select-basic medium"
-                      classNameLabel="text-black big bold"
-                      value={field.value}
-                      setValueRegister={setValueRegister}
-                      onchange={field.onChange}
-                      placeholder="Seleccione"
-                    />
-                  )}
+                  errors={errors}
+                  data={listPeriods}
+                  label={"Periodo"}
+                  className="select-basic medium"
+                  classNameLabel="text-black big bold"
+                  placeholder="Seleccione"
                 />
               </div>
             </div>

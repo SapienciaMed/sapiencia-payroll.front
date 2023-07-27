@@ -13,6 +13,7 @@ import { IWorkersVacation } from "../../../common/interfaces/payroll.interfaces"
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
 import {
+  calculateBusinessDays,
   calculateDifferenceDays,
   calculateDifferenceYear,
 } from "../../../common/utils/helpers";
@@ -21,11 +22,12 @@ import useVacationService from "../../../common/hooks/vacation-service.hook";
 
 const SearchWorker = () => {
   const [totalDays, setTotalDays] = useState<string>("0");
-  const [vacation, setVacation] = useState(null)
+  const [pendingDays, setPendingDays] = useState<string>("0");
+  const [vacation, setVacation] = useState(null);
   const navigate = useNavigate();
   const resolver = useYupValidationResolver(searchRecord);
-  const {activeWorkerList,listPeriods} = useListData()
-  const {getWorkerVacatioByParam} = useVacationService()
+  const { activeWorkerList, listPeriods } = useListData();
+  const { getWorkerVacatioByParam } = useVacationService();
   const {
     handleSubmit,
     register,
@@ -35,25 +37,32 @@ const SearchWorker = () => {
     reset,
     watch,
   } = useForm<IWorkersVacation>({ resolver });
-  const [startVacation, endVacation, checkEnjoyedDays, checkCompensatoryDays] =
-    watch([
-      "startDate",
-      "endDate",
-      "checkEnjoyedDays",
-      "checkCompensatoryDays",
-    ]);
+  const [checkEnjoyedDays, checkCompensatoryDays] = watch([
+    "checkEnjoyedDays",
+    "checkCompensatoryDays",
+  ]);
+  const [startVacation, endVacation, compensatoryDays] = watch([
+    "startDate",
+    "endDate",
+    "totalCompensatoryDays",
+  ]);
 
   useEffect(() => {
-    const days = calculateDifferenceDays(startVacation, endVacation);
+    const days = calculateBusinessDays(startVacation, endVacation);
     setTotalDays(`${days ? days : 0}`);
+    
   }, [startVacation, endVacation]);
 
-  const onSubmit = handleSubmit(async (data:IWorkersVacation) => {
-    const params ={
-    "worker": data.idWorker,
-    "period":parseInt(data.period)
-    }
-    setVacation(await getWorkerVacatioByParam(params))
+  useEffect(() => {
+    setPendingDays(`${compensatoryDays ? vacation?.data?.available - compensatoryDays: 0}`);
+  }, [compensatoryDays]);
+
+  const onSubmit = handleSubmit(async (data: IWorkersVacation) => {
+    const params = {
+      worker: data.idWorker,
+      period: parseInt(data.period),
+    };
+    setVacation(await getWorkerVacatioByParam(params));
   });
 
   return (
@@ -231,15 +240,27 @@ const SearchWorker = () => {
               );
             }}
           />
-          <InputComponent
-            idInput={"totalCompensatoryDays"}
-            className="input-basic medium"
-            typeInput="number"
-            classNameLabel="text-black big bold"
-            label="Total días compensatorios"
-            register={register}
-            disabled={!checkCompensatoryDays}
-            errors={errors}
+          <Controller
+            control={control}
+            name={"totalCompensatoryDays"}
+            defaultValue={0}
+            render={({ field }) => {
+              return (
+                <InputComponent
+                  id={field.name}
+                  idInput={field.name}
+                  value={`${field.value}`}
+                  className="input-basic medium"
+                  typeInput="text"
+                  classNameLabel="text-black big bold"
+                  label="Total días compensatorios"
+                  register={register}
+                  onChange={field.onChange}
+                  disabled={!checkCompensatoryDays}
+                  errors={errors}
+                />
+              );
+            }}
           />
           <InputComponent
             idInput={"pendingDays"}
@@ -249,7 +270,7 @@ const SearchWorker = () => {
             label="Días pendientes"
             disabled={true}
             errors={errors}
-            value={`${vacation?.data?.available ? vacation?.data?.available - watch('totalCompensatoryDays') :0}`}
+            value={`${pendingDays}`}
           />
         </div>
         <div className="m-24px">

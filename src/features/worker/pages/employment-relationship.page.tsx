@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import FormSteps from "../../../common/components/Form/form-steps.component";
 import { FormStebs } from "../../../common/interfaces/tabs-menu.interface";
 import useEmploymentsData from "../hooks/employment.hook";
-import { IRelative } from "../../../common/interfaces/payroll.interfaces";
 import AffiliationsForm from "../forms/other-fields.form";
 import ContractualInformationForm from "../forms/contractual-information.form";
 import FamiliarInformationForm from "../forms/familiar-information.form";
@@ -31,8 +30,6 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     typesChargesList,
     typesContracts,
     activeWorker,
-    setDeparment,
-    setTown,
     register,
     control,
     isValid,
@@ -72,12 +69,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
             socioEconomicStatus,
             housingType,
           ]}
-          stateList={[setDeparment, setTown]}
-          setValueRegister={setValueRegister}
           action={action}
-          data={vinculation}
-          changedData={changedData}
-          getValueRegister={getValueRegister}
         />
       ),
       position: 0,
@@ -90,8 +82,6 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           setFamilyData={setFamilyData}
           list={[genderList, relationship]}
           action={action}
-          changedData={changedData}
-          changeData={changeData}
           getValueRegister={getValueRegister}
           data={vinculation}
           familyData={familyData}
@@ -112,6 +102,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           action={action}
           changedData={changedData}
           getValueRegister={getValueRegister}
+          watch={watch}
         />
       ),
       position: 2,
@@ -173,7 +164,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           action === "edit" ? handleUpdateWorker : handleCreateWorker
         }
         action={action}
-        // watch={watch}
+        watch={watch}
       />
     </>
   );

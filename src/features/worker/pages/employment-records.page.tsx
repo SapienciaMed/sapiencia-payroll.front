@@ -17,16 +17,14 @@ import {
 import {
   IFilterVinculation,
   IGetVinculation,
-  IVinculation,
-  IWorker,
 } from "../../../common/interfaces/payroll.interfaces";
 import { useNavigate } from "react-router-dom";
 import useEmploymentsData from "../hooks/employment.hook";
 
 const EmploymentRecordsPage = () => {
-  const {typesContracts,activeWorker} = useEmploymentsData()
+  const { typesContracts, activeWorker } = useEmploymentsData();
   const tableComponentRef = useRef(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const resolver = useYupValidationResolver(searchRecord);
   const {
     handleSubmit,
@@ -34,43 +32,55 @@ const EmploymentRecordsPage = () => {
     formState: { errors },
     setValue: setValueRegister,
     control,
-    reset
+    reset,
   } = useForm<IFilterVinculation>({ resolver });
   const tableColumns: ITableElement<IGetVinculation>[] = [
     {
       fieldName: "numberDocument",
       header: "Tipo y # documento",
       renderCell: (row) => {
-        return <>{row.typeDocument+' '+row.numberDocument}</>;
-    }
+        return <>{row.typeDocument + " " + row.numberDocument}</>;
+      },
     },
     {
       fieldName: "firstName",
       header: "Nombres y Apellidos",
-        renderCell: (row) => {
-        return <>{row.firstName+' '+row.secondName+' '+row.surname+' '+row.secondSurname}</>;
-    }
+      renderCell: (row) => {
+        return (
+          <>
+            {row.firstName +
+              " " +
+              row.secondName +
+              " " +
+              row.surname +
+              " " +
+              row.secondSurname}
+          </>
+        );
+      },
     },
     {
       fieldName: "employment.typesContracts",
       header: "Tipo de vinculación",
       renderCell: (row) => {
         return <>{row.employment?.typesContracts[0].name}</>;
-    }
+      },
     },
     {
       fieldName: "employment.startDate",
       header: "Fecha inicio",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row.employment.startDate).toLocaleString()}</>;
-    }
+        return (
+          <>{DateTime.fromISO(row.employment.startDate).toLocaleString()}</>
+        );
+      },
     },
     {
       fieldName: "employment.endDate",
       header: "Fecha fin",
       renderCell: (row) => {
         return <>{DateTime.fromISO(row.employment.endDate).toLocaleString()}</>;
-    }
+      },
     },
   ];
   const tableActions: ITableAction<IGetVinculation>[] = [
@@ -123,45 +133,25 @@ const EmploymentRecordsPage = () => {
                   className="input-basic medium"
                   classNameLabel="text-black big bold"
                 />
-                <Controller
-                  name="state"
+                <SelectComponent
+                  idInput={"state"}
                   control={control}
-                  render={({ field }) => (
-                    <SelectComponent
-                      id={field.name}
-                      idInput={field.name}
-                      label={<>Estado</>}
-                      register={register}
-                      errors={errors}
-                      data={activeWorker}
-                      className="select-basic medium"
-                      classNameLabel="text-black big bold"
-                      value={field.value}
-                      setValueRegister={setValueRegister}
-                      onchange={field.onChange}
-                      placeholder="Seleccione"
-                    />
-                  )}
+                  errors={errors}
+                  data={activeWorker}
+                  label={<>Estado</>}
+                  className="select-basic medium"
+                  classNameLabel="text-black big bold"
+                  placeholder="Seleccione"
                 />
-                <Controller
-                  name="vinculationType"
+                <SelectComponent
+                  idInput={"vinculationType"}
                   control={control}
-                  render={({ field }) => (
-                    <SelectComponent
-                      id={field.name}
-                      idInput={field.name}
-                      label={<>Tipo de vinculación</>}
-                      register={register}
-                      errors={errors}
-                      data={typesContracts}
-                      className="select-basic medium"
-                      classNameLabel="text-black big bold"
-                      value={field.value}
-                      setValueRegister={setValueRegister}
-                      onchange={field.onChange}
-                      placeholder="Seleccione"
-                    />
-                  )}
+                  errors={errors}
+                  data={typesContracts}
+                  label={<>Tipo de vinculación</>}
+                  className="select-basic medium"
+                  classNameLabel="text-black big bold"
+                  placeholder="Seleccione"
                 />
               </div>
               <div className="grid-form-2-container gap-25 mt-14px">

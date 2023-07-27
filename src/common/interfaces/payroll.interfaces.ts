@@ -8,12 +8,12 @@ export interface IEmployment {
   startDate: DateTime;
   endDate: DateTime;
   state: string;
-  observation?:string;
-  salary?:number;
-  totalValue?:number;
+  observation?: string;
+  salary?: number;
+  totalValue?: number;
   idReasonRetirement: string;
-  charges?: ICharge[]
-  typesContracts?: ITypesContracts[]
+  charges?: ICharge[];
+  typesContracts?: ITypesContracts[];
 }
 
 export interface IRelative {
@@ -142,21 +142,21 @@ export interface IFilterVinculation {
   lastName?: string;
 }
 
-export interface IFilterEmployment{
+export interface IFilterEmployment {
   page: number;
   perPage: number;
-  id?:number;
+  id?: number;
 }
 
-export interface IFilterVacation{
+export interface IFilterVacation {
   page: number;
   perPage: number;
   documentWorker?: string;
   period?: string;
 }
 
-export interface IWorkersVacation{
-  id?:number;
+export interface IWorkersVacation {
+  id?: number;
   documentWorker: string;
   idWorker: number;
   nameWorker?: string;
@@ -165,7 +165,7 @@ export interface IWorkersVacation{
   endDate: DateTime;
   startDateCompensatedDays: DateTime;
   totalCompensatoryDays: number;
-  observation:string;
+  observation: string;
   charge?: string;
   salary?: number;
   refundDays?: number;
@@ -173,42 +173,42 @@ export interface IWorkersVacation{
   daysEarned?: number;
   currentBalance?: number;
   endingPeriod?: boolean;
-  pendingDays?:number;
+  pendingDays?: number;
   checkCompensatoryDays?: boolean;
   checkEnjoyedDays?: boolean;
 }
 
-export interface IWorkersVacationDetail{
-  id?:number;
-  worker:{
-  documentWorker: string;
-  nameWorker?: string;
-  period: string;
-  charge?: string;
-  salary?: number;
-  }
-  enjoyedDays:{
-  startDate: DateTime;
-  endDate: DateTime;
-  totalDays:number;
-  }
-  compensatedDays:{
+export interface IWorkersVacationDetail {
+  id?: number;
+  worker: {
+    documentWorker: string;
+    nameWorker?: string;
+    period: string;
+    charge?: string;
+    salary?: number;
+  };
+  enjoyedDays: {
+    startDate: DateTime;
+    endDate: DateTime;
+    totalDays: number;
+  };
+  compensatedDays: {
     startDateCompensatedDays: DateTime;
     totalCompensatoryDays: number;
-  }
-  refund:{
-    pendingDays?:number;
+  };
+  refund: {
+    pendingDays?: number;
     refundDays?: number;
-  }
-  balances:{
+  };
+  balances: {
     previousBalance?: number;
     daysEarned?: number;
     currentBalance?: number;
-  }
-  observation:string;
+  };
+  observation: string;
 }
 
-export interface IVacation { 
+export interface IVacation {
   id?: number;
   codEmployment: string;
   period: string;

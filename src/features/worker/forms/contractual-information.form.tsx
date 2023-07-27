@@ -6,6 +6,7 @@ import {
   UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import {
   SelectComponent,
@@ -16,7 +17,6 @@ import TableComponent from "../../../common/components/table.component";
 import { AppContext } from "../../../common/contexts/app.context";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
 import { DateTime } from "luxon";
-import useEmploymentsData from "../hooks/employment.hook";
 import {
   IEmployment,
   IVinculation,
@@ -26,7 +26,11 @@ import {
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
 import { useParams } from "react-router";
-import { calculateDifferenceYear } from "../../../common/utils/helpers";
+import {
+  calculateDifferenceYear,
+  formaterNumberToCurrency,
+} from "../../../common/utils/helpers";
+import { InputNumberComponent } from "../../../common/components/Form/input-number.component";
 
 interface IContractualInformationProp {
   register: UseFormRegister<any>;
@@ -37,29 +41,36 @@ interface IContractualInformationProp {
   action: string;
   changedData: number;
   getValueRegister: UseFormGetValues<IVinculation>;
+  watch?: UseFormWatch<IVinculation>;
 }
 
 const ContractualInformationForm = ({
   register,
   errors,
   control,
-  setValueRegister,
   list,
   action,
-  changedData,
-  getValueRegister,
+  watch,
 }: IContractualInformationProp) => {
   const tableComponentRef = useRef(null);
-  const id = useParams();
+  const { id } = useParams();
+
   const { setDisabledFields, disabledFields } = useContext(AppContext);
+
   setDisabledFields(action == "new" ? false : true);
-  const [antiquity, setAntiquity] = useState("0");
-  const { setMessage, authorization } = useContext(AppContext);
-  const handleModal = (data:IEmployment) => {
+
+  const { setMessage } = useContext(AppContext);
+
+  const [startDate, endDate] = watch([
+    "employment.startDate",
+    "employment.endDate",
+  ]);
+
+  const handleModal = (data: IEmployment) => {
     setMessage({
       title: "Información contractual",
       description: (
-        <div className="grid-form-4-container gap-25">
+        <div className="grid-form-4-container gap-25 p-3em">
           <InputComponent
             idInput={"vinculationType"}
             typeInput={"text"}
@@ -69,14 +80,19 @@ const ContractualInformationForm = ({
             value={data.typesContracts[0].name}
             disabled={disabledFields}
           />
-          <InputComponent
-            idInput={"salary"}
-            typeInput={"text"}
-            label={"Salario"}
-            className="input-basic medium"
+          <InputNumberComponent
+            idInput="employment.salary"
+            control={control}
+            label={<>Salario</>}
+            errors={errors}
             classNameLabel="text-black big bold"
-            value={`${data.salary}`}
+            className="inputNumber-basic medium"
             disabled={disabledFields}
+            mode="currency"
+            currency="COP"
+            locale="es-CO"
+            minFractionDigits={2}
+            maxFractionDigits={2}
           />
           <InputComponent
             idInput={"status"}
@@ -84,7 +100,7 @@ const ContractualInformationForm = ({
             label={"Estado"}
             className="input-basic medium"
             classNameLabel="text-black big bold"
-            value={data.state == '1' ? "Activo" : "Inactivo"}
+            value={data.state == "1" ? "Activo" : "Inactivo"}
             disabled={disabledFields}
           />
           <InputComponent
@@ -102,7 +118,7 @@ const ContractualInformationForm = ({
             label={"Fecha de inicio"}
             className="input-basic medium"
             classNameLabel="text-black big bold"
-            value={data.startDate}
+            value={`${DateTime.fromISO(data.startDate).toLocaleString()}`}
             disabled={disabledFields}
           />
           <InputComponent
@@ -111,7 +127,7 @@ const ContractualInformationForm = ({
             label={"Fecha de fin"}
             className="input-basic medium"
             classNameLabel="text-black big bold"
-            value={data.endDate}
+            value={`${DateTime.fromISO(data.endDate).toLocaleString()}`}
             disabled={disabledFields}
           />
           <InputComponent
@@ -151,7 +167,7 @@ const ContractualInformationForm = ({
         setMessage({});
       },
       background: true,
-      size:"large"
+      size: "large",
     });
   };
   const tableColumns: ITableElement<IEmployment>[] = [
@@ -160,32 +176,36 @@ const ContractualInformationForm = ({
       header: "Tipo de vinculación",
       renderCell: (row) => {
         return <>{row.typesContracts[0].name}</>;
-    }
+      },
     },
     {
       fieldName: "salary",
       header: "Salario",
+      renderCell: (row) => {
+        console.log(row.salary);
+        return <>{formaterNumberToCurrency(row.salary)}</>;
+      },
     },
     {
       fieldName: "idCharge",
       header: "Cargo",
       renderCell: (row) => {
         return <>{row.charges[0].name}</>;
-    }
+      },
     },
     {
       fieldName: "startDate",
       header: "Fecha inicio",
       renderCell: (row) => {
         return <>{DateTime.fromISO(row.startDate).toLocaleString()}</>;
-    }
+      },
     },
     {
       fieldName: "endDate",
       header: "Fecha fin",
       renderCell: (row) => {
         return <>{DateTime.fromISO(row.endDate).toLocaleString()}</>;
-    }
+      },
     },
   ];
   const tableActions: ITableAction<IEmployment>[] = [
@@ -203,7 +223,7 @@ const ContractualInformationForm = ({
     }
   }
   useEffect(() => {
-    loadTableData(id);
+    loadTableData({ workerId: id });
   }, []);
 
   return (
@@ -212,32 +232,20 @@ const ContractualInformationForm = ({
         <span className="text-black large bold grid-span-4-columns">
           Información contractual
         </span>
-        <Controller
-          name="employment.idTypeContract"
+        <SelectComponent
+          idInput={"employment.idTypeContract"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label={
-                <>
-                  Tipo de vinculacion <span>*</span>
-                </>
-              }
-              register={register}
-              errors={errors}
-              data={list[0]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              getValueRegister={getValueRegister}
-              change={changedData}
-              onchange={field.onChange}
-              placeholder="Seleccione"
-              disabled={disabledFields}
-            />
-          )}
+          errors={errors}
+          data={list[0]}
+          label={
+            <>
+              Tipo de vinculacion <span>*</span>
+            </>
+          }
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
         <InputComponent
           idInput="employment.contractNumber"
@@ -253,107 +261,69 @@ const ContractualInformationForm = ({
           className="input-basic medium"
           disabled={disabledFields}
         />
-        <Controller
-          name="employment.state"
+        <SelectComponent
+          idInput={"employment.state"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label={
-                <>
-                  Estado <span>*</span>
-                </>
-              }
-              register={register}
-              errors={errors}
-              data={list[2]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              getValueRegister={getValueRegister}
-              change={changedData}
-              onchange={field.onChange}
-              placeholder="Seleccione"
-              disabled={disabledFields}
-            />
-          )}
+          errors={errors}
+          data={list[2]}
+          label={
+            <>
+              Estado <span>*</span>
+            </>
+          }
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
-        <Controller
-          name="employment.idCharge"
+        <SelectComponent
+          idInput={"employment.idCharge"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label={
-                <>
-                  Cargo <span>*</span>
-                </>
-              }
-              register={register}
-              errors={errors}
-              data={list[1]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              getValueRegister={getValueRegister}
-              change={changedData}
-              onchange={field.onChange}
-              placeholder="Seleccione"
-              disabled={disabledFields}
-            />
-          )}
+          errors={errors}
+          data={list[1]}
+          label={
+            <>
+              Cargo <span>*</span>
+            </>
+          }
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
-        <Controller
+        <DatePickerComponent
+          idInput={"employment.startDate"}
           control={control}
-          name="employment.startDate"
-          render={({ field }) => {
-            return (
-              <DatePickerComponent
-                id={field.name}
-                idInput={field.name}
-                value={field.value}
-                label={
-                  <>
-                    Fecha inicio de contrato <span>*</span>
-                  </>
-                }
-                register={register}
-                errors={errors}
-                classNameLabel="text-black big bold"
-                setValueRegister={setValueRegister}
-                onchange={field.onChange}
-                className="dataPicker-basic  medium "
-                setValue={setAntiquity}
-                maxDate={new Date()}
-                disabled={disabledFields}
-              />
-            );
-          }}
+          label={
+            <>
+              Fecha inicio de contrato <span>*</span>
+            </>
+          }
+          errors={errors}
+          classNameLabel="text-black big bold"
+          className="dataPicker-basic  medium "
+          disabled={disabledFields}
+          placeholder="DD/MM/YYYY"
+          dateFormat="dd/mm/yy"
+          maxDate={new Date()}
         />
-        <Controller
+
+        <DatePickerComponent
+          idInput={"employment.endDate"}
           control={control}
-          name="employment.endDate"
-          render={({ field }) => {
-            return (
-              <DatePickerComponent
-                id={field.name}
-                idInput={field.name}
-                value={field.value}
-                label={<>Fecha fin de contrato</>}
-                register={register}
-                errors={errors}
-                classNameLabel="text-black big bold"
-                setValueRegister={setValueRegister}
-                onchange={field.onChange}
-                className="dataPicker-basic  medium "
-                disabled={disabledFields}
-              />
-            );
-          }}
+          label={
+            <>
+              Fecha fin de contrato <span>*</span>
+            </>
+          }
+          errors={errors}
+          classNameLabel="text-black big bold"
+          className="dataPicker-basic  medium "
+          disabled={disabledFields}
+          placeholder="DD/MM/YYYY"
+          dateFormat="dd/mm/yy"
+          minDate={new Date(startDate)}
+          maxDate={new Date()}
         />
         {action !== "new" ? (
           <InputComponent
@@ -361,7 +331,12 @@ const ContractualInformationForm = ({
             typeInput="text"
             label="Antiguedad"
             errors={errors}
-            value={antiquity ? antiquity : "0"}
+            value={`${
+              startDate && endDate
+                ? calculateDifferenceYear(startDate, endDate)
+                : "0"
+            }
+  `}
             classNameLabel="text-black big bold"
             className="input-basic medium"
             disabled={true}
@@ -385,33 +360,41 @@ const ContractualInformationForm = ({
           disabled={disabledFields}
         />
 
-        {false ? (
-          <InputComponent
+        {watch("employment.idTypeContract") != "4" ? (
+          <InputNumberComponent
             idInput="employment.salary"
-            typeInput="text"
+            control={control}
             label={<>Salario</>}
-            register={register}
             errors={errors}
             classNameLabel="text-black big bold"
-            className="input-basic medium"
+            className="inputNumber-basic medium"
             disabled={disabledFields}
+            mode="currency"
+            currency="COP"
+            locale="es-CO"
+            minFractionDigits={2}
+            maxFractionDigits={2}
           />
         ) : (
           <>
-            <InputComponent
+            <InputNumberComponent
               idInput="employment.totalValue"
-              typeInput="text"
+              control={control}
               label={<>Valor total</>}
-              register={register}
               errors={errors}
               classNameLabel="text-black big bold"
-              className="input-basic medium"
+              className="inputNumber-basic medium"
               disabled={disabledFields}
+              mode="currency"
+              currency="COP"
+              locale="es-CO"
+              minFractionDigits={2}
+              maxFractionDigits={2}
             />
             <div className="grid-span-4-columns">
               <TextAreaComponent
                 label={"Observaciones"}
-                idInput={"observation"}
+                idInput={"employment.observation"}
                 disabled={disabledFields}
                 className="text-area-basic"
                 classNameLabel="text-black big bold"

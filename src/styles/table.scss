@@ -15,7 +15,7 @@
   .p-paginator.between {
     justify-content: space-between;
   }
-  .p-datatable { 
+  .p-datatable {
     height: 50vh;
     overflow: auto;
 
@@ -111,7 +111,7 @@
   display: none;
 }
 
-.mobile-enabled{
+.mobile-enabled {
   text-align: center !important;
   overflow-wrap: anywhere;
 }
@@ -121,7 +121,8 @@
   $height: null;
   $padding: 20px;
   @include card-component($width, $height, $padding);
-  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.1607843137), 0px 1px 1px rgba(0, 0, 0, 0.160784);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.1607843137),
+    0px 1px 1px rgba(0, 0, 0, 0.160784);
   height: auto;
 
   .title-area {
@@ -155,8 +156,9 @@
     content: "Siguiente" !important;
   }
   .spc-common-table {
-    .p-paginator{
+    .p-paginator {
       justify-content: center;
+      gap: 20px;
       .header-information {
         margin: 1.2rem 0px 0.25rem 2.25rem;
       }
@@ -179,7 +181,7 @@
 
   .spc-table-actions {
     height: auto;
-    .spc-header-subtitles { 
+    .spc-header-subtitles {
       justify-content: space-evenly;
     }
     .spc-table-action-button {
@@ -201,24 +203,25 @@
     $height: null;
     $padding: 1.5rem;
     @include card-component($width, $height, $padding);
-    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.1607843137), 0px 1px 1px rgba(0, 0, 0, 0.160784);
-  
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.1607843137),
+      0px 1px 1px rgba(0, 0, 0, 0.160784);
+
     .title-area {
       display: flex;
       justify-content: space-between;
       flex-direction: row;
       margin-bottom: 14px;
-  
+
       .title-button {
         display: flex;
         align-items: center;
         flex-direction: row;
-  
+
         img {
           margin-left: 5px;
           width: 22px;
         }
-  
+
         &:hover {
           cursor: pointer;
         }

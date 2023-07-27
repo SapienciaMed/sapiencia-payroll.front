@@ -42,120 +42,60 @@ const AffiliationsForm = ({
         <span className="text-black large bold grid-span-3-columns">
           Parafiscales
         </span>
-        <Controller
-          name="worker.eps"
+        <SelectComponent
+          idInput={"worker.eps"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label="EPS"
-              register={register}
-              errors={errors}
-              data={list[0]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              getValueRegister={getValueRegister}
-              change={changedData}
-              onchange={field.onChange}
-              placeholder="Seleccione"
-              disabled={disabledFields}
-            />
-          )}
+          errors={errors}
+          data={list[0]}
+          label={<>EPS</>}
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
-        <Controller
-          name="worker.fundPension"
+        <SelectComponent
+          idInput={"worker.fundPension"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label="Pension"
-              register={register}
-              errors={errors}
-              data={list[1]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              getValueRegister={getValueRegister}
-              change={changedData}
-              onchange={field.onChange}
-              placeholder="Seleccione"
-              disabled={disabledFields}
-            />
-          )}
+          errors={errors}
+          data={list[1]}
+          label={<>Pension</>}
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
-        <Controller
-          name="worker.arl"
+        <SelectComponent
+          idInput={"worker.arl"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label="ARL"
-              register={register}
-              errors={errors}
-              data={list[2]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              getValueRegister={getValueRegister}
-              change={changedData}
-              onchange={field.onChange}
-              placeholder="Seleccione"
-              disabled={disabledFields}
-            />
-          )}
+          errors={errors}
+          data={list[2]}
+          label={<>ARL</>}
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
-        <Controller
-          name="worker.riskLevel"
+        <SelectComponent
+          idInput={"worker.riskLevel"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label="Riesgo"
-              register={register}
-              errors={errors}
-              data={list[3]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              getValueRegister={getValueRegister}
-              change={changedData}
-              onchange={field.onChange}
-              placeholder="Seleccione"
-              disabled={disabledFields}
-            />
-          )}
+          errors={errors}
+          data={list[3]}
+          label={<>Riesgo</>}
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
-        <Controller
-          name="worker.severanceFund"
+        <SelectComponent
+          idInput={"worker.severanceFund"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label="Fondo de cesantías"
-              register={register}
-              errors={errors}
-              data={list[4]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              getValueRegister={getValueRegister}
-              change={changedData}
-              onchange={field.onChange}
-              placeholder="Seleccione"
-              disabled={disabledFields}
-            />
-          )}
+          errors={errors}
+          data={list[4]}
+          label={<>Riesgo</>}
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
       </div>
       <div className="grid-form-3-container gap-25 container-sections-forms ">
@@ -172,51 +112,27 @@ const AffiliationsForm = ({
           classNameLabel="text-black big bold"
           disabled={disabledFields}
         />
-        <Controller
-          name="worker.accountBankType"
+        <SelectComponent
+          idInput={"worker.accountBankType"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label="Tipo de cuenta"
-              register={register}
-              errors={errors}
-              data={[]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              getValueRegister={getValueRegister}
-              change={changedData}
-              onchange={field.onChange}
-              placeholder="Seleccione"
-              disabled={disabledFields}
-            />
-          )}
+          errors={errors}
+          data={[]}
+          label={<>Tipo de cuenta</>}
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
-        <Controller
-          name="worker.bank"
+        <SelectComponent
+          idInput={"worker.bank"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label="Banco"
-              register={register}
-              errors={errors}
-              data={[]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              getValueRegister={getValueRegister}
-              change={changedData}
-              onchange={field.onChange}
-              placeholder="Seleccione"
-              disabled={disabledFields}
-            />
-          )}
+          errors={errors}
+          data={[]}
+          label={<>Banco</>}
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
       </div>
     </div>

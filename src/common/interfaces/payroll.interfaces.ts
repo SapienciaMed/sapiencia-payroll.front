@@ -220,3 +220,7 @@ export interface IVacation {
   days: string;
   periodClosed: boolean;
 }
+
+export interface IFilterIncapacity {
+  idUser: string;
+}

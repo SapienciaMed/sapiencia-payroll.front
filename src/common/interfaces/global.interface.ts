@@ -2,16 +2,20 @@ import { EResponseCodes } from "../constants/api.enum";
 
 export interface IMessage {
   type?: EResponseCodes;
+  show?: boolean;
   title?: string;
   description?: string | React.JSX.Element;
-  show?: boolean;
+  onClickOutClose?: boolean;
+  background?: boolean;
+  size?: string;
+  style?: string;
   OkTitle?: string;
   cancelTitle?: string;
+  OkButtonStyle?: string;
+  cancelButtonStyle?: string;
   onOk?: () => void;
   onCancel?: () => void;
-  onClickOutClose?: boolean;
   onClose?: () => void;
-  background?: boolean;
 }
 
 export interface IGenericList {

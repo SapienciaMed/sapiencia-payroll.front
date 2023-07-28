@@ -104,8 +104,8 @@
 .modal-container {
   position: relative;
   padding: 1rem;
-  width: 80%;
-  height: 100%;
+  // width: 80%;
+  // height: 100%;
   overflow-y: auto;
   background-color: #fff;
   border-radius: 10px;
@@ -113,6 +113,31 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
+  &.small{
+    width: 31vw;
+    height: 31vh;
+  }
+
+  &.medium{
+    width: 40vw;
+  height: 40vh;
+  }
+
+  &.big{
+    width: 55vw;
+    height: 55vh;
+  }
+
+  &.large{
+    width: 70vw;
+  height: 70vh;
+  }
+
+  &.extra-large{
+    width: 80vw;
+    height: 80vh;
+  }
 
   .modal-header{
     text-align: center;
@@ -224,8 +249,8 @@
   .modal-container {
     position: relative;
     padding: 1rem;
-    width: 28.1875rem;
-    height: 13rem;
+    // width: 28.1875rem;
+    // height: 13rem;
     overflow-y: auto;
     background-color: #fff;
     border-radius: 10px;
@@ -233,7 +258,32 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-  
+
+    &.small{
+      width: 31vw;
+      height: 31vh;
+    }
+
+    &.medium{
+      width: 40vw;
+    height: 40vh;
+    }
+
+    &.big{
+      width: 55vw;
+      height: 55vh;
+    }
+
+    &.large{
+      width: 70vw;
+    height: 70vh;
+    }
+
+    &.extra-large{
+      width: 80vw;
+      height: 80vh;
+    }
+
     .modal-header{
       text-align: center;
       margin: -1rem;

@@ -1,27 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineX } from "react-icons/hi";
 import { RiSave3Fill } from "react-icons/ri";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { InputComponent, SelectComponent, ButtonComponent } from "../../../common/components/Form";
+import { UseFormGetValues, useFieldArray, useForm } from "react-hook-form";
+import {
+  InputComponent,
+  SelectComponent,
+  ButtonComponent,
+} from "../../../common/components/Form";
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { IRelative } from "../../../common/interfaces/payroll.interfaces";
+import {
+  IRelative,
+  IVinculation,
+} from "../../../common/interfaces/payroll.interfaces";
 import { familiarValidator } from "../../../common/schemas";
+import { AppContext } from "../../../common/contexts/app.context";
+import { calculateDifferenceYear } from "../../../common/utils/helpers";
 
+interface IFamiliarInformationProp {
+  setFamilyData: React.Dispatch<
+    React.SetStateAction<{
+      familiar: IRelative[];
+    }>
+  >;
+  familyData: { familiar: IRelative[] };
+  list: any[][];
+  action: string;
+  getValueRegister: UseFormGetValues<IVinculation>;
+  data: IVinculation;
+}
+const FamiliarInformationForm = ({
+  setFamilyData,
+  list,
+  action,
+  familyData,
+}: IFamiliarInformationProp) => {
+  const { setDisabledFields, disabledFields } = useContext(AppContext);
+  setDisabledFields(action == "view" ? true : false);
 
-const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
-  const [disabledRows, setDisabledRows] = useState<boolean[]>([true]);
-  const [age, setAge] = useState("0");
   const resolver = useYupValidationResolver(familiarValidator);
+
   const {
     register: registerFamily,
     handleSubmit,
     control,
     setValue: setValueRegister,
     formState: { errors, isValid },
+    getValues,
+    watch,
   } = useForm<{ familiar: IRelative[] }>({
     defaultValues: {
-      familiar: [{ name: "", birthDate: "", gender: "", relationship: "" }],
+      familiar: familyData.familiar,
     },
     mode: "all",
     resolver,
@@ -30,14 +59,14 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "familiar",
-    rules: {
-      required: "Please append at least 1 item",
-    },
   });
 
-  const onSubmit = handleSubmit(async (data: any) => {
+  const [disabledRows, setDisabledRows] = useState<boolean[]>(
+    Array.from({ length: fields?.length }, () => true)
+  );
+
+  const onSubmit = handleSubmit((data: any) => {
     setFamilyData(data);
-    console.log("Submit data", data);
   });
 
   const handleEnableRow = (index: number) => {
@@ -51,15 +80,18 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
     updatedDisabledRows[index] = true;
     setDisabledRows(updatedDisabledRows);
   };
+
   useEffect(() => {
-    console.log(isValid);
-  }, [isValid]);
+    if (familyData?.familiar?.length > 0) {
+      setValueRegister("familiar", familyData.familiar);
+    }
+  }, [familyData]);
 
   return (
     <div>
       <div className="container-sections-forms">
         <span className="text-black large bold">Datos de familiares</span>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           {fields.map((field, index) => (
             <div
               key={field.id}
@@ -72,35 +104,26 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 id={`fullName${index}`}
                 className="input-basic medium"
                 typeInput="text"
-                disabled={disabledRows[index]}
+                disabled={disabledRows[index] || disabledFields}
                 label="Nombre completo"
                 classNameLabel="text-black big bold"
                 errors={errors}
                 register={registerFamily}
                 fieldArray={true}
               />
-              <Controller
+
+              <DatePickerComponent
+                idInput={`familiar.${index}.birthDate`}
                 control={control}
-                name={`familiar.${index}.birthDate`}
-                render={({ field }) => {
-                  return (
-                    <DatePickerComponent
-                      id={field.name}
-                      idInput={`familiar.${index}.birthDate`}
-                      value={field.value}
-                      label="Fecha de Nacimiento"
-                      register={registerFamily}
-                      errors={errors}
-                      classNameLabel="text-black big break-line bold"
-                      setValueRegister={setValueRegister}
-                      onchange={field.onChange}
-                      disabled={disabledRows[index]}
-                      className="dataPicker-basic medium"
-                      setValue={setAge}
-                      maxDate={new Date()}
-                    />
-                  );
-                }}
+                label="Fecha de Nacimiento"
+                errors={errors}
+                classNameLabel="text-black big break-line bold"
+                className="dataPicker-basic medium"
+                disabled={disabledRows[index] || disabledFields}
+                placeholder="DD/MM/YYYY"
+                dateFormat="dd/mm/yy"
+                maxDate={new Date()}
+                fieldArray={true}
               />
 
               <InputComponent
@@ -112,50 +135,44 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 label="Edad"
                 disabled={true}
                 errors={errors}
-                value={age ? age : "0"}
+                value={`${
+                  watch(`familiar.${index}.birthDate`)
+                    ? calculateDifferenceYear(
+                        watch(`familiar.${index}.birthDate`)
+                      )
+                    : 0
+                }`}
+                fieldArray={true}
               />
-              <Controller
-                name={`familiar.${index}.gender`}
+              <SelectComponent
+                idInput={`familiar.${index}.gender`}
                 control={control}
-                render={({ field }) => (
-                  <SelectComponent
-                    id={field.name}
-                    idInput={field.name}
-                    label="Género"
-                    register={registerFamily}
-                    errors={errors}
-                    data={list[0]}
-                    disabled={disabledRows[index]}
-                    className="select-basic medium"
-                    classNameLabel="text-black big bold"
-                    value={field.value}
-                    setValueRegister={setValueRegister}
-                    onchange={field.onChange}
-                  />
-                )}
+                errors={errors}
+                data={list[0]}
+                label={<>Género</>}
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Tipo"
+                disabled={disabledRows[index] || disabledFields}
+                fieldArray={true}
               />
-              <Controller
-                name={`familiar.${index}.relationship`}
+              <SelectComponent
+                idInput={`familiar.${index}.relationship`}
                 control={control}
-                render={({ field }) => (
-                  <SelectComponent
-                    id={field.name}
-                    idInput={field.name}
-                    label="Parentesco"
-                    register={registerFamily}
-                    errors={errors}
-                    data={list[1]}
-                    disabled={disabledRows[index]}
-                    className="select-basic medium"
-                    classNameLabel="text-black big bold"
-                    value={field.value}
-                    setValueRegister={setValueRegister}
-                    onchange={field.onChange}
-                  />
-                )}
+                errors={errors}
+                data={list[1]}
+                label={<>Parentesco</>}
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Tipo"
+                disabled={disabledRows[index] || disabledFields}
+                fieldArray={true}
               />
               <div>
-                <label htmlFor="" className="text-black big bold display-justify-flex-center">
+                <label
+                  htmlFor=""
+                  className="text-black big bold display-justify-flex-center"
+                >
                   Acciones
                 </label>
                 <div className="button-container-display">
@@ -165,18 +182,25 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                         value={<RiSave3Fill />}
                         type="button"
                         action={() => {
-                          if(isValid){
-                          handleDisableRow(index);
                           onSubmit();
+
+                          if (isValid) {
+                            handleDisableRow(index);
                           }
                         }}
                         className="button-confirm"
+                        disabled={disabledFields}
                       />
                       <ButtonComponent
                         value={<HiOutlineX />}
                         type="button"
-                        action={() => handleDisableRow(index)}
+                        action={() => {
+                          if (isValid) {
+                            handleDisableRow(index);
+                          }
+                        }}
                         className="button-cancel-edit"
+                        disabled={disabledFields}
                       />
                     </>
                   ) : (
@@ -186,12 +210,18 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                         type="button"
                         action={() => handleEnableRow(index)}
                         className="button-edit"
+                        disabled={disabledFields}
                       />
                       <ButtonComponent
                         value={<HiOutlineTrash />}
                         type="button"
-                        action={() => remove(index)}
+                        action={() => {
+                          remove(index);
+                          const data = getValues("familiar");
+                          setFamilyData({ familiar: data });
+                        }}
                         className="button-delete"
+                        disabled={disabledFields}
                       />
                     </>
                   )}
@@ -212,10 +242,12 @@ const FamiliarInformationForm = ({ setFamilyData, list }: any) => {
                 })
               }
               className="button-save large"
+              disabled={disabledFields}
             />
           </div>
         </form>
       </div>
+      {/* <DevTool control={control} /> */}
     </div>
   );
 };

@@ -1,26 +1,21 @@
-import React from "react";
-import {
-  Control,
-  Controller,
-  FieldErrors,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import React, { useContext } from "react";
+import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import {
   SelectComponent,
   InputComponent,
 } from "../../../common/components/Form";
+
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import { InputGroupComponent } from "../../../common/components/Form/input-group.component";
 import { EDirection } from "../../../common/constants/input.enum";
+import { AppContext } from "../../../common/contexts/app.context";
 
 interface IPersonalInformationProp {
   register: UseFormRegister<any>;
   errors: FieldErrors<any>;
   control: Control<any>;
   list: any[];
-  stateList: React.Dispatch<React.SetStateAction<string>>[];
-  setValueRegister: UseFormSetValue<any>;
+  action: string;
 }
 
 const InformationPersonalForm = ({
@@ -28,9 +23,11 @@ const InformationPersonalForm = ({
   errors,
   control,
   list,
-  stateList,
-  setValueRegister,
+  action,
 }: IPersonalInformationProp) => {
+  const { setDisabledFields, disabledFields } = useContext(AppContext);
+  setDisabledFields(action == "view" ? true : false);
+
   return (
     <>
       <div className="grid-form-4-container gap-25 container-sections-forms">
@@ -42,26 +39,16 @@ const InformationPersonalForm = ({
             Documento de identidad <span>*</span>
           </label>
           <div className="display-justify gap-15">
-            <Controller
-              name="worker.typeDocument"
+            <SelectComponent
+              idInput={"worker.typeDocument"}
               control={control}
-              render={({ field }) => (
-                <SelectComponent
-                  id={field.name}
-                  idInput={field.name}
-                  register={register}
-                  errors={errors}
-                  data={list[0]}
-                  className="select-basic medium"
-                  classNameLabel="text-black big bold"
-                  value={field.value}
-                  setValueRegister={setValueRegister}
-                  onchange={field.onChange}
-                  placeholder="Tipo"
-                />
-              )}
+              errors={errors}
+              data={list[0]}
+              className="select-basic medium"
+              classNameLabel="text-black big bold"
+              placeholder="Seleccione."
+              disabled={disabledFields}
             />
-
             <InputGroupComponent
               idInput="worker.numberDocument"
               className="input-group-basic medium"
@@ -73,6 +60,7 @@ const InformationPersonalForm = ({
               placeholder={""}
               iconLegend={"No."}
               containerClassname="ml-5px big"
+              disabled={disabledFields}
             />
           </div>
         </div>
@@ -88,6 +76,7 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <InputComponent
           idInput={"worker.secondName"}
@@ -97,9 +86,10 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <InputComponent
-          idInput={"worker.surName"}
+          idInput={"worker.surname"}
           label={
             <>
               Primer apellido <span>*</span>
@@ -110,6 +100,7 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <InputComponent
           idInput={"worker.secondSurname"}
@@ -119,179 +110,123 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
 
         <div className="fields-container gap-25">
-          <Controller
-            name="worker.bloodType"
+          <SelectComponent
+            idInput={"worker.bloodType"}
             control={control}
-            render={({ field }) => (
-              <SelectComponent
-                id={field.name}
-                idInput={field.name}
-                label={
-                  <>
-                    RH <span>*</span>
-                  </>
-                }
-                register={register}
-                errors={errors}
-                data={list[1]}
-                className="select-basic medium"
-                classNameLabel="text-black big bold"
-                value={field.value}
-                setValueRegister={setValueRegister}
-                onchange={field.onChange}
-              />
-            )}
+            errors={errors}
+            data={list[1]}
+            label={
+              <>
+                RH <span>*</span>
+              </>
+            }
+            className="select-basic medium"
+            classNameLabel="text-black big bold"
+            placeholder="Seleccione."
+            disabled={disabledFields}
           />
-          <Controller
-            name="worker.gender"
+          <SelectComponent
+            idInput={"worker.gender"}
             control={control}
-            render={({ field }) => (
-              <SelectComponent
-                id={field.name}
-                idInput={field.name}
-                label={
-                  <>
-                    Genero <span>*</span>
-                  </>
-                }
-                register={register}
-                errors={errors}
-                data={list[2]}
-                className="select-basic medium"
-                classNameLabel="text-black big bold"
-                value={field.value}
-                setValueRegister={setValueRegister}
-                onchange={field.onChange}
-              />
-            )}
+            errors={errors}
+            data={list[2]}
+            label={
+              <>
+                Genero <span>*</span>
+              </>
+            }
+            className="select-basic medium"
+            classNameLabel="text-black big bold"
+            placeholder="Seleccione."
+            disabled={disabledFields}
           />
         </div>
-        <Controller
+        <DatePickerComponent
+          idInput={"worker.birthDate"}
           control={control}
-          name="worker.birthDate"
-          render={({ field }) => {
-            return (
-              <DatePickerComponent
-                id={field.name}
-                idInput={field.name}
-                value={field.value}
-                label={
-                  <>
-                    Fecha de Nacimiento <span>*</span>
-                  </>
-                }
-                register={register}
-                errors={errors}
-                classNameLabel="text-black big bold"
-                setValueRegister={setValueRegister}
-                onchange={field.onChange}
-                className="dataPicker-basic  medium "
-              />
-            );
-          }}
+          label={
+            <>
+              Fecha de Nacimiento <span>*</span>
+            </>
+          }
+          errors={errors}
+          classNameLabel="text-black big bold"
+          className="dataPicker-basic  medium "
+          disabled={disabledFields}
+          placeholder="DD/MM/YYYY"
+          dateFormat="dd/mm/yy"
+          maxDate={new Date()}
         />
-        <Controller
-          name="worker.nationality"
+        <SelectComponent
+          idInput={"worker.nationality"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label={
-                <>
-                  Nacionalidad <span>*</span>
-                </>
-              }
-              register={register}
-              errors={errors}
-              data={list[3]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              onchange={field.onChange}
-            />
-          )}
+          errors={errors}
+          data={list[3]}
+          label={
+            <>
+              Nacionalidad <span>*</span>
+            </>
+          }
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
       </div>
       <div className="grid-form-4-container gap-25 container-sections-forms">
         <span className="text-black large bold grid-span-4-columns ">
           Información de localización
         </span>
-        <Controller
-          name="worker.department"
+        <SelectComponent
+          idInput={"worker.department"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label={
-                <>
-                  Departamento <span>*</span>
-                </>
-              }
-              register={register}
-              errors={errors}
-              data={list[4]}
-              setValue={stateList[0]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              onchange={field.onChange}
-            />
-          )}
+          errors={errors}
+          data={list[4]}
+          label={
+            <>
+              Departamento <span>*</span>
+            </>
+          }
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
-        <Controller
-          name="worker.municipality"
+        <SelectComponent
+          idInput={"worker.municipality"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label={
-                <>
-                  Municipio <span>*</span>
-                </>
-              }
-              register={register}
-              errors={errors}
-              data={list[5]}
-              setValue={stateList[1]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              onchange={field.onChange}
-            />
-          )}
+          errors={errors}
+          data={list[5]}
+          label={
+            <>
+              Municipio <span>*</span>
+            </>
+          }
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
-        <Controller
-          name="worker.neighborhood"
+        <SelectComponent
+          idInput={"worker.neighborhood"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label={
-                <>
-                  Barrio <span>*</span>
-                </>
-              }
-              register={register}
-              errors={errors}
-              data={list[6]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              onchange={field.onChange}
-            />
-          )}
+          errors={errors}
+          data={list[6]}
+          label={
+            <>
+              Barrio <span>*</span>
+            </>
+          }
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
+
         <InputComponent
           idInput="worker.address"
           label={
@@ -304,44 +239,29 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
-        <Controller
-          name="worker.socioEconomic"
+        <SelectComponent
+          idInput={"worker.socioEconomic"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label={<>Estrato</>}
-              register={register}
-              errors={errors}
-              data={list[7]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              onchange={field.onChange}
-            />
-          )}
+          errors={errors}
+          data={list[7]}
+          label={<>Estrato</>}
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
-        <Controller
-          name="worker.housingType"
+        <SelectComponent
+          idInput={"worker.housingType"}
           control={control}
-          render={({ field }) => (
-            <SelectComponent
-              id={field.name}
-              idInput={field.name}
-              label="Tipo de vivienda"
-              register={register}
-              errors={errors}
-              data={list[8]}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              value={field.value}
-              setValueRegister={setValueRegister}
-              onchange={field.onChange}
-            />
-          )}
+          errors={errors}
+          data={list[8]}
+          label={"Tipo de vivienda"}
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
         />
         <InputComponent
           idInput={"worker.contactNumber"}
@@ -355,6 +275,7 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <InputComponent
           idInput={"worker.email"}
@@ -364,6 +285,7 @@ const InformationPersonalForm = ({
           errors={errors}
           className="input-basic medium"
           classNameLabel="text-black big bold"
+          disabled={disabledFields}
         />
         <div />
       </div>

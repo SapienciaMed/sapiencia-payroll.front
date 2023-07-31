@@ -16,6 +16,25 @@ export interface IEmployment {
   typesContracts?: ITypesContracts[];
 }
 
+
+export interface IEmploymentResult {
+  idCharge: string;
+  institutionalMail: string;
+  idTypeContract: string;
+  contractNumber: string;
+  startDate: DateTime;
+  endDate: DateTime;
+  state: string;
+  observation?: string;
+  salary?: number;
+  totalValue?: number;
+  idReasonRetirement: string;
+  charges?: ICharge[];
+  typesContracts?: ITypesContracts[];
+  worker?: IWorker;
+}
+
+
 export interface IRelative {
   name: string;
   relationship: string;
@@ -151,7 +170,7 @@ export interface IFilterEmployment {
 export interface IFilterVacation {
   page: number;
   perPage: number;
-  documentWorker?: string;
+  workerId?: string;
   period?: string;
 }
 
@@ -176,36 +195,22 @@ export interface IWorkersVacation {
   pendingDays?: number;
   checkCompensatoryDays?: boolean;
   checkEnjoyedDays?: boolean;
+  totalDaysEnjoyed?:number;
 }
 
 export interface IWorkersVacationDetail {
   id?: number;
-  worker: {
-    documentWorker: string;
-    nameWorker?: string;
-    period: string;
-    charge?: string;
-    salary?: number;
-  };
-  enjoyedDays: {
-    startDate: DateTime;
-    endDate: DateTime;
-    totalDays: number;
-  };
-  compensatedDays: {
-    startDateCompensatedDays: DateTime;
-    totalCompensatoryDays: number;
-  };
-  refund: {
-    pendingDays?: number;
-    refundDays?: number;
-  };
-  balances: {
-    previousBalance?: number;
-    daysEarned?: number;
-    currentBalance?: number;
-  };
-  observation: string;
+  codEmployment: string;
+  period: string;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  periodFormer: string;
+  enjoyed: string;
+  available: number;
+  days: string;
+  periodClosed: boolean;
+  employment?: IEmploymentResult;
+  vacationDay: IVacationDay[];
 }
 
 export interface IVacation {
@@ -216,11 +221,29 @@ export interface IVacation {
   dateUntil: DateTime;
   periodFormer: string;
   enjoyed: string;
-  available: string;
+  available: number;
   days: string;
   periodClosed: boolean;
 }
 
 export interface IFilterIncapacity {
   idUser: string;
+}
+export interface IVacationDay{
+  id?: number;
+  codVacation: number;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  enjoyedDays: number;
+  paid: boolean;
+  codForm?: number;
+  observation?: string;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface ICreateVacation{
+  vacationDay:IVacationDay[]
 }

@@ -37,7 +37,7 @@ useEffect(() => {
             setActiveWorkerList(
             response.data.map((item) => {
               const list = {
-                name: `${item.numberDocument+"-"+item.firstName+" "+item.surname}`,
+                name: `${item.numberDocument+" - "+item.firstName+" "+item.surname}`,
                 value: item.id,
               };
               return list;

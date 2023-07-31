@@ -1,10 +1,7 @@
 import React, { useRef } from "react";
 import TableComponent from "../../../common/components/table.component";
-import { InputComponent } from "../../../common/components/Form/input.component";
-import { Controller, useForm } from "react-hook-form";
-import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { searchRecord } from "../../../common/schemas";
-import { DateTime } from "luxon";
+import { useForm } from "react-hook-form";
+
 import {
   ButtonComponent,
   FormComponent,
@@ -114,7 +111,7 @@ const SearchIncapacity = () => {
             <div className="container-sections-forms">
               <div className="grid-form-3-container gap-25">
                 <SelectComponent
-                  idInput={"idUser"}
+                  idInput={"idEmpleado"}
                   control={control}
                   errors={errors}
                   data={activeWorkerList}

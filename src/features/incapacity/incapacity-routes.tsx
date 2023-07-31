@@ -5,13 +5,15 @@ import PrivateRoute from "../../common/utils/auth-private-guard";
 function IncapacityRoutes() {
   const SearchIncapacity = lazy(() => import("./pages/search-incapacity.page"));
 
+  const CreateIncapacity = lazy(() => import("./pages/create-incapacity.page"));
+
   return (
     <Routes>
       <Route
         path={"/crear"}
         element={
           <PrivateRoute
-            element={<h1>crear jijijiji</h1>}
+            element={<CreateIncapacity />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

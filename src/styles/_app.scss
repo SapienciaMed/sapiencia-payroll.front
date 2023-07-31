@@ -70,3 +70,11 @@ hr {
 .pointer {
   cursor: pointer;
 }
+
+.grid {
+  display: grid;
+
+  &.gap-25 {
+    gap: 25px;
+  }
+}

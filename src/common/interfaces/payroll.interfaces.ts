@@ -16,7 +16,6 @@ export interface IEmployment {
   typesContracts?: ITypesContracts[];
 }
 
-
 export interface IEmploymentResult {
   idCharge: string;
   institutionalMail: string;
@@ -33,7 +32,6 @@ export interface IEmploymentResult {
   typesContracts?: ITypesContracts[];
   worker?: IWorker;
 }
-
 
 export interface IRelative {
   name: string;
@@ -195,7 +193,7 @@ export interface IWorkersVacation {
   pendingDays?: number;
   checkCompensatoryDays?: boolean;
   checkEnjoyedDays?: boolean;
-  totalDaysEnjoyed?:number;
+  totalDaysEnjoyed?: number;
 }
 
 export interface IWorkersVacationDetail {
@@ -229,7 +227,7 @@ export interface IVacation {
 export interface IFilterIncapacity {
   idUser: string;
 }
-export interface IVacationDay{
+export interface IVacationDay {
   id?: number;
   codVacation: number;
   dateFrom: DateTime;
@@ -244,6 +242,13 @@ export interface IVacationDay{
   dateCreate?: DateTime;
 }
 
-export interface ICreateVacation{
-  vacationDay:IVacationDay[]
+export interface ICreateVacation {
+  vacationDay: IVacationDay[];
+}
+
+export interface ICreateAndUpdateIncapacity {
+  idEmpleado: string;
+  originIncapacity: string;
+  startDate: Date;
+  endDate: Date;
 }

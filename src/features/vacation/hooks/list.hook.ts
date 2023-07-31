@@ -6,38 +6,45 @@ import { IGenericList } from "../../../common/interfaces/global.interface";
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import { IWorker } from "../../../common/interfaces/payroll.interfaces";
 
-
 export default function useListData() {
-const [listPeriods, setListPeriods] = useState([])
-const [activeWorkerList, setActiveWorkerList] = useState([])
-    const { getListByGrouper } = useGenericListService();
-    const {getWorkers } = usePayrollService();
-    useEffect(() => {
-        getListByGrouper("PERIODOS")
-          .then((response: ApiResponse<IGenericList[]>) => {
-            if (response && response?.operation?.code === EResponseCodes.OK) {
-                setListPeriods(
-                response.data.map((item) => {
-                  const list = {
-                    name: item.itemDescription,
-                    value: item.itemCode,
-                  };
-                  return list;
-                })
-              );
-            }
-          })
-          .catch((e) => {});
-      }, []);
+  const [listPeriods, setListPeriods] = useState([]);
+  const [activeWorkerList, setActiveWorkerList] = useState([]);
 
-useEffect(() => {
+  const { getListByGrouper } = useGenericListService();
+  const { getWorkers } = usePayrollService();
+
+  useEffect(() => {
+    getListByGrouper("PERIODOS")
+      .then((response: ApiResponse<IGenericList[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setListPeriods(
+            response.data.map((item) => {
+              const list = {
+                name: item.itemDescription,
+                value: item.itemCode,
+              };
+              return list;
+            })
+          );
+        }
+      })
+      .catch((e) => {});
+  }, []);
+
+  useEffect(() => {
     getWorkers()
       .then((response: ApiResponse<IWorker[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
-            setActiveWorkerList(
+          setActiveWorkerList(
             response.data.map((item) => {
               const list = {
-                name: `${item.numberDocument+" - "+item.firstName+" "+item.surname}`,
+                name: `${
+                  item.numberDocument +
+                  " - " +
+                  item.firstName +
+                  " " +
+                  item.surname
+                }`,
                 value: item.id,
               };
               return list;
@@ -50,6 +57,6 @@ useEffect(() => {
 
   return {
     activeWorkerList,
-    listPeriods
+    listPeriods,
   };
 }

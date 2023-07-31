@@ -22,14 +22,17 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const SearchIncapacity = () => {
   const { activeWorkerList } = useListData();
+
   const tableComponentRef = useRef(null);
+
   const navigate = useNavigate();
+
   const {
     handleSubmit,
     formState: { errors },
     control,
     reset,
-  } = useForm<IFilterIncapacity>({ defaultValues: { idUser: "" } });
+  } = useForm<IFilterIncapacity>({ defaultValues: { idEmployee: null } });
 
   const tableColumns: ITableElement<IGetVinculation>[] = [
     {
@@ -82,9 +85,8 @@ const SearchIncapacity = () => {
     }
   }
 
-  const onSubmit = handleSubmit(async (data: IFilterVinculation) => {
-    //console.log(data);
-    //loadTableData(data);
+  const onSubmit = handleSubmit(async (data: IFilterIncapacity) => {
+    loadTableData(data);
   });
 
   return (

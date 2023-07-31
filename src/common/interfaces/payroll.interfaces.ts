@@ -224,3 +224,10 @@ export interface IVacation {
 export interface IFilterIncapacity {
   idUser: string;
 }
+
+export interface ICreateAndUpdateIncapacity {
+  idEmpleado: string;
+  originIncapacity: string;
+  startDate: Date;
+  endDate: Date;
+}

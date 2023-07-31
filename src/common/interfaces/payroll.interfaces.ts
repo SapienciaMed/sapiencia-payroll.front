@@ -239,7 +239,7 @@ export interface IIncapacity {
 }
 
 export interface IFilterIncapacity {
-  idUser: string;
+  idEmployee?: number;
 }
 export interface IVacationDay {
   id?: number;
@@ -260,9 +260,21 @@ export interface ICreateVacation {
   vacationDay: IVacationDay[];
 }
 
-export interface ICreateAndUpdateIncapacity {
-  idEmpleado: string;
-  originIncapacity: string;
-  startDate: Date;
-  endDate: Date;
+export interface IVacationDay {
+  id?: number;
+  codVacation: number;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  enjoyedDays: number;
+  paid: boolean;
+  codForm?: number;
+  observation?: string;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface ICreateVacation {
+  vacationDay: IVacationDay[];
 }

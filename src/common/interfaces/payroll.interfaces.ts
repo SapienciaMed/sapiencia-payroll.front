@@ -224,7 +224,7 @@ export interface IVacation {
 export interface IIncapacity {
   id?: number;
   codIncapacityType: number;
-  codEmployee: number;
+  codEmployment: number;
   dateInitial: DateTime;
   dateFinish: DateTime;
   comments?: string;
@@ -256,4 +256,9 @@ export interface IVacationDay {
 
 export interface ICreateVacation {
   vacationDay: IVacationDay[];
+}
+
+export interface IIncapacityTypes {
+  id?: number;
+  name?: string;
 }

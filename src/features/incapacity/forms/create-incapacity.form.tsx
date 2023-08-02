@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 import {
   FormComponent,
   SelectComponent,
@@ -13,25 +11,19 @@ import useListData from "../../vacation/hooks/list.hook";
 import useCreateAndUpdateIncapacityHook from "../hooks/createAndUpdateIncapcity.hook";
 
 export const CreateIncapacityForm = () => {
-  const { activeWorkerList } = useListData();
+  const { activeWorkerList, typesIncapacityList } = useListData();
 
-  const { onSubmit, register, errors, control, showDays } =
+  const { onSubmit, register, errors, control, showDays, navigate } =
     useCreateAndUpdateIncapacityHook();
-
-  const navigate = useNavigate();
 
   return (
     <>
-      <FormComponent
-        id="searchRecordForm"
-        className="form-signIn"
-        action={onSubmit}
-      >
+      <FormComponent className="form-signIn" action={onSubmit}>
         <div className="container-sections-forms">
           <div className="grid gap-25">
             <div className="grid-form-2-container gap-25">
               <SelectComponent
-                idInput={"codEmployee"}
+                idInput={"codEmployment"}
                 control={control}
                 errors={errors}
                 data={activeWorkerList}
@@ -50,7 +42,7 @@ export const CreateIncapacityForm = () => {
                 idInput={"codIncapacityType"}
                 control={control}
                 errors={errors}
-                data={[]}
+                data={typesIncapacityList}
                 label={
                   <>
                     Origen de incapacidad <span>*</span>
@@ -130,6 +122,7 @@ export const CreateIncapacityForm = () => {
         <div className="button-save-container-display">
           <ButtonComponent
             value={"Cancelar"}
+            type="button"
             action={() => navigate("../consultar")}
             className="button-clean bold"
           />

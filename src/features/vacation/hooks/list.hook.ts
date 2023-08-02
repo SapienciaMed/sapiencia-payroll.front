@@ -4,14 +4,20 @@ import { ApiResponse } from "../../../common/utils/api-response";
 import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
 import { IGenericList } from "../../../common/interfaces/global.interface";
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
-import { IWorker } from "../../../common/interfaces/payroll.interfaces";
+import {
+  IIncapacityTypes,
+  IWorker,
+} from "../../../common/interfaces/payroll.interfaces";
+import useIncapacityService from "../../../common/hooks/incapacity-service.hook";
 
 export default function useListData() {
   const [listPeriods, setListPeriods] = useState([]);
   const [activeWorkerList, setActiveWorkerList] = useState([]);
+  const [typesIncapacityList, setTypesIncapacityList] = useState([]);
 
   const { getListByGrouper } = useGenericListService();
   const { getWorkers } = usePayrollService();
+  const { typeIncapacity } = useIncapacityService();
 
   useEffect(() => {
     getListByGrouper("PERIODOS")
@@ -55,8 +61,24 @@ export default function useListData() {
       .catch((err) => {});
   }, []);
 
+  useEffect(() => {
+    typeIncapacity()
+      .then((response: ApiResponse<IIncapacityTypes[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          console.log(response.data);
+          setTypesIncapacityList(
+            response.data.map((item) => {
+              return { name: item.name, value: item.id };
+            })
+          );
+        }
+      })
+      .catch((err) => {});
+  }, []);
+
   return {
     activeWorkerList,
     listPeriods,
+    typesIncapacityList,
   };
 }

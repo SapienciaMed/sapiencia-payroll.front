@@ -38,7 +38,7 @@ useEffect(() => {
             response.data.map((item) => {
               const list = {
                 name: `${item.numberDocument+" - "+item.firstName+" "+item.surname}`,
-                value: item.id,
+                value: item.employment.id,
               };
               return list;
             })

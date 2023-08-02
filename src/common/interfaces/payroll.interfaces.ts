@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 
 export interface IEmployment {
+  id?:number;
   idCharge: string;
   institutionalMail: string;
   idTypeContract: string;
@@ -74,6 +75,7 @@ export interface IWorker {
   dateModified?: DateTime;
   userCreate?: string;
   dateCreate?: DateTime;
+  employment?: IEmployment;
 }
 
 export interface IVinculation {
@@ -245,5 +247,18 @@ export interface IVacationDay{
 }
 
 export interface ICreateVacation{
-  vacationDay:IVacationDay[]
+  vacationDay:IVacationDay[];
+  enjoyedDays: number;
+  avaibleDays: number;
+}
+
+export interface IEditVacation{
+  id?:number;
+  dateFrom: DateTime;
+  dateUntil:DateTime;
+  totalDays?: number;
+  pendingTotalDays?: number;
+  incapacityRefund?: boolean;
+  generalRefund?: boolean;
+  observation?:string;
 }

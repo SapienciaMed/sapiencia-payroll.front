@@ -237,7 +237,7 @@ export interface IFilterIncapacity {
 export interface IIncapacity {
   id?: number;
   codIncapacityType: number;
-  codEmployee: number;
+  codEmployment: number;
   dateInitial: DateTime;
   dateFinish: DateTime;
   comments?: string;
@@ -298,4 +298,9 @@ export interface IEditVacation {
   incapacityRefund?: boolean;
   generalRefund?: boolean;
   observation?: string;
+}
+
+export interface IIncapacityTypes {
+  id?: number;
+  name?: string;
 }

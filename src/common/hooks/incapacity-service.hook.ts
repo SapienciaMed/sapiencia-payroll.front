@@ -1,6 +1,9 @@
 import { EResponseCodes } from "../constants/api.enum";
 
-import { IIncapacity } from "../interfaces/payroll.interfaces";
+import {
+  IIncapacity,
+  IIncapacityTypes,
+} from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 
 import useCrudService from "./crud-service.hook";
@@ -15,7 +18,7 @@ export function useIncapacityService() {
     data: IIncapacity
   ): Promise<ApiResponse<IIncapacity>> {
     try {
-      const endpoint: string = `/`;
+      const endpoint: string = `/create`;
       return await post(`${authUrl}${endpoint}`, data);
     } catch (error) {
       return new ApiResponse(
@@ -26,8 +29,22 @@ export function useIncapacityService() {
     }
   }
 
+  async function typeIncapacity(): Promise<ApiResponse<IIncapacityTypes[]>> {
+    try {
+      const endpoint: string = `/incapacity-types`;
+      return await get(`${authUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IIncapacityTypes[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   return {
     createIncapacity,
+    typeIncapacity,
   };
 }
 

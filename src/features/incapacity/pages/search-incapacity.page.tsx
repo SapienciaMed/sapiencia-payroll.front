@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import TableComponent from "../../../common/components/table.component";
 import { useForm } from "react-hook-form";
-
 import {
   ButtonComponent,
   FormComponent,
@@ -13,7 +12,7 @@ import {
 } from "../../../common/interfaces/table.interfaces";
 import {
   IFilterIncapacity,
-  IFilterVinculation,
+  IGetIncapacity,
   IGetVinculation,
 } from "../../../common/interfaces/payroll.interfaces";
 import { useNavigate } from "react-router-dom";
@@ -32,26 +31,27 @@ const SearchIncapacity = () => {
     formState: { errors },
     control,
     reset,
-  } = useForm<IFilterIncapacity>({ defaultValues: { idEmployee: null } });
+  } = useForm<IFilterIncapacity>({ defaultValues: { workerId: "" } });
 
-  const tableColumns: ITableElement<IGetVinculation>[] = [
+  const tableColumns: ITableElement<IGetIncapacity>[] = [
     {
       fieldName: "numberDocument",
       header: "Numero de documento",
       renderCell: (row) => {
-        return <>{row.numberDocument}</>;
+        return <>{row.employment.worker.numberDocument}</>;
       },
     },
     {
       fieldName: "firstName",
       header: "Nombres completo",
       renderCell: (row) => {
+        console.log(row);
         return (
           <>
-            {`${row.firstName}
-               ${row.secondName} 
-               ${row.surname}
-               ${row.secondSurname}`}
+            {`${row.employment.worker.firstName}
+               ${row.employment.worker.secondName} 
+               ${row.employment.worker.surname}
+               ${row.employment.worker.secondSurname}`}
           </>
         );
       },
@@ -60,7 +60,7 @@ const SearchIncapacity = () => {
       fieldName: "employment.typesContracts",
       header: "Origen incapacidad",
       renderCell: (row) => {
-        return <>{row.employment?.typesContracts[0].name}</>;
+        return <>{row.typeIncapacity?.name}</>;
       },
     },
   ];
@@ -113,14 +113,14 @@ const SearchIncapacity = () => {
             <div className="container-sections-forms">
               <div className="grid-form-3-container gap-25">
                 <SelectComponent
-                  idInput={"idEmpleado"}
+                  idInput={"workerId"}
                   control={control}
                   errors={errors}
                   data={activeWorkerList}
                   label={<>Documento - Nombre empleado</>}
                   className="select-basic medium"
                   classNameLabel="text-black big bold"
-                  placeholder="Seleccione"
+                  placeholder="Seleccione."
                   filter={true}
                 />
               </div>
@@ -140,7 +140,7 @@ const SearchIncapacity = () => {
         <div className="container-sections-forms">
           <TableComponent
             ref={tableComponentRef}
-            url={`${process.env.urlApiPayroll}/api/v1/employment/get-paginated`}
+            url={`${process.env.urlApiPayroll}/api/v1/incapacity/get-paginated`}
             columns={tableColumns}
             actions={tableActions}
             isShowModal={true}

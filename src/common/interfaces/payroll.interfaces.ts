@@ -33,6 +33,10 @@ export interface IEmploymentResult {
   worker?: IWorker;
 }
 
+export interface IEmploymentWorker extends IEmployment {
+  worker: IWorker;
+}
+
 export interface IRelative {
   name: string;
   relationship: string;
@@ -224,6 +228,10 @@ export interface IVacation {
   periodClosed: boolean;
 }
 
+export interface IFilterIncapacity {
+  workerId: string;
+}
+
 export interface IIncapacity {
   id?: number;
   codIncapacityType: number;
@@ -277,4 +285,14 @@ export interface IVacationDay {
 
 export interface ICreateVacation {
   vacationDay: IVacationDay[];
+}
+
+export interface IIncapacityTypes {
+  id?: number;
+  name?: string;
+}
+
+export interface IGetIncapacity extends IIncapacity {
+  employment?: IEmploymentWorker;
+  typeIncapacity: IIncapacityTypes | null;
 }

@@ -16,6 +16,10 @@ export interface IEmployment {
   typesContracts?: ITypesContracts[];
 }
 
+export interface IEmploymentWorker extends IEmployment {
+  worker: IWorker;
+}
+
 export interface IRelative {
   name: string;
   relationship: string;
@@ -222,5 +226,29 @@ export interface IVacation {
 }
 
 export interface IFilterIncapacity {
-  idUser: string;
+  workerId: string;
+}
+
+export interface IIncapacity {
+  id?: number;
+  codIncapacityType: number;
+  codEmployee: number;
+  dateInitial: DateTime;
+  dateFinish: DateTime;
+  comments?: string;
+  isExtension?: boolean;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface IIncapacityTypes {
+  id?: number;
+  name?: string;
+}
+
+export interface IGetIncapacity extends IIncapacity {
+  employment?: IEmploymentWorker;
+  typeIncapacity: IIncapacityTypes | null;
 }

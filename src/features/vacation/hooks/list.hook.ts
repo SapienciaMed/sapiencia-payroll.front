@@ -45,7 +45,7 @@ export default function useListData() {
                   " " +
                   item.surname
                 }`,
-                value: item.id,
+                value: item.employment.id,
               };
               return list;
             })

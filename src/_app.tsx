@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppContextProvider } from "./common/contexts/app.context";
 import "./styles/_app.scss";
@@ -8,9 +8,17 @@ import ModalMessageComponent from "./common/components/modal-message.component";
 import ApplicationProvider from "./application-provider";
 import WorkerRoutes from "./features/worker/worker-routes";
 import VacationRoutes from "./features/vacation/vacation-routes";
+import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
+  const { publish } = useAppCominicator();
   const HomePage = lazy(() => import("./common/components/home.page"));
+
+
+  useEffect(() => {
+    publish("currentAplication", process.env.aplicationId);
+  }, []);
+
 
   return (
     <AppContextProvider>

@@ -304,3 +304,8 @@ export interface IIncapacityTypes {
   id?: number;
   name?: string;
 }
+
+export interface IGetIncapacity extends IIncapacity {
+  employment?: IEmploymentWorker;
+  typeIncapacity: IIncapacityTypes | null;
+}

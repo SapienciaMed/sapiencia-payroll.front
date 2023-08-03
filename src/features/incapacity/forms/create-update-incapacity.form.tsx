@@ -10,11 +10,17 @@ import {
 import useListData from "../../vacation/hooks/list.hook";
 import useCreateAndUpdateIncapacityHook from "../hooks/createAndUpdateIncapcity.hook";
 
-export const CreateIncapacityForm = () => {
+interface IPropsCreateAndUpdateIncapacityForm {
+  action: string;
+}
+
+export const CreateUpdateIncapacityForm = ({
+  action,
+}: IPropsCreateAndUpdateIncapacityForm) => {
   const { activeWorkerList, typesIncapacityList } = useListData();
 
   const { onSubmit, register, errors, control, showDays, navigate } =
-    useCreateAndUpdateIncapacityHook();
+    useCreateAndUpdateIncapacityHook(action);
 
   return (
     <>
@@ -126,7 +132,10 @@ export const CreateIncapacityForm = () => {
             action={() => navigate("../consultar")}
             className="button-clean bold"
           />
-          <ButtonComponent value={"Guardar"} className="button-save big" />
+          <ButtonComponent
+            value={action !== "new" ? "Editar" : "Guardar"}
+            className="button-save big"
+          />
         </div>
       </FormComponent>
     </>

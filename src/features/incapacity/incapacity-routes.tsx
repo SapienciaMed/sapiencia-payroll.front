@@ -5,7 +5,9 @@ import PrivateRoute from "../../common/utils/auth-private-guard";
 function IncapacityRoutes() {
   const SearchIncapacity = lazy(() => import("./pages/search-incapacity.page"));
 
-  const CreateIncapacity = lazy(() => import("./pages/create-incapacity.page"));
+  const CreateAndUpdateIncapacity = lazy(
+    () => import("./pages/create-update-incapacity.page")
+  );
 
   return (
     <Routes>
@@ -13,11 +15,22 @@ function IncapacityRoutes() {
         path={"/crear"}
         element={
           <PrivateRoute
-            element={<CreateIncapacity />}
+            element={<CreateAndUpdateIncapacity action="new" />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }
       />
+
+      <Route
+        path={"/edit/:id"}
+        element={
+          <PrivateRoute
+            element={<CreateAndUpdateIncapacity action="edit" />}
+            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+          />
+        }
+      />
+
       <Route
         path={"/consultar"}
         element={

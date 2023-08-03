@@ -45,19 +45,18 @@ const SearchIncapacity = () => {
       fieldName: "firstName",
       header: "Nombres completo",
       renderCell: (row) => {
-        console.log(row);
         return (
           <>
-            {`${row.employment.worker.firstName}
-               ${row.employment.worker.secondName} 
-               ${row.employment.worker.surname}
-               ${row.employment.worker.secondSurname}`}
+            {`${row.employment.worker?.firstName}
+               ${row.employment.worker?.secondName} 
+               ${row.employment.worker?.surname}
+               ${row.employment.worker?.secondSurname}`}
           </>
         );
       },
     },
     {
-      fieldName: "employment.typesContracts",
+      fieldName: "employment.typeIncapacity",
       header: "Origen incapacidad",
       renderCell: (row) => {
         return <>{row.typeIncapacity?.name}</>;
@@ -74,7 +73,7 @@ const SearchIncapacity = () => {
     {
       icon: "Edit",
       onClick: (row) => {
-        navigate(`./edit/${row.id}`);
+        navigate(`../edit/${row.id}`);
       },
     },
   ];

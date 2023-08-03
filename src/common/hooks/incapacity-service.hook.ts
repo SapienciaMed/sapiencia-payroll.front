@@ -1,6 +1,7 @@
 import { EResponseCodes } from "../constants/api.enum";
 
 import {
+  IGetIncapacity,
   IIncapacity,
   IIncapacityTypes,
 } from "../interfaces/payroll.interfaces";
@@ -29,6 +30,36 @@ export function useIncapacityService() {
     }
   }
 
+  async function updateIncapacity(
+    data: IIncapacity
+  ): Promise<ApiResponse<IIncapacity>> {
+    try {
+      const endpoint: string = `/update`;
+      return await put(`${authUrl}${endpoint}`, data);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IIncapacity,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function getByIdIncapacity(
+    id: number
+  ): Promise<ApiResponse<IGetIncapacity>> {
+    try {
+      const endpoint: string = `/get-by-id/`;
+      return await get(`${authUrl}${endpoint}${id}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IGetIncapacity,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   async function typeIncapacity(): Promise<ApiResponse<IIncapacityTypes[]>> {
     try {
       const endpoint: string = `/incapacity-types`;
@@ -45,6 +76,8 @@ export function useIncapacityService() {
   return {
     createIncapacity,
     typeIncapacity,
+    getByIdIncapacity,
+    updateIncapacity,
   };
 }
 

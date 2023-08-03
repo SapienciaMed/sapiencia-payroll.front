@@ -65,7 +65,6 @@ export default function useListData() {
     typeIncapacity()
       .then((response: ApiResponse<IIncapacityTypes[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
-          console.log(response.data);
           setTypesIncapacityList(
             response.data.map((item) => {
               return { name: item.name, value: item.id };

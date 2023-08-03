@@ -117,3 +117,17 @@ export const formsPayroll = [
   contractualInformation,
   afiliaciones,
 ];
+
+export const createAndUpdateIncapacity = yup.object({
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  codIncapacityType: yup.string().required("El campo es obligatorio"),
+  dateInitial: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  dateFinish: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  // comments: yup.string().required("El campo es obligatorio"),
+});

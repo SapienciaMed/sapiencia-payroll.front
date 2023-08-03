@@ -74,3 +74,10 @@ hr {
 div[id="single-spa-application:@sapiencia/payroll"]{
   height: 100%;
 }
+.grid {
+  display: grid;
+
+  &.gap-25 {
+    gap: 25px;
+  }
+}

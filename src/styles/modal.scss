@@ -153,6 +153,8 @@
 
   .modal-content{
     text-align: center;
+    overflow: auto;
+    padding: 0px 10px;
   }
 
   .modal-footer{
@@ -298,6 +300,8 @@
   
     .modal-content{
       text-align: center;
+      overflow: auto;
+      padding: 0px 10px;
     }
   
     .modal-footer{

@@ -34,47 +34,53 @@ const SearchVacationPage = () => {
     control,
     reset,
   } = useForm<IFilterVacation>({ resolver });
-  const tableColumns: ITableElement<IWorkersVacation>[] = [
+  const tableColumns: ITableElement<IWorkersVacationDetail>[] = [
     {
-      fieldName: "nameWorker",
+      fieldName: "employment.worker.firstName",
       header: "Colaborador",
       renderCell: (row) => {
-        return <>{row.documentWorker}</>;
+        return (
+          <>
+            {row.employment.worker.firstName +
+              " " +
+              row.employment.worker.surname}
+          </>
+        );
       },
     },
     {
       fieldName: "period",
       header: "Periodo",
       renderCell: (row) => {
-        return <>{row}</>;
+        return <>{row.period}</>;
       },
     },
     {
-      fieldName: "startDate",
+      fieldName: "dateFrom",
       header: "Desde",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row).toLocaleString()}</>;
+        return <>{DateTime.fromISO(row.dateFrom).toLocaleString()}</>;
       },
     },
     {
-      fieldName: "endDate",
+      fieldName: "dateUntil",
       header: "Hasta",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row).toLocaleString()}</>;
+        return <>{DateTime.fromISO(row.dateUntil).toLocaleString()}</>;
       },
     },
     {
-      fieldName: "endingPeriod",
+      fieldName: "periodClosed",
       header: "Finalizado",
       renderCell: (row) => {
-        return <>{row ? "si" : "No"}</>;
+        return <>{row.periodClosed ? "si" : "No"}</>;
       },
     },
     {
       fieldName: "pendingDays",
       header: "Días",
       renderCell: (row) => {
-        return <>{row}</>;
+        return <>{row.periodFormer}</>;
       },
     },
   ];
@@ -82,67 +88,18 @@ const SearchVacationPage = () => {
     {
       icon: "Detail",
       onClick: (row) => {
-        const worker = {
-          worker: {
-            documentWorker: row.worker.documentWorker,
-            nameWorker: row.worker.nameWorker,
-            period: row.worker.period,
-            charge: row.worker.charge,
-            salary: row.worker.salary,
-          },
-        };
-
-        const enjoyedDays = {
-          enjoyedDays: {
-            startDate: DateTime.fromISO(row.enjoyedDays.startDate),
-            endDate: DateTime.fromISO(row.enjoyedDays.endDate),
-            totalDays: 0,
-          },
-        };
-
-        const compensatedDays = {
-          compensatedDays: {
-            startDateCompensatedDays:
-              row.compensatedDays.startDateCompensatedDays,
-            totalCompensatoryDays: row.compensatedDays.totalCompensatoryDays,
-          },
-        };
-
-        const refund = {
-          refund: {
-            pendingDays: row.refund.pendingDays,
-            refundDays: row.refund.refundDays ? 1 : 0,
-          },
-        };
-
-        const balances = {
-          balances: {
-            previousBalance: row.balances.previousBalance,
-            daysEarned: row.balances.daysEarned,
-            currentBalance: row.balances.currentBalance,
-          },
-        };
-
-        const observation = {
-          observation: row.observation,
-        };
-
-        const rows = [
-          worker,
-          enjoyedDays,
-          compensatedDays,
-          refund,
-          balances,
-          observation,
-        ];
+        
 
         setMessage({
           title: "Detalle posición presupuestaria",
           show: true,
           OkTitle: "Aceptar",
           description: (
-            <VacationTable rows={rows as IWorkersVacationDetail[]} />
+            <>
+              <VacationTable row={row} />
+            </>
           ),
+          size: "large",
           background: true,
         });
       },
@@ -175,7 +132,7 @@ const SearchVacationPage = () => {
             <div className="container-sections-forms">
               <div className="grid-form-2-container gap-25">
                 <SelectComponent
-                  idInput={"documentWorker"}
+                  idInput={"workerId"}
                   control={control}
                   errors={errors}
                   data={activeWorkerList}
@@ -212,7 +169,7 @@ const SearchVacationPage = () => {
         <div className="container-sections-forms">
           <TableComponent
             ref={tableComponentRef}
-            url={""}
+            url={`${process.env.urlApiPayroll}/api/v1/vacations/get-paginated`}
             columns={tableColumns}
             actions={tableActions}
             isShowModal={false}

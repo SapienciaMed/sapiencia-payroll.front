@@ -14,7 +14,7 @@ function App() {
   const { publish } = useAppCominicator();
   const HomePage = lazy(() => import("./common/components/home.page"));
 
-
+  // Effect que comunica la aplicacion actual
   useEffect(() => {
     publish("currentAplication", process.env.aplicationId);
   }, []);

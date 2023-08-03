@@ -16,9 +16,11 @@ function App() {
 
   // Effect que comunica la aplicacion actual
   useEffect(() => {
-    publish("currentAplication", process.env.aplicationId);
+    setTimeout(
+      () => publish("currentAplication", process.env.aplicationId),
+      500
+    );
   }, []);
-
 
   return (
     <AppContextProvider>
@@ -28,8 +30,14 @@ function App() {
           <Suspense fallback={<p>Loading...</p>}>
             <Routes>
               <Route path={"/nomina/"} element={<HomePage />} />;
-              <Route path={"/nomina/trabajadores/*"} element={<WorkerRoutes />} />
-              <Route path={"/nomina/vacaciones/*"} element={<VacationRoutes />} />
+              <Route
+                path={"/nomina/trabajadores/*"}
+                element={<WorkerRoutes />}
+              />
+              <Route
+                path={"/nomina/vacaciones/*"}
+                element={<VacationRoutes />}
+              />
             </Routes>
           </Suspense>
         </Router>

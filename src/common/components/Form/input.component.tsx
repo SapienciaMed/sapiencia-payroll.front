@@ -85,7 +85,7 @@ export function InputComponent({
   optionsRegister = {},
 }: IInputProps<any>): React.JSX.Element {
   const messageError = () => {
-    console.log(fieldArray)
+    // console.log(fieldArray)
     const keysError = idInput.split(".");
     let errs = errors;
 

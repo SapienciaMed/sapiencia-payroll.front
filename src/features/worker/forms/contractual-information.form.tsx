@@ -182,7 +182,6 @@ const ContractualInformationForm = ({
       fieldName: "salary",
       header: "Salario",
       renderCell: (row) => {
-        console.log(row.salary);
         return <>{formaterNumberToCurrency(row.salary)}</>;
       },
     },

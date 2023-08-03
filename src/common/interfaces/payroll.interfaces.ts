@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 
 export interface IEmployment {
+  id?: number;
   idCharge: string;
   institutionalMail: string;
   idTypeContract: string;
@@ -14,6 +15,27 @@ export interface IEmployment {
   idReasonRetirement: string;
   charges?: ICharge[];
   typesContracts?: ITypesContracts[];
+}
+
+export interface IEmploymentResult {
+  idCharge: string;
+  institutionalMail: string;
+  idTypeContract: string;
+  contractNumber: string;
+  startDate: DateTime;
+  endDate: DateTime;
+  state: string;
+  observation?: string;
+  salary?: number;
+  totalValue?: number;
+  idReasonRetirement: string;
+  charges?: ICharge[];
+  typesContracts?: ITypesContracts[];
+  worker?: IWorker;
+}
+
+export interface IEmploymentWorker extends IEmployment {
+  worker: IWorker;
 }
 
 export interface IRelative {
@@ -55,6 +77,7 @@ export interface IWorker {
   dateModified?: DateTime;
   userCreate?: string;
   dateCreate?: DateTime;
+  employment?: IEmployment;
 }
 
 export interface IVinculation {
@@ -151,7 +174,7 @@ export interface IFilterEmployment {
 export interface IFilterVacation {
   page: number;
   perPage: number;
-  documentWorker?: string;
+  workerId?: string;
   period?: string;
 }
 
@@ -176,36 +199,22 @@ export interface IWorkersVacation {
   pendingDays?: number;
   checkCompensatoryDays?: boolean;
   checkEnjoyedDays?: boolean;
+  totalDaysEnjoyed?: number;
 }
 
 export interface IWorkersVacationDetail {
   id?: number;
-  worker: {
-    documentWorker: string;
-    nameWorker?: string;
-    period: string;
-    charge?: string;
-    salary?: number;
-  };
-  enjoyedDays: {
-    startDate: DateTime;
-    endDate: DateTime;
-    totalDays: number;
-  };
-  compensatedDays: {
-    startDateCompensatedDays: DateTime;
-    totalCompensatoryDays: number;
-  };
-  refund: {
-    pendingDays?: number;
-    refundDays?: number;
-  };
-  balances: {
-    previousBalance?: number;
-    daysEarned?: number;
-    currentBalance?: number;
-  };
-  observation: string;
+  codEmployment: string;
+  period: string;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  periodFormer: string;
+  enjoyed: string;
+  available: number;
+  days: string;
+  periodClosed: boolean;
+  employment?: IEmploymentResult;
+  vacationDay: IVacationDay[];
 }
 
 export interface IVacation {
@@ -216,7 +225,87 @@ export interface IVacation {
   dateUntil: DateTime;
   periodFormer: string;
   enjoyed: string;
-  available: string;
+  available: number;
   days: string;
   periodClosed: boolean;
+}
+
+export interface IFilterIncapacity {
+  workerId: string;
+}
+
+export interface IIncapacity {
+  id?: number;
+  codIncapacityType: number;
+  codEmployment: number;
+  dateInitial: DateTime;
+  dateFinish: DateTime;
+  comments?: string;
+  isExtension?: boolean;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface IFilterIncapacity {
+  idEmployee?: number;
+}
+export interface IVacationDay {
+  id?: number;
+  codVacation: number;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  enjoyedDays: number;
+  paid: boolean;
+  codForm?: number;
+  observation?: string;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface ICreateVacation {
+  vacationDay: IVacationDay[];
+}
+
+export interface IVacationDay {
+  id?: number;
+  codVacation: number;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  enjoyedDays: number;
+  paid: boolean;
+  codForm?: number;
+  observation?: string;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface ICreateVacation {
+  vacationDay: IVacationDay[];
+}
+
+export interface IEditVacation {
+  id?: number;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  totalDays?: number;
+  pendingTotalDays?: number;
+  incapacityRefund?: boolean;
+  generalRefund?: boolean;
+  observation?: string;
+}
+
+export interface IIncapacityTypes {
+  id?: number;
+  name?: string;
+}
+
+export interface IGetIncapacity extends IIncapacity {
+  employment?: IEmploymentWorker;
+  typeIncapacity: IIncapacityTypes | null;
 }

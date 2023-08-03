@@ -203,6 +203,7 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
           value={resultData?.array || []}
           itemTemplate={mobilTemplate}
           rows={5}
+          emptyMessage={emptyMessage}
         />
       )}
       <Paginator

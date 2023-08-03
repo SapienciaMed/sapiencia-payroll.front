@@ -8,6 +8,7 @@ import ModalMessageComponent from "./common/components/modal-message.component";
 import ApplicationProvider from "./application-provider";
 import WorkerRoutes from "./features/worker/worker-routes";
 import VacationRoutes from "./features/vacation/vacation-routes";
+import IncapacityRoutes from "./features/incapacity/incapacity-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
@@ -30,14 +31,8 @@ function App() {
           <Suspense fallback={<p>Loading...</p>}>
             <Routes>
               <Route path={"/nomina/"} element={<HomePage />} />;
-              <Route
-                path={"/nomina/trabajadores/*"}
-                element={<WorkerRoutes />}
-              />
-              <Route
-                path={"/nomina/vacaciones/*"}
-                element={<VacationRoutes />}
-              />
+              <Route path={"/nomina/trabajadores/*"} element={<WorkerRoutes />} />
+              <Route path={"/nomina/vacaciones/*"} element={<VacationRoutes />} />
             </Routes>
           </Suspense>
         </Router>

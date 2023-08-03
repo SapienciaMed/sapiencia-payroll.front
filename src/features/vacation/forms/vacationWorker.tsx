@@ -9,7 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import { searchRecord } from "../../../common/schemas";
-import { IWorkersVacation } from "../../../common/interfaces/payroll.interfaces";
+import { IVacation, IWorkersVacation } from "../../../common/interfaces/payroll.interfaces";
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
 import { calculateBusinessDays } from "../../../common/utils/helpers";
@@ -19,11 +19,11 @@ import useVacationService from "../../../common/hooks/vacation-service.hook";
 const SearchWorker = () => {
   const [totalDays, setTotalDays] = useState<string>("0");
   const [pendingDays, setPendingDays] = useState<string>("0");
-  const [vacation, setVacation] = useState(null);
+  const [vacation, setVacation] = useState<IVacation>(null);
   const navigate = useNavigate();
   const resolver = useYupValidationResolver(searchRecord);
   const { activeWorkerList, listPeriods } = useListData();
-  const { getWorkerVacatioByParam } = useVacationService();
+  const { getWorkerVacatioByParam,createVacation } = useVacationService();
   const {
     handleSubmit,
     register,
@@ -48,7 +48,7 @@ const SearchWorker = () => {
 
   useEffect(() => {
     setPendingDays(
-      `${compensatoryDays ? vacation?.data?.available - compensatoryDays : 0}`
+      `${compensatoryDays ? vacation?.available - compensatoryDays : 0}`
     );
   }, [compensatoryDays]);
 
@@ -57,8 +57,28 @@ const SearchWorker = () => {
       worker: data.idWorker,
       period: parseInt(data.period),
     };
-    setVacation(await getWorkerVacatioByParam(params));
+    setVacation((await getWorkerVacatioByParam(params)).data);
   });
+
+  const onCreate = handleSubmit(async(data:IWorkersVacation)=>{
+    const dataVacation = []
+    if(data.checkEnjoyedDays)
+    dataVacation.push({codVacation: vacation.id,
+    dateFrom: data.startDate,
+    dateUntil: data.endDate,
+    enjoyedDays: totalDays,
+    paid: false,
+    observation: data.observation
+    })
+    if(data.checkCompensatoryDays)
+    dataVacation.push({codVacation: vacation.id,
+      dateFrom: data.startDate,
+      enjoyedDays: data.totalCompensatoryDays,
+      paid: true,
+      observation: data.observation
+      })
+    await createVacation({"vacationDay":dataVacation})
+  })
 
   return (
     <>
@@ -71,7 +91,7 @@ const SearchWorker = () => {
         <div className="container-sections-forms m-24px">
           <div>
             <FormComponent
-              id="searchRecordForm"
+              id="searchWorkerForm"
               className="form-signIn"
               action={onSubmit}
             >
@@ -102,7 +122,7 @@ const SearchWorker = () => {
                 </div>
               </div>
               <div className="button-save-container-display">
-                <ButtonComponent value={"Buscar"} className="button-save big" />
+                <ButtonComponent value={"Buscar"} className="button-save big disabled-black" />
               </div>
             </FormComponent>
           </div>
@@ -115,14 +135,16 @@ const SearchWorker = () => {
                 <th className="th-title">Saldo actual</th>
               </tr>
               <tr>
-                <td className="th-content">{vacation?.data?.periodFormer}</td>
-                <td className="th-content">{vacation?.data?.days}</td>
-                <td className="th-content">{vacation?.data?.available}</td>
+                <td className="th-content">{vacation?.periodFormer}</td>
+                <td className="th-content">{vacation?.days}</td>
+                <td className="th-content">{vacation?.available}</td>
               </tr>
             </table>
           </div>
         </div>
-
+        <FormComponent id="createVacationForm"
+              className="form-signIn"
+              action={onCreate}>
         <div className=" grid-form-3-container gap-25 container-sections-forms  m-24px">
           <div className="grid-span-3-columns">
             <input
@@ -160,6 +182,7 @@ const SearchWorker = () => {
             typeInput="text"
             classNameLabel="text-black big bold"
             label="Total días"
+            register={register}
             disabled={true}
             errors={errors}
             value={totalDays}
@@ -232,6 +255,7 @@ const SearchWorker = () => {
             rows={5}
           />
         </div>
+        </FormComponent>
       </div>
       <div className="button-save-container-display mr-24px ">
         <ButtonComponent
@@ -242,8 +266,9 @@ const SearchWorker = () => {
             navigate("/");
           }}
         />
-        <ButtonComponent value={"Guardar"} className="button-save big" />
+        <ButtonComponent value={"Guardar"} type="submit" form="createVacationForm" className="button-save big disabled-black" />
       </div>
+      
     </>
   );
 };

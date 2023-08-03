@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
 
@@ -20,6 +20,7 @@ interface ISelectProps<T> {
   disabled?: boolean;
   fieldArray?: boolean;
   filter?: boolean;
+  emptyMessage?: string;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -47,6 +48,7 @@ export function SelectComponent({
   disabled,
   fieldArray,
   filter,
+  emptyMessage = "Sin resultados.",
 }: ISelectProps<any>): React.JSX.Element {
   if (data) {
     const seleccione: IDropdownProps = { name: "Seleccione", value: null };
@@ -99,6 +101,8 @@ export function SelectComponent({
               className={`${className} ${messageError() ? "p-invalid" : ""}`}
               disabled={disabled}
               filter={filter}
+              emptyMessage={emptyMessage}
+              emptyFilterMessage={emptyMessage}
             />
           )}
         />

@@ -22,15 +22,6 @@ function WorkerRoutes() {
         }
       />
       <Route
-        path={"/vinculacion-laboral"}
-        element={
-          <PrivateRoute
-            element={<EmploymentRelationshipPage action="new" />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
-          />
-        }
-      />
-      <Route
         path={"/expedientes/edit/:id"}
         element={
           <PrivateRoute

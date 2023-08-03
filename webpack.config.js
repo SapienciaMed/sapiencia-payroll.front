@@ -19,7 +19,7 @@ module.exports = (webpackConfigEnv, argv) => {
           use: ["style-loader", "css-loader", "sass-loader"],
         },
         {
-          test: /\.(eot|svg|ttf|woff|woff2)$/,
+          test: /\.(eot|ttf|woff|woff2)$/,
           use: {
             loader: "url-loader",
           },

@@ -11,14 +11,14 @@
   cursor: pointer;
 }
 
-.dashboard-margin {
-  display: grid;
-  grid-template-rows: 14em 1fr;
-  justify-content: center;
-  grid-template-columns: 1fr;
-  align-items: center;
-  font-size: 11px;
-}
+// .dashboard-margin {
+//   display: grid;
+//   grid-template-rows: 14em 1fr;
+//   justify-content: center;
+//   grid-template-columns: 1fr;
+//   align-items: center;
+//   font-size: 11px;
+// }
 
 .bg-editing {
   background: #f7f4f4;
@@ -34,42 +34,42 @@
   margin: 0.5em;
 }
 
-.welcome-container {
-  display: grid;
-  align-items: center;
-  grid-template-rows: 1fr 1fr;
-  margin: 0px 1rem;
-  gap: 1em;
-  height: 65%;
-}
+// .welcome-container {
+//   display: grid;
+//   align-items: center;
+//   grid-template-rows: 1fr 1fr;
+//   margin: 0px 1rem;
+//   gap: 1em;
+//   height: 65%;
+// }
 
-.applications-cards {
-  padding: 25px 0px;
-  background-image: url($base-path-url-image + "login-visualization-main.png");
-  height: 100%;
-  overflow: auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: flex-start;
-  gap: 2em;
-  $card-height: 14em;
-  $card-width: 17em;
-  $margin-horizontal: 2em;
-  $margin-vertical: 2em;
-  $columns: repeat(auto-fit, $card-width);
-  $cursor: pointer;
-  $padding: 10px;
-  @include multiple-card-component(
-    $columns,
-    $margin-horizontal,
-    $margin-vertical,
-    $card-height,
-    $card-width,
-    $padding,
-    $cursor
-  );
-}
+// .applications-cards {
+//   padding: 25px 0px;
+//   background-image: url($base-path-url-image + "login-visualization-main.png");
+//   height: 100%;
+//   overflow: auto;
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: center;
+//   align-content: flex-start;
+//   gap: 2em;
+//   $card-height: 14em;
+//   $card-width: 17em;
+//   $margin-horizontal: 2em;
+//   $margin-vertical: 2em;
+//   $columns: repeat(auto-fit, $card-width);
+//   $cursor: pointer;
+//   $padding: 10px;
+//   @include multiple-card-component(
+//     $columns,
+//     $margin-horizontal,
+//     $margin-vertical,
+//     $card-height,
+//     $card-width,
+//     $padding,
+//     $cursor
+//   );
+// }
 
 .container-form {
   background: #ffffff 0% 0% no-repeat padding-box;
@@ -271,35 +271,35 @@
     width: initial;
   }
 
-  .dashboard-margin {
-    grid-template-rows: 16em 1fr;
-    font-size: inherit;
-  }
+  // .dashboard-margin {
+  //   grid-template-rows: 16em 1fr;
+  //   font-size: inherit;
+  // }
 
-  .welcome-container {
-    margin: 0px 0px;
-    gap: 0px;
-  }
+  // .welcome-container {
+  //   margin: 0px 0px;
+  //   gap: 0px;
+  // }
 
-  .applications-cards {
-    justify-content: center;
-    $card-height: 14em;
-    $card-width: 19em;
-    $margin-horizontal: 4em;
-    $margin-vertical: 2em;
-    $columns: repeat(auto-fit, $card-width);
-    $cursor: pointer;
-    $padding: 10px;
-    @include multiple-card-component(
-      $columns,
-      $margin-horizontal,
-      $margin-vertical,
-      $card-height,
-      $card-width,
-      $padding,
-      $cursor
-    );
-  }
+  // .applications-cards {
+  //   justify-content: center;
+  //   $card-height: 14em;
+  //   $card-width: 19em;
+  //   $margin-horizontal: 4em;
+  //   $margin-vertical: 2em;
+  //   $columns: repeat(auto-fit, $card-width);
+  //   $cursor: pointer;
+  //   $padding: 10px;
+  //   @include multiple-card-component(
+  //     $columns,
+  //     $margin-horizontal,
+  //     $margin-vertical,
+  //     $card-height,
+  //     $card-width,
+  //     $padding,
+  //     $cursor
+  //   );
+  // }
 
   .select-applications {
     display: flex;

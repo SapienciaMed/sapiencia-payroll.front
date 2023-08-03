@@ -23,6 +23,8 @@ interface IInputProps<T> {
   id?: string;
   fieldArray?: boolean;
   optionsRegister?: {};
+  max?: number;
+  min?:number;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -48,6 +50,8 @@ function InputElement({
   defaultValue,
   id,
   optionsRegister,
+  max,
+  min
 }): React.JSX.Element {
   return (
     <input
@@ -61,6 +65,8 @@ function InputElement({
       disabled={disabled}
       onChange={onChange}
       value={value}
+      max={max}
+      min={min}
     />
   );
 }
@@ -83,6 +89,8 @@ export function InputComponent({
   id,
   fieldArray,
   optionsRegister = {},
+  max,
+  min
 }: IInputProps<any>): React.JSX.Element {
   const messageError = () => {
     // console.log(fieldArray)
@@ -127,6 +135,8 @@ export function InputComponent({
           defaultValue={defaultValue}
           id={id}
           optionsRegister={optionsRegister}
+          max={max}
+          min={min}
         />
         {messageError() && (
           <MdOutlineError

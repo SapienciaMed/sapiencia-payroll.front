@@ -15,25 +15,23 @@ import TableComponent from "../../../common/components/table.component";
 import { DateTime } from "luxon";
 import {
   IFilterVacation,
-  IWorkersVacation,
   IWorkersVacationDetail,
 } from "../../../common/interfaces/payroll.interfaces";
 import VacationTable from "../forms/vacationTable";
 import { AppContext } from "../../../common/contexts/app.context";
 import useListData from "../hooks/list.hook";
+import { useNavigate } from "react-router-dom";
 
 const SearchVacationPage = () => {
   const tableComponentRef = useRef(null);
-  const resolver = useYupValidationResolver(searchRecord);
   const { setMessage } = useContext(AppContext);
+  const navigate = useNavigate();
   const {
     handleSubmit,
-    register,
     formState: { errors },
-    setValue: setValueRegister,
     control,
     reset,
-  } = useForm<IFilterVacation>({ resolver });
+  } = useForm<IFilterVacation>();
   const tableColumns: ITableElement<IWorkersVacationDetail>[] = [
     {
       fieldName: "employment.worker.firstName",
@@ -88,8 +86,6 @@ const SearchVacationPage = () => {
     {
       icon: "Detail",
       onClick: (row) => {
-        
-
         setMessage({
           title: "Detalle posición presupuestaria",
           show: true,
@@ -102,6 +98,13 @@ const SearchVacationPage = () => {
           size: "large",
           background: true,
         });
+      },
+    },
+    {
+      icon: "Edit",
+      onClick: (row) => {
+        const idEnjoyedDay = row.codEmployment
+        navigate(`../editar/${idEnjoyedDay}`);
       },
     },
   ];
@@ -159,7 +162,10 @@ const SearchVacationPage = () => {
                 value={"Limpiar campos"}
                 className="button-clean bold"
                 type="button"
-                action={reset}
+                action={() => {
+                  reset();
+                  tableComponentRef.current.emptyData();
+                }}
               />
               <ButtonComponent value={"Buscar"} className="button-save big" />
             </div>

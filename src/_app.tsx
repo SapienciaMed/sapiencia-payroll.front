@@ -16,6 +16,7 @@ function App() {
 
   // Effect que comunica la aplicacion actual
   useEffect(() => {
+    localStorage.setItem('currentAplication',process.env.aplicationId)
     setTimeout(
       () => publish("currentAplication", process.env.aplicationId),
       500

@@ -87,13 +87,13 @@ const SearchVacationPage = () => {
       icon: "Detail",
       onClick: (row) => {
         setMessage({
-          title: "Detalle posición presupuestaria",
+          title: "Detalle Vacaciones",
           show: true,
           OkTitle: "Aceptar",
           description: (
-            <>
+            <div>
               <VacationTable row={row} />
-            </>
+            </div>
           ),
           size: "large",
           background: true,

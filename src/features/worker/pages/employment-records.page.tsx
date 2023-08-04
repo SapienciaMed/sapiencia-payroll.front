@@ -182,7 +182,7 @@ const EmploymentRecordsPage = () => {
                 type="button"
                 action={reset}
               />
-              <ButtonComponent value={"Buscar"} className="button-save big" />
+              <ButtonComponent value={"Buscar"} className="button-save big" form="searchRecordForm" type="submit" />
             </div>
           </FormComponent>
         </div>

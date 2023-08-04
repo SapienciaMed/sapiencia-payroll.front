@@ -137,8 +137,8 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   font-size: 14px;
   margin: 1em 0em;
   th {
-    width: 50%;
-    border: 1px solid black;
+    // width: 50%;
+    // border: 1px solid black;
   }
   .th-title {
     text-align: start;
@@ -156,10 +156,10 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   font-size: 14px;
   border-radius: 6px;
   margin: 1em 0em;
-  th {
+  .th-items {
     width: auto;
-    border: 1px none black;
     height: 2em;
+    background-color: #F9F9F9;
   }
   .th-title {
     text-align: center;
@@ -170,7 +170,7 @@ div[id="single-spa-application:@sapiencia/payroll"] {
     font-weight: 100;
   }
   td{
-    background-color: #F9F9F9;
+    background-color: #fff;
     height: 2.5em;
     text-align: center;
   }

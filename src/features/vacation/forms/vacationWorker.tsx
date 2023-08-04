@@ -149,8 +149,8 @@ const SearchWorker = () => {
   const onCreate = handleSubmit(async (data: IWorkersVacation) => {
     const dataVacationDays = [];
     const totalEnjoyedDays =
-      (isNaN(data?.totalDaysEnjoyed) ? 0 : data?.totalDaysEnjoyed) +
-      (data?.totalCompensatoryDays ?? 0);
+      Number(isNaN(data?.totalDaysEnjoyed) ? 0 : Number(data?.totalDaysEnjoyed)) +
+      Number(data?.totalCompensatoryDays ?? 0);
     if (data.checkEnjoyedDays)
       dataVacationDays.push({
         codVacation: vacation.id,
@@ -173,6 +173,7 @@ const SearchWorker = () => {
       enjoyedDays: totalEnjoyedDays,
       avaibleDays: Number(vacation?.available) - Number(totalEnjoyedDays),
     };
+
     await createVacation(dataVacation).then((response: ApiResponse<ICreateVacation>) => {
       if (response && response?.operation?.code === EResponseCodes.OK) {
         setMessage({

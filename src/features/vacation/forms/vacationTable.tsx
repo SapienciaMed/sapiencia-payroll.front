@@ -6,15 +6,15 @@ import { DateTime } from "luxon";
 const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
   return (
     <>
-      <table className="details-table">
+      <div>
         <h2>Datos Colaborador</h2>
         <table className="table-items">
           <tr>
-            <th>{"Nro. documento"}</th>
-            <th>{"Nombre"}</th>
-            <th>{"Cargo"}</th>
-            <th>{"Salario"}</th>
-            <th>{"Periodo"}</th>
+            <th className="th-items">{"Nro. documento"}</th>
+            <th className="th-items">{"Nombre"}</th>
+            <th className="th-items">{"Cargo"}</th>
+            <th className="th-items">{"Salario"}</th>
+            <th className="th-items">{"Periodo"}</th>
           </tr>
           <tr>
             <td>{row?.employment.worker.numberDocument}</td>
@@ -32,9 +32,9 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
         <h3 className="text-left">Dias Disfrutados</h3>
         <table className="table-items">
           <tr>
-            <th>Desde</th>
-            <th>Hasta</th>
-            <th>Total días</th>
+            <th className="th-items">Desde</th>
+            <th className="th-items">Hasta</th>
+            <th className="th-items">Total días</th>
           </tr>
           <tr>
             <td>
@@ -62,8 +62,8 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
         <h3 className="text-left">Dias Compensados</h3>
         <table className="table-items">
           <tr>
-            <th>Desde</th>
-            <th>Días compensados</th>
+            <th className="th-items">Desde</th>
+            <th className="th-items">Días compensados</th>
           </tr>
           <tr>
             <td>
@@ -83,8 +83,8 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
         </table>
         <table className="table-items">
           <tr>
-            <th>Días pendientes</th>
-            <th>Reintegro</th>
+            <th className="th-items">Días pendientes</th>
+            <th className="th-items">Reintegro</th>
           </tr>
           <tr>
             <td>
@@ -98,9 +98,9 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
         </table>
         <table className="table-items">
           <tr>
-            <th>Saldo anterior</th>
-            <th>Días ganados</th>
-            <th>Saldo actual</th>
+            <th className="th-items">Saldo anterior</th>
+            <th className="th-items">Días ganados</th>
+            <th className="th-items">Saldo actual</th>
           </tr>
           <tr>
             <td>{row?.periodFormer}</td>
@@ -124,7 +124,7 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
           disabled={true}
         />
         </div>
-      </table>
+      </div>
     </>
   );
 };

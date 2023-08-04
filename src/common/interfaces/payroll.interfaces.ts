@@ -230,6 +230,21 @@ export interface IVacation {
   periodClosed: boolean;
 }
 
+export interface IVacationResult {
+  id?: number;
+  codEmployment: string;
+  period: string;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  periodFormer: string;
+  enjoyed: string;
+  available: number;
+  days: string;
+  periodClosed: boolean;
+  employment?: IEmploymentResult;
+  vacationDay?: IVacationDay[];
+}
+
 export interface IFilterIncapacity {
   workerId: string;
 }
@@ -289,23 +304,15 @@ export interface ICreateVacation {
   vacationDay: IVacationDay[];
 }
 
-export interface IEditVacation {
-  id?: number;
+export interface IEditVacation{
+  id?:number;
   dateFrom: DateTime;
-  dateUntil: DateTime;
+  dateUntil:DateTime;
   totalDays?: number;
   pendingTotalDays?: number;
   incapacityRefund?: boolean;
   generalRefund?: boolean;
-  observation?: string;
+  observation?:string;
 }
 
-export interface IIncapacityTypes {
-  id?: number;
-  name?: string;
-}
 
-export interface IGetIncapacity extends IIncapacity {
-  employment?: IEmploymentWorker;
-  typeIncapacity: IIncapacityTypes | null;
-}

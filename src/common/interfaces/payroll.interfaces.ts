@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 export interface IEmployment {
-  id?:number;
+  id?: number;
   idCharge: string;
   institutionalMail: string;
   idTypeContract: string;
@@ -16,7 +16,6 @@ export interface IEmployment {
   charges?: ICharge[];
   typesContracts?: ITypesContracts[];
 }
-
 
 export interface IEmploymentResult {
   idCharge: string;
@@ -34,7 +33,6 @@ export interface IEmploymentResult {
   typesContracts?: ITypesContracts[];
   worker?: IWorker;
 }
-
 
 export interface IRelative {
   name: string;
@@ -197,7 +195,7 @@ export interface IWorkersVacation {
   pendingDays?: number;
   checkCompensatoryDays?: boolean;
   checkEnjoyedDays?: boolean;
-  totalDaysEnjoyed?:number;
+  totalDaysEnjoyed?: number;
 }
 
 export interface IWorkersVacationDetail {
@@ -228,10 +226,25 @@ export interface IVacation {
   periodClosed: boolean;
 }
 
+export interface IVacationResult {
+  id?: number;
+  codEmployment: string;
+  period: string;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  periodFormer: string;
+  enjoyed: string;
+  available: number;
+  days: string;
+  periodClosed: boolean;
+  employment?: IEmploymentResult;
+  vacationDay?: IVacationDay[];
+}
+
 export interface IFilterIncapacity {
   idUser: string;
 }
-export interface IVacationDay{
+export interface IVacationDay {
   id?: number;
   codVacation: number;
   dateFrom: DateTime;
@@ -246,19 +259,23 @@ export interface IVacationDay{
   dateCreate?: DateTime;
 }
 
-export interface ICreateVacation{
-  vacationDay:IVacationDay[];
+export interface ICreateVacation {
+  vacationDay: IVacationDay[];
   enjoyedDays: number;
   avaibleDays: number;
 }
 
-export interface IEditVacation{
-  id?:number;
+export interface IEditVacation {
+  id: number;
+  idVacationDay: number;
   dateFrom: DateTime;
-  dateUntil:DateTime;
+  dateUntil: DateTime;
+  observation: string;
+  available: number;
+  refundTypes: number;
+  refund: number;
+  enjoyed: number;
   totalDays?: number;
   pendingTotalDays?: number;
-  incapacityRefund?: boolean;
-  generalRefund?: boolean;
-  observation?:string;
 }
+

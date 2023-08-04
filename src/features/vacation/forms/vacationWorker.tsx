@@ -109,6 +109,7 @@ const SearchWorker = () => {
           OkTitle: "Aceptar",
           background: true,
         });
+        setVacation({} as IVacation)
       }
     }).catch((err) => {
       setMessage({

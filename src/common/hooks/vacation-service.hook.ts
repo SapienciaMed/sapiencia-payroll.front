@@ -1,6 +1,6 @@
 import { EResponseCodes } from "../constants/api.enum";
 import { IAuthorization } from "../interfaces/auth.interfaces";
-import { ICreateVacation, IEditVacation, IVacation, IVacationDay } from "../interfaces/payroll.interfaces";
+import { ICreateVacation, IEditVacation, IVacation, IVacationDay, IVacationResult } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
 
@@ -12,13 +12,13 @@ export function useVacationService() {
 
   async function getWorkerVacatioByParam(
     params
-  ): Promise<ApiResponse<IVacation>> {
+  ): Promise<ApiResponse<IVacationResult>> {
     try {
       const endpoint: string = `/workerVacation`;
       return await post(`${authUrl}${endpoint}`, params);
     } catch (error) {
       return new ApiResponse(
-        {} as IVacation,
+        {} as IVacationResult,
         EResponseCodes.FAIL,
         "Error no controlado"
       );

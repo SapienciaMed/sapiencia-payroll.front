@@ -104,7 +104,17 @@ const SearchVacationPage = () => {
       icon: "Edit",
       onClick: (row) => {
         const idEnjoyedDay = row.codEmployment
-        navigate(`../editar/${idEnjoyedDay}`);
+        if(row.periodClosed){
+          setMessage({
+            title:"Editar Vacaciones",
+            description:"Este periodo ya se encuentra finalizado y no es posible editarlo.",
+            OkTitle:"Aceptar",
+            background:true,
+            show:true
+          })
+        }else{
+          navigate(`../editar/${idEnjoyedDay}/${row.period}`);
+        }
       },
     },
   ];

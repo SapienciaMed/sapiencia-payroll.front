@@ -30,7 +30,7 @@ function VacationRoutes() {
         }
       />
       <Route
-        path={"/editar/:id"}
+        path={"/editar/:id/:period"}
         element={
           <PrivateRoute
             element={<EditVacationPage />}

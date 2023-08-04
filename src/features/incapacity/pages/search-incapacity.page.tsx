@@ -18,9 +18,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import useListData from "../../vacation/hooks/list.hook";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import useViewIncapacityDetail from "../hooks/viewIncapacity.hook";
 
 const SearchIncapacity = () => {
   const { activeWorkerList } = useListData();
+
+  const { showDetailIncapacity } = useViewIncapacityDetail();
 
   const tableComponentRef = useRef(null);
 
@@ -67,13 +70,13 @@ const SearchIncapacity = () => {
     {
       icon: "Detail",
       onClick: (row) => {
-        navigate(`./view/${row?.id}`);
+        showDetailIncapacity(row?.id);
       },
     },
     {
       icon: "Edit",
       onClick: (row) => {
-        navigate(`../edit/${row.id}`);
+        navigate(`../edit/${row?.id}`);
       },
     },
   ];

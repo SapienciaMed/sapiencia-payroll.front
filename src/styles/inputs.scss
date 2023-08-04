@@ -7,10 +7,10 @@
 .form-group {
   @include generate-flex-container(column, null, null, null, null, 8px);
 
-  &row {
-    @include generate-flex-container(column, null, null, null, null, 8px);
+  &.row {
+    @include generate-flex-container(row, null, null, null, center, 8px);
   }
-  &column {
+  &.column {
     @include generate-flex-container(column, null, null, null, null, 8px);
   }
 

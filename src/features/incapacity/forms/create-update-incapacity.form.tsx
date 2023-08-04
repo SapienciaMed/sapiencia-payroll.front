@@ -5,7 +5,11 @@ import {
   ButtonComponent,
   DatePickerComponent,
   TextAreaComponent,
+  SwitchComponent,
+  LabelComponent,
 } from "../../../common/components/Form";
+
+import { EDirection } from "../../../common/constants/input.enum";
 
 import useListData from "../../vacation/hooks/list.hook";
 import useCreateAndUpdateIncapacityHook from "../hooks/createAndUpdateIncapcity.hook";
@@ -27,6 +31,25 @@ export const CreateUpdateIncapacityForm = ({
       <FormComponent className="form-signIn" action={onSubmit}>
         <div className="container-sections-forms">
           <div className="grid gap-25">
+            {action === "edit" && (
+              <div className="grid-span-3-columns">
+                <SwitchComponent
+                  idInput="isExtension"
+                  control={control}
+                  errors={errors}
+                  direction={EDirection.row}
+                  children={
+                    <>
+                      <LabelComponent
+                        value="Prorroga"
+                        className="text-black big bold"
+                        htmlFor="isExtension"
+                      />
+                    </>
+                  }
+                />
+              </div>
+            )}
             <div className="grid-form-2-container gap-25">
               <SelectComponent
                 idInput={"codEmployment"}
@@ -95,14 +118,13 @@ export const CreateUpdateIncapacityForm = ({
               />
 
               <InputComponent
-                idInput={"totalDay"}
+                idInput={""}
                 label={
                   <>
                     Total dias <span>*</span>
                   </>
                 }
                 typeInput={"text"}
-                register={register}
                 errors={errors}
                 disabled={true}
                 value={`${showDays()}`}

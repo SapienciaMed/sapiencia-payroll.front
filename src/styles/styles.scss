@@ -439,3 +439,41 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   width: 100%;
   padding: 10px 20px 40px 20px;
 }
+
+
+.responsive-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-column {
+  flex: 1;
+  padding: 4px;
+  font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .responsive-table {
+    flex-direction: row;
+  }
+
+  .table-row {
+    flex-direction: column;
+    width: 50%;
+  }
+
+  .table-column {
+    padding: 8px;
+    font-weight: normal;
+  }
+}

@@ -91,11 +91,11 @@ const SearchVacationPage = () => {
           show: true,
           OkTitle: "Aceptar",
           description: (
-            <div>
+            <div className="container-modal_description">
               <VacationTable row={row} />
             </div>
           ),
-          size: "large",
+          size:"large",         
           background: true,
         });
       },

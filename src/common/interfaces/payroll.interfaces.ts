@@ -211,6 +211,7 @@ export interface IWorkersVacationDetail {
   periodFormer: string;
   enjoyed: string;
   available: number;
+  refund?:number;
   days: string;
   periodClosed: boolean;
   employment?: IEmploymentResult;

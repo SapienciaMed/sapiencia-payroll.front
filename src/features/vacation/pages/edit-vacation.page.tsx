@@ -53,19 +53,21 @@ const EditVacationPage = () => {
       .then((response: ApiResponse<IVacationResult>) => {
         if (response?.operation?.code === EResponseCodes.OK) {
           setVacation(response.data);
-
           setValueRegister(
             "dateFrom",
-            response.data.vacationDay.map((day) => {
-              if (!day.paid) return day.dateFrom;
-            })[0]
+            response.data.vacationDay
+              .filter((day) => !day.paid)
+              .sort((a, b) => b.id - a.id)[0]?.dateFrom
           );
           setValueRegister(
             "dateUntil",
-            response.data.vacationDay.map((day) => {
-              if (!day.paid) return day.dateUntil;
-            })[0]
+            response.data.vacationDay
+              .filter((day) => !day.paid)
+              .sort((a, b) => b.id - a.id)[0]?.dateUntil
           );
+          setValueRegister("observation",response.data.vacationDay
+          .filter((day) => !day.paid)
+          .sort((a, b) => b.id - a.id)[0]?.observation)
         }
       })
       .catch((err) => {
@@ -91,9 +93,9 @@ const EditVacationPage = () => {
     setValueRegister(
       "pendingTotalDays",
       vacation?.available +
-        (vacation?.vacationDay.map((day) => {
-          if (!day.paid) return day.enjoyedDays;
-        })[0] -
+        (vacation?.vacationDay
+          .filter((day) => !day.paid)
+          .sort((a, b) => b.id - a.id)[0]?.enjoyedDays -
           days)
     );
   }, [endVacation]);
@@ -175,9 +177,9 @@ const EditVacationPage = () => {
               disabled={!refund}
               maxDate={
                 new Date(
-                  vacation?.vacationDay?.map((day) => {
-                    if (!day.paid) return day.dateUntil;
-                  })[0]
+                  vacation?.vacationDay
+                    .filter((day) => !day.paid)
+                    .sort((a, b) => b.id - a.id)[0]?.dateUntil
                 )
               }
             />

@@ -2,12 +2,91 @@ import React from "react";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
 import { IWorkersVacationDetail } from "../../../common/interfaces/payroll.interfaces";
 import { DateTime } from "luxon";
+import { ResponsiveTable } from "../../../common/components/Form/table-detail.component";
 
 const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
+  const data = [
+    { title: "Nombre", value: "Juan" },
+    { title: "Edad", value: "30" },
+    { title: "País", value: "España" },
+    { title: "Correo", value: "juan@example.com" },
+  ];
+  const workerData = [
+    {
+      title: "Nro. documento",
+      value: `${row?.employment.worker.numberDocument}`,
+    },
+    {
+      title: "Nombre",
+      value: `${
+        row?.employment.worker.firstName + " " + row.employment.worker.surname
+      }`,
+    },
+    { title: "Cargo", value: `${row?.employment.charges[0].name}` },
+    { title: "Salario", value: `${row?.employment.salary}` },
+    { title: "Periodo", value: `${row?.period}` },
+  ];
+  const daysData = [
+    {
+      title: "Desde",
+      value: `${row?.vacationDay.map((day) => {
+        if (!day?.paid) return DateTime.fromISO(day?.dateFrom).toLocaleString();
+        else return;
+      })}`,
+    },
+    {
+      title: "Hasta",
+      value: `${row?.vacationDay.map((day) => {
+        if (!day?.paid)
+          return DateTime.fromISO(day?.dateUntil).toLocaleString();
+        else return;
+      })}`,
+    },
+    {
+      title: "Total días",
+      value: `${row?.vacationDay.map((day) => {
+        if (!day?.paid) return day?.enjoyedDays;
+        else return;
+      })}`,
+    },
+  ];
+  const daysCompensated = [
+    {
+      title: "Desde",
+      value: `${row?.vacationDay.map((day) => {
+        if (day?.paid) return DateTime.fromISO(day?.dateFrom).toLocaleString();
+        else return;
+      })}`,
+    },
+    {
+      title: "Días compensados",
+      value: `${row?.vacationDay.map((day) => {
+        if (day?.paid) return day?.enjoyedDays;
+        else return;
+      })}`,
+    },
+  ];
+  const refundDays = [
+    {
+      title: "Días pendientes",
+      value: `${row?.available}`,
+    },
+    { title: "Reintegro", value: `${row?.refund ? "si" : "no"}` },
+  ];
+  const balanceDays = [
+    { title: "Saldo anterior", value: `${row?.periodFormer}` },
+    { title: "Días ganados", value: `${row?.days}` },
+    { title: "Saldo actual", value: `${row?.available}` },
+  ];
   return (
     <>
       <div>
-        <h2>Datos Colaborador</h2>
+        <ResponsiveTable data={workerData} />
+        <ResponsiveTable data={daysData} />
+        <ResponsiveTable data={daysCompensated} />
+        <ResponsiveTable data={refundDays} />
+        <ResponsiveTable data={balanceDays} />
+        {/* <h2>Datos Colaborador</h2>
         <table className="table-items">
           <tr>
             <th className="th-items">{"Nro. documento"}</th>
@@ -88,12 +167,9 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
           </tr>
           <tr>
             <td>
-              {row?.vacationDay.reduce((pendingDays, day) => {
-                const enjoyedDays = day?.enjoyedDays || 0;
-                return pendingDays - enjoyedDays;
-              }, row?.available || 0)}
+              {row?.available}
             </td>
-            <td>{row?.periodFormer ? "si" : "no"}</td>
+            <td>{row?.refund ? "si" : "no"}</td>
           </tr>
         </table>
         <table className="table-items">
@@ -123,7 +199,7 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
           rows={3}
           disabled={true}
         />
-        </div>
+        </div> */}
       </div>
     </>
   );

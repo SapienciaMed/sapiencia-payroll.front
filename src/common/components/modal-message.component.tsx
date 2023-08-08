@@ -58,7 +58,7 @@ function ModalMessageComponent(): React.JSX.Element {
     >
       <div
         ref={modal}
-        className={`modal-container ${message.size ? message.size : "small"} ${
+        className={`modal-container ${message.size ? message.size : ""} ${
           message.style ? message.style : ""
         }`}
       >

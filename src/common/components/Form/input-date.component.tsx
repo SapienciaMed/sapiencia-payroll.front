@@ -17,6 +17,8 @@ interface IDateProps<T> {
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: any;
   disabled?: boolean;
+  disabledDays?: number[];
+  disabledDates?: Date[];
   maxDate?: Date;
   minDate?: Date;
   fieldArray?: boolean;
@@ -48,6 +50,8 @@ export function DatePickerComponent({
   control,
   dateFormat,
   disabled,
+  disabledDates,
+  disabledDays
 }: IDateProps<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");
@@ -100,6 +104,8 @@ export function DatePickerComponent({
               inputStyle={{ borderRight: "none" }}
               minDate={minDate}
               maxDate={maxDate}
+              disabledDates={disabledDates}
+              disabledDays={disabledDays}
               disabled={disabled}
             />
           )}

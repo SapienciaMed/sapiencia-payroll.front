@@ -76,3 +76,30 @@ export function formaterNumberToCurrency(number) {
 
   return formatter.format(number);
 }
+
+
+export function addBusinessDays(startDate, daysToAdd, holidays = []) {
+  const oneDay = 24 * 60 * 60 * 1000; // Un día en milisegundos
+  let currentDate = new Date(startDate);
+
+  // const isWeekend = (date) => {
+  //   const dayOfWeek = date.getDay();
+  //   return dayOfWeek === 0 || dayOfWeek === 6; // 0: Domingo, 6: Sábado
+  // };
+
+  const isHoliday = (date) => {
+    const formattedDate = date.toISOString().slice(0, 10); // Formatear fecha como 'AAAA-MM-DD'
+    return holidays.includes(formattedDate);
+  };
+
+  let daysAdded = 0;
+
+  while (daysAdded < daysToAdd) {
+    currentDate.setTime(currentDate.getTime() + oneDay);
+    if (isBusinessDay(currentDate) && !isHoliday(currentDate)) {
+      daysAdded++;
+    }
+  }
+
+  return currentDate;
+};

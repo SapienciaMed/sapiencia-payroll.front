@@ -106,9 +106,8 @@ const afiliaciones = yup.object({
 });
 
 export const searchRecord = yup.object({
-  name: yup.string().max(15, "máximo 15 caracteres"),
-  lastName: yup.string().max(15, "máximo 15 caracteres"),
-  documentNumber: yup.string().max(15, "máximo 15 caracteres"),
+  idWorker: yup.number().required("Seleccionar colaborador es obligatorio"),
+  period: yup.number().required("Seleccionar un periodo es obligatorio"),
 });
 
 export const formsPayroll = [

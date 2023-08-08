@@ -15,25 +15,24 @@ import TableComponent from "../../../common/components/table.component";
 import { DateTime } from "luxon";
 import {
   IFilterVacation,
-  IWorkersVacation,
   IWorkersVacationDetail,
 } from "../../../common/interfaces/payroll.interfaces";
 import VacationTable from "../forms/vacationTable";
 import { AppContext } from "../../../common/contexts/app.context";
 import useListData from "../hooks/list.hook";
+import { useNavigate } from "react-router-dom";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const SearchVacationPage = () => {
   const tableComponentRef = useRef(null);
-  const resolver = useYupValidationResolver(searchRecord);
   const { setMessage } = useContext(AppContext);
+  const navigate = useNavigate();
   const {
     handleSubmit,
-    register,
     formState: { errors },
-    setValue: setValueRegister,
     control,
     reset,
-  } = useForm<IFilterVacation>({ resolver });
+  } = useForm<IFilterVacation>();
   const tableColumns: ITableElement<IWorkersVacationDetail>[] = [
     {
       fieldName: "employment.worker.firstName",
@@ -88,20 +87,35 @@ const SearchVacationPage = () => {
     {
       icon: "Detail",
       onClick: (row) => {
-        
-
         setMessage({
-          title: "Detalle posición presupuestaria",
+          title: "Detalle Vacaciones",
           show: true,
           OkTitle: "Aceptar",
           description: (
-            <>
+            <div className="container-modal_description">
               <VacationTable row={row} />
-            </>
+            </div>
           ),
-          size: "large",
+          size:"large",         
           background: true,
         });
+      },
+    },
+    {
+      icon: "Edit",
+      onClick: (row) => {
+        const idEnjoyedDay = row.codEmployment
+        if(row.periodClosed){
+          setMessage({
+            title:"Editar Vacaciones",
+            description:"Este periodo ya se encuentra finalizado y no es posible editarlo.",
+            OkTitle:"Aceptar",
+            background:true,
+            show:true
+          })
+        }else{
+          navigate(`../editar/${idEnjoyedDay}/${row.period}`);
+        }
       },
     },
   ];
@@ -120,8 +134,17 @@ const SearchVacationPage = () => {
   return (
     <>
       <div className="container-sections-forms m-24px">
-        <div>
-          <span className="text-black extra-large bold">Vacaciones</span>
+      <div className="title-area">
+          <label className="text-black extra-large bold">Vacaciones</label>
+
+          <div
+            className="title-button text-main biggest pointer"
+            onClick={() => {
+              navigate("../crear");
+            }}
+          >
+            Crear vacaciones <AiOutlinePlusCircle />
+          </div>
         </div>
         <div>
           <FormComponent
@@ -159,7 +182,10 @@ const SearchVacationPage = () => {
                 value={"Limpiar campos"}
                 className="button-clean bold"
                 type="button"
-                action={reset}
+                action={() => {
+                  reset();
+                  tableComponentRef.current.emptyData();
+                }}
               />
               <ButtonComponent value={"Buscar"} className="button-save big" />
             </div>

@@ -67,7 +67,6 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
   const loadDefaultValues = async (): Promise<IIncapacity> => {
     if (action !== "new") {
       const { data } = await getByIdIncapacity(Number(id));
-
       return {
         id: data.id,
         codEmployment: data.codEmployment,

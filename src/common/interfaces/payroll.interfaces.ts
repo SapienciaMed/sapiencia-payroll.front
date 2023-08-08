@@ -211,6 +211,7 @@ export interface IWorkersVacationDetail {
   periodFormer: string;
   enjoyed: string;
   available: number;
+  refund?:number;
   days: string;
   periodClosed: boolean;
   employment?: IEmploymentResult;
@@ -228,6 +229,21 @@ export interface IVacation {
   available: number;
   days: string;
   periodClosed: boolean;
+}
+
+export interface IVacationResult {
+  id?: number;
+  codEmployment: string;
+  period: string;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  periodFormer: string;
+  enjoyed: string;
+  available: number;
+  days: string;
+  periodClosed: boolean;
+  employment?: IEmploymentResult;
+  vacationDay?: IVacationDay[];
 }
 
 export interface IFilterIncapacity {
@@ -250,6 +266,16 @@ export interface IIncapacity {
 
 export interface IFilterIncapacity {
   idEmployee?: number;
+}
+
+export interface IIncapacityTypes {
+  id?: number;
+  name?: string;
+}
+
+export interface IGetIncapacity extends IIncapacity {
+  employment?: IEmploymentWorker;
+  typeIncapacity: IIncapacityTypes | null;
 }
 export interface IVacationDay {
   id?: number;
@@ -290,22 +316,17 @@ export interface ICreateVacation {
 }
 
 export interface IEditVacation {
-  id?: number;
+  id: number;
+  idVacationDay: number;
   dateFrom: DateTime;
   dateUntil: DateTime;
+  observation: string;
+  available: number;
+  refundTypes: number;
+  refund: number;
+  enjoyed: number;
   totalDays?: number;
   pendingTotalDays?: number;
-  incapacityRefund?: boolean;
-  generalRefund?: boolean;
-  observation?: string;
 }
 
-export interface IIncapacityTypes {
-  id?: number;
-  name?: string;
-}
 
-export interface IGetIncapacity extends IIncapacity {
-  employment?: IEmploymentWorker;
-  typeIncapacity: IIncapacityTypes | null;
-}

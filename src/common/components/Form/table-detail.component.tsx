@@ -14,7 +14,9 @@ export function ResponsiveTable({ data }:Props):React.JSX.Element{
     <div className="responsive-table">
       {data.map((item, index) => (
         <div key={index} className="table-row">
-          <div className="table-column">{item.title}:</div>
+          <div className={`title-table`}>
+            {item.title}
+          </div>
           <div className="table-column">{item.value}</div>
         </div>
       ))}

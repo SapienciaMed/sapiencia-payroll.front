@@ -26,13 +26,14 @@ import useVacationService from "../../../common/hooks/vacation-service.hook";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 import { ApiResponse } from "../../../common/utils/api-response";
 import { AppContext } from "../../../common/contexts/app.context";
+import { ResponsiveTable } from "../../../common/components/Form/table-detail.component";
 
 const SearchWorker = () => {
   const [pendingDays, setPendingDays] = useState<string>("0");
   const [vacation, setVacation] = useState<IVacation>(null);
   const navigate = useNavigate();
   const resolver = useYupValidationResolver(searchRecord);
-  const { setMessage} = useContext(AppContext);
+  const { setMessage } = useContext(AppContext);
   const { activeWorkerList, listPeriods } = useListData();
   const { getWorkerVacatioByParam, createVacation } = useVacationService();
   const {
@@ -70,10 +71,10 @@ const SearchWorker = () => {
     if (compensatoryDays > vacation?.available - totalDaysEnjoyed) {
       setValueRegister("totalCompensatoryDays", 0);
     }
-  }, [ endVacation]);
+  }, [endVacation]);
 
   useEffect(() => {
-    setValueRegister("endDate","")
+    setValueRegister("endDate", "");
   }, [startVacation]);
 
   useEffect(() => {
@@ -96,32 +97,37 @@ const SearchWorker = () => {
       workerId: data.idWorker,
       period: parseInt(data.period),
     };
-    await getWorkerVacatioByParam(params).then((response: ApiResponse<IVacation>) => {
-      if (response && response?.operation?.code === EResponseCodes.OK && response?.data) {
-        setVacation(response.data)
-      } else {
+    await getWorkerVacatioByParam(params)
+      .then((response: ApiResponse<IVacation>) => {
+        if (
+          response &&
+          response?.operation?.code === EResponseCodes.OK &&
+          response?.data
+        ) {
+          setVacation(response.data);
+        } else {
+          setMessage({
+            type: EResponseCodes.FAIL,
+            title: "Crear período de vacaciones.",
+            description: "No se genero Resultados en la busqueda",
+            show: true,
+            OkTitle: "Aceptar",
+            background: true,
+          });
+          setVacation({} as IVacation);
+        }
+      })
+      .catch((err) => {
         setMessage({
           type: EResponseCodes.FAIL,
           title: "Crear período de vacaciones.",
           description:
-            "No se genero Resultados en la busqueda",
+            "Se ha presentado un error, por favor vuelve a intentarlo.",
           show: true,
           OkTitle: "Aceptar",
           background: true,
         });
-        setVacation({} as IVacation)
-      }
-    }).catch((err) => {
-      setMessage({
-        type: EResponseCodes.FAIL,
-        title: "Crear período de vacaciones.",
-        description:
-          "Se ha presentado un error, por favor vuelve a intentarlo.",
-        show: true,
-        OkTitle: "Aceptar",
-        background: true,
       });
-    })
   });
 
   const handleModal = () => {
@@ -149,8 +155,9 @@ const SearchWorker = () => {
   const onCreate = handleSubmit(async (data: IWorkersVacation) => {
     const dataVacationDays = [];
     const totalEnjoyedDays =
-      Number(isNaN(data?.totalDaysEnjoyed) ? 0 : Number(data?.totalDaysEnjoyed)) +
-      Number(data?.totalCompensatoryDays ?? 0);
+      Number(
+        isNaN(data?.totalDaysEnjoyed) ? 0 : Number(data?.totalDaysEnjoyed)
+      ) + Number(data?.totalCompensatoryDays ?? 0);
     if (data.checkEnjoyedDays)
       dataVacationDays.push({
         codVacation: vacation.id,
@@ -174,46 +181,52 @@ const SearchWorker = () => {
       avaibleDays: Number(vacation?.available) - Number(totalEnjoyedDays),
     };
 
-    await createVacation(dataVacation).then((response: ApiResponse<ICreateVacation>) => {
-      if (response && response?.operation?.code === EResponseCodes.OK) {
-        setMessage({
-          type: EResponseCodes.OK,
-          title: "Vacaciones.",
-          description:
-            "periodo de vacaciones creado con exito.",
-          show: true,
-          OkTitle: "Aceptar",
-          onOk() {
-            navigate("../");
-            setMessage((prev) => {
-              return { ...prev, show: false };
-            })
-          },
-          background: true,
-        });
-      } else {
+    await createVacation(dataVacation)
+      .then((response: ApiResponse<ICreateVacation>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setMessage({
+            type: EResponseCodes.OK,
+            title: "Vacaciones.",
+            description: "periodo de vacaciones creado con exito.",
+            show: true,
+            OkTitle: "Aceptar",
+            onOk() {
+              navigate("../");
+              setMessage((prev) => {
+                return { ...prev, show: false };
+              });
+            },
+            background: true,
+          });
+        } else {
+          setMessage({
+            type: EResponseCodes.FAIL,
+            title: "Error al crear periodo.",
+            description:
+              "Se ha presentado un error, por favor vuelve a intentarlo.",
+            show: true,
+            OkTitle: "Aceptar",
+            background: true,
+          });
+        }
+      })
+      .catch((err) => {
         setMessage({
           type: EResponseCodes.FAIL,
-          title: "Error al crear periodo.",
+          title: "Error al crear el periodo",
           description:
             "Se ha presentado un error, por favor vuelve a intentarlo.",
           show: true,
           OkTitle: "Aceptar",
           background: true,
         });
-      }
-    }).catch((err) => {
-      setMessage({
-        type: EResponseCodes.FAIL,
-        title: "Error al crear el periodo",
-        description:
-          "Se ha presentado un error, por favor vuelve a intentarlo.",
-        show: true,
-        OkTitle: "Aceptar",
-        background: true,
       });
-    });
   });
+  const vacationData = [
+    { title: "Saldo anterior", value: `${vacation?.periodFormer ?? 0}` },
+    { title: "Días ganados", value: `${vacation?.days ?? 0}` },
+    { title: "Saldo actual", value: `${vacation?.available ?? 0}` },
+  ];
 
   return (
     <>
@@ -266,18 +279,7 @@ const SearchWorker = () => {
           </div>
 
           <div className="container-sections-forms">
-            <table className="table-items ">
-              <tr>
-                <th className="th-title">Saldo anterior</th>
-                <th className="th-title">Días ganados</th>
-                <th className="th-title">Saldo actual</th>
-              </tr>
-              <tr>
-                <td className="th-content">{vacation?.periodFormer}</td>
-                <td className="th-content">{vacation?.days}</td>
-                <td className="th-content">{vacation?.available}</td>
-              </tr>
-            </table>
+            <ResponsiveTable data={vacationData} />
           </div>
         </div>
         <FormComponent

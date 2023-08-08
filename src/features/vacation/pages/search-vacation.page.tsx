@@ -21,6 +21,7 @@ import VacationTable from "../forms/vacationTable";
 import { AppContext } from "../../../common/contexts/app.context";
 import useListData from "../hooks/list.hook";
 import { useNavigate } from "react-router-dom";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const SearchVacationPage = () => {
   const tableComponentRef = useRef(null);
@@ -133,8 +134,17 @@ const SearchVacationPage = () => {
   return (
     <>
       <div className="container-sections-forms m-24px">
-        <div>
-          <span className="text-black extra-large bold">Vacaciones</span>
+      <div className="title-area">
+          <label className="text-black extra-large bold">Vacaciones</label>
+
+          <div
+            className="title-button text-main biggest pointer"
+            onClick={() => {
+              navigate("../crear");
+            }}
+          >
+            Crear vacaciones <AiOutlinePlusCircle />
+          </div>
         </div>
         <div>
           <FormComponent

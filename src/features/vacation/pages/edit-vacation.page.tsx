@@ -134,7 +134,8 @@ const EditVacationPage = () => {
           action={onEdit}
         >
           <div className=" grid-form-3-container gap-25 container-sections-forms  m-24px">
-            <div className="grid-span-3-columns">
+            <div className="grid-span-3-columns container-text">
+              <div>
               <input
                 {...register("refund")}
                 type="radio"
@@ -143,6 +144,8 @@ const EditVacationPage = () => {
                 className="checkbox-basic"
               />{" "}
               <span className="text-black large bold">Reintegro general</span>
+              </div>
+              <div>
               <input
                 {...register("refund")}
                 type="radio"
@@ -153,6 +156,7 @@ const EditVacationPage = () => {
               <span className="text-black large bold">
                 Reintegro por incapacidad
               </span>
+              </div>
             </div>
             <DatePickerComponent
               idInput={"dateFrom"}

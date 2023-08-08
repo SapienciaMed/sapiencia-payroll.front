@@ -273,9 +273,19 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   flex-direction: row;
 }
 
+.container-text {
+  display: flex;
+  flex-direction: column;
+}
+
 @media (min-width: 1024px) {
   div[id="single-spa-application:@sapiencia/payroll"] {
     width: initial;
+  }
+
+  .container-text {
+    display: flex;
+    flex-direction: row;
   }
 
   // .dashboard-margin {
@@ -440,36 +450,63 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   padding: 10px 20px 40px 20px;
 }
 
-
 .responsive-table {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  border: 1px solid #ddd;
+  gap: 16px;
+  border: solid #e9ecef;
+  border-width: 0 0 1px 0;
   padding: 16px;
-  border-radius: 4px;
+  border-radius: 13px;
+  box-shadow: inset 0px 3px 6px rgba(0, 0, 0, 0.1607843137),
+    0px 3px 6px rgba(0, 0, 0, 0.1607843137);
   background-color: #fff;
+  margin: 1.5em 0em;
 }
 
 .table-row {
   display: flex;
   justify-content: space-between;
+  text-align: end;
 }
 
 .table-column {
-  flex: 1;
   padding: 4px;
+}
+.title-table {
+  background-color: #fff;
+  height: auto;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (min-width: 768px) {
   .responsive-table {
     flex-direction: row;
+    border: none #ddd;
+    border-width: 0 0 0 0;
+    padding: 16px;
+    border-radius: 0;
+    box-shadow: none;
+    gap: 0;
+    margin: 0;
   }
 
+  .title-table {
+    background-color: #f2f2f2;
+    align-items: center;
+    height: 3em;
+    display: flex;
+    justify-content: center;
+  }
   .table-row {
     flex-direction: column;
     width: 50%;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
   }
 
   .table-column {

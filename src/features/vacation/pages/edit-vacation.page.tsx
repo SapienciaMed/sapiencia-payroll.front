@@ -65,9 +65,12 @@ const EditVacationPage = () => {
               .filter((day) => !day.paid)
               .sort((a, b) => b.id - a.id)[0]?.dateUntil
           );
-          setValueRegister("observation",response.data.vacationDay
-          .filter((day) => !day.paid)
-          .sort((a, b) => b.id - a.id)[0]?.observation)
+          setValueRegister(
+            "observation",
+            response.data.vacationDay
+              .filter((day) => !day.paid)
+              .sort((a, b) => b.id - a.id)[0]?.observation
+          );
         }
       })
       .catch((err) => {
@@ -103,26 +106,66 @@ const EditVacationPage = () => {
   const onEdit = handleSubmit(async (data: IEditVacation) => {
     const dataEdit = {
       id: Number(vacation.id),
-      idVacationDay: vacation?.vacationDay.map((day) => {
-        if (!day.paid) return day.id;
-      })[0],
+      idVacationDay: vacation?.vacationDay
+        .filter((day) => !day.paid)
+        .sort((a, b) => b.id - a.id)[0]?.id,
       dateFrom: data?.dateFrom,
       dateUntil: data?.dateUntil,
       observation: data?.observation,
       available: data?.pendingTotalDays,
       refundTypes: data?.refund,
       refund:
-        vacation?.vacationDay.map((day) => {
-          if (!day.paid) return day.enjoyedDays;
-        })[0] - Number(data?.totalDays),
+        vacation?.vacationDay
+          .filter((day) => !day.paid)
+          .sort((a, b) => b.id - a.id)[0]?.enjoyedDays -
+        Number(data?.totalDays),
       enjoyed:
         Number(vacation?.enjoyed) -
-        (vacation?.vacationDay.map((day) => {
-          if (!day.paid) return day.enjoyedDays;
-        })[0] -
+        (vacation?.vacationDay
+          .filter((day) => !day.paid)
+          .sort((a, b) => b.id - a.id)[0]?.enjoyedDays -
           Number(data?.totalDays)),
     };
-    await updateVacation(dataEdit);
+    await updateVacation(dataEdit)
+      .then((response: ApiResponse<IEditVacation>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setMessage({
+            type: EResponseCodes.OK,
+            title: "Vacaciones.",
+            description: "periodo de vacaciones editado con exito.",
+            show: true,
+            OkTitle: "Aceptar",
+            onOk() {
+              navigate("../");
+              setMessage((prev) => {
+                return { ...prev, show: false };
+              });
+            },
+            background: true,
+          });
+        } else {
+          setMessage({
+            type: EResponseCodes.FAIL,
+            title: "Error al editar periodo.",
+            description:
+              "Se ha presentado un error, por favor vuelve a intentarlo.",
+            show: true,
+            OkTitle: "Aceptar",
+            background: true,
+          });
+        }
+      })
+      .catch((err) => {
+        setMessage({
+          type: EResponseCodes.FAIL,
+          title: "Error al editar el periodo",
+          description:
+            "Se ha presentado un error, por favor vuelve a intentarlo.",
+          show: true,
+          OkTitle: "Aceptar",
+          background: true,
+        });
+      });
   });
   return (
     <>
@@ -136,26 +179,26 @@ const EditVacationPage = () => {
           <div className=" grid-form-3-container gap-25 container-sections-forms  m-24px">
             <div className="grid-span-3-columns container-text">
               <div>
-              <input
-                {...register("refund")}
-                type="radio"
-                id="refund"
-                value="general"
-                className="checkbox-basic"
-              />{" "}
-              <span className="text-black large bold">Reintegro general</span>
+                <input
+                  {...register("refund")}
+                  type="radio"
+                  id="refund"
+                  value="general"
+                  className="checkbox-basic"
+                />{" "}
+                <span className="text-black large bold">Reintegro general</span>
               </div>
               <div>
-              <input
-                {...register("refund")}
-                type="radio"
-                id="refund"
-                value="Incapacaidad"
-                className="checkbox-basic"
-              />{" "}
-              <span className="text-black large bold">
-                Reintegro por incapacidad
-              </span>
+                <input
+                  {...register("refund")}
+                  type="radio"
+                  id="refund"
+                  value="Incapacaidad"
+                  className="checkbox-basic"
+                />{" "}
+                <span className="text-black large bold">
+                  Reintegro por incapacidad
+                </span>
               </div>
             </div>
             <DatePickerComponent

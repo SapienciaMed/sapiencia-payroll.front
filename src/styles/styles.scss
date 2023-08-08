@@ -503,7 +503,7 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   }
   .table-row {
     flex-direction: column;
-    width: 50%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     text-align: center;
@@ -513,4 +513,8 @@ div[id="single-spa-application:@sapiencia/payroll"] {
     padding: 8px;
     font-weight: normal;
   }
+}
+
+.padding-left_16 {
+  padding-left: 16px;
 }

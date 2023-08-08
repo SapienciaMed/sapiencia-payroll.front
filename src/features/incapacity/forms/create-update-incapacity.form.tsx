@@ -23,8 +23,15 @@ export const CreateUpdateIncapacityForm = ({
 }: IPropsCreateAndUpdateIncapacityForm) => {
   const { activeWorkerList, typesIncapacityList } = useListData();
 
-  const { onSubmit, register, errors, control, showDays, navigate } =
-    useCreateAndUpdateIncapacityHook(action);
+  const {
+    onSubmit,
+    register,
+    errors,
+    control,
+    showDays,
+    navigate,
+    disabledFields,
+  } = useCreateAndUpdateIncapacityHook(action);
 
   return (
     <>
@@ -56,6 +63,7 @@ export const CreateUpdateIncapacityForm = ({
                 control={control}
                 errors={errors}
                 data={activeWorkerList}
+                disabled={disabledFields()}
                 label={
                   <>
                     Documento - Nombre empleado <span>*</span>
@@ -72,6 +80,7 @@ export const CreateUpdateIncapacityForm = ({
                 control={control}
                 errors={errors}
                 data={typesIncapacityList}
+                disabled={disabledFields()}
                 label={
                   <>
                     Origen de incapacidad <span>*</span>
@@ -87,6 +96,7 @@ export const CreateUpdateIncapacityForm = ({
               <DatePickerComponent
                 idInput={"dateInitial"}
                 control={control}
+                disabled={disabledFields()}
                 label={
                   <>
                     Fecha inicio <span>*</span>
@@ -103,6 +113,7 @@ export const CreateUpdateIncapacityForm = ({
               <DatePickerComponent
                 idInput={"dateFinish"}
                 control={control}
+                disabled={disabledFields(true)}
                 label={
                   <>
                     Fecha fin <span>*</span>
@@ -111,7 +122,6 @@ export const CreateUpdateIncapacityForm = ({
                 errors={errors}
                 classNameLabel="text-black big bold"
                 className="dataPicker-basic  medium "
-                // disabled={disabledFields}
                 placeholder="DD/MM/YYYY"
                 dateFormat="dd/mm/yy"
                 maxDate={new Date()}
@@ -136,7 +146,7 @@ export const CreateUpdateIncapacityForm = ({
                 <TextAreaComponent
                   label={"Observaciones"}
                   idInput={"comments"}
-                  // disabled={disabledFields}
+                  disabled={disabledFields(true)}
                   className="text-area-basic"
                   classNameLabel="text-black big bold"
                   register={register}

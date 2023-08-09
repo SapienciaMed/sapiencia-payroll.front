@@ -9,6 +9,7 @@ import ApplicationProvider from "./application-provider";
 import WorkerRoutes from "./features/worker/worker-routes";
 import VacationRoutes from "./features/vacation/vacation-routes";
 import IncapacityRoutes from "./features/incapacity/incapacity-routes";
+import WithDrawalRoutes from "./features/withdrawal/wirhdrawal-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
 
   // Effect que comunica la aplicacion actual
   useEffect(() => {
-    localStorage.setItem('currentAplication',process.env.aplicationId)
+    localStorage.setItem("currentAplication", process.env.aplicationId);
     setTimeout(
       () => publish("currentAplication", process.env.aplicationId),
       500
@@ -32,8 +33,19 @@ function App() {
           <Suspense fallback={<p>Loading...</p>}>
             <Routes>
               <Route path={"/nomina/"} element={<HomePage />} />;
-              <Route path={"/nomina/trabajadores/*"} element={<WorkerRoutes />} />
-              <Route path={"/nomina/vacaciones/*"} element={<VacationRoutes />} />
+              <Route
+                path={"/nomina/trabajadores/*"}
+                element={<WorkerRoutes />}
+              />
+              <Route
+                path={"/nomina/vacaciones/*"}
+                element={<VacationRoutes />}
+              />
+              <Route
+                path={"/nomina/incapacidades/*"}
+                element={<IncapacityRoutes />}
+              />
+              <Route path={"/nomina/retiro/*"} element={<WithDrawalRoutes />} />
             </Routes>
           </Suspense>
         </Router>

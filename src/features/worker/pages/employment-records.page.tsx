@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import TableComponent from "../../../common/components/table.component";
 import { InputComponent } from "../../../common/components/Form/input.component";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import { searchRecord } from "../../../common/schemas";
 import { DateTime } from "luxon";
@@ -25,7 +25,7 @@ const EmploymentRecordsPage = () => {
   const { typesContracts, activeWorker } = useEmploymentsData();
   const tableComponentRef = useRef(null);
   const navigate = useNavigate();
-  const resolver = useYupValidationResolver(searchRecord);
+  //const resolver = useYupValidationResolver(searchRecord);
   const {
     handleSubmit,
     register,
@@ -33,7 +33,7 @@ const EmploymentRecordsPage = () => {
     setValue: setValueRegister,
     control,
     reset,
-  } = useForm<IFilterVinculation>({ resolver });
+  } = useForm<IFilterVinculation>();
   const tableColumns: ITableElement<IGetVinculation>[] = [
     {
       fieldName: "numberDocument",
@@ -180,9 +180,17 @@ const EmploymentRecordsPage = () => {
                 value={"Limpiar campos"}
                 className="button-clean bold"
                 type="button"
-                action={reset}
+                action={() => {
+                  reset();
+                  tableComponentRef.current.emptyData();
+                }}
               />
-              <ButtonComponent value={"Buscar"} className="button-save big" form="searchRecordForm" type="submit" />
+              <ButtonComponent
+                value={"Buscar"}
+                className="button-save big"
+                form="searchRecordForm"
+                type="submit"
+              />
             </div>
           </FormComponent>
         </div>

@@ -566,5 +566,6 @@ export default function useEmploymentsData() {
     familyData,
     setFamilyData,
     watch,
+    navigate
   };
 }

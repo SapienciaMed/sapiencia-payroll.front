@@ -48,8 +48,11 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     setFamilyData,
     handleUpdateWorker,
     watch,
+    navigate
   } = useEmploymentsData();
-
+ const handleNavigation = () =>{
+  navigate('../expedientes')
+ }
   const stebs: FormStebs[] = [
     {
       titleSteb: "1. Informacion personal",
@@ -165,6 +168,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
         }
         action={action}
         watch={watch}
+        navigate={handleNavigation}
       />
     </>
   );

@@ -7,6 +7,7 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import { FormStebs } from "../../interfaces/tabs-menu.interface";
+import { NavigateFunction, NavigateOptions, To } from "react-router-dom";
 
 interface IFormStepsProp {
   titleForm: string;
@@ -21,6 +22,7 @@ interface IFormStepsProp {
   actionSubmit: any;
   action: string;
   watch: any;
+  navigate:NavigateFunction;
 }
 
 const FormSteps = ({
@@ -36,6 +38,7 @@ const FormSteps = ({
   register,
   action,
   watch,
+  navigate
 }: // watch,
 IFormStepsProp) => {
   const { step } = useContext(AppContext);
@@ -84,11 +87,20 @@ IFormStepsProp) => {
                   {step === infoStep.position && infoStep.contentStep}
 
                   <div className="container-actions_formTabs">
-                    {step !== 0 && (
+                    {(step == 0 && action === "new")?(<></>):(
                       <ButtonComponent
-                        value={"Anterior"}
+                        value={
+                          step == 0 && action != "new" ? "Regresar" : "Anterior"
+                        }
                         className={`${"button-tab_save hover-three big"}`}
-                        action={handleBackStep}
+                        action={() => {
+                          if (step == 0) {
+                            navigate('/')
+                          } else {
+                            handleBackStep();
+                          }
+                        }}
+                        type="button"
                       />
                     )}
                     <ButtonComponent

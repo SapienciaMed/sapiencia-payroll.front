@@ -188,7 +188,7 @@ const FamiliarInformationForm = ({
                             handleDisableRow(index);
                           }
                         }}
-                        className="button-confirm"
+                        className="button-confirm disabled-black"
                         disabled={disabledFields}
                       />
                       <ButtonComponent
@@ -199,7 +199,7 @@ const FamiliarInformationForm = ({
                             handleDisableRow(index);
                           }
                         }}
-                        className="button-cancel-edit"
+                        className="button-cancel-edit disabled-black"
                         disabled={disabledFields}
                       />
                     </>
@@ -209,7 +209,7 @@ const FamiliarInformationForm = ({
                         value={<HiOutlinePencil />}
                         type="button"
                         action={() => handleEnableRow(index)}
-                        className="button-edit"
+                        className="button-edit disabled-black"
                         disabled={disabledFields}
                       />
                       <ButtonComponent
@@ -220,7 +220,7 @@ const FamiliarInformationForm = ({
                           const data = getValues("familiar");
                           setFamilyData({ familiar: data });
                         }}
-                        className="button-delete"
+                        className="button-delete disabled-black"
                         disabled={disabledFields}
                       />
                     </>
@@ -241,7 +241,7 @@ const FamiliarInformationForm = ({
                   relationship: "",
                 })
               }
-              className="button-save large"
+              className="button-save large disabled-black"
               disabled={disabledFields}
             />
           </div>

@@ -189,10 +189,8 @@
   }
 
   &.disabled-black:disabled {
-    background-color: #fff;
-    color: $color-black;
+    color: $input-color-border  !important;
     opacity: 1;
-    border: $input-color-border solid 1px;
   }
 }
 
@@ -216,10 +214,8 @@
   }
 
   &.disabled-black:disabled {
-    background-color: #fff;
-    color: $color-black;
+    color: $input-color-border  !important;
     opacity: 1;
-    border: $input-color-border solid 1px;
   }
 }
 
@@ -243,10 +239,8 @@
   }
 
   &.disabled-black:disabled {
-    background-color: #fff;
-    color: $color-black;
+    color: $input-color-border !important;
     opacity: 1;
-    border: $input-color-border solid 1px;
   }
 }
 
@@ -270,10 +264,8 @@
   }
 
   &.disabled-black:disabled {
-    background-color: #fff;
-    color: $color-black;
+    color: $input-color-border !important;
     opacity: 1;
-    border: $input-color-border solid 1px;
   }
 }
 

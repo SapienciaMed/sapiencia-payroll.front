@@ -229,6 +229,7 @@ export interface IVacation {
   available: number;
   days: string;
   periodClosed: boolean;
+  refund: number;
 }
 
 export interface IVacationResult {

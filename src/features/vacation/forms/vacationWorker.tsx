@@ -55,15 +55,6 @@ const SearchWorker = () => {
       "totalCompensatoryDays",
       "totalDaysEnjoyed",
     ]);
-  const calculateDays = () => {
-    if (totalDaysEnjoyed > vacation?.available) {
-      alert("que haces cabron toy chiquito");
-      //setValueRegister("totalCompensatoryDays",0)
-    }
-  };
-  useEffect(() => {
-    calculateDays();
-  }, []);
 
   useEffect(() => {
     const days = calculateBusinessDays(startVacation, endVacation);
@@ -80,7 +71,11 @@ const SearchWorker = () => {
   useEffect(() => {
     const totalDaysEnjoyedValue = totalDaysEnjoyed ?? 0;
     const compensatoryDaysValue = compensatoryDays ?? 0;
-    const availableDays = vacation?.available ?? 0;
+    const availableDays = vacation?.available
+      ? Number(vacation?.available) +
+        Number(vacation?.periodFormer ?? 0) +
+        Number(vacation?.refund ?? 0)
+      : 0;
     if (compensatoryDays > availableDays - totalDaysEnjoyed) {
       setValueRegister("totalCompensatoryDays", 0);
     }
@@ -154,11 +149,32 @@ const SearchWorker = () => {
 
   const onCreate = handleSubmit(async (data: IWorkersVacation) => {
     const dataVacationDays = [];
-    const totalEnjoyedDays =
-      Number(
-        isNaN(data?.totalDaysEnjoyed) ? 0 : Number(data?.totalDaysEnjoyed)
-      ) + Number(data?.totalCompensatoryDays ?? 0);
-    if (data.checkEnjoyedDays)
+    const totalDaysEnjoyed = Number(data?.totalDaysEnjoyed) || 0;
+    const totalCompensatoryDays = Number(data?.totalCompensatoryDays) || 0;
+    const totalEnjoyedDays = totalDaysEnjoyed + totalCompensatoryDays;
+    let enjoyedDays = totalEnjoyedDays;
+    let avaibleDays = Number(vacation?.available) || 0;
+    let formedDays = Number(vacation?.periodFormer) || 0;
+    let refundDays = Number(vacation?.refund) || 0;
+
+    if (formedDays > 0) {
+      enjoyedDays -= formedDays;
+      if (formedDays <= enjoyedDays) {
+        formedDays = 0;
+      } else {
+        formedDays -= enjoyedDays;
+      }
+    }
+    if (refundDays > 0 && formedDays == 0) {
+      enjoyedDays -= refundDays;
+      if (refundDays <= enjoyedDays) {
+        refundDays = 0;
+      } else {
+        refundDays -= enjoyedDays;
+      }
+    }
+    avaibleDays -= enjoyedDays;
+    if (data.checkEnjoyedDays) {
       dataVacationDays.push({
         codVacation: vacation.id,
         dateFrom: data.startDate,
@@ -167,7 +183,9 @@ const SearchWorker = () => {
         paid: false,
         observation: data.observation,
       });
-    if (data.checkCompensatoryDays)
+    }
+
+    if (data.checkCompensatoryDays) {
       dataVacationDays.push({
         codVacation: vacation.id,
         dateFrom: data.startDate,
@@ -175,12 +193,16 @@ const SearchWorker = () => {
         paid: true,
         observation: data.observation,
       });
+    }
+
     const dataVacation = {
       vacationDay: dataVacationDays as IVacationDay[],
       enjoyedDays: totalEnjoyedDays,
-      avaibleDays: Number(vacation?.available) - Number(totalEnjoyedDays),
+      avaibleDays,
+      refundDays,
+      formedDays,
+      periodId: vacation?.id,
     };
-
     await createVacation(dataVacation)
       .then((response: ApiResponse<ICreateVacation>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
@@ -190,6 +212,12 @@ const SearchWorker = () => {
             description: "periodo de vacaciones creado con exito.",
             show: true,
             OkTitle: "Aceptar",
+            onClose() {
+              navigate("../");
+              setMessage((prev) => {
+                return { ...prev, show: false };
+              });
+            },
             onOk() {
               navigate("../");
               setMessage((prev) => {
@@ -225,7 +253,16 @@ const SearchWorker = () => {
   const vacationData = [
     { title: "Saldo anterior", value: `${vacation?.periodFormer ?? 0}` },
     { title: "Días ganados", value: `${vacation?.days ?? 0}` },
-    { title: "Saldo actual", value: `${vacation?.available ?? 0}` },
+    {
+      title: "Saldo actual",
+      value: `${
+        vacation?.available
+          ? Number(vacation?.available) +
+            Number(vacation?.periodFormer ?? 0) +
+            Number(vacation?.refund ?? 0)
+          : 0
+      }`,
+    },
   ];
 
   return (
@@ -323,7 +360,13 @@ const SearchWorker = () => {
               minDate={startVacation}
               maxDate={addBusinessDays(
                 startVacation ? startVacation : new Date(),
-                vacation ? vacation?.available : 0
+                vacation
+                  ? vacation?.available
+                    ? Number(vacation?.available) +
+                      Number(vacation?.periodFormer ?? 0) +
+                      Number(vacation?.refund ?? 0)
+                    : 0
+                  : 0
               )}
             />
             <Controller

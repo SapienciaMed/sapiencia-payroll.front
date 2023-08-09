@@ -79,7 +79,7 @@ const SearchVacationPage = () => {
       fieldName: "pendingDays",
       header: "Días",
       renderCell: (row) => {
-        return <>{row.periodFormer}</>;
+        return <>{row.periodClosed ? 0 : row.periodFormer}</>;
       },
     },
   ];
@@ -96,7 +96,7 @@ const SearchVacationPage = () => {
               <VacationTable row={row} />
             </div>
           ),
-          size:"large",         
+          size: "large",
           background: true,
         });
       },
@@ -104,16 +104,17 @@ const SearchVacationPage = () => {
     {
       icon: "Edit",
       onClick: (row) => {
-        const idEnjoyedDay = row.codEmployment
-        if(row.periodClosed){
+        const idEnjoyedDay = row.codEmployment;
+        if (row.periodClosed) {
           setMessage({
-            title:"Editar Vacaciones",
-            description:"Este periodo ya se encuentra finalizado y no es posible editarlo.",
-            OkTitle:"Aceptar",
-            background:true,
-            show:true
-          })
-        }else{
+            title: "Editar Vacaciones",
+            description:
+              "Este periodo ya se encuentra finalizado y no es posible editarlo.",
+            OkTitle: "Aceptar",
+            background: true,
+            show: true,
+          });
+        } else {
           navigate(`../editar/${idEnjoyedDay}/${row.period}`);
         }
       },
@@ -134,7 +135,7 @@ const SearchVacationPage = () => {
   return (
     <>
       <div className="container-sections-forms m-24px">
-      <div className="title-area">
+        <div className="title-area">
           <label className="text-black extra-large bold">Vacaciones</label>
 
           <div

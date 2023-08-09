@@ -2,7 +2,7 @@ import React from 'react';
 
 interface DataItem {
   title: string;
-  value: string;
+  value: string | React.JSX.Element[];
 }
 
 interface Props {

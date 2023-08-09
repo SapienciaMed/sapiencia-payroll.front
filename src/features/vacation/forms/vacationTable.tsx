@@ -23,41 +23,53 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
   const daysData = [
     {
       title: "Desde",
-      value: (`${row?.vacationDay.map((day) => {
-        if (!day?.paid) return (DateTime.fromISO(day?.dateFrom).toLocaleString());
-        else return;
-      })}`).replace(",",""),
+      value: row?.vacationDay.map((day) => {
+        if (!day?.paid)
+          return (
+            <p key={day?.id}>
+              {DateTime.fromISO(day?.dateFrom).toLocaleString()}
+            </p>
+          );
+      }),
     },
     {
       title: "Hasta",
-      value: (`${row?.vacationDay.map((day) => {
+      value: row?.vacationDay.map((day) => {
         if (!day?.paid)
-          return (DateTime.fromISO(day?.dateUntil).toLocaleString());
-        else return;
-      })}`).replace(",",""),
+          return (
+            <p key={day?.id}>
+              {DateTime.fromISO(day?.dateUntil).toLocaleString()}
+            </p>
+          );
+      }),
     },
     {
       title: "Total días",
-      value: (`${row?.vacationDay.map((day) => {
-        if (!day?.paid) return (`${day?.enjoyedDays}`);
-        else return;
-      })}`).replace(",",""),
+      value: row?.vacationDay.map((day) => {
+        if (!day?.paid) return <p key={day?.id}>{day?.enjoyedDays}</p>;
+      }),
     },
   ];
   const daysCompensated = [
     {
       title: "Desde",
-      value: (`${row?.vacationDay.map((day) => {
-        if (day?.paid) return (DateTime.fromISO(day?.dateFrom).toLocaleString()).replace(",","");
+      value: row?.vacationDay.map((day) => {
+        if (day?.paid)
+          return (
+            <p key={day?.id}>
+              {DateTime.fromISO(day?.dateFrom)
+                .toLocaleString()
+                .replace(",", "")}
+            </p>
+          );
         else return;
-      })}`).replace(",",""),
+      }),
     },
     {
       title: "Días compensados",
-      value: (`${row?.vacationDay.map((day) => {
-        if (day?.paid) return (`${day?.enjoyedDays}`).replace(",","");
-        else return;
-      })}`).replace(",",""),
+      value: row?.vacationDay.map((day) => {
+        if (day?.paid) return <p key={day?.id}>{day?.enjoyedDays}</p>;
+      }),
     },
   ];
   const refundDays = [
@@ -76,8 +88,15 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
     <>
       <div>
         <ResponsiveTable data={workerData} />
-        <ResponsiveTable data={daysData} />
-        <ResponsiveTable data={daysCompensated} />
+        <h2>Liquidación vacaciones</h2>
+        <div>
+          <h2 className="text-left ml-14px">Días disfrutados</h2>
+          <ResponsiveTable data={daysData} />
+        </div>
+        <div>
+          <h2 className="text-left ml-14px">Días compensados</h2>
+          <ResponsiveTable data={daysCompensated} />
+        </div>
         <ResponsiveTable data={refundDays} />
         <ResponsiveTable data={balanceDays} />
 

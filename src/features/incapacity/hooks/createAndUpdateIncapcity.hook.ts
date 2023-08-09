@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../common/contexts/app.context";
 import { useForm } from "react-hook-form";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
@@ -44,12 +44,12 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     });
   };
 
-  const handleModalError = () => {
+  const handleModalError = (message: string) => {
     setMessage({
-      title: "Incapacidad",
-      description: `Error al ${
+      title: `Error al ${
         action !== "new" ? "editar" : "crear"
-      } la incapacidad, vuelve a intentarlo`,
+      } la incapacidad.`,
+      description: `${message}, vuelve a intentarlo`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -100,7 +100,11 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     mode: "all",
   });
 
-  const [startDate, endDate] = watch(["dateInitial", "dateFinish"]);
+  const [startDate, endDate, isExtension] = watch([
+    "dateInitial",
+    "dateFinish",
+    "isExtension",
+  ]);
 
   const showDays = () => {
     if (startDate && endDate) {
@@ -108,6 +112,18 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     } else {
       return "0";
     }
+  };
+
+  const disabledFields = (validate = false) => {
+    if (isExtension && action !== "new" && validate) {
+      return false;
+    }
+
+    if (action === "new") {
+      return false;
+    }
+
+    return true;
   };
 
   const onSubmit = handleSubmit(async (data: IIncapacity) => {
@@ -119,7 +135,7 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     if (response.operation.code === EResponseCodes.OK) {
       handleModalSuccess();
     } else {
-      handleModalError();
+      handleModalError(response.operation.message);
     }
   });
 
@@ -130,5 +146,6 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     control,
     showDays,
     navigate,
+    disabledFields,
   };
 }

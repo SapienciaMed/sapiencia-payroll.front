@@ -1,19 +1,16 @@
 import React, { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "../../common/utils/auth-private-guard";
+import { WithDrawalStaffPage } from "./pages/withdrawal-staff.page";
 
 function WithDrawalRoutes() {
   return (
     <Routes>
       <Route
-        path={"/personal"}
+        path={"/"}
         element={
           <PrivateRoute
-            element={
-              <>
-                <h1>Retiro personal</h1>
-              </>
-            }
+            element={<WithDrawalStaffPage />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

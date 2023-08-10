@@ -1,6 +1,12 @@
 import { EResponseCodes } from "../constants/api.enum";
 import { IAuthorization } from "../interfaces/auth.interfaces";
-import { ICreateVacation, IEditVacation, IVacation, IVacationDay, IVacationResult } from "../interfaces/payroll.interfaces";
+import {
+  ICreateVacation,
+  IEditVacation,
+  IVacation,
+  IVacationDay,
+  IVacationResult,
+} from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
 
@@ -58,7 +64,7 @@ export function useVacationService() {
   return {
     getWorkerVacatioByParam,
     createVacation,
-    updateVacation
+    updateVacation,
   };
 }
 

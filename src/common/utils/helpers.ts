@@ -103,3 +103,11 @@ export function addBusinessDays(startDate, daysToAdd, holidays = []) {
 
   return currentDate;
 };
+
+export function removeEmptySpace(phrase:string){
+  if (!phrase){
+    return ''
+  }
+ const wordsArray = phrase.split(' ')
+ return wordsArray.filter((word)=> word !== '')
+}

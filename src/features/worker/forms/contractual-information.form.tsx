@@ -322,7 +322,6 @@ const ContractualInformationForm = ({
           placeholder="DD/MM/YYYY"
           dateFormat="dd/mm/yy"
           minDate={new Date(startDate)}
-          maxDate={new Date()}
         />
         {action !== "new" ? (
           <InputComponent

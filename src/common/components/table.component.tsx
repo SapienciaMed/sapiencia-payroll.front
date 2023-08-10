@@ -72,28 +72,125 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
   const { post } = useCrudService(token, url);
   useImperativeHandle(ref, () => ({
     loadData: loadData,
-    emptyData: EmptyData
+    emptyData: emptyData
   }));
 
   // Metodo que hace la peticion para realizar la carga de datos
   async function loadData(
     newSearchCriteria?: object,
+    sameData?: object,
+    excludeData?: object,
     currentPage?: number
   ): Promise<void> {
-    setLoading(true);
 
+    /*  ----  ALERTA  ----  */
+    /* Evitar usar la propiedad 'sameData' o 'excludeData' para filtrar los datos ya que puede hacer pesada la consulta si existen muchos registros. */
+    /* Solo usar en el caso extremo de no poder filtrar desde el backend ya que el uso de esta traera todos los registros en la peticion. */
+
+    setLoading(true);
     if (newSearchCriteria) {
       setSearchCriteria(newSearchCriteria);
     }
-
     const body = newSearchCriteria || searchCriteria || {};
     const res = await post<IPagingData<any>>(url, {
       ...body,
       page: currentPage || 1,
-      perPage: perPage,
+      perPage: sameData || excludeData ? "Infinity" : perPage,
     });
     if (res.operation.code === EResponseCodes.OK) {
-      setResultData(res.data);
+      if (sameData) {
+        const sameFilters = Reflect.ownKeys(sameData);
+        let filteredData = [];
+        if (sameFilters.length !== 0) {
+          sameFilters.forEach(filter => {
+            if (!Reflect.has(res.data.array[0], filter)) return;
+            if (Array.isArray(sameData[filter])) {
+              sameData[filter].forEach(filt => {
+                filteredData = filteredData.concat(res.data.array.filter(item => item[filter] === filt));
+              });
+            } else {
+              filteredData = filteredData.concat(res.data.array.filter(item => item[filter] === sameData[filter]));
+            }
+          });
+          if (excludeData) {
+            const excludeFilters = Reflect.ownKeys(excludeData);
+            if (excludeFilters.length !== 0) {
+              excludeFilters.forEach(filter => {
+                if (!Reflect.has(res.data.array[0], filter)) return;
+                if (Array.isArray(excludeData[filter])) {
+                  excludeData[filter].forEach(filt => {
+                    filteredData = filteredData.filter(item => item[filter] !== filt);
+                  });
+                } else {
+                  filteredData = filteredData.filter(item => item[filter] !== excludeData[filter]);
+                }
+              });
+            }
+          }
+          const meta = {
+            "total": filteredData.length,
+            "per_page": perPage,
+            "current_page": page,
+            "last_page": Math.trunc(filteredData.length / perPage),
+            "first_page": 1,
+          };
+          setResultData({ array: filteredData.slice(perPage * page, (perPage * page) + perPage), meta: meta });
+        } else {
+          if (excludeData) {
+            let filteredData = res.data.array;
+            const excludeFilters = Reflect.ownKeys(excludeData);
+            if (excludeFilters.length !== 0) {
+              excludeFilters.forEach(filter => {
+                if (!Reflect.has(res.data.array[0], filter)) return;
+                if (Array.isArray(excludeData[filter])) {
+                  excludeData[filter].forEach(filt => {
+                    filteredData = filteredData.filter(item => item[filter] !== filt);
+                  });
+                } else {
+                  filteredData = filteredData.filter(item => item[filter] !== excludeData[filter]);
+                }
+              });
+              const meta = {
+                "total": filteredData.length,
+                "per_page": perPage,
+                "current_page": page,
+                "last_page": Math.trunc(filteredData.length / perPage),
+                "first_page": 1,
+              };
+              setResultData({ array: filteredData.slice(perPage * page, (perPage * page) + perPage), meta: meta });
+            } else {
+              setResultData(res.data);
+            }
+          }
+        }
+      } else if (excludeData) {
+        let filteredData = res.data.array;
+        const excludeFilters = Reflect.ownKeys(excludeData);
+        if (excludeFilters.length !== 0) {
+          excludeFilters.forEach(filter => {
+            if (!Reflect.has(res.data.array[0], filter)) return;
+            if (Array.isArray(excludeData[filter])) {
+              excludeData[filter].forEach(filt => {
+                filteredData = filteredData.filter(item => item[filter] !== filt);
+              });
+            } else {
+              filteredData = filteredData.filter(item => item[filter] !== excludeData[filter]);
+            }
+          });
+          const meta = {
+            "total": filteredData.length,
+            "per_page": perPage,
+            "current_page": page,
+            "last_page": Math.trunc(filteredData.length / perPage),
+            "first_page": 1,
+          };
+          setResultData({ array: filteredData.slice(perPage * page, (perPage * page) + perPage), meta: meta });
+        } else {
+          setResultData(res.data);
+        }
+      } else {
+        setResultData(res.data);
+      }
     } else {
       // generar mensaje de error / advetencia
     }
@@ -109,7 +206,7 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
     setLoading(false);
   }
 
-  async function EmptyData(): Promise<void> {
+  async function emptyData(): Promise<void> {
     setLoading(true);
     setResultData({ array: [], meta: { total: 0 } });
     setLoading(false);
@@ -123,7 +220,7 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
   }
 
   useEffect(() => {
-    if (charged) loadData(undefined, page + 1);
+    if (charged) loadData(undefined, undefined, undefined, page + 1);
   }, [perPage, first, page]);
 
   useEffect(() => {
@@ -139,6 +236,8 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
       <div className="card-grid-item">
         <div className="card-header">
           {columns.map((column) => {
+            const properties = column.fieldName.split(".");
+            let field = properties.length === 2 ? item[properties[0]][properties[1]] : item[properties[0]];
             return (
               <div key={item} className="item-value-container">
                 <p className="text-black bold">{column.header}</p>
@@ -146,7 +245,7 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
                   {" "}
                   {column.renderCell
                     ? column.renderCell(item)
-                    : item[column.fieldName]}{" "}
+                    : field}{" "}
                 </p>
               </div>
             );
@@ -211,7 +310,6 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
           value={resultData?.array || []}
           itemTemplate={mobilTemplate}
           rows={5}
-          emptyMessage={emptyMessage}
         />
       )}
       <Paginator
@@ -246,6 +344,12 @@ function getIconElement(icon: string, element: "name" | "src") {
         "Eliminar"
       ) : (
         <Icons.FaTrashAlt className="button grid-button button-delete" />
+      );
+    case "Link":
+      return element == "name" ? (
+        "Vincular"
+      ) : (
+        <Icons.FaLink className="button grid-button button-link" />
       );
     default:
       return "";

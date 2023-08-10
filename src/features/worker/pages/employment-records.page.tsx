@@ -20,6 +20,7 @@ import {
 } from "../../../common/interfaces/payroll.interfaces";
 import { useNavigate } from "react-router-dom";
 import useEmploymentsData from "../hooks/employment.hook";
+import { removeEmptySpace } from "../../../common/utils/helpers";
 
 const EmploymentRecordsPage = () => {
   const { typesContracts, activeWorker } = useEmploymentsData();
@@ -105,7 +106,16 @@ const EmploymentRecordsPage = () => {
   }
 
   const onSubmit = handleSubmit(async (data: IFilterVinculation) => {
-    loadTableData(data);
+    const names = removeEmptySpace(data.name);
+    const surNames = removeEmptySpace(data.lastName);
+    const datafilter = {
+      ...data,
+      firtsName: names.length > 0 ? names[0] : "",
+      secondName: names.length > 1 ? names[1] : "",
+      surname: surNames.length > 0 ? surNames[0] : "",
+      secondSurname: surNames.length > 1 ? surNames[0] : "",
+    };
+    loadTableData(datafilter);
   });
 
   return (

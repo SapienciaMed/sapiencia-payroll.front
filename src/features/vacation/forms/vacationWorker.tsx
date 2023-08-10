@@ -103,8 +103,8 @@ const SearchWorker = () => {
         } else {
           setMessage({
             type: EResponseCodes.FAIL,
-            title: "Crear período de vacaciones.",
-            description: "No se genero Resultados en la busqueda",
+            title: "Crear periodo de vacaciones.",
+            description: "No hay resultado para la búsqueda",
             show: true,
             OkTitle: "Aceptar",
             background: true,

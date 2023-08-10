@@ -62,7 +62,7 @@ IFormStepsProp) => {
               <div key={infoSteb.position}>
                 <div
                   className={`steb-option ${
-                    infoSteb.position === step || step > infoSteb.position
+                    infoSteb.position === step 
                       ? "active"
                       : ""
                   }`}
@@ -92,7 +92,7 @@ IFormStepsProp) => {
                         value={
                           step == 0 && action != "new" ? "Regresar" : "Anterior"
                         }
-                        className={`${"button-tab_save hover-three big"}`}
+                        className={`${"button-save big"}`}
                         action={() => {
                           if (step == 0) {
                             navigate('/')
@@ -107,8 +107,8 @@ IFormStepsProp) => {
                       value={step === stepsAmount ? "Guardar" : "Siguiente"}
                       className={`${
                         validForm
-                          ? "button-tab_save hover-three big"
-                          : "button-tab_save invalid big"
+                          ? "button-save big"
+                          : "button-save  invalid big"
                       } ${
                         step === stepsAmount && action === "view"
                           ? "disabled"

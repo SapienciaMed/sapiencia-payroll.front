@@ -51,7 +51,7 @@ export function SelectComponent({
   emptyMessage = "Sin resultados.",
 }: ISelectProps<any>): React.JSX.Element {
   if (data) {
-    const seleccione: IDropdownProps = { name: "Seleccione", value: null };
+    const seleccione: IDropdownProps = { name: "Seleccione", value: -1 };
     const dataSelect = data.find(
       (item) => item.name === seleccione.name && item.value === seleccione.value
     );

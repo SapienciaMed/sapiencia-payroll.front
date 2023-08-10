@@ -128,13 +128,13 @@ export default function useEmploymentsData() {
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
-        navigate("/");
+        navigate("../expedientes/");
         setMessage((prev) => {
           return { ...prev, show: false };
         });
       },
       onClose: () => {
-        navigate("/");
+        navigate("../expedientes/");
         setMessage({});
       },
       background: true,
@@ -482,7 +482,7 @@ export default function useEmploymentsData() {
       .catch((err) => {
         setMessage({
           type: EResponseCodes.FAIL,
-          title: "Error al registrar la vinculacion.",
+          title: "Error al registrar la vinculación.",
           description:
             "Se ha presentado un error, por favor vuelve a intentarlo.",
           show: true,

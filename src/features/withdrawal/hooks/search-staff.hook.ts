@@ -35,6 +35,8 @@ export default function useSearchStaff() {
 
     if (responseEmployment.operation.code === EResponseCodes.OK) {
       setDataEmployment(responseEmployment.data);
+    } else {
+      setDataEmployment([]);
     }
   });
 

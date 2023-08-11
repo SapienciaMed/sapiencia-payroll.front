@@ -49,7 +49,7 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
       title: `Error al ${
         action !== "new" ? "editar" : "crear"
       } la incapacidad.`,
-      description: `${message}, vuelve a intentarlo`,
+      description: `${message || "Error"}, vuelve a intentarlo`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -147,5 +147,7 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     showDays,
     navigate,
     disabledFields,
+    startDate,
+    endDate,
   };
 }

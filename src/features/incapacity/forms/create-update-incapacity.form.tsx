@@ -31,7 +31,11 @@ export const CreateUpdateIncapacityForm = ({
     showDays,
     navigate,
     disabledFields,
+    startDate,
+    endDate,
   } = useCreateAndUpdateIncapacityHook(action);
+
+  console.log(endDate);
 
   return (
     <>
@@ -108,7 +112,7 @@ export const CreateUpdateIncapacityForm = ({
                 // disabled={disabledFields}
                 placeholder="DD/MM/YYYY"
                 dateFormat="dd/mm/yy"
-                maxDate={new Date()}
+                maxDate={!endDate ? new Date() : new Date(endDate)}
               />
               <DatePickerComponent
                 idInput={"dateFinish"}
@@ -124,7 +128,7 @@ export const CreateUpdateIncapacityForm = ({
                 className="dataPicker-basic  medium "
                 placeholder="DD/MM/YYYY"
                 dateFormat="dd/mm/yy"
-                maxDate={new Date()}
+                minDate={new Date(startDate)}
               />
 
               <InputComponent

@@ -108,7 +108,8 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
 
   const showDays = () => {
     if (startDate && endDate) {
-      return calculateDifferenceDays(startDate, endDate);
+      const days = calculateDifferenceDays(startDate, endDate);
+      return days == 0 ? "1" : days;
     } else {
       return "0";
     }

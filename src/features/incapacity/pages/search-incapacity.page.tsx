@@ -146,6 +146,7 @@ const SearchIncapacity = () => {
             columns={tableColumns}
             actions={tableActions}
             isShowModal={true}
+            titleMessageModalNoResult="Sin resultados."
           />
         </div>
       </div>

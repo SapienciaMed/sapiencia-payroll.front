@@ -35,8 +35,6 @@ export const CreateUpdateIncapacityForm = ({
     endDate,
   } = useCreateAndUpdateIncapacityHook(action);
 
-  console.log(endDate);
-
   return (
     <>
       <FormComponent className="form-signIn" action={onSubmit}>

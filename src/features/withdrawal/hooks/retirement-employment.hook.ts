@@ -33,6 +33,7 @@ export default function useRetirementEmployment(
       idReasonRetirement: "",
       observation: "",
       retirementDate: "",
+      state: "0",
       idEmployment: null,
     },
     resolver,

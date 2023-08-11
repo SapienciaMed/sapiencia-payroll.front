@@ -28,6 +28,8 @@ export const WithDrawalStaffPage = () => {
     errorRetirementEmployment,
   } = useRetirementEmployment(dataEmployment, clearDataEmployment);
 
+  console.log(dataEmployment);
+
   return (
     <>
       <div className="container-sections-forms m-24px">

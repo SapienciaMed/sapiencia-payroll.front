@@ -10,6 +10,7 @@ import WorkerRoutes from "./features/worker/worker-routes";
 import VacationRoutes from "./features/vacation/vacation-routes";
 import IncapacityRoutes from "./features/incapacity/incapacity-routes";
 import WithDrawalRoutes from "./features/withdrawal/wirhdrawal-routes";
+import LicencesRoutes from "./features/Licences/licences-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
@@ -44,6 +45,10 @@ function App() {
               <Route
                 path={"/nomina/incapacidades/*"}
                 element={<IncapacityRoutes />}
+              />
+              <Route
+                path={"/nomina/licencias/*"}
+                element={<LicencesRoutes />}
               />
               <Route path={"/nomina/retiro/*"} element={<WithDrawalRoutes />} />
             </Routes>

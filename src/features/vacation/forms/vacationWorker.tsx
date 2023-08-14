@@ -359,7 +359,7 @@ const SearchWorker = () => {
               disabledDays={[0, 6]}
               minDate={startVacation}
               maxDate={addBusinessDays(
-                startVacation ? startVacation : new Date(),
+                startVacation ?? new Date(),
                 vacation
                   ? vacation?.available
                     ? Number(vacation?.available) +

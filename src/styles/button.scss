@@ -271,7 +271,7 @@
 
 .button-clean{
   @include generate-button(0, $color-black, transparent, transparent solid 1px);
-  font-size: 1em;
+  font-size: 1.3em;
   margin: 0.2em;
 
   &.hover-main:hover {

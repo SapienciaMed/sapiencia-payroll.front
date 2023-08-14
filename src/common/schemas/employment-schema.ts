@@ -130,3 +130,17 @@ export const createAndUpdateIncapacity = yup.object({
     .typeError("Fecha invalida"),
   // comments: yup.string().required("El campo es obligatorio"),
 });
+
+export const createLicence = yup.object({
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  codIncapacityType: yup.string().required("El campo es obligatorio"),
+  dateInitial: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  dateFinish: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  // comments: yup.string().required("El campo es obligatorio"),
+});

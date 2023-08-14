@@ -330,4 +330,15 @@ export interface IEditVacation {
   pendingTotalDays?: number;
 }
 
+export interface ILicence {
+  id?: number;
+  codEmployment: number;
+  idLicenceType?: number;
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  totalDays?: number;
+  licenceState: string;
+  resolutionNumber: string;
+  observation?: string;
+}
 

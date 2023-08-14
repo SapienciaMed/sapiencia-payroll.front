@@ -92,6 +92,12 @@
     font-size: 1rem;
   }
 
+  &.extra_large {
+    width: 9.5em;
+    height: 2.5em;
+    font-size: 1rem;
+  }
+
   &.hover-main:hover {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
     -moz-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
@@ -269,7 +275,7 @@
   }
 }
 
-.button-clean{
+.button-clean {
   @include generate-button(0, $color-black, transparent, transparent solid 1px);
   font-size: 1.3em;
   margin: 0.2em;
@@ -329,7 +335,7 @@
     font-size: 1rem;
   }
 
-  &.disabled{
+  &.disabled {
     display: none;
   }
 

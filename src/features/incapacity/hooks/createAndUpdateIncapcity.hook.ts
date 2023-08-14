@@ -49,7 +49,7 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
       title: `Error al ${
         action !== "new" ? "editar" : "crear"
       } la incapacidad.`,
-      description: `${message}, vuelve a intentarlo`,
+      description: `${message || "Error"}, vuelve a intentarlo`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -108,7 +108,8 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
 
   const showDays = () => {
     if (startDate && endDate) {
-      return calculateDifferenceDays(startDate, endDate);
+      const days = calculateDifferenceDays(startDate, endDate);
+      return days == 0 ? "1" : days;
     } else {
       return "0";
     }
@@ -147,5 +148,7 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     showDays,
     navigate,
     disabledFields,
+    startDate,
+    endDate,
   };
 }

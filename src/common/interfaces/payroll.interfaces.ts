@@ -13,6 +13,7 @@ export interface IEmployment {
   salary?: number;
   totalValue?: number;
   idReasonRetirement: string;
+  retirementDate?: DateTime;
   charges?: ICharge[];
   typesContracts?: ITypesContracts[];
 }
@@ -211,7 +212,7 @@ export interface IWorkersVacationDetail {
   periodFormer: string;
   enjoyed: string;
   available: number;
-  refund?:number;
+  refund?: number;
   days: string;
   periodClosed: boolean;
   employment?: IEmploymentResult;
@@ -341,4 +342,15 @@ export interface ILicence {
   resolutionNumber: string;
   observation?: string;
 }
+export interface IReasonsForWithdrawal {
+  id: number;
+  name: string;
+}
 
+export interface IRetirementEmployment {
+  idReasonRetirement: string;
+  retirementDate: DateTime;
+  observation: string;
+  idEmployment: number;
+  state: string;
+}

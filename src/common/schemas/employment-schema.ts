@@ -142,5 +142,21 @@ export const createLicence = yup.object({
     .date()
     .required("El campo es obligatorio")
     .typeError("Fecha invalida"),
+})
   // comments: yup.string().required("El campo es obligatorio"),
+export const searchStaff = yup.object({
+  workerId: yup.string().required("El campo es obligatorio"),
+});
+
+export const retirementEmploymentSchema = yup.object({
+  idReasonRetirement: yup.string().required("El campo es obligatorio"),
+  retirementDate: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  observation: yup
+    .string()
+    .required("El campo es obligatorio")
+    .min(3, "Ingrese al menos 3 caracteres")
+    .max(1000, "Solo se permiten 1000 caracteres"),
 });

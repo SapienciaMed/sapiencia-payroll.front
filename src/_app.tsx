@@ -9,7 +9,7 @@ import ApplicationProvider from "./application-provider";
 import WorkerRoutes from "./features/worker/worker-routes";
 import VacationRoutes from "./features/vacation/vacation-routes";
 import IncapacityRoutes from "./features/incapacity/incapacity-routes";
-import WithDrawalRoutes from "./features/withdrawal/wirhdrawal-routes";
+import WithDrawalRoutes from "./features/withdrawal/withdrawal-routes";
 import LicencesRoutes from "./features/Licences/licences-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 

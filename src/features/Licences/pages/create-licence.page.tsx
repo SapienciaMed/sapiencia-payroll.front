@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    ButtonComponent,
+  ButtonComponent,
   DatePickerComponent,
   FormComponent,
   InputComponent,
@@ -8,52 +8,57 @@ import {
   TextAreaComponent,
 } from "../../../common/components/Form";
 import { Controller, useForm } from "react-hook-form";
-import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { ILicence } from "../../../common/interfaces/payroll.interfaces";
-import { createLicence } from "../../../common/schemas";
+import useLicenceData from "../hooks/licence.hook";
 
 const CreateLicencePage = () => {
-  const resolver = useYupValidationResolver(createLicence);
   const {
-    handleSubmit,
+    handleCreateLicence,
     register,
-    formState: { errors },
+    errors,
     control,
-    setValue: setValueRegister,
+    setValueRegister,
     watch,
-  } = useForm<ILicence>({ resolver });
+    activeWorkerList,
+    licenceTypesList,
+    licenceDays,
+    listLicencesStates,
+    dateStart
+  } = useLicenceData();
+
   return (
     <>
       <div className="container-sections-forms m-24px">
-        <h1>Crear  Licencias</h1>
+        <h1>Crear Licencias</h1>
         <FormComponent
           id="createVacationForm"
           className="form-signIn"
-          action={alert("hola")}
+          action={handleCreateLicence}
         >
           <div className="grid-form-3-container gap-25 container-sections-forms m-24px">
             <h2 className="grid-span-3-columns">Información del empleado</h2>
-            <div className="grid-span-2-columns"><SelectComponent
-              idInput={"codEmployment"}
-              control={control}
-              errors={errors}
-              data={[]}
-              label={
-                <>
-                  Documento - Nombre empleado <span>*</span>
-                </>
-              }
-              className="select-basic medium "
-              classNameLabel="text-black big bold"
-              placeholder="Seleccione"
-              filter={true}
-            /></div>
-            
+            <div className="grid-span-2-columns">
+              <SelectComponent
+                idInput={"codEmployment"}
+                control={control}
+                errors={errors}
+                data={activeWorkerList}
+                label={
+                  <>
+                    Documento - Nombre empleado <span>*</span>
+                  </>
+                }
+                className="select-basic medium "
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione"
+                filter={true}
+              />
+            </div>
+
             <SelectComponent
               idInput={"idLicenceType"}
               control={control}
               errors={errors}
-              data={[]}
+              data={licenceTypesList}
               label={
                 <>
                   Tipo de licencias <span>*</span>
@@ -96,6 +101,7 @@ const CreateLicencePage = () => {
               placeholder="DD/MM/YYYY"
               dateFormat="dd/mm/yy"
               disabledDays={[0, 6]}
+              minDate={dateStart}
             />
             <Controller
               control={control}
@@ -121,7 +127,7 @@ const CreateLicencePage = () => {
               idInput={"licenceState"}
               control={control}
               errors={errors}
-              data={[]}
+              data={listLicencesStates}
               label={
                 <>
                   Estado <span>*</span>
@@ -131,29 +137,20 @@ const CreateLicencePage = () => {
               classNameLabel="text-black big bold"
               placeholder="Seleccione"
             />
-            <Controller
-              control={control}
-              name={"resolutionNumber"}
-              defaultValue={""}
-              render={({ field }) => {
-                return (
-                  <InputComponent
-                    id={field.name}
-                    idInput={field.name}
-                    value={`${field.value}`}
-                    className="input-basic medium"
-                    typeInput="text"
-                    classNameLabel="text-black big bold"
-                    label={
-                      <>
-                        Número de resolución <span>*</span>
-                      </>
-                    }
-                    register={register}
-                  />
-                );
-              }}
+
+            <InputComponent
+              idInput={"resolutionNumber"}
+              className="input-basic medium"
+              typeInput="text"
+              classNameLabel="text-black big bold"
+              label={
+                <>
+                  Número de resolución <span>*</span>
+                </>
+              }
+              register={register}
             />
+
             <div className=" grid-span-3-columns">
               <TextAreaComponent
                 idInput={"observation"}
@@ -168,19 +165,18 @@ const CreateLicencePage = () => {
             </div>
           </div>
           <div className="button-save-container-display mr-24px ">
-        <ButtonComponent
-          value={"Cancelar"}
-          type="button"
-          className="button-clean bold"
-          
-        />
-        <ButtonComponent
-          value={"Guardar"}
-          type="submit"
-          form="createVacationForm"
-          className="button-save big disabled-black"
-        />
-      </div>
+            <ButtonComponent
+              value={"Cancelar"}
+              type="button"
+              className="button-clean bold"
+            />
+            <ButtonComponent
+              value={"Guardar"}
+              type="submit"
+              form="createVacationForm"
+              className="button-save big disabled-black"
+            />
+          </div>
         </FormComponent>
       </div>
     </>

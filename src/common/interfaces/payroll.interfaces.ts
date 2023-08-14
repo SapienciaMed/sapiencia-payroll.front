@@ -342,6 +342,12 @@ export interface ILicence {
   resolutionNumber: string;
   observation?: string;
 }
+export interface ILicenceType {
+  id?: number;
+  name: string;
+  numberDays: number;
+}
+
 export interface IReasonsForWithdrawal {
   id: number;
   name: string;

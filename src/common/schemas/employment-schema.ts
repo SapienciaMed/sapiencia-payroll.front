@@ -131,17 +131,14 @@ export const createAndUpdateIncapacity = yup.object({
   // comments: yup.string().required("El campo es obligatorio"),
 });
 
-export const createLicence = yup.object({
-  codEmployment: yup.string().required("El campo es obligatorio"),
-  codIncapacityType: yup.string().required("El campo es obligatorio"),
-  dateInitial: yup
-    .date()
-    .required("El campo es obligatorio")
-    .typeError("Fecha invalida"),
-  dateFinish: yup
-    .date()
-    .required("El campo es obligatorio")
-    .typeError("Fecha invalida"),
+export const createLicenceSchema = yup.object({
+   codEmployment: yup.string().required("El campo es obligatorio"),
+   idLicenceType: yup.string().required("El campo es obligatorio"),
+   dateStart: yup.string().required("El campo es obligatorio"),
+   dateEnd: yup.string().required("El campo es obligatorio"),
+   licenceState: yup.string().required("El campo es obligatorio"),
+   resolutionNumber:yup.string().required("El campo es obligatorio").max(50,"máximo 50 carácteres"),
+   observation: yup.string().optional().max(500, "máximo 500 carácteres"),
 })
   // comments: yup.string().required("El campo es obligatorio"),
 export const searchStaff = yup.object({

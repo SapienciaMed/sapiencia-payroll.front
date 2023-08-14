@@ -469,7 +469,7 @@ export default function useEmploymentsData() {
         } else {
           setMessage({
             type: EResponseCodes.FAIL,
-            title: "Error al registrar la vinculacion.",
+            title: "Error al registrar la vinculación.",
             description:
               "Se ha presentado un error, por favor vuelve a intentarlo.",
             show: true,
@@ -503,7 +503,7 @@ export default function useEmploymentsData() {
         } else {
           setMessage({
             type: EResponseCodes.FAIL,
-            title: "Error al editar la vinculacion.",
+            title: "Error al editar la vinculación.",
             description:
               "Se ha presentado un error, por favor vuelve a intentarlo.",
             show: true,
@@ -516,7 +516,7 @@ export default function useEmploymentsData() {
       .catch((err) => {
         setMessage({
           type: EResponseCodes.FAIL,
-          title: "Error al editar la vinculacion.",
+          title: "Error al editar la vinculación.",
           description:
             "Se ha presentado un error, por favor vuelve a intentarlo.",
           show: true,

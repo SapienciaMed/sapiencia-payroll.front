@@ -1,31 +1,22 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
-import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { Controller, Control } from "react-hook-form";
 import { Calendar } from "primereact/calendar";
 import { IoCalendarOutline } from "react-icons/io5";
-import { DateTime } from "luxon";
 
 interface IDateProps<T> {
-  id?: string;
   idInput: string;
-  register?: UseFormRegister<T>;
+  control: Control<any>;
+  dateFormat: string;
   className?: string;
   placeholder?: string;
-  value?: string | Date | Date[];
   label?: string | React.JSX.Element;
   classNameLabel?: string;
   direction?: EDirection;
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: any;
-  setValueRegister?: UseFormSetValue<T>;
-  setValue?: React.Dispatch<any>;
-  stateProps?: {
-    state: any;
-    setState: React.Dispatch<any>;
-  };
   disabled?: boolean;
-  onchange?: (e: string | Date | Date[]) => void;
   maxDate?: Date;
   minDate?: Date;
   fieldArray?: boolean;
@@ -42,95 +33,21 @@ function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
   );
 }
 
-function CalendarElement({
-  idInput,
-  id,
-  className,
-  placeholder,
-  value,
-  register,
-  setValueRegister,
-  setValue,
-  stateProps,
-  disabled,
-  onchange,
-  maxDate,
-  minDate,
-}: IDateProps<any>): React.JSX.Element {
-  const [date, setDate] = useState<DateTime>(value);
-  const registerProp = register ? register : () => {};
-
-  function calculateDifference(dateInit: string | Date) {
-    const currentDate = new Date();
-    const differenceInMilliseconds =
-      currentDate.getTime() - new Date(dateInit).getTime();
-    const differenceInYears =
-      differenceInMilliseconds / (24 * 60 * 60 * 1000 * 365);
-    return Math.floor(differenceInYears);
-  }
-
-  useEffect(() => {
-    const setValueRegisterProp = setValueRegister ? setValueRegister : () => {};
-    setValueRegisterProp(idInput, date);
-    if (setValue) {
-      setValue(calculateDifference(date as Date));
-    }
-    console.log(date);
-  }, [date]);
-  return (
-    <div {...registerProp(idInput)}>
-      <Calendar
-        id={id}
-        mask="99/99/9999"
-        dateFormat="dd/mm/yy"
-        name={idInput}
-        value={value}
-        onChange={(e) => {
-          if (onchange) {
-            onchange(e.value);
-            setDate(e.value);
-          } else {
-            setDate(e.value);
-          }
-        }}
-        placeholder={placeholder}
-        className={className}
-        showIcon
-        icon={
-          <span>
-            <IoCalendarOutline />
-          </span>
-        }
-        showButtonBar
-        disabled={disabled}
-        inputStyle={{ borderRight: "none" }}
-        maxDate={maxDate}
-        minDate={minDate}
-      />
-    </div>
-  );
-}
-
 export function DatePickerComponent({
-  id,
   idInput,
-  register,
-  setValueRegister,
   className = "dataPicker-basic",
   placeholder = "DD/MM/AAAA",
-  value,
   label,
   classNameLabel = "text-main",
   direction = EDirection.column,
   children,
   errors = {},
-  stateProps,
-  setValue,
-  disabled,
-  onchange,
   maxDate,
   minDate,
   fieldArray,
+  control,
+  dateFormat,
+  disabled,
 }: IDateProps<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");
@@ -148,6 +65,7 @@ export function DatePickerComponent({
       return errs?.message ?? null;
     }
   };
+
   return (
     <div
       className={
@@ -160,21 +78,33 @@ export function DatePickerComponent({
         classNameLabel={classNameLabel}
       />
       <div>
-        <CalendarElement
-          id={id}
-          idInput={idInput}
-          className={messageError() ? `${className} error` : className}
-          setValue={setValue}
-          placeholder={placeholder}
-          value={value}
-          register={register}
-          setValueRegister={setValueRegister}
-          stateProps={stateProps}
-          disabled={disabled}
-          onchange={onchange}
-          minDate={minDate}
-          maxDate={maxDate}
+        <Controller
+          name={idInput}
+          control={control}
+          render={({ field }) => (
+            <Calendar
+              id={field.name}
+              mask="99/99/9999"
+              dateFormat={dateFormat}
+              placeholder={placeholder}
+              className={`${className} ${messageError() ? "p-invalid" : ""}`}
+              showIcon
+              icon={
+                <span>
+                  <IoCalendarOutline />
+                </span>
+              }
+              showButtonBar
+              value={field.value && new Date(field.value)}
+              onChange={(e) => field.onChange(e.value)}
+              inputStyle={{ borderRight: "none" }}
+              minDate={minDate}
+              maxDate={maxDate}
+              disabled={disabled}
+            />
+          )}
         />
+
         {messageError() && <span className="icon-error"></span>}
       </div>
       {messageError() && (

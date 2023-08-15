@@ -22,6 +22,10 @@
   &.gap-25 {
     gap: 25px;
   }
+
+  &.p-3em {
+    padding: 3em;
+  }
 }
 
 .grid-form-5-container {
@@ -89,9 +93,17 @@
 
 .grid-form-2-container {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-gap: 0px 16px;
+  grid-template-columns: repeat(2, 1fr);
   align-items: stretch;
+  &.gap-15 {
+    gap: 15px;
+  }
+  &.gap-20 {
+    gap: 20px;
+  }
+  &.gap-25 {
+    gap: 25px;
+  }
 }
 
 @media (max-width: 920px) {

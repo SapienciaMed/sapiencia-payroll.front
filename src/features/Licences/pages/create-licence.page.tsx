@@ -8,7 +8,7 @@ import {
   TextAreaComponent,
 } from "../../../common/components/Form";
 import { Controller, useForm } from "react-hook-form";
-import useLicenceData from "../hooks/licence.hook";
+import useLicenceData from "../hooks/create-licence.hook";
 
 const CreateLicencePage = () => {
   const {
@@ -22,9 +22,11 @@ const CreateLicencePage = () => {
     licenceTypesList,
     licenceDays,
     listLicencesStates,
-    dateStart
+    dateStart,
+    sending,
+    isValid,
   } = useLicenceData();
-
+console.log(isValid)
   return (
     <>
       <div className="container-sections-forms m-24px">
@@ -141,6 +143,7 @@ const CreateLicencePage = () => {
             <InputComponent
               idInput={"resolutionNumber"}
               className="input-basic medium"
+              errors={errors}
               typeInput="text"
               classNameLabel="text-black big bold"
               label={
@@ -175,6 +178,7 @@ const CreateLicencePage = () => {
               type="submit"
               form="createVacationForm"
               className="button-save big disabled-black"
+              disabled={!isValid}
             />
           </div>
         </FormComponent>

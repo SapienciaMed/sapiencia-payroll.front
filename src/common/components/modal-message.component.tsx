@@ -28,7 +28,7 @@ function ModalMessageComponent(): React.JSX.Element {
           onClick={message.onCancel || closeModal}
         >
           {message.cancelTitle}
-          <img className="icons" src={cancelIcon} alt="Cancel" />
+          {/* <img className="icons" src={cancelIcon} alt="Cancel" /> */}
         </button>
       );
     }
@@ -43,7 +43,7 @@ function ModalMessageComponent(): React.JSX.Element {
           onClick={message.onOk || closeModal}
         >
           {message.OkTitle}
-          <img className="icons" src={okIcon} alt="OK" />
+          {/* <img className="icons" src={okIcon} alt="OK" /> */}
         </button>
       );
     }

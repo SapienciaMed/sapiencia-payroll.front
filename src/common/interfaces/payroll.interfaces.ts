@@ -348,6 +348,28 @@ export interface ILicenceType {
   numberDays: number;
 }
 
+export interface ILicenceFilters {
+  codEmployment?: number;
+  state?: string;
+  idLicenceType?: number;
+  page: number;
+  perPage: number;
+}
+
+export interface ILicenceResult {
+  id?: number;
+  codEmployment: number;
+  idLicenceType?: number;
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  totalDays?: number;
+  licenceState: string;
+  resolutionNumber: string;
+  observation?: string;
+  employment?: IEmploymentResult;
+  licenceType?:ILicenceType[];
+}
+
 export interface IReasonsForWithdrawal {
   id: number;
   name: string;

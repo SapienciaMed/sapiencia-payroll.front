@@ -20,7 +20,7 @@ export default function useLicenceData() {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors,isValid },
     control,
     setValue: setValueRegister,
     watch,
@@ -36,15 +36,23 @@ export default function useLicenceData() {
   const { setMessage, authorization } = useContext(AppContext);
 
   const [licenceTypesList, setLicenceTypesList] = useState([]);
-  const [licenceDays, setLicenceDays] = useState([]);
+  const [licenceDays, setLicenceDays] = useState<ILicenceType[]>([]);
   const [listLicencesStates, setListLicencesStates] = useState([]);
   const [sending, setSending] = useState(false);
 
-  const [dateEnd,dateStart] = watch(["dateEnd","dateStart"]);
+  const [dateEnd, dateStart, licenceType] = watch([
+    "dateEnd",
+    "dateStart",
+    "idLicenceType",
+  ]);
 
   useEffect(() => {
-    if (dateEnd > new Date()) setValueRegister("licenceState", "Finalizado");
-    else setValueRegister("licenceState", "En progreso");
+    const today = new Date(new Date().setHours(0, 0, 0, 0));
+    if (dateEnd < today) {
+      setValueRegister("licenceState", "Finalizado");
+    } else {
+      setValueRegister("licenceState", "En progreso");
+    }
   }, [dateEnd]);
   useEffect(() => {
     getLicenceTypesList()
@@ -78,6 +86,16 @@ export default function useLicenceData() {
       })
       .catch((e) => {});
   }, []);
+
+  useEffect(() => {
+    const totalDaysLicence = licenceDays.find(
+      (licence) => licence.id == licenceType
+    );
+    if(totalDaysLicence?.numberDays){
+      setValueRegister("totalDays",totalDaysLicence?.numberDays)
+    }
+    console.log(totalDaysLicence);
+  }, [licenceType]);
 
   const handleCreateLicence = handleSubmit(async (data: ILicence) => {
     setSending(true);
@@ -141,6 +159,8 @@ export default function useLicenceData() {
     licenceTypesList,
     licenceDays,
     listLicencesStates,
-    dateStart
+    dateStart,
+    sending,
+    isValid
   };
 }

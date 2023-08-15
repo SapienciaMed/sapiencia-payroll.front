@@ -1,5 +1,5 @@
 import { EResponseCodes } from "../constants/api.enum";
-import {  ILicence, ILicenceType } from "../interfaces/payroll.interfaces";
+import { ILicence, ILicenceType } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
 
@@ -21,10 +21,8 @@ export function useLicencesService() {
       );
     }
   }
-  
-  async function createLicence(
-    data: ILicence
-  ): Promise<ApiResponse<ILicence>> {
+
+  async function createLicence(data: ILicence): Promise<ApiResponse<ILicence>> {
     try {
       const endpoint: string = `/`;
       return await post(`${authUrl}${endpoint}`, data);
@@ -37,10 +35,23 @@ export function useLicencesService() {
     }
   }
 
+  async function getLicenceById(id: number): Promise<ApiResponse<ILicence[]>> {
+    try {
+      const endpoint: string = `/${id}`;
+      return await get(`${authUrl}${endpoint}/`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as ILicence[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
 
   return {
     createLicence,
-    getLicenceTypesList
+    getLicenceTypesList,
+    getLicenceById,
   };
 }
 

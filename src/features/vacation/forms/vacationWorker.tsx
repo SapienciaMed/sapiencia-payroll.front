@@ -57,8 +57,30 @@ const SearchWorker = () => {
     ]);
 
   useEffect(() => {
-    const days = calculateBusinessDays(startVacation, endVacation);
-    setValueRegister("totalDaysEnjoyed", Number(`${days ? days : 0}`));
+    if (!checkEnjoyedDays) {
+      setValueRegister("startDate", "");
+      setValueRegister("endDate", "");
+      setValueRegister("totalDaysEnjoyed", 0);
+    }
+
+    if (!checkCompensatoryDays) {
+      setValueRegister("startDateCompensatedDays", "");
+      setValueRegister("totalCompensatoryDays", 0);
+      setValueRegister("pendingDays", 0);
+    }
+  }, [checkEnjoyedDays, checkCompensatoryDays]);
+
+  useEffect(() => {
+    let daysFormated = 0;
+
+    if (startVacation && endVacation) {
+      const days = calculateBusinessDays(startVacation, endVacation);
+      daysFormated = days === 0 ? 1 : days;
+    } else {
+      daysFormated = 0;
+    }
+
+    setValueRegister("totalDaysEnjoyed", Number(`${daysFormated}`));
     if (compensatoryDays > vacation?.available - totalDaysEnjoyed) {
       setValueRegister("totalCompensatoryDays", 0);
     }
@@ -127,8 +149,8 @@ const SearchWorker = () => {
 
   const handleModal = () => {
     setMessage({
-      title: "Se va cancelar el perido de vaciones",
-      description: `Estas seguro de cancelar`,
+      title: "Cancelar periodo de vacaciones",
+      description: `¿Segur@ que deseas cancelar el periodo de vacaciones?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -213,13 +235,13 @@ const SearchWorker = () => {
             show: true,
             OkTitle: "Aceptar",
             onClose() {
-              navigate("../");
+              navigate("../consultar");
               setMessage((prev) => {
                 return { ...prev, show: false };
               });
             },
             onOk() {
-              navigate("../");
+              navigate("../consultar");
               setMessage((prev) => {
                 return { ...prev, show: false };
               });

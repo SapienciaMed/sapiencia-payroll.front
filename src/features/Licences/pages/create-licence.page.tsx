@@ -168,7 +168,7 @@ console.log(isValid)
                 errors={errors}
                 rows={5}
               />
-              <div><span>Max.{500}carácteres</span></div>
+              <div className="text-right"><span className="text-span ">Max. {500} carácteres</span></div>
             </div>
           </div>
           <div className="button-save-container-display mr-24px ">

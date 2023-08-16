@@ -25,17 +25,18 @@ export function calculateDifferenceDays(
   export function calculateBusinessDays(startDate, endDate, holidays = []) {
     const start = new Date(startDate);
     const end = new Date(endDate);
-    
+  
     const oneDay = 24 * 60 * 60 * 1000;
     let businessDays = 0;
   
-    while (start < end) {
+    // Incluye el último día en el cálculo si es hábil y no es festivo
+    while (start <= end) {
       if (isBusinessDay(start) && !holidays.some((holiday) => isSameDay(holiday, start))) {
         businessDays++;
       }
       start.setTime(start.getTime() + oneDay);
     }
-    
+  
     return businessDays;
   }
   
@@ -82,11 +83,6 @@ export function addBusinessDays(startDate, daysToAdd, holidays = []) {
   const oneDay = 24 * 60 * 60 * 1000; // Un día en milisegundos
   let currentDate = new Date(startDate);
 
-  // const isWeekend = (date) => {
-  //   const dayOfWeek = date.getDay();
-  //   return dayOfWeek === 0 || dayOfWeek === 6; // 0: Domingo, 6: Sábado
-  // };
-
   const isHoliday = (date) => {
     const formattedDate = date.toISOString().slice(0, 10); // Formatear fecha como 'AAAA-MM-DD'
     return holidays.includes(formattedDate);
@@ -95,14 +91,14 @@ export function addBusinessDays(startDate, daysToAdd, holidays = []) {
   let daysAdded = 0;
 
   while (daysAdded < daysToAdd) {
-    currentDate.setTime(currentDate.getTime() + oneDay);
     if (isBusinessDay(currentDate) && !isHoliday(currentDate)) {
       daysAdded++;
     }
+    currentDate.setTime(currentDate.getTime() + oneDay);
   }
 
   return currentDate;
-};
+}
 
 export function removeEmptySpace(phrase:string){
   if (!phrase){

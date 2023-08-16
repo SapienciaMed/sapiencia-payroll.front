@@ -309,6 +309,7 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
         <DataView
           value={resultData?.array || []}
           itemTemplate={mobilTemplate}
+          emptyMessage={emptyMessage}
           rows={5}
         />
       )}

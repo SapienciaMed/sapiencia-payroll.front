@@ -31,6 +31,7 @@ const SearchLicencePage = () => {
             action={onSubmit}
           >
             <div className="container-sections-forms">
+              <h2 className="grid-span-3-columns">Búsqueda de empleado</h2>
               <div className="grid-form-3-container gap-25">
                 <div className="grid-span-2-columns">
                 <SelectComponent

@@ -9,6 +9,7 @@ import {
 } from "../../../common/components/Form";
 import { Controller, useForm } from "react-hook-form";
 import useLicenceData from "../hooks/create-licence.hook";
+import { addBusinessDays } from "../../../common/utils/helpers";
 
 const CreateLicencePage = () => {
   const {
@@ -25,6 +26,8 @@ const CreateLicencePage = () => {
     dateStart,
     sending,
     isValid,
+    numberDays,
+    typeDays
   } = useLicenceData();
 console.log(isValid)
   return (
@@ -86,7 +89,7 @@ console.log(isValid)
               disabled={false}
               placeholder="DD/MM/YYYY"
               dateFormat="dd/mm/yy"
-              disabledDays={[0, 6]}
+              disabledDays={typeDays == "Habil" ? [0, 6] : []}
             />
             <DatePickerComponent
               idInput={"dateEnd"}
@@ -102,8 +105,9 @@ console.log(isValid)
               disabled={false}
               placeholder="DD/MM/YYYY"
               dateFormat="dd/mm/yy"
-              disabledDays={[0, 6]}
+              disabledDays={typeDays == "Habil" ? [0, 6] : []}
               minDate={dateStart}
+              maxDate={numberDays !=0 ? addBusinessDays(dateStart,numberDays) : new Date('99/99/9999') }
             />
             <Controller
               control={control}
@@ -138,6 +142,7 @@ console.log(isValid)
               className="select-basic medium"
               classNameLabel="text-black big bold"
               placeholder="Seleccione"
+              disabled={true}
             />
 
             <InputComponent

@@ -14,13 +14,17 @@ import { useGenericListService } from "../../../common/hooks/generic-list-servic
 import { IGenericList } from "../../../common/interfaces/global.interface";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../../common/contexts/app.context";
+import {
+  calculateBusinessDays,
+  calculateDifferenceDays,
+} from "../../../common/utils/helpers";
 
 export default function useLicenceData() {
   const resolver = useYupValidationResolver(createLicenceSchema);
   const {
     handleSubmit,
     register,
-    formState: { errors,isValid },
+    formState: { errors, isValid },
     control,
     setValue: setValueRegister,
     watch,
@@ -38,6 +42,8 @@ export default function useLicenceData() {
   const [licenceTypesList, setLicenceTypesList] = useState([]);
   const [licenceDays, setLicenceDays] = useState<ILicenceType[]>([]);
   const [listLicencesStates, setListLicencesStates] = useState([]);
+  const [numberDays, setNumberDays] = useState<number>(0);
+  const [typeDays, setTypeDays] = useState<string>("");
   const [sending, setSending] = useState(false);
 
   const [dateEnd, dateStart, licenceType] = watch([
@@ -48,12 +54,23 @@ export default function useLicenceData() {
 
   useEffect(() => {
     const today = new Date(new Date().setHours(0, 0, 0, 0));
-    if (dateEnd < today) {
+    if ((dateEnd ?? new Date("00/00/0000")) < today) {
       setValueRegister("licenceState", "Finalizado");
     } else {
       setValueRegister("licenceState", "En progreso");
     }
+    if (dateStart && dateEnd)
+      setValueRegister(
+        "totalDays",
+        typeDays == "Calendario"
+          ? calculateDifferenceDays(dateStart, dateEnd)
+          : calculateBusinessDays(dateStart, dateEnd)
+      );
   }, [dateEnd]);
+  useEffect(() => {
+    setValueRegister("dateEnd", null);
+  }, [dateStart]);
+
   useEffect(() => {
     getLicenceTypesList()
       .then((response: ApiResponse<ILicenceType[]>) => {
@@ -88,13 +105,19 @@ export default function useLicenceData() {
   }, []);
 
   useEffect(() => {
+    setValueRegister("dateStart", null);
+    setValueRegister("dateEnd", null);
+    setValueRegister("licenceState", "En progreso");
     const totalDaysLicence = licenceDays.find(
       (licence) => licence.id == licenceType
     );
-    if(totalDaysLicence?.numberDays){
-      setValueRegister("totalDays",totalDaysLicence?.numberDays)
+    if (totalDaysLicence?.numberDays) {
+      setNumberDays(totalDaysLicence?.numberDays);
+      setTypeDays(totalDaysLicence?.daysType);
+    } else {
+      setNumberDays(0);
+      setTypeDays(totalDaysLicence?.daysType);
     }
-    console.log(totalDaysLicence);
   }, [licenceType]);
 
   const handleCreateLicence = handleSubmit(async (data: ILicence) => {
@@ -161,6 +184,8 @@ export default function useLicenceData() {
     listLicencesStates,
     dateStart,
     sending,
-    isValid
+    isValid,
+    numberDays,
+    typeDays,
   };
 }

@@ -13,15 +13,13 @@ import { addBusinessDays } from "../../../common/utils/helpers";
 
 const CreateLicencePage = () => {
   const {
-    handleCreateLicence,
+    handleModalCreate,
+    handleModalCancel,
     register,
     errors,
     control,
-    setValueRegister,
-    watch,
     activeWorkerList,
     licenceTypesList,
-    licenceDays,
     listLicencesStates,
     dateStart,
     sending,
@@ -37,7 +35,7 @@ console.log(isValid)
         <FormComponent
           id="createVacationForm"
           className="form-signIn"
-          action={handleCreateLicence}
+          action={handleModalCreate}
         >
           <div className="grid-form-3-container gap-25 container-sections-forms m-24px">
             <h2 className="grid-span-3-columns">Información del empleado</h2>
@@ -170,6 +168,7 @@ console.log(isValid)
                 errors={errors}
                 rows={5}
               />
+              <div><span>Max.{500}carácteres</span></div>
             </div>
           </div>
           <div className="button-save-container-display mr-24px ">
@@ -177,13 +176,14 @@ console.log(isValid)
               value={"Cancelar"}
               type="button"
               className="button-clean bold"
+              action={handleModalCancel}
+              disabled={sending}
             />
             <ButtonComponent
               value={"Guardar"}
-              type="submit"
               form="createVacationForm"
               className="button-save big disabled-black"
-              disabled={!isValid}
+              disabled={!isValid || sending}
             />
           </div>
         </FormComponent>

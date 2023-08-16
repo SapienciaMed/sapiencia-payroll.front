@@ -342,7 +342,7 @@ export interface ILicence {
   resolutionNumber: string;
   observation?: string;
   licenceType: ILicenceType[];
-  employment: IEmploymentWorker[];
+  employment: IEmploymentWorker;
 }
 export interface ILicenceType {
   id?: number;

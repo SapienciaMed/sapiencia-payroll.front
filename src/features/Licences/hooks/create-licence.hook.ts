@@ -37,7 +37,7 @@ export default function useLicenceData() {
   const { createLicence, getLicenceTypesList } = useLicencesService();
   const { getListByGrouper } = useGenericListService();
   const navigate = useNavigate();
-  const { setMessage, authorization } = useContext(AppContext);
+  const { setMessage } = useContext(AppContext);
 
   const [licenceTypesList, setLicenceTypesList] = useState([]);
   const [licenceDays, setLicenceDays] = useState<ILicenceType[]>([]);
@@ -49,7 +49,7 @@ export default function useLicenceData() {
   const [dateEnd, dateStart, licenceType] = watch([
     "dateEnd",
     "dateStart",
-    "idLicenceType",
+    "idLicenceType"
   ]);
 
   useEffect(() => {
@@ -120,14 +120,56 @@ export default function useLicenceData() {
     }
   }, [licenceType]);
 
-  const handleCreateLicence = handleSubmit(async (data: ILicence) => {
+  const handleModalCreate = handleSubmit(async (data: ILicence) => {
+    setMessage({
+      title: "Crear licencia",
+      description: `¿Está segur@ de crear esta licencia?`,
+      show: true,
+      OkTitle: "Aceptar",
+      onOk: () => {
+        handleCreateLicence(data);
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      cancelTitle: "Cancelar",
+      background: true,
+    });
+  });
+
+  const handleModalCancel = () => {
+    setMessage({
+      title: "Cancelar",
+      description: `¿Está segur@ que desea 
+      cancelar la licencia?`,
+      show: true,
+      OkTitle: "Aceptar",
+      onOk: () => {
+        navigate("../consultar");
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      cancelTitle: "Cancelar",
+      background: true,
+    });
+  };
+
+  const handleCreateLicence = async (data: ILicence) => {
+    const dataformated = {
+      ...data,
+      dateEnd: new Date(dateEnd).toISOString(),
+      dateStart: new Date(dateStart).toISOString(),
+    };
+
+    console.log(dataformated);
     setSending(true);
-    await createLicence(data)
+    await createLicence(dataformated)
       .then((response: ApiResponse<ILicence>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           setMessage({
-            title: "Vincular Trabajador",
-            description: `Trabajador con exito`,
+            title: "Licencia creada",
+            description: `¡Se creó licencia exitosamente!`,
             show: true,
             OkTitle: "Aceptar",
             onOk: () => {
@@ -146,7 +188,7 @@ export default function useLicenceData() {
         } else {
           setMessage({
             type: EResponseCodes.FAIL,
-            title: "Error al registrar la vinculación.",
+            title: "Error al registrar la licencia.",
             description:
               "Se ha presentado un error, por favor vuelve a intentarlo.",
             show: true,
@@ -159,7 +201,7 @@ export default function useLicenceData() {
       .catch((err) => {
         setMessage({
           type: EResponseCodes.FAIL,
-          title: "Error al registrar la vinculación.",
+          title: "Error al registrar la licencia.",
           description:
             "Se ha presentado un error, por favor vuelve a intentarlo.",
           show: true,
@@ -168,11 +210,13 @@ export default function useLicenceData() {
         });
         setSending(false);
       });
-  });
+  };
 
   return {
     handleSubmit,
     handleCreateLicence,
+    handleModalCreate,
+    handleModalCancel,
     register,
     errors,
     control,

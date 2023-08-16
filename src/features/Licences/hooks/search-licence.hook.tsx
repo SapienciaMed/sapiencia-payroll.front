@@ -36,18 +36,18 @@ export default function useSearchLicenceData() {
       const dataResolution: DataItem[] = [
         {
           title: "Resolución No.",
-          value: "XX del 31 de julio de 2023",
+          value: `${data[0].resolutionNumber}`,
         },
       ];
 
       const dataInformation: DataItem[] = [
         {
           title: "Tipo y # documento",
-          value: `${data[0].employment[0].worker.typeDocument} ${data[0].employment[0].worker.numberDocument}`,
+          value: `${data[0].employment.worker.typeDocument} ${data[0].employment.worker.numberDocument}`,
         },
         {
           title: "Nombre empleado",
-          value: `${data[0].employment[0].worker.firstName} ${data[0].employment[0].worker.secondName} ${data[0].employment[0].worker.firstName}`,
+          value: `${data[0].employment.worker.firstName} ${data[0].employment.worker.secondName} ${data[0].employment.worker.firstName}`,
         },
 
         {

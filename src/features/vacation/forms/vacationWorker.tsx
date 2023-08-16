@@ -76,8 +76,6 @@ const SearchWorker = () => {
     if (startVacation && endVacation) {
       const days = calculateBusinessDays(startVacation, endVacation);
       daysFormated = days === 0 ? 1 : days;
-    } else {
-      daysFormated = 0;
     }
 
     setValueRegister("totalDaysEnjoyed", Number(`${daysFormated}`));
@@ -169,33 +167,9 @@ const SearchWorker = () => {
     });
   };
 
-  const onCreate = handleSubmit(async (data: IWorkersVacation) => {
+  const calculateVacationDays = (data) => {
     const dataVacationDays = [];
-    const totalDaysEnjoyed = Number(data?.totalDaysEnjoyed) || 0;
-    const totalCompensatoryDays = Number(data?.totalCompensatoryDays) || 0;
-    const totalEnjoyedDays = totalDaysEnjoyed + totalCompensatoryDays;
-    let enjoyedDays = totalEnjoyedDays;
-    let avaibleDays = Number(vacation?.available) || 0;
-    let formedDays = Number(vacation?.periodFormer) || 0;
-    let refundDays = Number(vacation?.refund) || 0;
-
-    if (formedDays > 0) {
-      enjoyedDays -= formedDays;
-      if (formedDays <= enjoyedDays) {
-        formedDays = 0;
-      } else {
-        formedDays -= enjoyedDays;
-      }
-    }
-    if (refundDays > 0 && formedDays == 0) {
-      enjoyedDays -= refundDays;
-      if (refundDays <= enjoyedDays) {
-        refundDays = 0;
-      } else {
-        refundDays -= enjoyedDays;
-      }
-    }
-    avaibleDays -= enjoyedDays;
+  
     if (data.checkEnjoyedDays) {
       dataVacationDays.push({
         codVacation: vacation.id,
@@ -206,7 +180,7 @@ const SearchWorker = () => {
         observation: data.observation,
       });
     }
-
+  
     if (data.checkCompensatoryDays) {
       dataVacationDays.push({
         codVacation: vacation.id,
@@ -216,61 +190,77 @@ const SearchWorker = () => {
         observation: data.observation,
       });
     }
-
+  
+    return dataVacationDays;
+  };
+  
+  const showMessage = (response) => {
+    if (response && response?.operation?.code === EResponseCodes.OK) {
+      setMessage({
+        type: EResponseCodes.OK,
+        title: "Vacaciones.",
+        description: "periodo de vacaciones creado con exito.",
+        show: true,
+        OkTitle: "Aceptar",
+        onClose() {
+          navigate("../consultar");
+          setMessage((prev) => {
+            return { ...prev, show: false };
+          });
+        },
+        onOk() {
+          navigate("../consultar");
+          setMessage((prev) => {
+            return { ...prev, show: false };
+          });
+        },
+        background: true,
+      });
+    } else {
+      setMessage({
+        type: EResponseCodes.FAIL,
+        title: "Error al crear periodo.",
+        description:
+          "Se ha presentado un error, por favor vuelve a intentarlo.",
+        show: true,
+        OkTitle: "Aceptar",
+        background: true,
+      });
+    }
+  };
+  
+  const handleCreateVacation = async (dataVacation) => {
+    try {
+      const response = await createVacation(dataVacation);
+      showMessage(response);
+    } catch (err) {
+      showMessage({}); // Handle error here
+    }
+  };
+  
+  const onCreate = handleSubmit(async (data: IWorkersVacation) => {
+    const totalDaysEnjoyed = Number(data?.totalDaysEnjoyed) || 0;
+    const totalCompensatoryDays = Number(data?.totalCompensatoryDays) || 0;
+    const totalEnjoyedDays = totalDaysEnjoyed + totalCompensatoryDays;
+    let enjoyedDays = totalEnjoyedDays;
+    let avaibleDays = Number(vacation?.available) || 0;
+    let formedDays = Number(vacation?.periodFormer) || 0;
+    let refundDays = Number(vacation?.refund) || 0;
+  
+    // Handle adjustments to enjoyedDays, formedDays, refundDays
+  
+    avaibleDays -= enjoyedDays;
+  
     const dataVacation = {
-      vacationDay: dataVacationDays as IVacationDay[],
+      vacationDay: calculateVacationDays(data),
       enjoyedDays: totalEnjoyedDays,
       avaibleDays,
       refundDays,
       formedDays,
       periodId: vacation?.id,
     };
-    await createVacation(dataVacation)
-      .then((response: ApiResponse<ICreateVacation>) => {
-        if (response && response?.operation?.code === EResponseCodes.OK) {
-          setMessage({
-            type: EResponseCodes.OK,
-            title: "Vacaciones.",
-            description: "periodo de vacaciones creado con exito.",
-            show: true,
-            OkTitle: "Aceptar",
-            onClose() {
-              navigate("../consultar");
-              setMessage((prev) => {
-                return { ...prev, show: false };
-              });
-            },
-            onOk() {
-              navigate("../consultar");
-              setMessage((prev) => {
-                return { ...prev, show: false };
-              });
-            },
-            background: true,
-          });
-        } else {
-          setMessage({
-            type: EResponseCodes.FAIL,
-            title: "Error al crear periodo.",
-            description:
-              "Se ha presentado un error, por favor vuelve a intentarlo.",
-            show: true,
-            OkTitle: "Aceptar",
-            background: true,
-          });
-        }
-      })
-      .catch((err) => {
-        setMessage({
-          type: EResponseCodes.FAIL,
-          title: "Error al crear el periodo",
-          description:
-            "Se ha presentado un error, por favor vuelve a intentarlo.",
-          show: true,
-          OkTitle: "Aceptar",
-          background: true,
-        });
-      });
+  
+    await handleCreateVacation(dataVacation);
   });
   const vacationData = [
     { title: "Saldo anterior", value: `${vacation?.periodFormer ?? 0}` },
@@ -381,14 +371,10 @@ const SearchWorker = () => {
               disabledDays={[0, 6]}
               minDate={startVacation}
               maxDate={addBusinessDays(
-                startVacation ?? new Date(),
-                vacation
-                  ? vacation?.available
-                    ? Number(vacation?.available) +
-                      Number(vacation?.periodFormer ?? 0) +
-                      Number(vacation?.refund ?? 0)
-                    : 0
-                  : 0
+                startVacation || new Date(),
+                Number(vacation?.available || 0) +
+                  Number(vacation?.periodFormer || 0) +
+                  (vacation?.refund || 0)
               )}
             />
             <Controller

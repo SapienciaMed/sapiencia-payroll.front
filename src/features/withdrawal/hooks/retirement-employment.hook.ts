@@ -43,7 +43,7 @@ export default function useRetirementEmployment(
   const handleModalSuccess = () => {
     setMessage({
       title: "Retiro de personal",
-      description: `El retiro se realizo exitosamente`,
+      description: `El retiro se realizó exitosamente`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -78,20 +78,37 @@ export default function useRetirementEmployment(
     });
   };
 
+  const onSubmitRetiretmentEmployment = async (data: IRetirementEmployment) => {
+    const dataRetirement: IRetirementEmployment = {
+      ...data,
+      idEmployment: dataEmployment[0].id,
+    };
+
+    const response = await retirementEmployment(dataRetirement);
+
+    if (response.operation.code === EResponseCodes.OK) {
+      handleModalSuccess();
+    } else {
+      handleModalError(response.operation.message);
+    }
+  };
+
   const onSubmitRetirement = handleSubmit(
     async (data: IRetirementEmployment) => {
-      const dataRetirement: IRetirementEmployment = {
-        ...data,
-        idEmployment: dataEmployment[0].id,
-      };
-
-      const response = await retirementEmployment(dataRetirement);
-
-      if (response.operation.code === EResponseCodes.OK) {
-        handleModalSuccess();
-      } else {
-        handleModalError(response.operation.message);
-      }
+      setMessage({
+        title: "Confirmación de retiro",
+        description: `¿Está segur@ de crear esta accion?`,
+        show: true,
+        OkTitle: "Aceptar",
+        onOk: () => {
+          onSubmitRetiretmentEmployment(data);
+          setMessage((prev) => {
+            return { ...prev, show: false };
+          });
+        },
+        cancelTitle: "Cancelar",
+        background: true,
+      });
     }
   );
 

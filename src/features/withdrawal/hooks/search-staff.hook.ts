@@ -13,7 +13,8 @@ import { EResponseCodes } from "../../../common/constants/api.enum";
 export default function useSearchStaff() {
   const [dataEmployment, setDataEmployment] = useState<IEmploymentWorker[]>([]);
 
-  const { activeWorkerList, reasonsForWithdrawal } = useListData();
+  const { activeWorkerList, reasonsForWithdrawal, getWorkersActive } =
+    useListData();
 
   const { getEmploymentById } = usePayrollService();
 
@@ -41,6 +42,7 @@ export default function useSearchStaff() {
   });
 
   const clearDataEmployment = () => {
+    getWorkersActive();
     setDataEmployment([]);
     reset({ workerId: "" });
   };
@@ -52,6 +54,7 @@ export default function useSearchStaff() {
     activeWorkerList,
     dataEmployment,
     reasonsForWithdrawal,
+    getWorkersActive,
     clearDataEmployment,
   };
 }

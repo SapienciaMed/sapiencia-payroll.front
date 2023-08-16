@@ -65,8 +65,6 @@ export default function useViewIncapacityDetail() {
 
     const { worker, dates, prorroga } = dataFormated(data);
 
-    console.log(data);
-
     setMessage({
       title: "Detalle de incapacidad",
       show: true,

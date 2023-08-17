@@ -50,11 +50,12 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     watch,
     navigate,
     bankList,
-    accountType
-  } = useEmploymentsData();
- const handleNavigation = () =>{
-  navigate('../expedientes')
- }
+    accountType,
+  } = useEmploymentsData(action);
+
+  const handleNavigation = () => {
+    navigate("../expedientes");
+  };
   const stebs: FormStebs[] = [
     {
       titleSteb: "1. Informacion personal",
@@ -121,7 +122,15 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           errors={errors}
           control={control}
           setValueRegister={setValueRegister}
-          list={[epsList, pensionList, arlList, levelRiskList, layoffList,accountType,bankList]}
+          list={[
+            epsList,
+            pensionList,
+            arlList,
+            levelRiskList,
+            layoffList,
+            accountType,
+            bankList,
+          ]}
           action={action}
           changedData={changedData}
           getValueRegister={getValueRegister}

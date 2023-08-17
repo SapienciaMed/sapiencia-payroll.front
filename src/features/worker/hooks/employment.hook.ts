@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { formsPayroll } from "../../../common/schemas/employment-schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export default function useEmploymentsData() {
+export default function useEmploymentsData(action?: string) {
   const { id } = useParams();
   const { step, setStep } = useContext(AppContext);
   const currentValidationSchema = formsPayroll[step];
@@ -104,8 +104,8 @@ export default function useEmploymentsData() {
   const [levelRiskList, setLevelRiskList] = useState([]);
   const [typesContracts, setTypesContracts] = useState([]);
   const [activeWorker, setActiveWorker] = useState([]);
-  const [accountType,setAccountType] = useState([])
-  const [bankList,setBankList] = useState([])
+  const [accountType, setAccountType] = useState([]);
+  const [bankList, setBankList] = useState([]);
 
   /*instances*/
   const { getListByParent, getListByGroupers } = useGenericListService();
@@ -120,7 +120,6 @@ export default function useEmploymentsData() {
     createWorker,
     updateWorker,
   } = usePayrollService();
-
 
   const handleModal = () => {
     setMessage({
@@ -282,6 +281,28 @@ export default function useEmploymentsData() {
   useEffect(() => {
     if (!vinculation) return;
 
+    if (action === "edit" && vinculation.employment[0]?.state === "0") {
+      setMessage({
+        title: "Vinculación inactiva",
+        description: `No se permite editar la vinculacion debido a su estado inactiva.`,
+        show: true,
+        OkTitle: "Aceptar",
+        onOk: () => {
+          navigate("../expedientes");
+          setMessage((prev) => {
+            return { ...prev, show: false };
+          });
+        },
+        onClose: () => {
+          navigate("../expedientes");
+          setMessage({});
+        },
+        background: true,
+      });
+
+      return;
+    }
+
     if (vinculation.worker.id) {
       setValueRegister("worker", vinculation?.worker, {
         shouldValidate: true,
@@ -312,7 +333,7 @@ export default function useEmploymentsData() {
       "RIESGO_LABORAL",
       "ESTADO_TRABAJADOR",
       "TIPO_CUENTA",
-      "BANCO"
+      "BANCO",
     ];
 
     const response = await getListByGroupers(groupers);
@@ -593,6 +614,6 @@ export default function useEmploymentsData() {
     watch,
     navigate,
     accountType,
-    bankList
+    bankList,
   };
 }

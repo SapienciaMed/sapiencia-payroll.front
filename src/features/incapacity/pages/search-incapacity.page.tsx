@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import TableComponent from "../../../common/components/table.component";
 import { useForm } from "react-hook-form";
 import {
@@ -28,6 +28,8 @@ const SearchIncapacity = () => {
   const tableComponentRef = useRef(null);
 
   const navigate = useNavigate();
+
+  const [showTable, setshowTable] = useState(false);
 
   const {
     handleSubmit,
@@ -66,6 +68,7 @@ const SearchIncapacity = () => {
       },
     },
   ];
+
   const tableActions: ITableAction<IGetVinculation>[] = [
     {
       icon: "Detail",
@@ -88,6 +91,7 @@ const SearchIncapacity = () => {
   }
 
   const onSubmit = handleSubmit(async (data: IFilterIncapacity) => {
+    setshowTable(true);
     loadTableData(data);
   });
 
@@ -132,23 +136,28 @@ const SearchIncapacity = () => {
                 value={"Limpiar campos"}
                 className="button-clean bold"
                 type="button"
-                action={reset}
+                action={() => {
+                  setshowTable(false);
+                  reset();
+                }}
               />
               <ButtonComponent value={"Buscar"} className="button-save big" />
             </div>
           </FormComponent>
         </div>
 
-        <div className="container-sections-forms">
-          <TableComponent
-            ref={tableComponentRef}
-            url={`${process.env.urlApiPayroll}/api/v1/incapacity/get-paginated`}
-            columns={tableColumns}
-            actions={tableActions}
-            isShowModal={true}
-            titleMessageModalNoResult="Sin resultados."
-          />
-        </div>
+        {showTable && (
+          <div className="container-sections-forms">
+            <TableComponent
+              ref={tableComponentRef}
+              url={`${process.env.urlApiPayroll}/api/v1/incapacity/get-paginated`}
+              columns={tableColumns}
+              actions={tableActions}
+              isShowModal={true}
+              titleMessageModalNoResult="Sin resultados."
+            />
+          </div>
+        )}
       </div>
     </div>
   );

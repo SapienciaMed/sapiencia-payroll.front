@@ -31,6 +31,11 @@ export default function useViewIncapacityDetail() {
       },
     ];
 
+    const calculateDaysIncapacity = calculateDifferenceDays(
+      data.dateInitial,
+      data.dateFinish
+    );
+
     const dates = [
       {
         title: "Fecha de inicio",
@@ -42,7 +47,7 @@ export default function useViewIncapacityDetail() {
       },
       {
         title: "Total días",
-        value: calculateDifferenceDays(data.dateInitial, data.dateFinish),
+        value: calculateDaysIncapacity === 0 ? 1 : calculateDaysIncapacity,
       },
     ];
 

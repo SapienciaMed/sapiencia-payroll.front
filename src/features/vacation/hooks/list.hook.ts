@@ -39,7 +39,7 @@ export default function useListData() {
       .catch((e) => {});
   }, []);
 
-  useEffect(() => {
+  const getWorkersActive = () => {
     getWorkers()
       .then((response: ApiResponse<IWorker[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
@@ -61,6 +61,10 @@ export default function useListData() {
         }
       })
       .catch((err) => {});
+  };
+
+  useEffect(() => {
+    getWorkersActive();
   }, []);
 
   useEffect(() => {
@@ -100,5 +104,6 @@ export default function useListData() {
     listPeriods,
     typesIncapacityList,
     reasonsForWithdrawal,
+    getWorkersActive,
   };
 }

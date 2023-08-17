@@ -47,7 +47,7 @@ export default function useSearchLicenceData() {
         },
         {
           title: "Nombre empleado",
-          value: `${data[0].employment.worker.firstName} ${data[0].employment.worker.secondName} ${data[0].employment.worker.firstName}`,
+          value: `${data[0].employment.worker.firstName} ${data[0].employment.worker.secondName} ${data[0].employment.worker.surname} ${data[0].employment.worker.secondSurname}`,
         },
 
         {
@@ -77,7 +77,7 @@ export default function useSearchLicenceData() {
       ];
 
       return setMessage({
-        title: "Detalle Vacaciones",
+        title: "Detalle licencia",
         show: true,
         OkTitle: "Aceptar",
         description: (

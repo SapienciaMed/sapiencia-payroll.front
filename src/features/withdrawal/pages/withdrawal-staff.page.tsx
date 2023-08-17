@@ -28,8 +28,6 @@ export const WithDrawalStaffPage = () => {
     errorRetirementEmployment,
   } = useRetirementEmployment(dataEmployment, clearDataEmployment);
 
-  console.log(dataEmployment);
-
   return (
     <>
       <div className="container-sections-forms m-24px">
@@ -90,6 +88,7 @@ export const WithDrawalStaffPage = () => {
                     className="dataPicker-basic  medium "
                     placeholder="DD/MM/YYYY"
                     dateFormat="dd/mm/yy"
+                    minDate={new Date(dataEmployment[0].startDate)}
                     maxDate={new Date()}
                   />
 

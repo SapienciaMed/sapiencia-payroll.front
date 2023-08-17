@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import TableComponent from "../../../common/components/table.component";
 import { InputComponent } from "../../../common/components/Form/input.component";
 import { useForm } from "react-hook-form";
@@ -21,12 +21,16 @@ import {
 import { useNavigate } from "react-router-dom";
 import useEmploymentsData from "../hooks/employment.hook";
 import { removeEmptySpace } from "../../../common/utils/helpers";
+import { AppContext } from "../../../common/contexts/app.context";
 
 const EmploymentRecordsPage = () => {
   const { typesContracts, activeWorker } = useEmploymentsData();
   const tableComponentRef = useRef(null);
   const navigate = useNavigate();
+
+  const { setMessage } = useContext(AppContext);
   //const resolver = useYupValidationResolver(searchRecord);
+
   const {
     handleSubmit,
     register,
@@ -83,6 +87,27 @@ const EmploymentRecordsPage = () => {
         return <>{DateTime.fromISO(row.employment.endDate).toLocaleString()}</>;
       },
     },
+    {
+      fieldName: "employment.retirementDate",
+      header: "Fecha retiro",
+      renderCell: (row) => {
+        return (
+          <>
+            {row.employment.retirementDate
+              ? DateTime.fromISO(row.employment.retirementDate).toLocaleString()
+              : "Sin fecha de retiro"}
+          </>
+        );
+      },
+    },
+    {
+      fieldName: "employment.state",
+      header: "Estado",
+      renderCell: (row) => {
+        console.log(row.employment.state);
+        return <>{row.employment.state !== "0" ? "Activo" : "Inactivo"}</>;
+      },
+    },
   ];
   const tableActions: ITableAction<IGetVinculation>[] = [
     {
@@ -94,7 +119,25 @@ const EmploymentRecordsPage = () => {
     {
       icon: "Edit",
       onClick: (row) => {
-        navigate(`./edit/${row.id}`);
+        if (row.employment.state !== "0") {
+          navigate(`./edit/${row.id}`);
+        } else {
+          setMessage({
+            title: "Vinculación inactiva",
+            description: `No se permite editar la vinculacion debido a su estado inactiva.`,
+            show: true,
+            OkTitle: "Aceptar",
+            onOk: () => {
+              setMessage((prev) => {
+                return { ...prev, show: false };
+              });
+            },
+            onClose: () => {
+              setMessage({});
+            },
+            background: true,
+          });
+        }
       },
     },
   ];

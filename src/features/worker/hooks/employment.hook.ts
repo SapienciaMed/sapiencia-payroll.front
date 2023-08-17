@@ -281,6 +281,28 @@ export default function useEmploymentsData() {
   useEffect(() => {
     if (!vinculation) return;
 
+    if (vinculation.employment[0]?.state === "0") {
+      setMessage({
+        title: "Vinculación inactiva",
+        description: `No se permite editar la vinculacion debido a su estado inactiva.`,
+        show: true,
+        OkTitle: "Aceptar",
+        onOk: () => {
+          navigate("../expedientes");
+          setMessage((prev) => {
+            return { ...prev, show: false };
+          });
+        },
+        onClose: () => {
+          navigate("../expedientes");
+          setMessage({});
+        },
+        background: true,
+      });
+
+      return;
+    }
+
     if (vinculation.worker.id) {
       setValueRegister("worker", vinculation?.worker, {
         shouldValidate: true,
@@ -566,6 +588,6 @@ export default function useEmploymentsData() {
     familyData,
     setFamilyData,
     watch,
-    navigate
+    navigate,
   };
 }

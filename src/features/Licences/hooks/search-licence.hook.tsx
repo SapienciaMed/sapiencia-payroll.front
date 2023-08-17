@@ -22,6 +22,7 @@ import { calculateDifferenceDays } from "../../../common/utils/helpers";
 
 export default function useSearchLicenceData() {
   const tableComponentRef = useRef(null);
+  const [tableView, setTableView] = useState<boolean>(false);
 
   const { setMessage } = useContext(AppContext);
 
@@ -113,6 +114,7 @@ export default function useSearchLicenceData() {
     formState: { errors },
     control,
     reset,
+    watch
   } = useForm<ILicenceFilters>();
   const tableColumns: ITableElement<ILicenceResult>[] = [
     {
@@ -169,6 +171,7 @@ export default function useSearchLicenceData() {
     },
   ];
 
+  const [codEmployment,idLicenceType,state]= watch(["codEmployment","idLicenceType","state"])
   function loadTableData(searchCriteria?: object): void {
     if (tableComponentRef.current) {
       tableComponentRef.current.loadData(searchCriteria);
@@ -188,5 +191,10 @@ export default function useSearchLicenceData() {
     reset,
     control,
     errors,
+    tableView,
+    setTableView,
+    codEmployment,
+    idLicenceType,
+    state
   };
 }

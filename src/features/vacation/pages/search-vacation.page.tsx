@@ -98,8 +98,9 @@ const SearchVacationPage = () => {
               <VacationTable row={row} />
             </div>
           ),
-          size: "large",
+          OkButtonStyle:"button-ok small",
           background: true,
+          size:"extra-large"
         });
       },
     },

@@ -24,7 +24,7 @@ function ModalMessageComponent(): React.JSX.Element {
     if (message.cancelTitle) {
       return (
         <button
-          className={`${message.OkButtonStyle ? message.OkButtonStyle : "button-cancel medium hover-three"}`}
+          className={`${message.OkButtonStyle ? message.OkButtonStyle : "button-cancel medium"}`}
           onClick={message.onCancel || closeModal}
         >
           {message.cancelTitle}
@@ -39,7 +39,7 @@ function ModalMessageComponent(): React.JSX.Element {
     if (message.OkTitle) {
       return (
         <button
-          className={`${message.OkButtonStyle ? message.OkButtonStyle : "button-ok medium hover-three"}`}
+          className={`${message.OkButtonStyle ? message.OkButtonStyle : "button-ok medium"}`}
           onClick={message.onOk || closeModal}
         >
           {message.OkTitle}

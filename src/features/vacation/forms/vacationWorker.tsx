@@ -187,7 +187,7 @@ const SearchWorker = () => {
         dateFrom: data.startDate,
         enjoyedDays: data.totalCompensatoryDays,
         paid: true,
-        observation: data.observation,
+        observation: data.checkEnjoyedDays ?'':data.observation,
       });
     }
   
@@ -259,8 +259,22 @@ const SearchWorker = () => {
       formedDays,
       periodId: vacation?.id,
     };
+
+    setMessage({
+      title: "Crear periodo de vacaciones",
+      description:
+        "¿Desea crear periodo de vacaciones?",
+      show: true,
+      OkTitle: "Aceptar",
+      onOk() {
+       handleCreateVacation(dataVacation);
+      },
+      background: true,
+      cancelTitle:"cancelar"
+
+    });
   
-    await handleCreateVacation(dataVacation);
+    
   });
   const vacationData = [
     { title: "Saldo anterior", value: `${vacation?.periodFormer ?? 0}` },
@@ -372,9 +386,9 @@ const SearchWorker = () => {
               minDate={startVacation}
               maxDate={addBusinessDays(
                 startVacation || new Date(),
-                Number(vacation?.available || 0) +
+                (Number(vacation?.available || 0) +
                   Number(vacation?.periodFormer || 0) +
-                  (vacation?.refund || 0)
+                  (vacation?.refund || 0)) 
               )}
             />
             <Controller

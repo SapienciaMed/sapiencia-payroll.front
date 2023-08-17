@@ -119,7 +119,6 @@ export default function useEmploymentsData() {
     updateWorker,
   } = usePayrollService();
 
-  const { publish, subscribe, unsubscribe } = useAppCominicator();
 
   const handleModal = () => {
     setMessage({

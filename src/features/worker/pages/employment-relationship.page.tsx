@@ -51,7 +51,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     navigate,
     bankList,
     accountType,
-  } = useEmploymentsData();
+  } = useEmploymentsData(action);
 
   const handleNavigation = () => {
     navigate("../expedientes");

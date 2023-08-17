@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { formsPayroll } from "../../../common/schemas/employment-schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export default function useEmploymentsData() {
+export default function useEmploymentsData(action?: string) {
   const { id } = useParams();
   const { step, setStep } = useContext(AppContext);
   const currentValidationSchema = formsPayroll[step];
@@ -281,7 +281,7 @@ export default function useEmploymentsData() {
   useEffect(() => {
     if (!vinculation) return;
 
-    if (vinculation.employment[0]?.state === "0") {
+    if (action === "edit" && vinculation.employment[0]?.state === "0") {
       setMessage({
         title: "Vinculación inactiva",
         description: `No se permite editar la vinculacion debido a su estado inactiva.`,

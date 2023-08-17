@@ -22,7 +22,7 @@ interface IFormStepsProp {
   actionSubmit: any;
   action: string;
   watch: any;
-  navigate:NavigateFunction;
+  navigate: NavigateFunction;
 }
 
 const FormSteps = ({
@@ -38,7 +38,7 @@ const FormSteps = ({
   register,
   action,
   watch,
-  navigate
+  navigate,
 }: // watch,
 IFormStepsProp) => {
   const { step } = useContext(AppContext);
@@ -62,9 +62,7 @@ IFormStepsProp) => {
               <div key={infoSteb.position}>
                 <div
                   className={`steb-option ${
-                    infoSteb.position === step 
-                      ? "active"
-                      : ""
+                    infoSteb.position === step ? "active" : ""
                   }`}
                 >
                   {infoSteb.titleSteb}
@@ -87,7 +85,9 @@ IFormStepsProp) => {
                   {step === infoStep.position && infoStep.contentStep}
 
                   <div className="container-actions_formTabs">
-                    {(step == 0 && action === "new")?(<></>):(
+                    {step == 0 && action === "new" ? (
+                      <></>
+                    ) : (
                       <ButtonComponent
                         value={
                           step == 0 && action != "new" ? "Regresar" : "Anterior"
@@ -95,7 +95,7 @@ IFormStepsProp) => {
                         className={`${"button-save big"}`}
                         action={() => {
                           if (step == 0) {
-                            navigate('/')
+                            navigate("/");
                           } else {
                             handleBackStep();
                           }
@@ -103,20 +103,25 @@ IFormStepsProp) => {
                         type="button"
                       />
                     )}
-                    <ButtonComponent
-                      value={step === stepsAmount ? "Guardar" : "Siguiente"}
-                      className={`${
-                        validForm
-                          ? "button-save big"
-                          : "button-save  invalid big"
-                      } ${
-                        step === stepsAmount && action === "view"
-                          ? "disabled"
-                          : ""
-                      }`}
-                      type={step === stepsAmount ? "submit" : "button"}
-                      action={handleNextStep}
-                    />
+
+                    {action === "view" && step === stepsAmount ? (
+                      <></>
+                    ) : (
+                      <ButtonComponent
+                        value={step === stepsAmount ? "Guardar" : "Siguiente"}
+                        className={`${
+                          validForm
+                            ? "button-save big"
+                            : "button-save  invalid big"
+                        } ${
+                          step === stepsAmount && action === "view"
+                            ? "disabled"
+                            : ""
+                        }`}
+                        type={step === stepsAmount ? "submit" : "button"}
+                        action={handleNextStep}
+                      />
+                    )}
                   </div>
                 </div>
               );

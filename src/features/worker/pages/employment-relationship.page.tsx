@@ -49,6 +49,8 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     handleUpdateWorker,
     watch,
     navigate,
+    bankList,
+    accountType,
   } = useEmploymentsData();
 
   const handleNavigation = () => {
@@ -120,7 +122,15 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           errors={errors}
           control={control}
           setValueRegister={setValueRegister}
-          list={[epsList, pensionList, arlList, levelRiskList, layoffList]}
+          list={[
+            epsList,
+            pensionList,
+            arlList,
+            levelRiskList,
+            layoffList,
+            accountType,
+            bankList,
+          ]}
           action={action}
           changedData={changedData}
           getValueRegister={getValueRegister}

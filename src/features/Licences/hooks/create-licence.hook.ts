@@ -123,7 +123,7 @@ export default function useLicenceData() {
   const handleModalCreate = handleSubmit(async (data: ILicence) => {
     setMessage({
       title: "Crear licencia",
-      description: `¿Está segur@ de crear esta licencia?`,
+      description: `¿Estás segur@ de crear esta licencia?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -140,7 +140,7 @@ export default function useLicenceData() {
   const handleModalCancel = () => {
     setMessage({
       title: "Cancelar",
-      description: `¿Está segur@ que desea 
+      description: `¿Estás segur@ que desea 
       cancelar la licencia?`,
       show: true,
       OkTitle: "Aceptar",
@@ -169,7 +169,7 @@ export default function useLicenceData() {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           setMessage({
             title: "Licencia creada",
-            description: `¡Se creó licencia exitosamente!`,
+            description: `¡Se creó la licencia exitosamente!`,
             show: true,
             OkTitle: "Aceptar",
             onOk: () => {
@@ -190,7 +190,7 @@ export default function useLicenceData() {
             type: EResponseCodes.FAIL,
             title: "Error al registrar la licencia.",
             description:
-              "Se ha presentado un error, por favor vuelve a intentarlo.",
+              response?.operation?.message ,
             show: true,
             OkTitle: "Aceptar",
             background: true,

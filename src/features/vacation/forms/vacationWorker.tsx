@@ -152,7 +152,7 @@ const SearchWorker = () => {
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
-        navigate("../");
+        navigate("../consultar");
         setMessage((prev) => {
           return { ...prev, show: false };
         });

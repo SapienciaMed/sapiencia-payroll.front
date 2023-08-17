@@ -104,6 +104,8 @@ export default function useEmploymentsData() {
   const [levelRiskList, setLevelRiskList] = useState([]);
   const [typesContracts, setTypesContracts] = useState([]);
   const [activeWorker, setActiveWorker] = useState([]);
+  const [accountType,setAccountType] = useState([])
+  const [bankList,setBankList] = useState([])
 
   /*instances*/
   const { getListByParent, getListByGroupers } = useGenericListService();
@@ -309,6 +311,8 @@ export default function useEmploymentsData() {
       "FONDO_CESANTIAS",
       "RIESGO_LABORAL",
       "ESTADO_TRABAJADOR",
+      "TIPO_CUENTA",
+      "BANCO"
     ];
 
     const response = await getListByGroupers(groupers);
@@ -456,6 +460,28 @@ export default function useEmploymentsData() {
             return list;
           })
       );
+      setAccountType(
+        response.data
+          .filter((grouper) => grouper.grouper == "TIPO_CUENTA")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setBankList(
+        response.data
+          .filter((grouper) => grouper.grouper == "BANCO")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
     }
   }
   const handleCreateWorker = async (data: IVinculation) => {
@@ -565,6 +591,8 @@ export default function useEmploymentsData() {
     familyData,
     setFamilyData,
     watch,
-    navigate
+    navigate,
+    accountType,
+    bankList
   };
 }

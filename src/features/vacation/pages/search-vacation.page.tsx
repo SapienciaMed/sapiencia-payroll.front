@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import { searchRecord } from "../../../common/schemas";
 import { Controller, useForm } from "react-hook-form";
@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const SearchVacationPage = () => {
+  const [tableView, setTableView] = useState<boolean>(false);
   const tableComponentRef = useRef(null);
   const { setMessage } = useContext(AppContext);
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ const SearchVacationPage = () => {
     formState: { errors },
     control,
     reset,
+    watch
   } = useForm<IFilterVacation>();
   const tableColumns: ITableElement<IWorkersVacationDetail>[] = [
     {
@@ -132,6 +134,9 @@ const SearchVacationPage = () => {
   });
 
   const { listPeriods, activeWorkerList } = useListData();
+
+  const [workerId,period] = watch(["workerId","period"])
+
   return (
     <>
       <div className="container-sections-forms m-24px">
@@ -186,22 +191,24 @@ const SearchVacationPage = () => {
                 action={() => {
                   reset();
                   tableComponentRef.current.emptyData();
+                  setTableView(false)
                 }}
               />
-              <ButtonComponent value={"Buscar"} className="button-save big" />
+              <ButtonComponent value={"Buscar"} className="button-save disabled-black big" action={()=>{setTableView(true)}} disabled={!period && !workerId}/>
             </div>
           </FormComponent>
         </div>
-
-        <div className="container-sections-forms">
-          <TableComponent
-            ref={tableComponentRef}
-            url={`${process.env.urlApiPayroll}/api/v1/vacations/get-paginated`}
-            columns={tableColumns}
-            actions={tableActions}
-            isShowModal={false}
-          />
-        </div>
+        {tableView && (
+          <div className="container-sections-forms">
+            <TableComponent
+              ref={tableComponentRef}
+              url={`${process.env.urlApiPayroll}/api/v1/vacations/get-paginated`}
+              columns={tableColumns}
+              actions={tableActions}
+              isShowModal={false}
+            />
+          </div>
+        )}
       </div>
     </>
   );

@@ -80,7 +80,6 @@ export function formaterNumberToCurrency(number) {
 
 
 export function addBusinessDays(startDate, daysToAdd, holidays = []) {
-  debugger
   const oneDay = 24 * 60 * 60 * 1000; // Un día en milisegundos
   let currentDate = new Date(startDate);
 

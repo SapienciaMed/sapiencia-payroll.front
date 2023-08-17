@@ -103,12 +103,15 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
         <div>
           <TextAreaComponent
             idInput={"observation"}
-            value={row?.vacationDay
-              .map((day) => {
-                let observation = day?.observation || "";
-                return observation;
-              })
-              .join("\n")}
+            value={
+              (row?.vacationDay
+                .filter((day) => !day.paid)
+                .sort((a, b) => b.id - a.id)[0]?.observation || "") +
+              " " +
+              row?.vacationDay
+                .filter((day) => day.paid)
+                .sort((a, b) => b.id - a.id)[0]?.observation
+            }
             className="text-area-basic"
             label={"Observaciones"}
             classNameLabel="text-black big bold text-left"

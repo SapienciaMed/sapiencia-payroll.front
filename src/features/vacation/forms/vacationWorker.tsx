@@ -268,7 +268,7 @@ const SearchWorker = () => {
     setMessage({
       title: "Crear periodo de vacaciones",
       description:
-        "¿Desea crear periodo de vacaciones?",
+        "¿Estás segur@ de crear el periodo de vacaciones?",
       show: true,
       OkTitle: "Aceptar",
       onOk() {

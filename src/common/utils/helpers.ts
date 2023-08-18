@@ -48,7 +48,6 @@ export function calculateDifferenceDays(
       );
     }
     function isBusinessDay(date) {
-      debugger
       const dayOfWeek = date.getDay(); // 0 (Sunday) to 6 (Saturday)
       return dayOfWeek !== 0 && dayOfWeek !== 6; // Excludes weekends (Saturday and Sunday)
     }

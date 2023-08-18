@@ -48,6 +48,7 @@ export function calculateDifferenceDays(
       );
     }
     function isBusinessDay(date) {
+      debugger
       const dayOfWeek = date.getDay(); // 0 (Sunday) to 6 (Saturday)
       return dayOfWeek !== 0 && dayOfWeek !== 6; // Excludes weekends (Saturday and Sunday)
     }
@@ -94,7 +95,9 @@ export function addBusinessDays(startDate, daysToAdd, holidays = []) {
     if (isBusinessDay(currentDate) && !isHoliday(currentDate)) {
       daysAdded++;
     }
+    if(daysAdded < daysToAdd){
     currentDate.setTime(currentDate.getTime() + oneDay);
+    }
   }
 
   return currentDate;

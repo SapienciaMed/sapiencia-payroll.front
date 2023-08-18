@@ -112,6 +112,11 @@ const SearchWorker = () => {
       workerId: data.idWorker,
       period: parseInt(data.period),
     };
+    setValueRegister("startDateCompensatedDays","")
+    setValueRegister("startDate","")
+    setValueRegister("endDate","")
+    setValueRegister("totalCompensatoryDays",0)
+    setValueRegister("totalCompensatoryDays",0)
     await getWorkerVacatioByParam(params)
       .then((response: ApiResponse<IVacation>) => {
         if (
@@ -386,9 +391,9 @@ const SearchWorker = () => {
               minDate={startVacation}
               maxDate={addBusinessDays(
                 startVacation || new Date(),
-                (Number(vacation?.available || 0) +
+                ((Number(vacation?.available || 0) +
                   Number(vacation?.periodFormer || 0) +
-                  (vacation?.refund || 0)) 
+                  (vacation?.refund || 0)))
               )}
             />
             <Controller

@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import TableComponent from "../../../common/components/table.component";
 import { InputComponent } from "../../../common/components/Form/input.component";
 import { useForm } from "react-hook-form";
@@ -25,6 +25,7 @@ import { AppContext } from "../../../common/contexts/app.context";
 
 const EmploymentRecordsPage = () => {
   const { typesContracts, activeWorker } = useEmploymentsData();
+  const [tableView, setTableView] = useState<boolean>(false);
   const tableComponentRef = useRef(null);
   const navigate = useNavigate();
 
@@ -236,27 +237,32 @@ const EmploymentRecordsPage = () => {
                 action={() => {
                   reset();
                   tableComponentRef.current.emptyData();
+                  setTableView(false);
                 }}
               />
               <ButtonComponent
                 value={"Buscar"}
                 className="button-save big"
                 form="searchRecordForm"
+                action={() => {
+                  setTableView(true);
+                }}
                 type="submit"
               />
             </div>
           </FormComponent>
         </div>
-
-        <div className="container-sections-forms">
-          <TableComponent
-            ref={tableComponentRef}
-            url={`${process.env.urlApiPayroll}/api/v1/vinculation/get-paginated`}
-            columns={tableColumns}
-            actions={tableActions}
-            isShowModal={false}
-          />
-        </div>
+        {tableView && (
+          <div className="container-sections-forms">
+            <TableComponent
+              ref={tableComponentRef}
+              url={`${process.env.urlApiPayroll}/api/v1/vinculation/get-paginated`}
+              columns={tableColumns}
+              actions={tableActions}
+              isShowModal={false}
+            />
+          </div>
+        )}
       </div>
     </>
   );

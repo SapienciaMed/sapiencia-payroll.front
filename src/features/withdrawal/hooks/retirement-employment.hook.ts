@@ -38,6 +38,7 @@ export default function useRetirementEmployment(
     },
     resolver,
     mode: "all",
+    shouldUnregister: true,
   });
 
   const handleModalSuccess = () => {

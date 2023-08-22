@@ -29,6 +29,7 @@ export default function useSearchStaff() {
     defaultValues: { workerId: "" },
     resolver,
     mode: "all",
+    shouldUnregister: true,
   });
 
   const onSubmitStaff = handleSubmit(async (data: { workerId: string }) => {

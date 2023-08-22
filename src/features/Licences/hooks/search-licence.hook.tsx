@@ -171,7 +171,8 @@ export default function useSearchLicenceData() {
     },
   ];
 
-  const [codEmployment,idLicenceType,state]= watch(["codEmployment","idLicenceType","state"])
+  const [codEmployment,idLicenceType]= watch(["codEmployment","idLicenceType"]);
+  const [stateLicence] = watch(["licenceState"])
   function loadTableData(searchCriteria?: object): void {
     if (tableComponentRef.current) {
       tableComponentRef.current.loadData(searchCriteria);
@@ -195,6 +196,6 @@ export default function useSearchLicenceData() {
     setTableView,
     codEmployment,
     idLicenceType,
-    state
+    stateLicence
   };
 }

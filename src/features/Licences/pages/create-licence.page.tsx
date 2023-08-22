@@ -9,7 +9,10 @@ import {
 } from "../../../common/components/Form";
 import { Controller, useForm } from "react-hook-form";
 import useLicenceData from "../hooks/create-licence.hook";
-import { addBusinessDays } from "../../../common/utils/helpers";
+import {
+  addBusinessDays,
+  addCalendarDays,
+} from "../../../common/utils/helpers";
 
 const CreateLicencePage = () => {
   const {
@@ -25,9 +28,9 @@ const CreateLicencePage = () => {
     sending,
     isValid,
     numberDays,
-    typeDays
+    typeDays,
   } = useLicenceData();
-console.log(isValid)
+  console.log(isValid);
   return (
     <>
       <div className="container-sections-forms m-24px">
@@ -105,7 +108,13 @@ console.log(isValid)
               dateFormat="dd/mm/yy"
               disabledDays={typeDays == "Habil" ? [0, 6] : []}
               minDate={dateStart}
-              maxDate={numberDays !=0 ? addBusinessDays(dateStart,numberDays) : new Date('99/99/9999') }
+              maxDate={
+                numberDays !== 0
+                  ? typeDays === "Habil"
+                    ? addBusinessDays(dateStart, numberDays)
+                    : addCalendarDays(dateStart, numberDays)
+                  : new Date("9999-12-31")
+              }
             />
             <Controller
               control={control}
@@ -168,7 +177,9 @@ console.log(isValid)
                 errors={errors}
                 rows={5}
               />
-              <div className="text-right"><span className="text-span ">Max. {500} carácteres</span></div>
+              <div className="text-right">
+                <span className="text-span ">Max. {500} carácteres</span>
+              </div>
             </div>
           </div>
           <div className="button-save-container-display mr-24px ">

@@ -343,7 +343,7 @@ export interface ILicenceType {
 
 export interface ILicenceFilters {
   codEmployment?: number;
-  state?: string;
+  licenceState?: string;
   idLicenceType?: number;
   page: number;
   perPage: number;

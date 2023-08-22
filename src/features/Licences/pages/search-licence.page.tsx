@@ -24,10 +24,11 @@ const SearchLicencePage = () => {
     setTableView,
     codEmployment,
     idLicenceType,
-    state
+    stateLicence
   } = useSearchLicenceData();
   const { activeWorkerList, licenceTypesList, listLicencesStates } =
     useLicenceData();
+    console.log(stateLicence)
   return (
     <>
       <div className="container-sections-forms m-24px">
@@ -105,7 +106,7 @@ const SearchLicencePage = () => {
                 action={() => {
                   setTableView(true);
                 }}
-                disabled={!codEmployment && !idLicenceType && !state}
+                disabled={!codEmployment && !idLicenceType && !stateLicence}
               />
             </div>
           </FormComponent>

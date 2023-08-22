@@ -28,10 +28,12 @@ export default function useRetirementEmployment(
     formState: { errors: errorRetirementEmployment },
     control: controlRetirement,
     register: registerRetirement,
+    getValues,
   } = useForm<IRetirementEmployment>({
     defaultValues: {
       idReasonRetirement: "",
       observation: "",
+      state: "0",
       retirementDate: "",
       idEmployment: null,
     },

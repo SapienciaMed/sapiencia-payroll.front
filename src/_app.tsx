@@ -11,6 +11,7 @@ import VacationRoutes from "./features/vacation/vacation-routes";
 import IncapacityRoutes from "./features/incapacity/incapacity-routes";
 import WithDrawalRoutes from "./features/withdrawal/withdrawal-routes";
 import LicencesRoutes from "./features/Licences/licences-routes";
+import SalaryIncrementRoutes from "./features/salaryincrement/salary-increment-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
@@ -51,6 +52,10 @@ function App() {
                 element={<LicencesRoutes />}
               />
               <Route path={"/nomina/retiro/*"} element={<WithDrawalRoutes />} />
+              <Route
+                path={"/nomina/increment/salary/*"}
+                element={<SalaryIncrementRoutes />}
+              />
             </Routes>
           </Suspense>
         </Router>

@@ -28,12 +28,13 @@ export default function useRetirementEmployment(
     formState: { errors: errorRetirementEmployment },
     control: controlRetirement,
     register: registerRetirement,
+    getValues,
   } = useForm<IRetirementEmployment>({
     defaultValues: {
       idReasonRetirement: "",
       observation: "",
-      retirementDate: "",
       state: "0",
+      retirementDate: "",
       idEmployment: null,
     },
     resolver,
@@ -83,6 +84,7 @@ export default function useRetirementEmployment(
     const dataRetirement: IRetirementEmployment = {
       ...data,
       idEmployment: dataEmployment[0].id,
+      state: "0",
     };
 
     const response = await retirementEmployment(dataRetirement);

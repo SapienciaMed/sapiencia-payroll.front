@@ -36,8 +36,10 @@ const SearchIncapacity = () => {
     formState: { errors },
     control,
     reset,
+    watch
   } = useForm<IFilterIncapacity>({ defaultValues: { workerId: "" } });
 
+  const workerId = watch("workerId")
   const tableColumns: ITableElement<IGetIncapacity>[] = [
     {
       fieldName: "numberDocument",
@@ -141,7 +143,7 @@ const SearchIncapacity = () => {
                   reset();
                 }}
               />
-              <ButtonComponent value={"Buscar"} className="button-save big" />
+              <ButtonComponent value={"Buscar"} className="button-save big disabled-black" disabled={!workerId} />
             </div>
           </FormComponent>
         </div>

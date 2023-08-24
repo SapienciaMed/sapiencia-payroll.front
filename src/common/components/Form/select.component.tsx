@@ -51,8 +51,8 @@ export function SelectComponent({
   emptyMessage = "Sin resultados.",
 }: ISelectProps<any>): React.JSX.Element {
   if (data) {
-    const seleccione: IDropdownProps = { name: "Seleccione", value: '' };
-    const dataSelect = data.find(
+    const seleccione: IDropdownProps = { name: "Seleccione", value: "" };
+    const dataSelect = data?.find(
       (item) => item.name === seleccione.name && item.value === seleccione.value
     );
     if (!dataSelect) data.unshift(seleccione);
@@ -93,7 +93,7 @@ export function SelectComponent({
           render={({ field }) => (
             <Dropdown
               id={field.name}
-              value={data.find((row) => row.value === field.value)?.value}
+              value={data?.find((row) => row.value === field.value)?.value}
               onChange={(e) => field.onChange(e.value)}
               options={data}
               optionLabel="name"

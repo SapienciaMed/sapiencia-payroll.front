@@ -271,6 +271,10 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   display: flex;
   justify-content: center;
   flex-direction: row;
+
+  &.m-top-20 {
+    margin-top: 20px;
+  }
 }
 
 .container-text {

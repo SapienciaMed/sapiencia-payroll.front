@@ -132,15 +132,18 @@ export const createAndUpdateIncapacity = yup.object({
 });
 
 export const createLicenceSchema = yup.object({
-   codEmployment: yup.string().required("El campo es obligatorio"),
-   idLicenceType: yup.string().required("El campo es obligatorio"),
-   dateStart: yup.string().required("El campo es obligatorio"),
-   dateEnd: yup.string().required("El campo es obligatorio"),
-   licenceState: yup.string().required("El campo es obligatorio"),
-   resolutionNumber:yup.string().required("El campo es obligatorio").max(50,"máximo 50 carácteres"),
-   observation: yup.string().optional().max(500, "máximo 500 carácteres"),
-})
-  // comments: yup.string().required("El campo es obligatorio"),
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  idLicenceType: yup.string().required("El campo es obligatorio"),
+  dateStart: yup.string().required("El campo es obligatorio"),
+  dateEnd: yup.string().required("El campo es obligatorio"),
+  licenceState: yup.string().required("El campo es obligatorio"),
+  resolutionNumber: yup
+    .string()
+    .required("El campo es obligatorio")
+    .max(50, "máximo 50 carácteres"),
+  observation: yup.string().optional().max(500, "máximo 500 carácteres"),
+});
+// comments: yup.string().required("El campo es obligatorio"),
 export const searchStaff = yup.object({
   workerId: yup.string().required("El campo es obligatorio"),
 });
@@ -156,4 +159,8 @@ export const retirementEmploymentSchema = yup.object({
     .required("El campo es obligatorio")
     .min(3, "Ingrese al menos 3 caracteres")
     .max(1000, "Solo se permiten 1000 caracteres"),
+});
+
+export const filterIncrementSalarySchema = yup.object({
+  numActaAprobacion: yup.string().required("El campo es obligatorio"),
 });

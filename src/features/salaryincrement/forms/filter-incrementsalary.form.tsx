@@ -6,23 +6,39 @@ import {
   FormComponent,
   SelectComponent,
   InputComponent,
+  ButtonComponent,
 } from "../../../common/components/Form";
 
-import { Control, FieldErrors, FieldValues } from "react-hook-form";
+import {
+  Control,
+  FieldValues,
+  FormState,
+  UseFormRegister,
+} from "react-hook-form";
+
+import { IDropdownProps } from "../../../common/interfaces/select.interface";
 
 interface IPropsFilterIncremetSalary {
-  redirectCreate: () => void;
-  onSubmit: () => Promise<void>;
+  register: UseFormRegister<any>;
   control: Control<FieldValues, any>;
-  errors: FieldErrors<FieldValues>;
+  formState: FormState<FieldValues>;
+  redirectCreate: () => void;
+  clearFields: () => void;
+  onSubmit: () => Promise<void>;
+  chargesState: IDropdownProps[];
 }
 
 export const FilterIncrementSalary = ({
-  redirectCreate,
+  register,
   control,
-  errors,
+  formState,
+  redirectCreate,
+  clearFields,
   onSubmit,
+  chargesState,
 }: IPropsFilterIncremetSalary): React.JSX.Element => {
+  const { errors, isValid } = formState;
+
   return (
     <div className="container-sections-forms">
       <div className="title-area">
@@ -44,10 +60,10 @@ export const FilterIncrementSalary = ({
         >
           <div className="grid-form-2-container gap-25">
             <SelectComponent
-              idInput={"codEmployment"}
+              idInput={"charge"}
               control={control}
               errors={errors}
-              data={[]}
+              data={chargesState}
               label={<>Cargos</>}
               className="select-basic medium"
               classNameLabel="text-black big bold"
@@ -55,7 +71,8 @@ export const FilterIncrementSalary = ({
             />
 
             <InputComponent
-              idInput={""}
+              register={register}
+              idInput={"numActaAprobacion"}
               errors={errors}
               typeInput={"text"}
               label={
@@ -65,6 +82,19 @@ export const FilterIncrementSalary = ({
               }
               className="input-basic medium"
               classNameLabel="text-black big bold"
+            />
+          </div>
+          <div className="button-save-container-display m-top-20">
+            <ButtonComponent
+              value={"Limpiar campos"}
+              className="button-clean bold"
+              type="button"
+              action={clearFields}
+            />
+            <ButtonComponent
+              value={"Buscar"}
+              className="button-save disabled-black big"
+              disabled={!isValid}
             />
           </div>
         </FormComponent>

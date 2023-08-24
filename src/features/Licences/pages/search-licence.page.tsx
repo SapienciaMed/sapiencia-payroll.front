@@ -24,11 +24,11 @@ const SearchLicencePage = () => {
     setTableView,
     codEmployment,
     idLicenceType,
-    stateLicence
+    stateLicence,
   } = useSearchLicenceData();
   const { activeWorkerList, licenceTypesList, listLicencesStates } =
     useLicenceData();
-    console.log(stateLicence)
+  console.log(stateLicence);
   return (
     <>
       <div className="container-sections-forms m-24px">
@@ -96,7 +96,7 @@ const SearchLicencePage = () => {
                 type="button"
                 action={() => {
                   reset();
-                  tableComponentRef.current.emptyData();
+                  tableComponentRef.current?.emptyData();
                   setTableView(false);
                 }}
               />

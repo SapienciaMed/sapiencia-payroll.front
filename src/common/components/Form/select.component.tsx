@@ -95,6 +95,7 @@ export function SelectComponent({
               id={field.name}
               value={data?.find((row) => row.value === field.value)?.value}
               onChange={(e) => field.onChange(e.value)}
+              onBlur={(e) => field.onBlur()}
               options={data}
               optionLabel="name"
               placeholder={placeholder}

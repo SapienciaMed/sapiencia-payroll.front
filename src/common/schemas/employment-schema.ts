@@ -164,3 +164,26 @@ export const retirementEmploymentSchema = yup.object({
 export const filterIncrementSalarySchema = yup.object({
   numActaAprobacion: yup.string().required("El campo es obligatorio"),
 });
+
+export const createUpdateIncrementSalarySchema = yup.object({
+  idCharge: yup.string().required("El campo es obligatorio"),
+  salaryActual: yup.string(),
+  numActaAprobacion: yup
+    .string()
+    .required("El campo es obligatorio")
+    .max(100, "Solo se permiten 100 caracteres"),
+  newSalary: yup
+    .string()
+    .test(
+      "mayor-salaryActual",
+      "El nuevo salario debe ser mayor al salario actual",
+      (value, context) => {
+        const { salaryActual } = context.parent;
+        if (value && salaryActual) {
+          return parseFloat(value) >= parseFloat(salaryActual);
+        }
+        return true;
+      }
+    )
+    .required("El campo es obligatorio"),
+});

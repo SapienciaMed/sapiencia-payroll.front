@@ -1,12 +1,10 @@
 import React from "react";
 
-import { FilterIncrementSalary } from "../forms/filter-incrementsalary.form";
+import { FilterIncrementSalaryForm } from "../forms/filter-incrementsalary.form";
 
 import useSearchIncrementSalaryHook from "../hooks/searchIncrementSalary.hook";
 
 import TableComponent from "../../../common/components/table.component";
-
-let render = 0;
 
 const SearchIncrementSalary = (): React.JSX.Element => {
   const {
@@ -23,8 +21,6 @@ const SearchIncrementSalary = (): React.JSX.Element => {
     tableActions,
   } = useSearchIncrementSalaryHook();
 
-  render++;
-
   return (
     <div className="main-page">
       <div className="card-table">
@@ -34,7 +30,7 @@ const SearchIncrementSalary = (): React.JSX.Element => {
           </label>
         </div>
 
-        <FilterIncrementSalary
+        <FilterIncrementSalaryForm
           register={register}
           control={control}
           formState={formState}
@@ -56,7 +52,6 @@ const SearchIncrementSalary = (): React.JSX.Element => {
           </div>
         )}
       </div>
-      {render}
     </div>
   );
 };

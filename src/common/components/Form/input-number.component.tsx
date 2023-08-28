@@ -28,7 +28,6 @@ interface IInputnumber<T> {
   max?: number;
   useGrouping?: boolean;
   optionsRegister?: {};
-  useGrouping?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -65,7 +64,6 @@ export function InputNumberComponent({
   max,
   useGrouping = true,
   optionsRegister,
-  useGrouping,
 }: IInputnumber<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");

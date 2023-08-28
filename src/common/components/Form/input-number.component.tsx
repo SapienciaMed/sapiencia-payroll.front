@@ -27,6 +27,7 @@ interface IInputnumber<T> {
   min?: number;
   max?: number;
   optionsRegister?: {};
+  useGrouping?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -62,6 +63,7 @@ export function InputNumberComponent({
   min,
   max,
   optionsRegister,
+  useGrouping,
 }: IInputnumber<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");
@@ -113,6 +115,7 @@ export function InputNumberComponent({
               locale={locale}
               min={min}
               max={max}
+              useGrouping={useGrouping}
             />
           )}
         />

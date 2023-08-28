@@ -9,6 +9,7 @@ import {
   ITableAction,
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
+import { ISalaryIncrementFilter } from "../../../common/interfaces/payroll.interfaces";
 
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
@@ -34,10 +35,15 @@ export default function useSearchIncrementSalaryHook() {
   //useForm
   const resolver = useYupValidationResolver(filterIncrementSalarySchema);
 
-  const { register, handleSubmit, control, formState, reset } = useForm({
-    resolver,
-    mode: "all",
-  });
+  const { register, handleSubmit, control, formState, reset } =
+    useForm<ISalaryIncrementFilter>({
+      resolver,
+      mode: "all",
+      defaultValues: {
+        numberActApproval: "",
+        codCharge: null,
+      },
+    });
 
   // carga combos
   useEffect(() => {

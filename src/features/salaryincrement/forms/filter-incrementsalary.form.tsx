@@ -14,13 +14,15 @@ import {
   FieldValues,
   FormState,
   UseFormRegister,
+  Controller,
 } from "react-hook-form";
 
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
+import { ISalaryIncrementFilter } from "../../../common/interfaces/payroll.interfaces";
 
 interface IPropsFilterIncremetSalary {
   register: UseFormRegister<any>;
-  control: Control<FieldValues, any>;
+  control: Control<ISalaryIncrementFilter, any>;
   formState: FormState<FieldValues>;
   redirectCreate: () => void;
   clearFields: () => void;
@@ -60,7 +62,7 @@ export const FilterIncrementSalary = ({
         >
           <div className="grid-form-2-container gap-25">
             <SelectComponent
-              idInput={"charge"}
+              idInput={"codCharge"}
               control={control}
               errors={errors}
               data={chargesState}
@@ -70,18 +72,28 @@ export const FilterIncrementSalary = ({
               placeholder="Seleccione."
             />
 
-            <InputComponent
-              register={register}
-              idInput={"numActaAprobacion"}
-              errors={errors}
-              typeInput={"text"}
-              label={
-                <>
-                  Número de acta de aprobación <span>*</span>
-                </>
-              }
-              className="input-basic medium"
-              classNameLabel="text-black big bold"
+            <Controller
+              control={control}
+              name={"numberActApproval"}
+              render={({ field }) => {
+                return (
+                  <InputComponent
+                    idInput={field.name}
+                    errors={errors}
+                    typeInput={"text"}
+                    label={
+                      <>
+                        Número de acta de aprobación <span>*</span>
+                      </>
+                    }
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    className="input-basic medium"
+                    classNameLabel="text-black big bold"
+                  />
+                );
+              }}
             />
           </div>
           <div className="button-save-container-display m-top-20">

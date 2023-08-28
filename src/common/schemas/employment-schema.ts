@@ -162,5 +162,5 @@ export const retirementEmploymentSchema = yup.object({
 });
 
 export const filterIncrementSalarySchema = yup.object({
-  numActaAprobacion: yup.string().required("El campo es obligatorio"),
+  numberActApproval: yup.string().required("El campo es obligatorio"),
 });

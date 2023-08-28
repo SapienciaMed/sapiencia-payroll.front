@@ -14,6 +14,7 @@ import {
   FieldValues,
   FormState,
   UseFormRegister,
+  Controller,
 } from "react-hook-form";
 
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
@@ -60,7 +61,7 @@ export const FilterIncrementSalaryForm = ({
         >
           <div className="grid-form-2-container gap-25">
             <SelectComponent
-              idInput={"charge"}
+              idInput={"idCharge"}
               control={control}
               errors={errors}
               data={chargesState}
@@ -70,18 +71,28 @@ export const FilterIncrementSalaryForm = ({
               placeholder="Seleccione."
             />
 
-            <InputComponent
-              register={register}
-              idInput={"numActaAprobacion"}
-              errors={errors}
-              typeInput={"text"}
-              label={
-                <>
-                  Número de acta de aprobación <span>*</span>
-                </>
-              }
-              className="input-basic medium"
-              classNameLabel="text-black big bold"
+            <Controller
+              control={control}
+              name={"numActaAprobacion"}
+              render={({ field }) => {
+                return (
+                  <InputComponent
+                    idInput={field.name}
+                    errors={errors}
+                    typeInput={"text"}
+                    label={
+                      <>
+                        Número de acta de aprobación <span>*</span>
+                      </>
+                    }
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    className="input-basic medium"
+                    classNameLabel="text-black big bold"
+                  />
+                );
+              }}
             />
           </div>
           <div className="button-save-container-display m-top-20">

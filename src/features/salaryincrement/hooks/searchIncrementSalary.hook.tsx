@@ -37,6 +37,10 @@ export default function useSearchIncrementSalaryHook() {
   const { register, handleSubmit, control, formState, reset } = useForm({
     resolver,
     mode: "all",
+    defaultValues: {
+      numActaAprobacion: "",
+      idCharge: "",
+    },
   });
 
   // carga combos

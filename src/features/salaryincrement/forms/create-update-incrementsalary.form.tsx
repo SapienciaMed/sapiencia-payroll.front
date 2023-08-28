@@ -31,6 +31,7 @@ interface IPropsCreateUpdateIncremetSalary {
   percentageValue: boolean;
   idChargeValue: string;
 }
+
 let render = 0;
 
 export const CreateUpdateIncrementSalaryForm = ({
@@ -230,7 +231,6 @@ export const CreateUpdateIncrementSalaryForm = ({
           type="submit"
           disabled={!isValid}
         />
-        {render}
       </div>
     </FormComponent>
   );

@@ -30,7 +30,7 @@ interface IPropsFilterIncremetSalary {
   chargesState: IDropdownProps[];
 }
 
-export const FilterIncrementSalary = ({
+export const FilterIncrementSalaryForm = ({
   register,
   control,
   formState,

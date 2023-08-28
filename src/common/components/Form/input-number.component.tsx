@@ -26,6 +26,7 @@ interface IInputnumber<T> {
   locale?: string;
   min?: number;
   max?: number;
+  useGrouping?: boolean;
   optionsRegister?: {};
   useGrouping?: boolean;
 }
@@ -45,7 +46,7 @@ export function InputNumberComponent({
   idInput,
   control,
   className = "select-basic",
-  placeholder = "00",
+  placeholder = "0",
   label,
   classNameLabel = "text-main",
   direction = EDirection.column,
@@ -62,6 +63,7 @@ export function InputNumberComponent({
   locale,
   min,
   max,
+  useGrouping = true,
   optionsRegister,
   useGrouping,
 }: IInputnumber<any>): React.JSX.Element {
@@ -102,6 +104,7 @@ export function InputNumberComponent({
             <InputNumber
               id={field.name}
               onChange={(e) => field.onChange(e.value)}
+              onBlur={(e) => field.onBlur()}
               placeholder={placeholder}
               value={field.value}
               className={`${className} ${messageError() ? "p-invalid" : ""}`}

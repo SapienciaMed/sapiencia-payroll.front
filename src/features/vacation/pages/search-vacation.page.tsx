@@ -166,7 +166,7 @@ const SearchVacationPage = () => {
                   control={control}
                   errors={errors}
                   data={activeWorkerList}
-                  label={"Colaborador"}
+                  label={"Documento-Nombre del empleado"}
                   className="select-basic medium"
                   classNameLabel="text-black big bold"
                   placeholder="Seleccione"

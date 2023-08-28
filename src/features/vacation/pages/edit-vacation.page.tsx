@@ -103,7 +103,24 @@ const EditVacationPage = () => {
     );
   }, [endVacation]);
 
-  const onEdit = handleSubmit(async (data: IEditVacation) => {
+  const handleModalEdit = handleSubmit(async (data: IEditVacation) => {
+    setMessage({
+      title: "Editar licencia",
+      description: `¿Estás segur@ de editar esta licencia?`,
+      show: true,
+      OkTitle: "Aceptar",
+      onOk: () => {
+        onEdit(data);
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      cancelTitle: "Cancelar",
+      background: true,
+    });
+  });
+
+  const onEdit = async (data: IEditVacation) => {
     const dataEdit = {
       id: Number(vacation.id),
       idVacationDay: vacation?.vacationDay
@@ -136,7 +153,13 @@ const EditVacationPage = () => {
             show: true,
             OkTitle: "Aceptar",
             onOk() {
-              navigate("../");
+              navigate("../consultar");
+              setMessage((prev) => {
+                return { ...prev, show: false };
+              });
+            },
+            onClose() {
+              navigate("../consultar");
               setMessage((prev) => {
                 return { ...prev, show: false };
               });
@@ -166,7 +189,28 @@ const EditVacationPage = () => {
           background: true,
         });
       });
-  });
+  };
+  const handleCancelModal = () => {
+    setMessage({
+      title: "Cancelar editar periodo de vacaciones",
+      description: `¿Segur@ que deseas cancelar el editar de este periodo de vacaciones?`,
+      show: true,
+      OkTitle: "Aceptar",
+      onOk: () => {
+        navigate("../consultar");
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      cancelTitle: "Cancelar",
+      onCancel: () => {
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      background: true,
+    });
+  };
   return (
     <>
       <div className="container-sections-forms m-24px">
@@ -174,7 +218,7 @@ const EditVacationPage = () => {
         <FormComponent
           id="editVacationForm"
           className="form-signIn"
-          action={onEdit}
+          action={handleModalEdit}
         >
           <div className=" grid-form-3-container gap-25 container-sections-forms  m-24px">
             <div className="grid-span-3-columns container-text">
@@ -289,9 +333,7 @@ const EditVacationPage = () => {
                 value={"Cancelar"}
                 type="button"
                 className="button-clean bold"
-                action={() => {
-                  navigate("/");
-                }}
+                action={handleCancelModal}
               />
               <ButtonComponent
                 value={"Guardar"}

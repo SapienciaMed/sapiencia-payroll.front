@@ -112,11 +112,11 @@ const SearchWorker = () => {
       workerId: data.idWorker,
       period: parseInt(data.period),
     };
-    setValueRegister("startDateCompensatedDays","")
-    setValueRegister("startDate","")
-    setValueRegister("endDate","")
-    setValueRegister("totalCompensatoryDays",0)
-    setValueRegister("totalCompensatoryDays",0)
+    setValueRegister("startDateCompensatedDays", "");
+    setValueRegister("startDate", "");
+    setValueRegister("endDate", "");
+    setValueRegister("totalCompensatoryDays", 0);
+    setValueRegister("totalCompensatoryDays", 0);
     await getWorkerVacatioByParam(params)
       .then((response: ApiResponse<IVacation>) => {
         if (
@@ -174,7 +174,7 @@ const SearchWorker = () => {
 
   const calculateVacationDays = (data) => {
     const dataVacationDays = [];
-  
+
     if (data.checkEnjoyedDays) {
       dataVacationDays.push({
         codVacation: vacation.id,
@@ -185,20 +185,20 @@ const SearchWorker = () => {
         observation: data.observation,
       });
     }
-  
+
     if (data.checkCompensatoryDays) {
       dataVacationDays.push({
         codVacation: vacation.id,
         dateFrom: data.startDate,
         enjoyedDays: data.totalCompensatoryDays,
         paid: true,
-        observation: data.checkEnjoyedDays ?'':data.observation,
+        observation: data.checkEnjoyedDays ? "" : data.observation,
       });
     }
-  
+
     return dataVacationDays;
   };
-  
+
   const showMessage = (response) => {
     if (response && response?.operation?.code === EResponseCodes.OK) {
       setMessage({
@@ -233,7 +233,7 @@ const SearchWorker = () => {
       });
     }
   };
-  
+
   const handleCreateVacation = async (dataVacation) => {
     try {
       const response = await createVacation(dataVacation);
@@ -242,7 +242,7 @@ const SearchWorker = () => {
       showMessage({}); // Handle error here
     }
   };
-  
+
   const onCreate = handleSubmit(async (data: IWorkersVacation) => {
     const totalDaysEnjoyed = Number(data?.totalDaysEnjoyed) || 0;
     const totalCompensatoryDays = Number(data?.totalCompensatoryDays) || 0;
@@ -251,48 +251,66 @@ const SearchWorker = () => {
     let avaibleDays = Number(vacation?.available) || 0;
     let formedDays = Number(vacation?.periodFormer) || 0;
     let refundDays = Number(vacation?.refund) || 0;
-  
-    // Handle adjustments to enjoyedDays, formedDays, refundDays
-  
-    avaibleDays -= enjoyedDays;
-  
+    let days = Number(vacation?.days) || 0;
+
+    // Restar los días de formedDays primero
+    if (enjoyedDays >= formedDays) {
+      enjoyedDays -= formedDays;
+      formedDays = 0;
+    } else {
+      formedDays -= enjoyedDays;
+      enjoyedDays = 0;
+    }
+
+    // Restar los días de refundDays si es necesario
+    if (enjoyedDays >= refundDays) {
+      enjoyedDays -= refundDays;
+      refundDays = 0;
+    } else {
+      refundDays -= enjoyedDays;
+      enjoyedDays = 0;
+    }
+
+    // Restar los días restantes de la categoría 'remainingDays'
+    if (enjoyedDays >= days) {
+      enjoyedDays -= days;
+      days = 0;
+    } else {
+      days -= enjoyedDays;
+      enjoyedDays = 0;
+    }
+
+    // La suma de los días disponibles es la suma que queda de todas las categorías
+    avaibleDays = formedDays + refundDays + days;
+
     const dataVacation = {
       vacationDay: calculateVacationDays(data),
       enjoyedDays: totalEnjoyedDays,
       avaibleDays,
       refundDays,
       formedDays,
+      days,
       periodId: vacation?.id,
     };
 
     setMessage({
       title: "Crear periodo de vacaciones",
-      description:
-        "¿Estás segur@ de crear el periodo de vacaciones?",
+      description: "¿Estás segur@ de crear el periodo de vacaciones?",
       show: true,
       OkTitle: "Aceptar",
       onOk() {
-       handleCreateVacation(dataVacation);
+        handleCreateVacation(dataVacation);
       },
       background: true,
-      cancelTitle:"cancelar"
-
+      cancelTitle: "cancelar",
     });
-  
-    
   });
   const vacationData = [
     { title: "Saldo anterior", value: `${vacation?.periodFormer ?? 0}` },
     { title: "Días ganados", value: `${vacation?.days ?? 0}` },
     {
       title: "Saldo actual",
-      value: `${
-        vacation?.available
-          ? Number(vacation?.available) +
-            Number(vacation?.periodFormer ?? 0) +
-            Number(vacation?.refund ?? 0)
-          : 0
-      }`,
+      value: `${vacation?.available ?? 0}`,
     },
   ];
 
@@ -391,9 +409,9 @@ const SearchWorker = () => {
               minDate={startVacation}
               maxDate={addBusinessDays(
                 startVacation || new Date(),
-                ((Number(vacation?.available || 0) +
+                Number(vacation?.available || 0) +
                   Number(vacation?.periodFormer || 0) +
-                  (vacation?.refund || 0)))
+                  (vacation?.refund || 0)
               )}
             />
             <Controller

@@ -376,7 +376,36 @@ export interface IRetirementEmployment {
   state: string;
 }
 
+export interface ISalaryIncrement {
+  id?: number;
+  codCharge: number;
+  effectiveDate: DateTime;
+  numberActApproval: string;
+  porcentualIncrement: boolean;
+  incrementValue: number;
+  previousSalary: number;
+  newSalary: number;
+  observation?: string;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+  charge?: ICharge;
+}
+
 export interface ISalaryIncrementFilter {
   codCharge?: number;
   numberActApproval: string;
+}
+
+export interface ISalaryHistory {
+  id?: number;
+  codEmployment: number;
+  codIncrement: number;
+  previousSalary?: number;
+  salary: number;
+  validity: boolean;
+  salaryIncrement: ISalaryIncrement;
+  effectiveDate: DateTime;
+  employment: IEmploymentWorker;
 }

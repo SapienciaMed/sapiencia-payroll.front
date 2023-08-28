@@ -9,7 +9,10 @@ import {
   ITableAction,
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
-import { ISalaryIncrementFilter } from "../../../common/interfaces/payroll.interfaces";
+import {
+  ISalaryHistory,
+  ISalaryIncrementFilter,
+} from "../../../common/interfaces/payroll.interfaces";
 
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
@@ -82,39 +85,48 @@ export default function useSearchIncrementSalaryHook() {
     alert("Detalle");
   };
 
-  const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
+  const onSubmit = handleSubmit(async (data: ISalaryIncrementFilter) => {
     setshowTable(true);
+
+    if (tableComponentRef.current) {
+      tableComponentRef.current.loadData(data);
+    }
   });
 
   //variables
-  const tableColumns: ITableElement<any>[] = [
+  const tableColumns: ITableElement<ISalaryHistory>[] = [
     {
-      fieldName: "",
+      fieldName: "employment.worker.numberDocument",
       header: "Número de documento",
       renderCell: (row) => {
-        return <>35434545</>;
+        return <>{row.employment.worker.numberDocument}</>;
       },
     },
     {
-      fieldName: "",
+      fieldName: "row.employment.worker",
       header: "Nombre completo",
       renderCell: (row) => {
-        return <>Jhon Doe</>;
+        return (
+          <>
+            {row.employment.worker.firstName} {row.employment.worker.secondName}{" "}
+            {row.employment.worker.surname}{" "}
+            {row.employment.worker.secondSurname}
+          </>
+        );
       },
     },
     {
-      fieldName: "",
+      fieldName: "salaryIncrement.charge.name",
       header: "Cargo",
       renderCell: (row) => {
-        return <>Profesional universitario</>;
+        return <>{row.salaryIncrement.charge.name}</>;
       },
     },
     {
-      fieldName: "",
+      fieldName: "salaryIncrement.numberActApproval",
       header: "Número de acta de aprobación",
       renderCell: (row) => {
-        return <>28 DE 26 DE ENERO DE 2023</>;
+        return <>{row.salaryIncrement.numberActApproval}</>;
       },
     },
   ];

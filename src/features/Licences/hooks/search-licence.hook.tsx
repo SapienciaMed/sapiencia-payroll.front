@@ -43,20 +43,20 @@ export default function useSearchLicenceData() {
 
       const dataInformation: DataItem[] = [
         {
-          title: "Tipo y # documento",
+          title: <span className="text-left">Tipo y # documento</span>,
           value: `${data[0].employment.worker.typeDocument} ${data[0].employment.worker.numberDocument}`,
         },
         {
-          title: "Nombre empleado",
+          title: <span className="text-left">Nombre empleado</span>,
           value: `${data[0].employment.worker.firstName} ${data[0].employment.worker.secondName} ${data[0].employment.worker.surname} ${data[0].employment.worker.secondSurname}`,
         },
 
         {
-          title: "Tipo de licencia",
+          title: <span className="text-left">Tipo de licencia</span>,
           value: data[0].licenceType[0].name,
         },
         {
-          title: "Estado",
+          title: <span className="text-left">Estado</span>,
           value: data[0].licenceState,
         },
       ];
@@ -85,7 +85,7 @@ export default function useSearchLicenceData() {
           <div className="container-modal_description">
             <ResponsiveTable data={dataResolution} />
             <div>
-              <h3 className="text-left  padding-left_16">Información</h3>
+              <h3 className="">Información</h3>
               <ResponsiveTable data={dataInformation} />
             </div>
             <div>

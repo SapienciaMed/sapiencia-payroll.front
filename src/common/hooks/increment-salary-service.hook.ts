@@ -1,11 +1,6 @@
 import { EResponseCodes } from "../constants/api.enum";
 
-import {
-  ISalaryIncrement,
-  IIncapacity,
-  IIncapacityTypes,
-  ISalaryHistory,
-} from "../interfaces/payroll.interfaces";
+import { ISalaryIncrement } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 
 import useCrudService from "./crud-service.hook";
@@ -61,22 +56,8 @@ export function useIncrementSalaryService() {
     }
   }
 
-  async function typeIncapacity(): Promise<ApiResponse<IIncapacityTypes[]>> {
-    try {
-      const endpoint: string = `/incapacity-types`;
-      return await get(`${authUrl}${endpoint}`);
-    } catch (error) {
-      return new ApiResponse(
-        {} as IIncapacityTypes[],
-        EResponseCodes.FAIL,
-        "Error no controlado"
-      );
-    }
-  }
-
   return {
     createIncrementSalary,
-    typeIncapacity,
     getByIdIncrementSalary,
     updateIncrementSalary,
   };

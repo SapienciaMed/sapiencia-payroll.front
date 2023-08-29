@@ -1,7 +1,7 @@
 import React from "react";
 
 export interface DataItem {
-  title: string;
+  title: string | React.JSX.Element;
   value: string | React.JSX.Element[];
 }
 

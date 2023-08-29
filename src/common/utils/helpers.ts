@@ -17,48 +17,50 @@ export function calculateDifferenceDays(
   const currentDate = dateEnd ? new Date(dateEnd) : new Date();
   const differenceInMilliseconds =
     currentDate.getTime() - new Date(dateInit).getTime();
-  const differenceInDays = (differenceInMilliseconds / (24 * 60 * 60 * 1000)) + 1;
+  const differenceInDays = differenceInMilliseconds / (24 * 60 * 60 * 1000) + 1;
   return Math.floor(differenceInDays);
 }
 
 export function addCalendarDays(date, daysToAdd) {
-  const oneDay = 24 * 60 * 60 * 1000; 
+  const oneDay = 24 * 60 * 60 * 1000;
   const inputDate = new Date(date);
-  const newDate = new Date(inputDate.getTime() + ((daysToAdd - 1) * oneDay));
+  const newDate = new Date(inputDate.getTime() + (daysToAdd - 1) * oneDay);
 
   return newDate;
 }
 
-  
-  export function calculateBusinessDays(startDate, endDate, holidays = []) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-  
-    const oneDay = 24 * 60 * 60 * 1000;
-    let businessDays = 0;
-  
-    // Incluye el último día en el cálculo si es hábil y no es festivo
-    while (start <= end) {
-      if (isBusinessDay(start) && !holidays.some((holiday) => isSameDay(holiday, start))) {
-        businessDays++;
-      }
-      start.setTime(start.getTime() + oneDay);
+export function calculateBusinessDays(startDate, endDate, holidays = []) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  const oneDay = 24 * 60 * 60 * 1000;
+  let businessDays = 0;
+
+  // Incluye el último día en el cálculo si es hábil y no es festivo
+  while (start <= end) {
+    if (
+      isBusinessDay(start) &&
+      !holidays.some((holiday) => isSameDay(holiday, start))
+    ) {
+      businessDays++;
     }
-  
-    return businessDays;
+    start.setTime(start.getTime() + oneDay);
   }
-  
-  function isSameDay(date, nextDate) {
-    return (
-      date.getFullYear() === nextDate.getFullYear() &&
-      date.getMonth() === nextDate.getMonth() &&
-      date.getDate() === nextDate.getDate()
-      );
-    }
-    function isBusinessDay(date) {
-      const dayOfWeek = date.getDay(); // 0 (Sunday) to 6 (Saturday)
-      return dayOfWeek !== 0 && dayOfWeek !== 6; // Excludes weekends (Saturday and Sunday)
-    }
+
+  return businessDays;
+}
+
+function isSameDay(date, nextDate) {
+  return (
+    date.getFullYear() === nextDate.getFullYear() &&
+    date.getMonth() === nextDate.getMonth() &&
+    date.getDate() === nextDate.getDate()
+  );
+}
+function isBusinessDay(date) {
+  const dayOfWeek = date.getDay(); // 0 (Sunday) to 6 (Saturday)
+  return dayOfWeek !== 0 && dayOfWeek !== 6; // Excludes weekends (Saturday and Sunday)
+}
 
 export function calculateMayorEdad(birthDate) {
   const birthDateFormated = new Date(birthDate);
@@ -86,7 +88,6 @@ export function formaterNumberToCurrency(number) {
   return formatter.format(number);
 }
 
-
 export function addBusinessDays(startDate, daysToAdd, holidays = []) {
   const oneDay = 24 * 60 * 60 * 1000; // Un día en milisegundos
   let currentDate = new Date(startDate);
@@ -102,18 +103,38 @@ export function addBusinessDays(startDate, daysToAdd, holidays = []) {
     if (isBusinessDay(currentDate) && !isHoliday(currentDate)) {
       daysAdded++;
     }
-    if(daysAdded < daysToAdd){
-    currentDate.setTime(currentDate.getTime() + oneDay);
+    if (daysAdded < daysToAdd) {
+      currentDate.setTime(currentDate.getTime() + oneDay);
     }
   }
 
   return currentDate;
 }
 
-export function removeEmptySpace(phrase:string){
-  if (!phrase){
-    return ''
+export function removeEmptySpace(phrase: string) {
+  if (!phrase) {
+    return "";
   }
- const wordsArray = phrase.split(' ')
- return wordsArray.filter((word)=> word !== '')
+  const wordsArray = phrase.split(" ");
+  return wordsArray.filter((word) => word !== "");
+}
+
+export function calculateIncrement(
+  valueOriginal: number,
+  percentageValue: number
+) {
+  const factorIncrement: number = percentageValue / 100;
+
+  const increment: number = valueOriginal * factorIncrement;
+
+  const newValue: number = valueOriginal + increment;
+
+  return newValue;
+}
+
+export function caculatePorcentual(valueOriginal: number, valueNew: number) {
+  const porcentajeAumento: number =
+    ((valueNew - valueOriginal) / valueOriginal) * 100;
+
+  return porcentajeAumento;
 }

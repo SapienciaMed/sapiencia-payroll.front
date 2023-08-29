@@ -6,23 +6,41 @@ import {
   FormComponent,
   SelectComponent,
   InputComponent,
+  ButtonComponent,
 } from "../../../common/components/Form";
 
-import { Control, FieldErrors, FieldValues } from "react-hook-form";
+import {
+  Control,
+  FieldValues,
+  FormState,
+  UseFormRegister,
+  Controller,
+} from "react-hook-form";
+
+import { IDropdownProps } from "../../../common/interfaces/select.interface";
+import { ISalaryIncrementFilter } from "../../../common/interfaces/payroll.interfaces";
 
 interface IPropsFilterIncremetSalary {
+  register: UseFormRegister<any>;
+  control: Control<ISalaryIncrementFilter, any>;
+  formState: FormState<FieldValues>;
   redirectCreate: () => void;
+  clearFields: () => void;
   onSubmit: () => Promise<void>;
-  control: Control<FieldValues, any>;
-  errors: FieldErrors<FieldValues>;
+  chargesState: IDropdownProps[];
 }
 
-export const FilterIncrementSalary = ({
-  redirectCreate,
+export const FilterIncrementSalaryForm = ({
+  register,
   control,
-  errors,
+  formState,
+  redirectCreate,
+  clearFields,
   onSubmit,
+  chargesState,
 }: IPropsFilterIncremetSalary): React.JSX.Element => {
+  const { errors, isValid } = formState;
+
   return (
     <div className="container-sections-forms">
       <div className="title-area">
@@ -44,27 +62,51 @@ export const FilterIncrementSalary = ({
         >
           <div className="grid-form-2-container gap-25">
             <SelectComponent
-              idInput={"codEmployment"}
+              idInput={"codCharge"}
               control={control}
               errors={errors}
-              data={[]}
+              data={chargesState}
               label={<>Cargos</>}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               placeholder="Seleccione."
             />
 
-            <InputComponent
-              idInput={""}
-              errors={errors}
-              typeInput={"text"}
-              label={
-                <>
-                  Número de acta de aprobación <span>*</span>
-                </>
-              }
-              className="input-basic medium"
-              classNameLabel="text-black big bold"
+            <Controller
+              control={control}
+              name={"numberActApproval"}
+              render={({ field }) => {
+                return (
+                  <InputComponent
+                    idInput={field.name}
+                    errors={errors}
+                    typeInput={"text"}
+                    label={
+                      <>
+                        Número de acta de aprobación <span>*</span>
+                      </>
+                    }
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    className="input-basic medium"
+                    classNameLabel="text-black big bold"
+                  />
+                );
+              }}
+            />
+          </div>
+          <div className="button-save-container-display m-top-20">
+            <ButtonComponent
+              value={"Limpiar campos"}
+              className="button-clean bold"
+              type="button"
+              action={clearFields}
+            />
+            <ButtonComponent
+              value={"Buscar"}
+              className="button-save disabled-black big"
+              disabled={!isValid}
             />
           </div>
         </FormComponent>

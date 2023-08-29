@@ -27,7 +27,17 @@ function SalaryIncrementRoutes() {
         path={"/crear"}
         element={
           <PrivateRoute
-            element={<CreateUpdateIncrementSalary />}
+            element={<CreateUpdateIncrementSalary action={"new"} />}
+            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+          />
+        }
+      />
+
+      <Route
+        path={"/edit/:id"}
+        element={
+          <PrivateRoute
+            element={<CreateUpdateIncrementSalary action={"edit"} />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

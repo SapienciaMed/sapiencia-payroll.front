@@ -160,7 +160,7 @@ export const WithDrawalStaffPage = () => {
                     control={controlStaff}
                     errors={errorsStaff}
                     data={activeWorkerList}
-                    label={<>CC - Nro documento.</>}
+                    label={<>Documento - Nombre del empleado.</>}
                     className="select-basic medium"
                     classNameLabel="text-black big bold"
                     placeholder="Seleccione."

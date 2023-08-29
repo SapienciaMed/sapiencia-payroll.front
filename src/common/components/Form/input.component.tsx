@@ -11,7 +11,7 @@ interface IInputProps<T> {
   register?: UseFormRegister<T>;
   className?: string;
   placeholder?: string;
-  value?: string;
+  value?: string | boolean;
   defaultValue?: string;
   label?: string | React.JSX.Element;
   classNameLabel?: string;
@@ -20,11 +20,13 @@ interface IInputProps<T> {
   errors?: any;
   disabled?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   id?: string;
   fieldArray?: boolean;
   optionsRegister?: {};
   max?: number;
-  min?:number;
+  min?: number;
+  checked?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -47,11 +49,13 @@ function InputElement({
   value,
   disabled,
   onChange,
+  onBlur,
   defaultValue,
   id,
   optionsRegister,
   max,
-  min
+  min,
+  checked,
 }): React.JSX.Element {
   return (
     <input
@@ -64,9 +68,11 @@ function InputElement({
       defaultValue={defaultValue}
       disabled={disabled}
       onChange={onChange}
+      onBlur={onBlur}
       value={value}
       max={max}
       min={min}
+      checked={checked}
     />
   );
 }
@@ -85,12 +91,14 @@ export function InputComponent({
   errors,
   disabled,
   onChange,
+  onBlur,
   defaultValue,
   id,
   fieldArray,
   optionsRegister = {},
   max,
-  min
+  min,
+  checked,
 }: IInputProps<any>): React.JSX.Element {
   const messageError = () => {
     // console.log(fieldArray)
@@ -132,11 +140,13 @@ export function InputComponent({
           value={value}
           disabled={disabled}
           onChange={onChange}
+          onBlur={onBlur}
           defaultValue={defaultValue}
           id={id}
           optionsRegister={optionsRegister}
           max={max}
           min={min}
+          checked={checked}
         />
         {messageError() && (
           <MdOutlineError

@@ -1,12 +1,25 @@
 import React from "react";
 
-import { FilterIncrementSalary } from "../forms/filter-incrementsalary.form";
+import { FilterIncrementSalaryForm } from "../forms/filter-incrementsalary.form";
 
 import useSearchIncrementSalaryHook from "../hooks/searchIncrementSalary.hook";
 
+import TableComponent from "../../../common/components/table.component";
+
 const SearchIncrementSalary = (): React.JSX.Element => {
-  const { redirectCreate, onSubmit, control, errors } =
-    useSearchIncrementSalaryHook();
+  const {
+    register,
+    control,
+    formState,
+    onSubmit,
+    redirectCreate,
+    clearFields,
+    showTable,
+    charges,
+    tableComponentRef,
+    tableColumns,
+    tableActions,
+  } = useSearchIncrementSalaryHook();
 
   return (
     <div className="main-page">
@@ -17,12 +30,27 @@ const SearchIncrementSalary = (): React.JSX.Element => {
           </label>
         </div>
 
-        <FilterIncrementSalary
-          redirectCreate={redirectCreate}
+        <FilterIncrementSalaryForm
+          register={register}
           control={control}
-          errors={errors}
+          formState={formState}
+          redirectCreate={redirectCreate}
+          clearFields={clearFields}
           onSubmit={onSubmit}
+          chargesState={charges}
         />
+
+        {showTable && (
+          <div className="container-sections-forms">
+            <TableComponent
+              ref={tableComponentRef}
+              url={`${process.env.urlApiPayroll}/api/v1/salaryIncrease/get-paginated`}
+              columns={tableColumns}
+              actions={tableActions}
+              isShowModal={false}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -119,7 +119,7 @@ export interface IGetVinculation {
   dateModified?: DateTime;
   userCreate?: string;
   dateCreate?: DateTime;
-  employment: IEmployment
+  employment: IEmployment;
 }
 
 export interface ITypesContracts {
@@ -338,7 +338,7 @@ export interface ILicenceType {
   id?: number;
   name: string;
   numberDays: number;
-  daysType:string;
+  daysType: string;
 }
 
 export interface ILicenceFilters {
@@ -374,4 +374,35 @@ export interface IRetirementEmployment {
   observation: string;
   idEmployment: number;
   state: string;
+}
+
+export interface ISalaryIncrement {
+  id?: number;
+  codCharge: number;
+  effectiveDate: DateTime;
+  numberActApproval: string;
+  porcentualIncrement: boolean;
+  incrementValue: number;
+  previousSalary: number;
+  newSalary: number;
+  observation?: string;
+  porcentualValue: number;
+  charge?: ICharge;
+}
+
+export interface ISalaryIncrementFilter {
+  codCharge?: number;
+  numberActApproval: string;
+}
+
+export interface ISalaryHistory {
+  id?: number;
+  codEmployment: number;
+  codIncrement: number;
+  previousSalary?: number;
+  salary: number;
+  validity: boolean;
+  salaryIncrement: ISalaryIncrement;
+  effectiveDate: DateTime;
+  employment: IEmploymentWorker;
 }

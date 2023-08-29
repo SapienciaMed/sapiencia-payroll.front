@@ -53,7 +53,7 @@ function App() {
               />
               <Route path={"/nomina/retiro/*"} element={<WithDrawalRoutes />} />
               <Route
-                path={"/nomina/increment/salary/*"}
+                path={"/nomina/incremento/salario/*"}
                 element={<SalaryIncrementRoutes />}
               />
             </Routes>

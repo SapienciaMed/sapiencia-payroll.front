@@ -25,11 +25,9 @@ const SearchLicencePage = () => {
     codEmployment,
     idLicenceType,
     stateLicence,
-    stateLicence,
   } = useSearchLicenceData();
   const { activeWorkerList, licenceTypesList, listLicencesStates } =
     useLicenceData();
-  console.log(stateLicence);
   return (
     <>
       <div className="main-page">

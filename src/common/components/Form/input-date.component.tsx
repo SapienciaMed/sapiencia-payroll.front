@@ -22,6 +22,8 @@ interface IDateProps<T> {
   maxDate?: Date;
   minDate?: Date;
   fieldArray?: boolean;
+  optionsRegister?: {};
+  shouldUnregister?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -51,7 +53,9 @@ export function DatePickerComponent({
   dateFormat,
   disabled,
   disabledDates,
-  disabledDays
+  disabledDays,
+  optionsRegister,
+  shouldUnregister,
 }: IDateProps<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");
@@ -85,6 +89,8 @@ export function DatePickerComponent({
         <Controller
           name={idInput}
           control={control}
+          rules={optionsRegister}
+          shouldUnregister={shouldUnregister}
           render={({ field }) => (
             <Calendar
               id={field.name}
@@ -101,6 +107,7 @@ export function DatePickerComponent({
               showButtonBar
               value={field.value && new Date(field.value)}
               onChange={(e) => field.onChange(e.value)}
+              onBlur={(e) => field.onBlur()}
               inputStyle={{ borderRight: "none" }}
               minDate={minDate}
               maxDate={maxDate}

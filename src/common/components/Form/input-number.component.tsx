@@ -28,6 +28,7 @@ interface IInputnumber<T> {
   max?: number;
   useGrouping?: boolean;
   optionsRegister?: {};
+  shouldUnregister?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -64,6 +65,7 @@ export function InputNumberComponent({
   max,
   useGrouping = true,
   optionsRegister,
+  shouldUnregister,
 }: IInputnumber<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");
@@ -98,6 +100,7 @@ export function InputNumberComponent({
           name={idInput}
           control={control}
           rules={optionsRegister}
+          shouldUnregister={shouldUnregister}
           render={({ field }) => (
             <InputNumber
               id={field.name}

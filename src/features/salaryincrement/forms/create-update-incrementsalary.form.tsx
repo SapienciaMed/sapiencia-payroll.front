@@ -8,6 +8,7 @@ import {
   ButtonComponent,
   LabelComponent,
   TextAreaComponent,
+  DatePickerComponent,
 } from "../../../common/components/Form";
 
 import {
@@ -21,15 +22,18 @@ import {
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 import { EDirection } from "../../../common/constants/input.enum";
 
+import { ISalaryIncrement } from "../../../common/interfaces/payroll.interfaces";
+
 interface IPropsCreateUpdateIncremetSalary {
   register: UseFormRegister<any>;
-  control: Control<FieldValues, any>;
+  control: Control<ISalaryIncrement, any>;
   formState: FormState<FieldValues>;
   redirectCancel: () => void;
   onSubmit: () => Promise<void>;
   chargesState: IDropdownProps[];
   percentageValue: boolean;
-  idChargeValue: string;
+  idChargeValue: number;
+  action?: string;
 }
 
 let render = 0;
@@ -43,6 +47,7 @@ export const CreateUpdateIncrementSalaryForm = ({
   chargesState,
   percentageValue,
   idChargeValue,
+  action,
 }: IPropsCreateUpdateIncremetSalary): React.JSX.Element => {
   render++;
 
@@ -64,7 +69,7 @@ export const CreateUpdateIncrementSalaryForm = ({
         <div>
           <div className="grid-form-2-container gap-25">
             <SelectComponent
-              idInput={"idCharge"}
+              idInput={"codCharge"}
               control={control}
               errors={errors}
               data={chargesState}
@@ -79,7 +84,7 @@ export const CreateUpdateIncrementSalaryForm = ({
             />
 
             <InputNumberComponent
-              idInput="salaryActual"
+              idInput="previousSalary"
               control={control}
               label={<>Salario actual</>}
               errors={errors}
@@ -100,7 +105,7 @@ export const CreateUpdateIncrementSalaryForm = ({
           <div className="container-sections-forms">
             <div className="title-area">
               <label className="text-black extra-large bold">
-                Actualizar incremento de salaro
+                Actualizar incremento de salario
               </label>
             </div>
 
@@ -114,7 +119,8 @@ export const CreateUpdateIncrementSalaryForm = ({
               >
                 <Controller
                   control={control}
-                  name={"numActaAprobacion"}
+                  name={"numberActApproval"}
+                  shouldUnregister={true}
                   render={({ field }) => {
                     return (
                       <InputComponent
@@ -138,7 +144,8 @@ export const CreateUpdateIncrementSalaryForm = ({
 
                 <Controller
                   control={control}
-                  name={"porcentaje"}
+                  name={"porcentualIncrement"}
+                  shouldUnregister={true}
                   render={({ field }) => {
                     return (
                       <div className="check-increment_porcentaje">
@@ -149,6 +156,8 @@ export const CreateUpdateIncrementSalaryForm = ({
                           direction={EDirection.row}
                           onChange={field.onChange}
                           onBlur={field.onBlur}
+                          value={field.value}
+                          checked={field.value}
                           className="checkbox-basic"
                           classNameLabel="text-black big bold"
                         >
@@ -165,13 +174,9 @@ export const CreateUpdateIncrementSalaryForm = ({
 
                 {percentageValue && (
                   <InputNumberComponent
-                    idInput="porcentajeIncremento"
+                    idInput="porcentualValue"
                     control={control}
-                    label={
-                      <>
-                        Porcentaje del incremento <span>*</span>
-                      </>
-                    }
+                    label={<>Porcentaje del incremento</>}
                     errors={errors}
                     classNameLabel="text-black big bold"
                     className="inputNumber-basic medium"
@@ -197,6 +202,47 @@ export const CreateUpdateIncrementSalaryForm = ({
                   locale="es-CO"
                   minFractionDigits={2}
                   maxFractionDigits={2}
+                  shouldUnregister={true}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="grid-form-2-container gap-25 p-top-20">
+                <DatePickerComponent
+                  idInput={"effectiveDate"}
+                  control={control}
+                  label={
+                    <>
+                      Fecha efectiva <span>*</span>
+                    </>
+                  }
+                  errors={errors}
+                  classNameLabel="text-black big bold"
+                  className="dataPicker-basic  medium "
+                  // disabled={disabledFields}
+                  placeholder="DD/MM/YYYY"
+                  dateFormat="dd/mm/yy"
+                  minDate={new Date()}
+                  shouldUnregister={true}
+                />
+
+                <InputNumberComponent
+                  idInput="incrementValue"
+                  control={control}
+                  label={
+                    <>
+                      Incremento <span>*</span>
+                    </>
+                  }
+                  errors={errors}
+                  classNameLabel="text-black big bold"
+                  className="inputNumber-basic medium"
+                  disabled={true}
+                  mode="currency"
+                  currency="COP"
+                  locale="es-CO"
+                  minFractionDigits={2}
+                  maxFractionDigits={2}
                 />
               </div>
             </div>
@@ -211,6 +257,7 @@ export const CreateUpdateIncrementSalaryForm = ({
               disabled={false}
               errors={errors}
               rows={5}
+              optionsRegister={{ shouldUnregister: true }}
             />
             <div className="text-right">
               <span className="text-span ">Max. {500} carácteres</span>
@@ -226,7 +273,7 @@ export const CreateUpdateIncrementSalaryForm = ({
           action={redirectCancel}
         />
         <ButtonComponent
-          value={"Guardar"}
+          value={action === "edit" ? "Editar" : "Guardar"}
           className="button-save disabled-black big"
           type="submit"
           disabled={!isValid}

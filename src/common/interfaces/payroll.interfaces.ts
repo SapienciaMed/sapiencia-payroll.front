@@ -386,10 +386,7 @@ export interface ISalaryIncrement {
   previousSalary: number;
   newSalary: number;
   observation?: string;
-  userModified?: string;
-  dateModified?: DateTime;
-  userCreate?: string;
-  dateCreate?: DateTime;
+  porcentualValue: number;
   charge?: ICharge;
 }
 

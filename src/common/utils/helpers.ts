@@ -131,3 +131,10 @@ export function calculateIncrement(
 
   return newValue;
 }
+
+export function caculatePorcentual(valueOriginal: number, valueNew: number) {
+  const porcentajeAumento: number =
+    ((valueNew - valueOriginal) / valueOriginal) * 100;
+
+  return porcentajeAumento;
+}

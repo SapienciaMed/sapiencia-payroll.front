@@ -4,7 +4,13 @@ import { CreateUpdateIncrementSalaryForm } from "../forms/create-update-incremen
 
 import useCreateUpdateIncrementSalary from "../hooks/createUpdateIncrementSalary.hook";
 
-const CreateUpdateIncrementSalary = (): React.JSX.Element => {
+interface IPropsCreateUpdateIncrementSalary {
+  action: string;
+}
+
+const CreateUpdateIncrementSalary = ({
+  action,
+}: IPropsCreateUpdateIncrementSalary): React.JSX.Element => {
   const {
     register,
     control,
@@ -12,16 +18,18 @@ const CreateUpdateIncrementSalary = (): React.JSX.Element => {
     onSubmit,
     redirectCancel,
     charges,
-    porcentaje,
-    idCharge,
-  } = useCreateUpdateIncrementSalary();
+    porcentualIncrement,
+    codCharge,
+  } = useCreateUpdateIncrementSalary(action);
 
   return (
     <div className="main-page">
       <div className="card-table">
         <div className="title-area">
           <label className="text-black extra-large bold">
-            Crear incremento de salario
+            {action === "edit"
+              ? "Editar incremento de salario"
+              : "Crear incremento de salario"}
           </label>
         </div>
 
@@ -32,8 +40,9 @@ const CreateUpdateIncrementSalary = (): React.JSX.Element => {
           onSubmit={onSubmit}
           redirectCancel={redirectCancel}
           chargesState={charges}
-          percentageValue={porcentaje}
-          idChargeValue={idCharge}
+          percentageValue={porcentualIncrement}
+          idChargeValue={codCharge}
+          action={action}
         />
       </div>
     </div>

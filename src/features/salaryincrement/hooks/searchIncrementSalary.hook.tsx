@@ -1,9 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
+import { DateTime } from "luxon";
+
 import { filterIncrementSalarySchema } from "../../../common/schemas";
+
+import { formaterNumberToCurrency } from "../../../common/utils/helpers";
 
 import {
   ITableAction,
@@ -13,15 +17,24 @@ import {
   ISalaryHistory,
   ISalaryIncrementFilter,
 } from "../../../common/interfaces/payroll.interfaces";
-
+import { IDropdownProps } from "../../../common/interfaces/select.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
-import { IDropdownProps } from "../../../common/interfaces/select.interface";
+import { TextAreaComponent } from "../../../common/components/Form";
+import {
+  DataItem,
+  ResponsiveTable,
+} from "../../../common/components/Form/table-detail.component";
+
+import { AppContext } from "../../../common/contexts/app.context";
 
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 
 export default function useSearchIncrementSalaryHook() {
+  // Context
+  const { setMessage } = useContext(AppContext);
+
   //custom hooks
   const { getCharges } = usePayrollService();
 
@@ -81,8 +94,80 @@ export default function useSearchIncrementSalaryHook() {
     setshowTable(false);
   };
 
-  const showDetailIncrementSalary = (id?: number) => {
-    alert("Detalle");
+  const showDetailIncrementSalary = (row: ISalaryHistory) => {
+    if (row) {
+      const infoPersonalIncrement: DataItem[] = [
+        {
+          title: "Número de documento",
+          value: row.employment.worker.numberDocument,
+        },
+        {
+          title: "Nombre empleado",
+          value: `${row.employment.worker.firstName} ${
+            row.employment.worker.secondName
+          }${" "}
+          ${row.employment.worker.surname}${" "}
+          ${row.employment.worker.secondSurname}`,
+        },
+        {
+          title: "Cargo",
+          value: row.salaryIncrement.charge.name,
+        },
+        {
+          title: "Número de acta de aprobación",
+          value: row.salaryIncrement.numberActApproval,
+        },
+      ];
+
+      const detailIncrement: DataItem[] = [
+        {
+          title: "Salario anterior",
+          value: String(
+            formaterNumberToCurrency(row.salaryIncrement.previousSalary)
+          ),
+        },
+        {
+          title: "Salario actual",
+          value: String(
+            formaterNumberToCurrency(row.salaryIncrement.newSalary)
+          ),
+        },
+        {
+          title: "Fecha efectiva",
+          value: DateTime.fromISO(row.effectiveDate).toLocaleString(),
+        },
+      ];
+
+      return setMessage({
+        title: "Detalle del incremento",
+        show: true,
+        OkTitle: "Aceptar",
+        description: (
+          <div className="container-modal_description">
+            <ResponsiveTable data={infoPersonalIncrement} />
+            <div>
+              <h3 className="text-left  padding-left_16">
+                Detalle del incremento
+              </h3>
+              <ResponsiveTable data={detailIncrement} />
+            </div>
+            <TextAreaComponent
+              label={"Observaciones"}
+              idInput=""
+              value={`${row.salaryIncrement.observation}`}
+              disabled={true}
+              className="text-area-basic"
+              classNameLabel="text-black big bold"
+              rows={5}
+            />
+          </div>
+        ),
+        size: "large",
+        background: true,
+      });
+    } else {
+      return;
+    }
   };
 
   const onSubmit = handleSubmit(async (data: ISalaryIncrementFilter) => {
@@ -131,17 +216,17 @@ export default function useSearchIncrementSalaryHook() {
     },
   ];
 
-  const tableActions: ITableAction<any>[] = [
+  const tableActions: ITableAction<ISalaryHistory>[] = [
     {
       icon: "Detail",
       onClick: (row) => {
-        showDetailIncrementSalary(1);
+        showDetailIncrementSalary(row);
       },
     },
     {
       icon: "Edit",
       onClick: (row) => {
-        navigate(`../edit/1`);
+        navigate(`../edit/${row.salaryIncrement.id}`);
       },
     },
   ];

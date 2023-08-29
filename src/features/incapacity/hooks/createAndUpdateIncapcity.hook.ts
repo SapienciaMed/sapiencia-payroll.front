@@ -127,7 +127,7 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     return true;
   };
 
-  const onSubmit = handleSubmit(async (data: IIncapacity) => {
+  const handleCreateUpdateLicense = async (data: IIncapacity) => {
     const response =
       action !== "new"
         ? await updateIncapacity(data)
@@ -138,6 +138,23 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     } else {
       handleModalError(response.operation.message);
     }
+  };
+
+  const onSubmit = handleSubmit(async (data: IIncapacity) => {
+    setMessage({
+      title: "Confirmacion de incapacidad",
+      description: `¿Está segur@ de ejecutar esta accion?`,
+      show: true,
+      OkTitle: "Aceptar",
+      onOk: () => {
+        handleCreateUpdateLicense(data);
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      cancelTitle: "Cancelar",
+      background: true,
+    });
   });
 
   return {

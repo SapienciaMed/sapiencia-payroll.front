@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useContext } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { createUpdateIncrementSalarySchema } from "../../../common/schemas";
@@ -8,21 +8,34 @@ import { createUpdateIncrementSalarySchema } from "../../../common/schemas";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
-import { ICharge } from "../../../common/interfaces/payroll.interfaces";
+import {
+  ICharge,
+  ISalaryIncrement,
+} from "../../../common/interfaces/payroll.interfaces";
 
-import { calculateIncrement } from "../../../common/utils/helpers";
+import {
+  calculateIncrement,
+  caculatePorcentual,
+} from "../../../common/utils/helpers";
 
 import { AppContext } from "../../../common/contexts/app.context";
 
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
+import useIncrementSalaryService from "../../../common/hooks/increment-salary-service.hook";
 
-export default function useCreateUpdateIncrementSalary() {
+export default function useCreateUpdateIncrementSalary(action: string) {
   // Context
   const { setMessage } = useContext(AppContext);
 
   //custom hooks
   const { getCharges } = usePayrollService();
+
+  const {
+    createIncrementSalary,
+    getByIdIncrementSalary,
+    updateIncrementSalary,
+  } = useIncrementSalaryService();
 
   //states
   const [charges, setCharges] = useState<IDropdownProps[]>([]);
@@ -32,30 +45,30 @@ export default function useCreateUpdateIncrementSalary() {
 
   //react-router-dom
   const navigate = useNavigate();
+  const { id } = useParams();
 
   //useForm
   const resolver = useYupValidationResolver(createUpdateIncrementSalarySchema);
 
   const { register, handleSubmit, control, formState, watch, setValue } =
-    useForm({
+    useForm<ISalaryIncrement>({
       resolver,
       mode: "all",
-      defaultValues: {
-        idCharge: "",
-        salaryActual: "",
-        numActaAprobacion: "",
-        porcentaje: "",
-        porcentajeIncremento: "",
-        newSalary: 0,
-      },
-      shouldUnregister: true,
+      defaultValues: async () => loadDefaultValues(),
     });
 
-  const [idCharge, porcentaje, salaryActual, porcentajeIncremento] = watch([
-    "idCharge",
-    "porcentaje",
-    "salaryActual",
-    "porcentajeIncremento",
+  const [
+    codCharge,
+    porcentualIncrement,
+    previousSalary,
+    porcentualValue,
+    newSalary,
+  ] = watch([
+    "codCharge",
+    "porcentualIncrement",
+    "previousSalary",
+    "porcentualValue",
+    "newSalary",
   ]);
 
   // useEffects
@@ -69,39 +82,57 @@ export default function useCreateUpdateIncrementSalary() {
   // watch
 
   useEffect(() => {
-    if (idCharge) {
-      const { baseSalary } = chargeData.find(
-        (charge) => Number(charge.id) === idCharge
-      );
-      setValue("salaryActual", baseSalary);
-    } else {
-      setValue("salaryActual", "");
+    if (formState.dirtyFields.codCharge) {
+      if (codCharge) {
+        const { baseSalary } = chargeData.find(
+          (charge) => Number(charge.id) === codCharge
+        );
+        setValue("previousSalary", baseSalary);
+      } else {
+        setValue("previousSalary", null);
+      }
     }
-  }, [idCharge]);
+  }, [codCharge]);
 
   useEffect(() => {
-    if (porcentaje && salaryActual) {
-      setValue("newSalary", "", { shouldValidate: true });
-    } else {
-      setValue("porcentajeIncremento", "");
+    if (
+      formState.dirtyFields.porcentualIncrement ||
+      formState.dirtyFields.codCharge
+    ) {
+      setValue("newSalary", null, { shouldValidate: true });
+      setValue("porcentualValue", null);
     }
-  }, [porcentaje, salaryActual]);
+  }, [porcentualIncrement, codCharge]);
 
   useEffect(() => {
-    if (porcentajeIncremento && salaryActual) {
-      const valueIncrement = calculateIncrement(
-        Number(salaryActual),
-        Number(porcentajeIncremento)
-      );
+    if (
+      formState.dirtyFields.porcentualValue ||
+      formState.dirtyFields.codCharge
+    ) {
+      if (porcentualValue && previousSalary) {
+        const valueIncrement = calculateIncrement(
+          Number(previousSalary),
+          Number(porcentualValue)
+        );
 
-      setValue("newSalary", valueIncrement, { shouldValidate: true });
-    } else {
-      setValue("newSalary", "", { shouldValidate: true });
+        setValue("newSalary", valueIncrement, { shouldValidate: true });
+      } else {
+        setValue("newSalary", null, { shouldValidate: true });
+      }
     }
-  }, [porcentajeIncremento, salaryActual]);
+  }, [porcentualValue, codCharge]);
+
+  useEffect(() => {
+    if (newSalary) {
+      const incrementValue = Number(newSalary) - Number(previousSalary);
+      setValue("incrementValue", incrementValue, { shouldValidate: true });
+    } else {
+      setValue("incrementValue", null, { shouldValidate: true });
+    }
+  }, [newSalary]);
 
   //functions
-  const loadDropdown = async () => {
+  const loadDropdown = async (): Promise<void> => {
     //charges
     const { data, operation } = await getCharges();
     if (operation.code === EResponseCodes.OK) {
@@ -116,6 +147,45 @@ export default function useCreateUpdateIncrementSalary() {
       setCharges(chargesList);
     } else {
       setCharges([]);
+    }
+  };
+
+  const loadDefaultValues = async (): Promise<ISalaryIncrement> => {
+    if (action === "edit" && id) {
+      const { data, operation } = await getByIdIncrementSalary(Number(id));
+
+      if (operation.code === EResponseCodes.OK) {
+        console.log(data);
+        return {
+          id: data.id,
+          codCharge: data.codCharge,
+          effectiveDate: data.effectiveDate,
+          numberActApproval: data.numberActApproval,
+          porcentualIncrement: data.porcentualIncrement,
+          porcentualValue: data.porcentualIncrement
+            ? caculatePorcentual(data.previousSalary, data.newSalary)
+            : null,
+          incrementValue: data.incrementValue,
+          previousSalary: data.previousSalary,
+          newSalary: data.newSalary,
+          observation: data.observation,
+        } as ISalaryIncrement;
+      } else {
+        handleModalError("¡Ha ocurrido un error al cargar los datos!");
+      }
+    } else {
+      return {
+        id: null,
+        codCharge: null,
+        effectiveDate: null,
+        numberActApproval: "",
+        porcentualIncrement: false,
+        porcentualValue: null,
+        incrementValue: null,
+        previousSalary: null,
+        newSalary: null,
+        observation: "",
+      } as ISalaryIncrement;
     }
   };
 
@@ -137,9 +207,85 @@ export default function useCreateUpdateIncrementSalary() {
     });
   };
 
-  const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
+  const onSubmit = handleSubmit(async (data: ISalaryIncrement) => {
+    setMessage({
+      title: action === "edit" ? "Editar" : "Guardar",
+      description: `¿Está segur@ de ${
+        action === "edit" ? "editar" : "guardar"
+      } el incremento de salario?`,
+      show: true,
+      OkTitle: "Aceptar",
+      onOk: () => {
+        handleCreateIncrementSalary(data);
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      cancelTitle: "Cancelar",
+      background: true,
+    });
   });
+
+  const handleModalSuccess = () => {
+    setMessage({
+      title: action === "edit" ? "Editado" : "Guardado",
+      description: `¡Se ha ${
+        action === "edit" ? "editado" : "guardado"
+      } el incremento de salario exitosamente!`,
+      show: true,
+      OkTitle: "cerrar",
+      onOk: () => {
+        navigate("../consultar");
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      onClose: () => {
+        navigate("../consultar");
+        setMessage({});
+      },
+      background: true,
+    });
+  };
+
+  const handleModalError = (msg = `¡Ha ocurrido un error!`) => {
+    setMessage({
+      title: "Error",
+      description: msg,
+      show: true,
+      OkTitle: "cerrar",
+      onOk: () => {
+        navigate("../consultar");
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      onClose: () => {
+        navigate("../consultar");
+        setMessage({});
+      },
+      background: true,
+    });
+  };
+
+  const handleCreateIncrementSalary = async (
+    dataIncrement: ISalaryIncrement
+  ) => {
+    const response =
+      action === "edit"
+        ? await updateIncrementSalary(dataIncrement)
+        : await createIncrementSalary(dataIncrement);
+
+    if (response.operation.code === EResponseCodes.OK) {
+      handleModalSuccess();
+    } else {
+      handleModalError(
+        `¡Ha ocurrido un error al ${
+          action === "edit" ? "editar" : "crear"
+        } el incremento de salario!`
+      );
+    }
+  };
 
   //variables
 
@@ -150,7 +296,7 @@ export default function useCreateUpdateIncrementSalary() {
     onSubmit,
     redirectCancel,
     charges,
-    porcentaje,
-    idCharge,
+    porcentualIncrement,
+    codCharge,
   };
 }

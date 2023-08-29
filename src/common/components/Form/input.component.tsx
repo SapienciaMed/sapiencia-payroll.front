@@ -11,7 +11,7 @@ interface IInputProps<T> {
   register?: UseFormRegister<T>;
   className?: string;
   placeholder?: string;
-  value?: string;
+  value?: string | boolean;
   defaultValue?: string;
   label?: string | React.JSX.Element;
   classNameLabel?: string;
@@ -26,6 +26,7 @@ interface IInputProps<T> {
   optionsRegister?: {};
   max?: number;
   min?: number;
+  checked?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -54,6 +55,7 @@ function InputElement({
   optionsRegister,
   max,
   min,
+  checked,
 }): React.JSX.Element {
   return (
     <input
@@ -70,6 +72,7 @@ function InputElement({
       value={value}
       max={max}
       min={min}
+      checked={checked}
     />
   );
 }
@@ -95,6 +98,7 @@ export function InputComponent({
   optionsRegister = {},
   max,
   min,
+  checked,
 }: IInputProps<any>): React.JSX.Element {
   const messageError = () => {
     // console.log(fieldArray)
@@ -142,6 +146,7 @@ export function InputComponent({
           optionsRegister={optionsRegister}
           max={max}
           min={min}
+          checked={checked}
         />
         {messageError() && (
           <MdOutlineError

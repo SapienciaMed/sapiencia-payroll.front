@@ -166,24 +166,42 @@ export const filterIncrementSalarySchema = yup.object({
 });
 
 export const createUpdateIncrementSalarySchema = yup.object({
-  idCharge: yup.string().required("El campo es obligatorio"),
-  salaryActual: yup.string(),
-  numActaAprobacion: yup
+  codCharge: yup.string().required("El campo es obligatorio"),
+  previousSalary: yup.string(),
+  numberActApproval: yup
     .string()
     .required("El campo es obligatorio")
     .max(100, "Solo se permiten 100 caracteres"),
   newSalary: yup
     .string()
+    .required("El campo es obligatorio")
     .test(
       "mayor-salaryActual",
       "El nuevo salario debe ser mayor al salario actual",
       (value, context) => {
-        const { salaryActual } = context.parent;
-        if (value && salaryActual) {
-          return parseFloat(value) >= parseFloat(salaryActual);
+        const { previousSalary } = context.parent;
+        if (value && previousSalary) {
+          return parseFloat(value) >= parseFloat(previousSalary);
         }
         return true;
       }
-    )
-    .required("El campo es obligatorio"),
+    ),
+  effectiveDate: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  incrementValue: yup
+    .string()
+    .required("El campo es obligatorio")
+    .test(
+      "incremento-valido",
+      "Debe existir un incremento valido",
+      (value, context) => {
+        if (value) {
+          return Number(value) <= 0 ? false : true;
+        }
+        return true;
+      }
+    ),
+  observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
 });

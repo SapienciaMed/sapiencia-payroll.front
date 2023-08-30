@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { AppContext } from "../../../common/contexts/app.context";
 import { useForm } from "react-hook-form";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
@@ -9,7 +9,6 @@ import {
 import { retirementEmploymentSchema } from "../../../common/schemas";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
-import { useNavigate } from "react-router-dom";
 
 export default function useRetirementEmployment(
   dataEmployment: IEmploymentWorker[],
@@ -19,8 +18,6 @@ export default function useRetirementEmployment(
 
   const { setMessage } = useContext(AppContext);
 
-  const navigate = useNavigate();
-
   const resolver = useYupValidationResolver(retirementEmploymentSchema);
 
   const {
@@ -28,7 +25,6 @@ export default function useRetirementEmployment(
     formState: { errors: errorRetirementEmployment },
     control: controlRetirement,
     register: registerRetirement,
-    getValues,
   } = useForm<IRetirementEmployment>({
     defaultValues: {
       idReasonRetirement: "",

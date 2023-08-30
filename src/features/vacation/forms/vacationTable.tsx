@@ -1,4 +1,3 @@
-import React from "react";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
 import { IWorkersVacationDetail } from "../../../common/interfaces/payroll.interfaces";
 import { DateTime } from "luxon";

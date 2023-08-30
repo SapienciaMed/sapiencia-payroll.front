@@ -7,7 +7,7 @@ import {
   SelectComponent,
   TextAreaComponent,
 } from "../../../common/components/Form";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import useLicenceData from "../hooks/create-licence.hook";
 import {
   addBusinessDays,

@@ -1,142 +1,29 @@
-import React, { useContext, useRef, useState } from "react";
-import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { searchRecord } from "../../../common/schemas";
-import { Controller, useForm } from "react-hook-form";
-import {
-  ITableAction,
-  ITableElement,
-} from "../../../common/interfaces/table.interfaces";
+import { useState } from "react";
 import {
   ButtonComponent,
   FormComponent,
   SelectComponent,
 } from "../../../common/components/Form";
 import TableComponent from "../../../common/components/table.component";
-import { DateTime } from "luxon";
-import {
-  IFilterVacation,
-  IWorkersVacationDetail,
-} from "../../../common/interfaces/payroll.interfaces";
-import VacationTable from "../forms/vacationTable";
-import { AppContext } from "../../../common/contexts/app.context";
-import useListData from "../hooks/list.hook";
-import { useNavigate } from "react-router-dom";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import useSearchVacationData from "../hooks/search-vacation.hook";
 
 const SearchVacationPage = () => {
   const [tableView, setTableView] = useState<boolean>(false);
-  const tableComponentRef = useRef(null);
-  const { setMessage } = useContext(AppContext);
-  const navigate = useNavigate();
   const {
-    handleSubmit,
-    formState: { errors },
+    navigate,
+    onSubmit,
     control,
+    errors,
+    activeWorkerList,
+    listPeriods,
     reset,
-    watch,
-  } = useForm<IFilterVacation>();
-  const tableColumns: ITableElement<IWorkersVacationDetail>[] = [
-    {
-      fieldName: "employment.worker.firstName",
-      header: "Colaborador",
-      renderCell: (row) => {
-        return (
-          <>
-            {row.employment.worker.firstName +
-              " " +
-              row.employment.worker.surname}
-          </>
-        );
-      },
-    },
-    {
-      fieldName: "period",
-      header: "Periodo",
-      renderCell: (row) => {
-        return <>{row.period}</>;
-      },
-    },
-    {
-      fieldName: "dateFrom",
-      header: "Desde",
-      renderCell: (row) => {
-        return <>{DateTime.fromISO(row.dateFrom).toLocaleString()}</>;
-      },
-    },
-    {
-      fieldName: "dateUntil",
-      header: "Hasta",
-      renderCell: (row) => {
-        return <>{DateTime.fromISO(row.dateUntil).toLocaleString()}</>;
-      },
-    },
-    {
-      fieldName: "periodClosed",
-      header: "Finalizado",
-      renderCell: (row) => {
-        return <>{row.periodClosed ? "si" : "No"}</>;
-      },
-    },
-    {
-      fieldName: "pendingDays",
-      header: "Días",
-      renderCell: (row) => {
-        return <>{row.periodClosed ? 0 : row.periodFormer}</>;
-      },
-    },
-  ];
-  const tableActions: ITableAction<IWorkersVacationDetail>[] = [
-    {
-      icon: "Detail",
-      onClick: (row) => {
-        setMessage({
-          title: "Detalle Vacaciones",
-          show: true,
-          OkTitle: "Aceptar",
-          description: (
-            <div className="container-modal_description">
-              <VacationTable row={row} />
-            </div>
-          ),
-          OkButtonStyle: "button-ok small",
-          background: true,
-          size: "extra-large",
-        });
-      },
-    },
-    {
-      icon: "Edit",
-      onClick: (row) => {
-        const idEnjoyedDay = row.codEmployment;
-        if (row.periodClosed) {
-          setMessage({
-            title: "Editar Vacaciones",
-            description:
-              "Este periodo ya se encuentra finalizado y no es posible editarlo.",
-            OkTitle: "Aceptar",
-            background: true,
-            show: true,
-          });
-        } else {
-          navigate(`../editar/${idEnjoyedDay}/${row.period}`);
-        }
-      },
-    },
-  ];
-
-  function loadTableData(searchCriteria?: object): void {
-    if (tableComponentRef.current) {
-      tableComponentRef.current.loadData(searchCriteria);
-    }
-  }
-
-  const onSubmit = handleSubmit(async (data: IFilterVacation) => {
-    loadTableData(data);
-  });
-
-  const { listPeriods, activeWorkerList } = useListData();
-
-  const [workerId, period] = watch(["workerId", "period"]);
+    tableComponentRef,
+    period,
+    workerId,
+    tableColumns,
+    tableActions,
+  } = useSearchVacationData();
 
   return (
     <>

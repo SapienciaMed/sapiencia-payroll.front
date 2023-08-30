@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import {
   Control,
-  Controller,
   FieldErrors,
   UseFormGetValues,
   UseFormRegister,
@@ -28,11 +27,8 @@ const AffiliationsForm = ({
   register,
   errors,
   control,
-  setValueRegister,
   list,
   action,
-  changedData,
-  getValueRegister,
 }: IOtherInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
   setDisabledFields(action == "view" ? true : false);

@@ -12,7 +12,6 @@ import {
   ITypesContracts,
   IRelative,
 } from "../../../common/interfaces/payroll.interfaces";
-import useAppCominicator from "../../../common/hooks/app-communicator.hook";
 import { useForm } from "react-hook-form";
 import { formsPayroll } from "../../../common/schemas/employment-schema";
 import { yupResolver } from "@hookform/resolvers/yup";

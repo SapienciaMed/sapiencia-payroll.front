@@ -1,7 +1,7 @@
 import React from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import {  UseFormRegister } from "react-hook-form";
 
 import { MdOutlineError } from "react-icons/md";
 

@@ -205,3 +205,7 @@ export const createUpdateIncrementSalarySchema = yup.object({
     ),
   observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
 });
+
+export const filterSuspensionContractSchema = yup.object({
+  workerId: yup.string().required("El campo es obligatorio"),
+});

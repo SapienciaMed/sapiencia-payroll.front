@@ -105,8 +105,8 @@ const EditVacationPage = () => {
 
   const handleModalEdit = handleSubmit(async (data: IEditVacation) => {
     setMessage({
-      title: "Editar licencia",
-      description: `¿Estás segur@ de editar esta licencia?`,
+      title: "Editar periodo de vacaciones",
+      description: `¿Estás segur@ de editar este periodo de vacaciones?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {

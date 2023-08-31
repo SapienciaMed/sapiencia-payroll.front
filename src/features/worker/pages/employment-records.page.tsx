@@ -135,7 +135,7 @@ const EmploymentRecordsPage = () => {
             title: "Vinculación inactiva",
             description: `No se permite editar la vinculacion debido a su estado inactiva.`,
             show: true,
-            okTitle: "Aceptar",
+            OkTitle: "Aceptar",
             onOk: () => {
               setMessage((prev) => {
                 return { ...prev, show: false };

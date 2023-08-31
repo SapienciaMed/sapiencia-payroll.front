@@ -94,7 +94,7 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
           title: `${titleMessageModalNoResult || ""}`,
           show: true,
           description: "No hay resultado para la búsqueda",
-          okTitle: "Aceptar",
+          OkTitle: "Aceptar",
           background: true,
         });
       }
@@ -103,7 +103,7 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
         title: `Error en la consulta de datos`,
         show: true,
         description: res.operation.message,
-        okTitle: "Aceptar",
+        OkTitle: "Aceptar",
         background: true,
         onOk: () => {
           setMessage({});

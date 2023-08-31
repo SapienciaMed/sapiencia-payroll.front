@@ -14,6 +14,7 @@ interface IAppContext {
   setAuthorization: Dispatch<SetStateAction<IAuthorization>>;
   message: IMessage;
   setMessage: Dispatch<SetStateAction<IMessage>>;
+  validateActionAccess: (indicator: string) => boolean;
   step: number;
   setStep: Dispatch<SetStateAction<number>>;
   disabledFields: boolean;
@@ -29,6 +30,7 @@ export const AppContext = createContext<IAppContext>({
   setAuthorization: () => {},
   message: {} as IMessage,
   setMessage: () => {},
+  validateActionAccess: () => true,
   step: {} as number,
   setStep: () => {},
   disabledFields: {} as boolean,
@@ -44,12 +46,18 @@ export function AppContextProvider({ children }: IProps) {
   const [step, setStep] = useState<number>(0);
   const [disabledFields, setDisabledFields] = useState<boolean>(false);
 
+  // Metodo que verifica si el usuario posee permisos sobre un accion
+  function validateActionAccess(indicator: string): boolean {
+    return authorization.allowedActions?.findIndex((i) => i === indicator) >= 0;
+  }
+
   const values = useMemo<IAppContext>(() => {
     return {
       authorization,
       setAuthorization,
       message,
       setMessage,
+      validateActionAccess,
       step,
       setStep,
       disabledFields,

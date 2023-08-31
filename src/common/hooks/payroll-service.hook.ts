@@ -17,7 +17,7 @@ export function usePayrollService() {
   const baseURL: string = process.env.urlApiPayroll;
   const authUrl: string = "/api/v1/vinculation";
 
-  const { get, post, put } = useCrudService(null, baseURL);
+  const { get, post, put } = useCrudService( baseURL);
 
   async function getVinculationById(
     id: number

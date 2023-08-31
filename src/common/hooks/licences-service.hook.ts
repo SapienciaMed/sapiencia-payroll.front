@@ -7,7 +7,7 @@ export function useLicencesService() {
   const baseURL: string = process.env.urlApiPayroll;
   const authUrl: string = "/api/v1/licence";
 
-  const { get, post, put } = useCrudService(null, baseURL);
+  const { get, post, put } = useCrudService( baseURL);
 
   async function getLicenceTypesList(): Promise<ApiResponse<ILicenceType[]>> {
     try {

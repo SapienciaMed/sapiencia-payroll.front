@@ -14,7 +14,7 @@ export function useVacationService() {
   const baseURL: string = process.env.urlApiPayroll;
   const authUrl: string = "/api/v1/vacations";
 
-  const { get, post, put } = useCrudService(null, baseURL);
+  const { get, post, put } = useCrudService( baseURL);
 
   async function getWorkerVacatioByParam(
     params

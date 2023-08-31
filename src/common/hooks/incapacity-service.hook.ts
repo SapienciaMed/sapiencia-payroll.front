@@ -13,7 +13,7 @@ export function useIncapacityService() {
   const baseURL: string = process.env.urlApiPayroll;
   const authUrl: string = "/api/v1/incapacity";
 
-  const { get, post, put } = useCrudService(null, baseURL);
+  const { get, post, put } = useCrudService( baseURL);
 
   async function createIncapacity(
     data: IIncapacity

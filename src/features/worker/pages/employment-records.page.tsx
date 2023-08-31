@@ -77,7 +77,11 @@ const EmploymentRecordsPage = () => {
       header: "Fecha inicio",
       renderCell: (row) => {
         return (
-          <>{DateTime.fromISO(row.employment.startDate).toLocaleString()}</>
+          <>
+            {DateTime.fromISO(
+              String(row.employment.startDate)
+            ).toLocaleString()}
+          </>
         );
       },
     },
@@ -85,7 +89,11 @@ const EmploymentRecordsPage = () => {
       fieldName: "employment.endDate",
       header: "Fecha fin",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row.employment.endDate).toLocaleString()}</>;
+        return (
+          <>
+            {DateTime.fromISO(String(row.employment.endDate)).toLocaleString()}
+          </>
+        );
       },
     },
     {
@@ -95,7 +103,7 @@ const EmploymentRecordsPage = () => {
         return (
           <>
             {row.employment.retirementDate
-              ? DateTime.fromISO(row.employment.retirementDate).toLocaleString()
+              ? DateTime.fromISO(String(row.employment.retirementDate)).toLocaleString()
               : "Sin fecha de retiro"}
           </>
         );
@@ -127,7 +135,7 @@ const EmploymentRecordsPage = () => {
             title: "Vinculación inactiva",
             description: `No se permite editar la vinculacion debido a su estado inactiva.`,
             show: true,
-            OkTitle: "Aceptar",
+            okTitle: "Aceptar",
             onOk: () => {
               setMessage((prev) => {
                 return { ...prev, show: false };

@@ -13,7 +13,9 @@ export interface IListTableElement {
 }
 
 export interface ITableAction<T> {
-  icon: "Detail" | "Edit" | "Delete";
+  icon?: "Detail" | "Edit" | "Delete" | "Link";
   onClick: (row: T) => void;
   customName?: string;
+  customIcon?: () => JSX.Element;
+  hide?: boolean;
 }

@@ -9,7 +9,7 @@ export function useIncrementSalaryService() {
   const baseURL: string = process.env.urlApiPayroll;
   const authUrl: string = "/api/v1/salaryIncrease";
 
-  const { get, post, put } = useCrudService(null, baseURL);
+  const { get, post, put } = useCrudService( baseURL);
 
   async function createIncrementSalary(
     data: ISalaryIncrement

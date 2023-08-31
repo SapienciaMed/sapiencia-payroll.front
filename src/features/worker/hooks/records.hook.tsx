@@ -66,7 +66,7 @@ export default function useRecordsData() {
       header: "Fecha inicio",
       renderCell: (row) => {
         return (
-          <>{DateTime.fromISO(row.employment.startDate).toLocaleString()}</>
+          <>{DateTime.fromISO(String(row.employment.startDate)).toLocaleString()}</>
         );
       },
     },
@@ -74,7 +74,7 @@ export default function useRecordsData() {
       fieldName: "employment.endDate",
       header: "Fecha fin",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row.employment.endDate).toLocaleString()}</>;
+        return <>{DateTime.fromISO(String(row.employment.endDate)).toLocaleString()}</>;
       },
     },
     {
@@ -84,7 +84,7 @@ export default function useRecordsData() {
         return (
           <>
             {row.employment.retirementDate
-              ? DateTime.fromISO(row.employment.retirementDate).toLocaleString()
+              ? DateTime.fromISO(String(row.employment.retirementDate)).toLocaleString()
               : "Sin fecha de retiro"}
           </>
         );

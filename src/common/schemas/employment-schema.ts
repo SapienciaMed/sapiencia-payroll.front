@@ -207,5 +207,17 @@ export const createUpdateIncrementSalarySchema = yup.object({
 });
 
 export const filterSuspensionContractSchema = yup.object({
-  workerId: yup.string().required("El campo es obligatorio"),
+  codEmployment: yup.string().required("El campo es obligatorio"),
+});
+
+export const createSuspensionContractSchema = yup.object({
+  dateStartSuspension: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  dateEndSuspension: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  observation: yup.string().required("El campo es obligatorio"),
 });

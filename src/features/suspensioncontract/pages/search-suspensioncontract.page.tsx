@@ -50,7 +50,7 @@ const SearchSuspensionContractPage = (): React.JSX.Element => {
         >
           <div className="grid-form-3-container gap-25">
             <SelectComponent
-              idInput={"workerId"}
+              idInput={"codEmployment"}
               control={control}
               errors={errors}
               data={activeWorkerList}
@@ -85,10 +85,10 @@ const SearchSuspensionContractPage = (): React.JSX.Element => {
           <div className="container-sections-forms">
             <TableComponent
               ref={tableComponentRef}
-              url={`${process.env.urlApiPayroll}/api/v1/salaryIncrease/get-paginated`}
+              url={`${process.env.urlApiPayroll}/api/v1/vinculation/suspension/get-paginated`}
               columns={tableColumns}
               actions={tableActions}
-              isShowModal={false}
+              isShowModal={true}
             />
           </div>
         )}

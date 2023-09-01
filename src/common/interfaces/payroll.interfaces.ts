@@ -406,3 +406,34 @@ export interface ISalaryHistory {
   effectiveDate: DateTime;
   employment: IEmploymentWorker;
 }
+
+export interface IContractSuspension {
+  id: number;
+  names: string;
+  surnames: string;
+  typeContract: string;
+  nroContract: string;
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  codEmployment: number;
+  dateStartSuspension: DateTime;
+  dateEndSuspension: DateTime;
+  adjustEndDate: boolean;
+  newDateEnd: DateTime;
+  observation: string;
+}
+
+export interface IContractSuspensionData {
+  id?: number;
+  codEmployment: number;
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  adjustEndDate: boolean;
+  newDateEnd: DateTime;
+  observation: string;
+  employment?: IEmploymentWorker;
+}
+
+export interface IFilterContractSuspension {
+  codEmployment: number;
+}

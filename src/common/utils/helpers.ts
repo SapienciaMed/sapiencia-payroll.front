@@ -21,12 +21,20 @@ export function calculateDifferenceDays(
   return Math.floor(differenceInDays);
 }
 
-export function addCalendarDays(date, daysToAdd) {
-  const oneDay = 24 * 60 * 60 * 1000;
-  const inputDate = new Date(date);
-  const newDate = new Date(inputDate.getTime() + (daysToAdd - 1) * oneDay);
+export function addCalendarDays(date, daysToAdd, substractionOneDay = true) {
+  if (substractionOneDay) {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const inputDate = new Date(date);
+    const newDate = new Date(inputDate.getTime() + (daysToAdd - 1) * oneDay);
 
-  return newDate;
+    return newDate;
+  } else {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const inputDate = new Date(date);
+    const newDate = new Date(inputDate.getTime() + daysToAdd * oneDay);
+
+    return newDate;
+  }
 }
 
 export function calculateBusinessDays(startDate, endDate, holidays = []) {

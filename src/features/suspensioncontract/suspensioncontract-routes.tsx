@@ -7,17 +7,17 @@ function SuspensionContractRoutes() {
     () => import("./pages/search-suspensioncontract.page")
   );
 
+  const CreateSuspensionContract = lazy(
+    () => import("./pages/create-suspensioncontract.page")
+  );
+
   return (
     <Routes>
       <Route
-        path={"/crear"}
+        path={"/crear/:idEmployment"}
         element={
           <PrivateRoute
-            element={
-              <>
-                <h1>Hola crear</h1>
-              </>
-            }
+            element={<CreateSuspensionContract />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

@@ -9,6 +9,7 @@ import {
   IReasonsForWithdrawal,
   IEmploymentWorker,
   IRetirementEmployment,
+  IContractSuspensionData,
 } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
@@ -148,6 +149,21 @@ export function usePayrollService() {
     }
   }
 
+  async function createSuspensionContract(
+    data: IContractSuspensionData
+  ): Promise<ApiResponse<IEmployment>> {
+    try {
+      const endpoint: string = `/suspension`;
+      return await post(`${authUrl}${endpoint}`, data);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IEmployment,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   return {
     getTypesContracts,
     getCharges,
@@ -158,6 +174,7 @@ export function usePayrollService() {
     getEmploymentById,
     getReasonsForWithdrawal,
     retirementEmployment,
+    createSuspensionContract,
   };
 }
 

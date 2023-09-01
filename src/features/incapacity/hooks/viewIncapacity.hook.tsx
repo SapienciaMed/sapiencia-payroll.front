@@ -93,7 +93,7 @@ export default function useViewIncapacityDetail() {
           />
         </div>
       ),
-      size: "big",
+      size: "extra-large",
       onOk: () => {
         setMessage((prev) => {
           return { ...prev, show: false };

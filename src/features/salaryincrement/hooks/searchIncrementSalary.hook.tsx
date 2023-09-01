@@ -98,11 +98,11 @@ export default function useSearchIncrementSalaryHook() {
     if (row) {
       const infoPersonalIncrement: DataItem[] = [
         {
-          title: "Número de documento",
+          title: <span className="text-left">Número de documento</span>,
           value: row.employment.worker.numberDocument,
         },
         {
-          title: "Nombre empleado",
+          title: <span className="text-left">Nombre empleado</span>,
           value: `${row.employment.worker.firstName} ${
             row.employment.worker.secondName
           }${" "}
@@ -110,11 +110,11 @@ export default function useSearchIncrementSalaryHook() {
           ${row.employment.worker.secondSurname}`,
         },
         {
-          title: "Cargo",
+          title: <span className="text-left">Cargo</span>,
           value: row.salaryIncrement.charge.name,
         },
         {
-          title: "Número de acta de aprobación",
+          title: <span className="text-left">Número de acta de aprobación</span>,
           value: row.salaryIncrement.numberActApproval,
         },
       ];

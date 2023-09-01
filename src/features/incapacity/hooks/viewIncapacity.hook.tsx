@@ -18,15 +18,15 @@ export default function useViewIncapacityDetail() {
   const dataFormated = (data: IGetIncapacity) => {
     const worker = [
       {
-        title: "Numero de documento",
+        title: <span className="text-left">Numero de documento</span>,
         value: data.employment?.worker?.numberDocument,
       },
       {
-        title: "Nombre empleado",
+        title: <span className="text-left">Nombre empleado</span>,
         value: `${data.employment?.worker?.firstName} ${data.employment?.worker?.secondName}`,
       },
       {
-        title: "Origen incapacidad",
+        title: <span className="text-left">Origen incapacidad</span>,
         value: data.typeIncapacity.name,
       },
     ];

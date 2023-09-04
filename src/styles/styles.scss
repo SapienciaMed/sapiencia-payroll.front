@@ -1,4 +1,5 @@
 @import "./mixins.scss";
+
 div[id="single-spa-application:@sapiencia/payroll"] {
   height: 100%;
   width: 100vw;
@@ -537,7 +538,14 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   padding-left: 16px;
 }
 
-.check-increment_porcentaje {
+.check-label {
   display: flex;
-  margin: 28px;
+
+  &.mt-25 {
+    margin-top: 25px;
+  }
+
+  &.mb-25 {
+    margin-bottom: 25px;
+  }
 }

@@ -148,7 +148,7 @@ export const CreateUpdateIncrementSalaryForm = ({
                   shouldUnregister={true}
                   render={({ field }) => {
                     return (
-                      <div className="check-increment_porcentaje">
+                      <div className="check-label">
                         <InputComponent
                           idInput={field.name}
                           errors={errors}

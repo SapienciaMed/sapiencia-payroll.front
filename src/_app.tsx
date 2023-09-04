@@ -12,6 +12,7 @@ import IncapacityRoutes from "./features/incapacity/incapacity-routes";
 import WithDrawalRoutes from "./features/withdrawal/withdrawal-routes";
 import LicencesRoutes from "./features/Licences/licences-routes";
 import SalaryIncrementRoutes from "./features/salaryincrement/salary-increment-routes";
+import SuspensionContractRoutes from "./features/suspensioncontract/suspensioncontract-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
@@ -55,6 +56,10 @@ function App() {
               <Route
                 path={"/nomina/incremento/salario/*"}
                 element={<SalaryIncrementRoutes />}
+              />
+              <Route
+                path={"/nomina/suspension/contrato/*"}
+                element={<SuspensionContractRoutes />}
               />
             </Routes>
           </Suspense>

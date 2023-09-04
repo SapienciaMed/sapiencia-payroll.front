@@ -192,7 +192,7 @@ export default function useCreateUpdateIncrementSalary(action: string) {
   const redirectCancel = () => {
     setMessage({
       title: "Cancelar",
-      description: `¿Estás segur@ que desea 
+      description: `¿Estás segur@ que deseas 
       cancelar el incremento?`,
       show: true,
       OkTitle: "Aceptar",
@@ -210,7 +210,7 @@ export default function useCreateUpdateIncrementSalary(action: string) {
   const onSubmit = handleSubmit(async (data: ISalaryIncrement) => {
     setMessage({
       title: action === "edit" ? "Editar" : "Guardar",
-      description: `¿Está segur@ de ${
+      description: `¿Estás segur@ de ${
         action === "edit" ? "editar" : "guardar"
       } el incremento de salario?`,
       show: true,

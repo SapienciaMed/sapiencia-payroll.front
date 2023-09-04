@@ -181,7 +181,10 @@ export const CreateUpdateIncrementSalaryForm = ({
                     classNameLabel="text-black big bold"
                     className="inputNumber-basic medium"
                     prefix="%"
-                    useGrouping={false}
+                    mode="decimal"
+                    useGrouping={true}
+                    minFractionDigits={1} 
+                    maxFractionDigits={3}
                   />
                 )}
 

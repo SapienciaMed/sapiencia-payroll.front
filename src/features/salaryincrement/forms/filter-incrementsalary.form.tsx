@@ -28,6 +28,7 @@ interface IPropsFilterIncremetSalary {
   clearFields: () => void;
   onSubmit: () => Promise<void>;
   chargesState: IDropdownProps[];
+  formValues: ISalaryIncrementFilter;
 }
 
 export const FilterIncrementSalaryForm = ({
@@ -38,8 +39,11 @@ export const FilterIncrementSalaryForm = ({
   clearFields,
   onSubmit,
   chargesState,
+  formValues,
 }: IPropsFilterIncremetSalary): React.JSX.Element => {
   const { errors, isValid } = formState;
+
+  const { codCharge, numberActApproval } = formValues;
 
   return (
     <div className="container-sections-forms">
@@ -81,11 +85,7 @@ export const FilterIncrementSalaryForm = ({
                     idInput={field.name}
                     errors={errors}
                     typeInput={"text"}
-                    label={
-                      <>
-                        Número de acta de aprobación <span>*</span>
-                      </>
-                    }
+                    label={<>Número de acta de aprobación</>}
                     value={field.value}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
@@ -106,7 +106,7 @@ export const FilterIncrementSalaryForm = ({
             <ButtonComponent
               value={"Buscar"}
               className="button-save disabled-black big"
-              disabled={!isValid}
+              disabled={!codCharge && !numberActApproval}
             />
           </div>
         </FormComponent>

@@ -68,7 +68,7 @@ const EmploymentRecordsPage = () => {
                   placeholder="Seleccione"
                 />
               </div>
-              <div className="grid-form-2-container gap-25 mt-14px">
+              <div className="grid-form-2-container gap-25">
                 <InputComponent
                   idInput={"name"}
                   label={<>Nombre</>}

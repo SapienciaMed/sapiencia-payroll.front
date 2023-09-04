@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   ButtonComponent,
   FormComponent,
@@ -503,7 +503,7 @@ const SearchWorker = () => {
             </div>
           </FormComponent>
         </div>
-        <div className="button-save-container-display mr-24px ">
+        <div className="button-save-container-display ">
           <ButtonComponent
             value={"Cancelar"}
             type="button"

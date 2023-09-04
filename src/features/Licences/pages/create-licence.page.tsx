@@ -190,7 +190,7 @@ const CreateLicencePage = () => {
                   </div>
                 </div>
               </div>
-              <div className="button-save-container-display mr-24px ">
+              <div className="button-save-container-display">
                 <ButtonComponent
                   value={"Cancelar"}
                   type="button"

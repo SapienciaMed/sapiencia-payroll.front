@@ -89,11 +89,11 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
         <ResponsiveTable data={workerData} />
         <h2>Liquidación vacaciones</h2>
         <div>
-          <h2 className="text-left ml-14px">Días disfrutados</h2>
+          <h2 className="text-left">Días disfrutados</h2>
           <ResponsiveTable data={daysData} />
         </div>
         <div>
-          <h2 className="text-left ml-14px">Días compensados</h2>
+          <h2 className="text-left">Días compensados</h2>
           <ResponsiveTable data={daysCompensated} />
         </div>
         <ResponsiveTable data={refundDays} />

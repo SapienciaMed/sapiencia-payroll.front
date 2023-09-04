@@ -1,21 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  ButtonComponent,
-  FormComponent,
-  InputComponent,
-} from "../../../common/components/Form";
-import { Controller, useForm } from "react-hook-form";
+import { useContext, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { searchRecord } from "../../../common/schemas";
 import {
   IEditVacation,
-  IVacation,
   IVacationResult,
-  IWorkersVacation,
 } from "../../../common/interfaces/payroll.interfaces";
-import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
-import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
 import { calculateBusinessDays } from "../../../common/utils/helpers";
 import useVacationService from "../../../common/hooks/vacation-service.hook";
 import { ApiResponse } from "../../../common/utils/api-response";

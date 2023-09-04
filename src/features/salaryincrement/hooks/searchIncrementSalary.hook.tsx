@@ -48,9 +48,6 @@ export default function useSearchIncrementSalaryHook() {
   //react-router-dom
   const navigate = useNavigate();
 
-  //useForm
-  //const resolver = useYupValidationResolver(filterIncrementSalarySchema);
-
   const { register, handleSubmit, control, formState, reset, watch } =
     useForm<ISalaryIncrementFilter>({
       //resolver,

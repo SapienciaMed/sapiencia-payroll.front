@@ -18,7 +18,12 @@ function ModalMessageComponent(): React.JSX.Element {
     <div
       className={`modal modal-bg ${message.show ? "is-open" : "modal-close"}`}
     >
-      <div ref={modal} className="modal-container">
+      <div
+        ref={modal}
+        className={`modal-container ${message.size ? message.size : ""} ${
+          message.style ? message.style : ""
+        }`}
+      >
         <div className="modal-header">
           <button
             className="close button-close tiny hover-three"

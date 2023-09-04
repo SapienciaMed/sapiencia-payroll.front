@@ -22,7 +22,10 @@ export default function useRetirementEmployment(
 
   const {
     handleSubmit,
-    formState: { errors: errorRetirementEmployment },
+    formState: {
+      errors: errorRetirementEmployment,
+      isValid: isValidRetirement,
+    },
     control: controlRetirement,
     register: registerRetirement,
   } = useForm<IRetirementEmployment>({
@@ -96,7 +99,7 @@ export default function useRetirementEmployment(
     async (data: IRetirementEmployment) => {
       setMessage({
         title: "Confirmacion de retiro",
-        description: `¿Está segur@ de ejecutar esta accion?`,
+        description: `¿Estás segur@ de ejecutar esta accion?`,
         show: true,
         OkTitle: "Aceptar",
         onOk: () => {
@@ -115,6 +118,7 @@ export default function useRetirementEmployment(
     onSubmitRetirement,
     registerRetirement,
     errorRetirementEmployment,
+    isValidRetirement,
     controlRetirement,
   };
 }

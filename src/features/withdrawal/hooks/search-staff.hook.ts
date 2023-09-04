@@ -22,7 +22,7 @@ export default function useSearchStaff() {
 
   const {
     handleSubmit,
-    formState: { errors: errorsStaff },
+    formState: { errors: errorsStaff, isValid: isValidStaff },
     control: controlStaff,
     reset,
   } = useForm<{ workerId: string }>({
@@ -51,6 +51,7 @@ export default function useSearchStaff() {
   return {
     onSubmitStaff,
     errorsStaff,
+    isValidStaff,
     controlStaff,
     activeWorkerList,
     dataEmployment,

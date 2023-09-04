@@ -14,6 +14,7 @@ const SearchIncrementSalary = (): React.JSX.Element => {
     onSubmit,
     redirectCreate,
     clearFields,
+    formValues,
     showTable,
     charges,
     tableComponentRef,
@@ -38,6 +39,7 @@ const SearchIncrementSalary = (): React.JSX.Element => {
           clearFields={clearFields}
           onSubmit={onSubmit}
           chargesState={charges}
+          formValues={formValues}
         />
 
         {showTable && (

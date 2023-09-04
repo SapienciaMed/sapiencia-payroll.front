@@ -392,7 +392,7 @@ export interface ISalaryIncrement {
 
 export interface ISalaryIncrementFilter {
   codCharge?: number;
-  numberActApproval: string;
+  numberActApproval?: string;
 }
 
 export interface ISalaryHistory {

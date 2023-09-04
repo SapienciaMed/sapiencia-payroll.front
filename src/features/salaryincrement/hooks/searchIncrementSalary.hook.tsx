@@ -49,17 +49,19 @@ export default function useSearchIncrementSalaryHook() {
   const navigate = useNavigate();
 
   //useForm
-  const resolver = useYupValidationResolver(filterIncrementSalarySchema);
+  //const resolver = useYupValidationResolver(filterIncrementSalarySchema);
 
-  const { register, handleSubmit, control, formState, reset } =
+  const { register, handleSubmit, control, formState, reset, watch } =
     useForm<ISalaryIncrementFilter>({
-      resolver,
+      //resolver,
       mode: "all",
       defaultValues: {
         numberActApproval: "",
         codCharge: null,
       },
     });
+
+  const formValues = watch();
 
   // carga combos
   useEffect(() => {
@@ -114,7 +116,9 @@ export default function useSearchIncrementSalaryHook() {
           value: row.salaryIncrement.charge.name,
         },
         {
-          title: <span className="text-left">Número de acta de aprobación</span>,
+          title: (
+            <span className="text-left">Número de acta de aprobación</span>
+          ),
           value: row.salaryIncrement.numberActApproval,
         },
       ];
@@ -238,6 +242,7 @@ export default function useSearchIncrementSalaryHook() {
     onSubmit,
     redirectCreate,
     clearFields,
+    formValues,
     showTable,
     charges,
     tableComponentRef,

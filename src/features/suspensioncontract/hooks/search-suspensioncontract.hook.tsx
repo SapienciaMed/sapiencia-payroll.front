@@ -66,7 +66,7 @@ const useSearchSuspensionContract = () => {
   const showDetailSuspensionContract = (row: IContractSuspensionData) => {
     if (row) {
       return setMessage({
-        title: "Detalle suspension de contrato",
+        title: "Detalle de la suspensión",
         show: true,
         OkTitle: "Aceptar",
         description: (
@@ -112,92 +112,101 @@ const useSearchSuspensionContract = () => {
                 className="input-basic medium"
                 classNameLabel="text-black big bold"
               />
-            </div>
-            <div className="grid-form-3-container gap-25">
-              <InputComponent
-                idInput={""}
-                errors={""}
-                typeInput={"text"}
-                label={<>No contrato</>}
-                value={row.employment?.contractNumber}
-                disabled={true}
-                className="input-basic medium"
-                classNameLabel="text-black big bold"
-              />
-              <InputComponent
-                idInput={""}
-                errors={""}
-                typeInput={"text"}
-                label={<>Fecha inicio</>}
-                disabled={true}
-                value={`${DateTime.fromISO(
-                  row.employment.startDate
-                ).toLocaleString()}`}
-                className="input-basic medium"
-                classNameLabel="text-black big bold"
-              />
-              <InputComponent
-                idInput={""}
-                errors={""}
-                typeInput={"text"}
-                label={<>Fecha fin</>}
-                disabled={true}
-                value={`${DateTime.fromISO(
-                  row.employment.endDate
-                ).toLocaleString()}`}
-                className="input-basic medium"
-                classNameLabel="text-black big bold"
-              />
-            </div>
-            <div className="grid-form-3-container gap-25">
-              <InputComponent
-                idInput={""}
-                errors={""}
-                typeInput={"text"}
-                label={<>Fecha inicio suspención</>}
-                value={`${DateTime.fromISO(row.dateStart).toLocaleString()}`}
-                disabled={true}
-                className="input-basic medium"
-                classNameLabel="text-black big bold"
-              />
-              <InputComponent
-                idInput={""}
-                errors={""}
-                typeInput={"text"}
-                label={<>Fecha fin suspención</>}
-                disabled={true}
-                value={`${DateTime.fromISO(row.dateEnd).toLocaleString()}`}
-                className="input-basic medium"
-                classNameLabel="text-black big bold"
-              />
-              <InputComponent
-                idInput={""}
-                errors={""}
-                typeInput={"text"}
-                label={<>Nueva fecha fin suspención</>}
-                disabled={true}
-                value={`${DateTime.fromISO(row.newDateEnd).toLocaleString()}`}
-                className="input-basic medium"
-                classNameLabel="text-black big bold"
-              />
-            </div>
-            <div className=" grid-span-3-columns">
-              <TextAreaComponent
-                idInput={""}
-                value={row.observation}
-                className="text-area-basic"
-                classNameLabel="text-black big bold"
-                label="Observaciones"
-                disabled={true}
-                rows={5}
-              />
-              <div className="text-right">
-                <span className="text-span ">Max. {500} carácteres</span>
+
+              <div className="grid-span-4-columns">
+                <div className="grid-form-3-container gap-25">
+                  <InputComponent
+                    idInput={""}
+                    errors={""}
+                    typeInput={"text"}
+                    label={<>No contrato</>}
+                    value={row.employment?.contractNumber}
+                    disabled={true}
+                    className="input-basic medium"
+                    classNameLabel="text-black big bold"
+                  />
+                  <InputComponent
+                    idInput={""}
+                    errors={""}
+                    typeInput={"text"}
+                    label={<>Fecha inicio</>}
+                    disabled={true}
+                    value={`${DateTime.fromISO(
+                      row.employment.startDate
+                    ).toLocaleString()}`}
+                    className="input-basic medium"
+                    classNameLabel="text-black big bold"
+                  />
+                  <InputComponent
+                    idInput={""}
+                    errors={""}
+                    typeInput={"text"}
+                    label={<>Fecha fin</>}
+                    disabled={true}
+                    value={`${DateTime.fromISO(
+                      row.employment.endDate
+                    ).toLocaleString()}`}
+                    className="input-basic medium"
+                    classNameLabel="text-black big bold"
+                  />
+                </div>
+              </div>
+              <div className="grid-span-4-columns">
+                <div className="grid-form-3-container gap-25">
+                  <InputComponent
+                    idInput={""}
+                    errors={""}
+                    typeInput={"text"}
+                    label={<>Fecha inicio suspensión</>}
+                    value={`${DateTime.fromISO(
+                      row.dateStart
+                    ).toLocaleString()}`}
+                    disabled={true}
+                    className="input-basic medium"
+                    classNameLabel="text-black big bold"
+                  />
+                  <InputComponent
+                    idInput={""}
+                    errors={""}
+                    typeInput={"text"}
+                    label={<>Fecha fin suspensión</>}
+                    disabled={true}
+                    value={`${DateTime.fromISO(row.dateEnd).toLocaleString()}`}
+                    className="input-basic medium"
+                    classNameLabel="text-black big bold"
+                  />
+                  <InputComponent
+                    idInput={""}
+                    errors={""}
+                    typeInput={"text"}
+                    label={<>Nueva fecha fin contrato</>}
+                    disabled={true}
+                    value={`${DateTime.fromISO(
+                      row.newDateEnd
+                    ).toLocaleString()}`}
+                    className="input-basic medium"
+                    classNameLabel="text-black big bold"
+                  />
+                </div>
+              </div>
+              <div className="grid-span-4-columns">
+                <TextAreaComponent
+                  idInput={""}
+                  value={row.observation}
+                  className="text-area-basic"
+                  classNameLabel="text-black big bold"
+                  label="Observaciones"
+                  disabled={true}
+                  rows={5}
+                />
+                <div className="text-right">
+                  <span className="text-span ">Max. {500} carácteres</span>
+                </div>
               </div>
             </div>
           </div>
         ),
-        size: "extra-large",
+        size: "large",
         background: true,
       });
     } else {

@@ -7,6 +7,7 @@ import {
   SelectComponent,
 } from "../../../common/components/Form";
 import useRecordsData from "../hooks/records.hook";
+import { Controller } from "react-hook-form";
 
 const EmploymentRecordsPage = () => {
   const [tableView, setTableView] = useState<boolean>(false);
@@ -38,14 +39,24 @@ const EmploymentRecordsPage = () => {
           >
             <div className="container-sections-forms">
               <div className="grid-form-3-container gap-25">
-                <InputComponent
-                  idInput={"documentNumber"}
-                  label={<>No. Documento</>}
-                  typeInput={"text"}
-                  register={register}
-                  errors={errors}
-                  className="input-basic medium"
-                  classNameLabel="text-black big bold"
+                <Controller
+                  control={control}
+                  name={"documentNumber"}
+                  render={({ field }) => {
+                    return (
+                      <InputComponent
+                        idInput={field.name}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        label={<>No. Documento</>}
+                        typeInput={"text"}
+                        register={register}
+                        errors={errors}
+                        className="input-basic medium"
+                        classNameLabel="text-black big bold"
+                      />
+                    );
+                  }}
                 />
                 <SelectComponent
                   idInput={"state"}
@@ -69,23 +80,43 @@ const EmploymentRecordsPage = () => {
                 />
               </div>
               <div className="grid-form-2-container gap-25">
-                <InputComponent
-                  idInput={"name"}
-                  label={<>Nombre</>}
-                  typeInput={"text"}
-                  register={register}
-                  errors={errors}
-                  className="input-basic medium"
-                  classNameLabel="text-black big bold"
+                <Controller
+                  control={control}
+                  name={"name"}
+                  render={({ field }) => {
+                    return (
+                      <InputComponent
+                        idInput={field.name}
+                        label={<>Nombre</>}
+                        typeInput={"text"}
+                        register={register}
+                        errors={errors}
+                        className="input-basic medium"
+                        classNameLabel="text-black big bold"
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                      />
+                    );
+                  }}
                 />
-                <InputComponent
-                  idInput={"lastName"}
-                  label={<>Apellido</>}
-                  typeInput={"text"}
-                  register={register}
-                  errors={errors}
-                  className="input-basic medium"
-                  classNameLabel="text-black big bold"
+                <Controller
+                  control={control}
+                  name={"lastName"}
+                  render={({ field }) => {
+                    return (
+                      <InputComponent
+                        idInput={field.name}
+                        label={<>Apellido</>}
+                        typeInput={"text"}
+                        register={register}
+                        errors={errors}
+                        className="input-basic medium"
+                        classNameLabel="text-black big bold"
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                      />
+                    );
+                  }}
                 />
               </div>
             </div>

@@ -17,12 +17,17 @@ export interface IMessage {
   onCancel?: () => void;
   onClose?: () => void;
 }
-
 export interface IGenericList {
   id: number;
   grouper: string;
   itemCode: string;
   itemDescription: string;
-  parentGrouper?: string;
-  parentItemCode?: string;
+  additionalFields?: object
 }
+
+export interface IAdditionalField {
+  grouper: string;
+  parentItemCode: string;
+  fieldName?: string;
+}
+

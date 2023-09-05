@@ -200,7 +200,7 @@ const useSearchSuspensionContract = () => {
                   rows={5}
                 />
                 <div className="text-right">
-                  <span className="text-span ">Max. {500} carácteres</span>
+                  <span className="text-span ">Max. {500} caracteres</span>
                 </div>
               </div>
             </div>

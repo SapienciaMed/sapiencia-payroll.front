@@ -84,8 +84,8 @@ const useCreateSuspensionContract = () => {
   //functions
   const onSubmitCreateSuspensionContract = handleSubmit(async (data) => {
     setMessage({
-      title: "Confirmacion de suspensión",
-      description: `¿Está segur@ de ejecutar
+      title: "Confirmación de suspensión",
+      description: `¿Estás segur@ de ejecutar
       la supensión?`,
       show: true,
       OkTitle: "Aceptar",
@@ -106,6 +106,7 @@ const useCreateSuspensionContract = () => {
 
       return {
         id: null,
+        document: "",
         names: "",
         surnames: "",
         typeContract: "",
@@ -127,6 +128,7 @@ const useCreateSuspensionContract = () => {
       if (data.length > 0) {
         return {
           id: null,
+          document: `${data[0].worker.numberDocument}`,
           names: `${data[0].worker.firstName} ${data[0].worker.secondName}`,
           surnames: `${data[0].worker.surname} ${data[0].worker.secondSurname}`,
           typeContract: `${data[0].typesContracts[0].name}`,
@@ -145,6 +147,7 @@ const useCreateSuspensionContract = () => {
 
         return {
           id: null,
+          document: "",
           names: "",
           surnames: "",
           typeContract: "",
@@ -164,6 +167,7 @@ const useCreateSuspensionContract = () => {
 
       return {
         id: null,
+        document: "",
         names: "",
         surnames: "",
         typeContract: "",
@@ -192,7 +196,7 @@ const useCreateSuspensionContract = () => {
     setMessage({
       title: "Cancelar",
       description: `¿Estás segur@ que desea 
-      cancelar el incremento?`,
+      cancelar la suspensión de contrato?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -211,7 +215,7 @@ const useCreateSuspensionContract = () => {
       title: "Guardado",
       description: `Suspensión ejecutada exitosamente`,
       show: true,
-      OkTitle: "cerrar",
+      OkTitle: "Aceptar",
       onOk: () => {
         navigate("../consultar");
         setMessage((prev) => {
@@ -226,20 +230,27 @@ const useCreateSuspensionContract = () => {
     });
   };
 
-  const handleModalError = (msg = `¡Ha ocurrido un error!`) => {
+  const handleModalError = (
+    msg = `¡Ha ocurrido un error!`,
+    navigateBoolean = true
+  ) => {
     setMessage({
       title: "Error",
       description: msg,
       show: true,
       OkTitle: "cerrar",
       onOk: () => {
-        navigate("../consultar");
+        if (navigateBoolean) {
+          navigate("../consultar");
+        }
         setMessage((prev) => {
           return { ...prev, show: false };
         });
       },
       onClose: () => {
-        navigate("../consultar");
+        if (navigateBoolean) {
+          navigate("../consultar");
+        }
         setMessage({});
       },
       background: true,
@@ -263,7 +274,7 @@ const useCreateSuspensionContract = () => {
     if (operation.code === EResponseCodes.OK) {
       handleModalSuccess();
     } else {
-      handleModalError(operation.message);
+      handleModalError(operation.message, false);
     }
   };
 

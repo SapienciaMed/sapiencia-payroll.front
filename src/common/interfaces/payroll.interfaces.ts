@@ -409,6 +409,7 @@ export interface ISalaryHistory {
 
 export interface IContractSuspension {
   id: number;
+  document: string;
   names: string;
   surnames: string;
   typeContract: string;

@@ -56,6 +56,16 @@ export const CreateSuspensionContractForm = ({
       <div className="container-sections-forms">
         <div className="grid-form-3-container gap-25">
           <InputComponent
+            idInput={"document"}
+            register={register}
+            label={<>Documento</>}
+            typeInput={"text"}
+            errors={errors}
+            disabled={true}
+            className="input-basic medium"
+            classNameLabel="text-black big bold"
+          />
+          <InputComponent
             idInput={"names"}
             register={register}
             label={<>Nombres</>}
@@ -153,55 +163,57 @@ export const CreateSuspensionContractForm = ({
             maxDate={maxDateSuspension()}
           />
 
-          {adjustEndDate && (
-            <DatePickerComponent
-              idInput={"newDateEnd"}
-              control={control}
-              label={
-                <>
-                  Nueva fecha fin de contrato <span>*</span>
-                </>
-              }
-              errors={errors}
-              classNameLabel="text-black big bold"
-              className="dataPicker-basic  medium "
-              disabled={true}
-              placeholder="DD/MM/YYYY"
-              dateFormat="dd/mm/yy"
-            />
-          )}
-        </div>
+          <div className="grid-span-3-columns">
+            <div className="grid-form-3-container gap-25">
+              <Controller
+                control={control}
+                name={"adjustEndDate"}
+                shouldUnregister={true}
+                render={({ field }) => {
+                  return (
+                    <div className="check-label mt-25 mb-25">
+                      <InputComponent
+                        idInput={field.name}
+                        errors={errors}
+                        typeInput={"checkbox"}
+                        direction={EDirection.row}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        value={field.value}
+                        checked={field.value}
+                        className="checkbox-basic"
+                        classNameLabel="text-black big bold"
+                      >
+                        <LabelComponent
+                          value="Calcular nueva fecha fin de contrato"
+                          className="text-black big bold"
+                          htmlFor="porcentaje"
+                        />
+                      </InputComponent>
+                    </div>
+                  );
+                }}
+              />
 
-        <div className="grid-span-3-columns">
-          <Controller
-            control={control}
-            name={"adjustEndDate"}
-            shouldUnregister={true}
-            render={({ field }) => {
-              return (
-                <div className="check-label mt-25 mb-25">
-                  <InputComponent
-                    idInput={field.name}
-                    errors={errors}
-                    typeInput={"checkbox"}
-                    direction={EDirection.row}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    value={field.value}
-                    checked={field.value}
-                    className="checkbox-basic"
-                    classNameLabel="text-black big bold"
-                  >
-                    <LabelComponent
-                      value="Calcular nueva fecha fin de contrato"
-                      className="text-black big bold"
-                      htmlFor="porcentaje"
-                    />
-                  </InputComponent>
-                </div>
-              );
-            }}
-          />
+              {adjustEndDate && (
+                <DatePickerComponent
+                  idInput={"newDateEnd"}
+                  control={control}
+                  label={
+                    <>
+                      Nueva fecha fin de contrato <span>*</span>
+                    </>
+                  }
+                  errors={errors}
+                  classNameLabel="text-black big bold"
+                  className="dataPicker-basic  medium "
+                  disabled={true}
+                  placeholder="DD/MM/YYYY"
+                  dateFormat="dd/mm/yy"
+                />
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="grid-span-3-columns">
@@ -229,7 +241,7 @@ export const CreateSuspensionContractForm = ({
             }}
           />
           <div className="text-right">
-            <span className="text-span ">Max. {500} carácteres</span>
+            <span className="text-span ">Max. {500} caracteres</span>
           </div>
         </div>
       </div>

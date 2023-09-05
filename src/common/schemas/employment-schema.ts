@@ -219,5 +219,8 @@ export const createSuspensionContractSchema = yup.object({
     .date()
     .required("El campo es obligatorio")
     .typeError("Fecha invalida"),
-  observation: yup.string().required("El campo es obligatorio"),
+  observation: yup
+    .string()
+    .required("El campo es obligatorio")
+    .max(500, "Solo se permiten 500 caracteres"),
 });

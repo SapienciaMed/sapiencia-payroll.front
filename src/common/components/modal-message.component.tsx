@@ -47,7 +47,7 @@ function ModalMessageComponent(): React.JSX.Element {
         <div className="modal-footer">
           {message.cancelTitle ? (
             <button
-              className="button-cancel medium hover-three"
+              className="button-cancel medium "
               onClick={
                 message.onCancel
                   ? message.onCancel
@@ -61,7 +61,7 @@ function ModalMessageComponent(): React.JSX.Element {
           )}
           {message.OkTitle ? (
             <button
-              className="button-ok small hover-three bold"
+              className="button-ok small "
               onClick={
                 message.onOk
                   ? message.onOk

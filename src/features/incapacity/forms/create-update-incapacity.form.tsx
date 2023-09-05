@@ -1,3 +1,4 @@
+import { Controller } from "react-hook-form";
 import {
   FormComponent,
   SelectComponent,
@@ -145,15 +146,27 @@ export const CreateUpdateIncapacityForm = ({
               />
 
               <div className="grid-span-3-columns">
-                <TextAreaComponent
-                  label={"Observaciones"}
-                  idInput={"comments"}
-                  disabled={disabledFields(true)}
-                  className="text-area-basic"
-                  classNameLabel="text-black big bold"
-                  register={register}
-                  errors={errors}
-                  rows={5}
+                <Controller
+                  control={control}
+                  name={"comments"}
+                  shouldUnregister={true}
+                  render={({ field }) => {
+                    return (
+                      <TextAreaComponent
+                        label={"Observaciones"}
+                        idInput={field.name}
+                        disabled={disabledFields(true)}
+                        className="text-area-basic"
+                        classNameLabel="text-black big bold"
+                        register={register}
+                        errors={errors}
+                        rows={5}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        value={field.value}
+                      />
+                    );
+                  }}
                 />
               </div>
             </div>

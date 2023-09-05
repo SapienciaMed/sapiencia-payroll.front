@@ -183,7 +183,7 @@ export const CreateUpdateIncrementSalaryForm = ({
                     prefix="%"
                     mode="decimal"
                     useGrouping={true}
-                    minFractionDigits={1} 
+                    minFractionDigits={1}
                     maxFractionDigits={3}
                   />
                 )}
@@ -251,16 +251,28 @@ export const CreateUpdateIncrementSalaryForm = ({
             </div>
           </div>
           <div className=" grid-span-3-columns">
-            <TextAreaComponent
-              idInput={"observation"}
-              className="text-area-basic"
-              classNameLabel="text-black big bold"
-              label="Observaciones"
-              register={register}
-              disabled={false}
-              errors={errors}
-              rows={5}
-              optionsRegister={{ shouldUnregister: true }}
+            <Controller
+              control={control}
+              name={"observation"}
+              shouldUnregister={true}
+              render={({ field }) => {
+                return (
+                  <TextAreaComponent
+                    idInput={field.name}
+                    className="text-area-basic"
+                    classNameLabel="text-black big bold"
+                    label="Observaciones"
+                    register={register}
+                    disabled={false}
+                    errors={errors}
+                    rows={5}
+                    optionsRegister={{ shouldUnregister: true }}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    value={field.value}
+                  />
+                );
+              }}
             />
             <div className="text-right">
               <span className="text-span ">Max. {500} carácteres</span>

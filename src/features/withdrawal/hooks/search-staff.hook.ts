@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import { useForm } from "react-hook-form";
 
@@ -9,13 +9,14 @@ import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import { IEmploymentWorker } from "../../../common/interfaces/payroll.interfaces";
 import { searchStaff } from "../../../common/schemas";
 import { EResponseCodes } from "../../../common/constants/api.enum";
+import { AppContext } from "../../../common/contexts/app.context";
 
 export default function useSearchStaff() {
   const [dataEmployment, setDataEmployment] = useState<IEmploymentWorker[]>([]);
 
   const { activeWorkerList, reasonsForWithdrawal, getWorkersActive } =
     useListData();
-
+    const { setMessage } = useContext(AppContext);
   const { getEmploymentById } = usePayrollService();
 
   const resolver = useYupValidationResolver(searchStaff);
@@ -42,6 +43,25 @@ export default function useSearchStaff() {
     }
   });
 
+  const handleModalCancel= () => {
+    setMessage({
+      title: "Retiro de personal",
+      description: `¿Estás segur@ que deseas cancelar el retiro de personal?`,
+      show: true,
+      OkTitle: "Aceptar",
+      onOk: () => {
+        clearDataEmployment()
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      onClose: () => {
+        setMessage({});
+      },
+      cancelTitle: "Cancelar",
+      background: true,
+    });
+  };
   const clearDataEmployment = () => {
     getWorkersActive();
     setDataEmployment([]);
@@ -58,5 +78,6 @@ export default function useSearchStaff() {
     reasonsForWithdrawal,
     getWorkersActive,
     clearDataEmployment,
+    handleModalCancel
   };
 }

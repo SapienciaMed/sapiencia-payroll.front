@@ -21,6 +21,7 @@ export const WithDrawalStaffPage = () => {
     dataEmployment,
     reasonsForWithdrawal,
     clearDataEmployment,
+    handleModalCancel,
   } = useSearchStaff();
 
   const {
@@ -157,7 +158,7 @@ export const WithDrawalStaffPage = () => {
                   <ButtonComponent
                     value={"Cancelar"}
                     type="button"
-                    action={() => clearDataEmployment()}
+                    action={() => handleModalCancel()}
                     className="button-clean bold"
                   />
                   <ButtonComponent

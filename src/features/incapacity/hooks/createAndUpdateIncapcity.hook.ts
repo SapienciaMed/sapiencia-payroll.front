@@ -143,7 +143,7 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
   const onSubmit = handleSubmit(async (data: IIncapacity) => {
     setMessage({
       title: "Confirmacion de incapacidad",
-      description: `¿Está segur@ de ejecutar esta accion?`,
+      description: `¿Estás segur@ de editar esta incapacidad?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {

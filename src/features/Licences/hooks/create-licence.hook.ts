@@ -140,7 +140,7 @@ export default function useLicenceData() {
   const handleModalCancel = () => {
     setMessage({
       title: "Cancelar",
-      description: `¿Estás segur@ que desea 
+      description: `¿Estás segur@ que deseas
       cancelar la licencia?`,
       show: true,
       OkTitle: "Aceptar",

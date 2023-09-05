@@ -98,8 +98,8 @@ export default function useRetirementEmployment(
   const onSubmitRetirement = handleSubmit(
     async (data: IRetirementEmployment) => {
       setMessage({
-        title: "Confirmacion de retiro",
-        description: `¿Estás segur@ de realizar este retiro?`,
+        title: "Confirmación de retiro",
+        description: `¿Estás segur@ de ejecutar esta acción?`,
         show: true,
         OkTitle: "Aceptar",
         onOk: () => {

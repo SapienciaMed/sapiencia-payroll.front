@@ -1,4 +1,4 @@
-import { useContext} from "react";
+import { useContext } from "react";
 import { AppContext } from "../../../common/contexts/app.context";
 import { useForm } from "react-hook-form";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
@@ -142,8 +142,14 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
 
   const onSubmit = handleSubmit(async (data: IIncapacity) => {
     setMessage({
-      title: "Confirmacion de incapacidad",
-      description: `¿Está segur@ de ejecutar esta accion?`,
+      title: `${
+        action === "edit" ? "Editar incapacidad" : "Confirmacion de incapacidad"
+      }`,
+      description: `${
+        action === "edit"
+          ? "¿Estás segur@ de editar esta incapacidad?"
+          : "¿Estás segur@ de ejecutar esta acción?"
+      }`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {

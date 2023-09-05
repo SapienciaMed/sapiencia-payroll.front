@@ -99,7 +99,7 @@ export default function useRetirementEmployment(
     async (data: IRetirementEmployment) => {
       setMessage({
         title: "Confirmacion de retiro",
-        description: `¿Estás segur@ de ejecutar esta accion?`,
+        description: `¿Estás segur@ de ejecutar esta acción?`,
         show: true,
         OkTitle: "Aceptar",
         onOk: () => {

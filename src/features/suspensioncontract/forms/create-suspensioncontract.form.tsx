@@ -243,7 +243,7 @@ export const CreateSuspensionContractForm = ({
         />
         <ButtonComponent
           value={"Ejecutar suspensión"}
-          className="button-save extra_large disabled-black"
+          className="button-save extra_extra_large disabled-black"
           disabled={!isValid}
         />
       </div>

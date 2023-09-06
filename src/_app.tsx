@@ -13,6 +13,7 @@ import WithDrawalRoutes from "./features/withdrawal/withdrawal-routes";
 import LicencesRoutes from "./features/Licences/licences-routes";
 import SalaryIncrementRoutes from "./features/salaryincrement/salary-increment-routes";
 import SuspensionContractRoutes from "./features/suspensioncontract/suspensioncontract-routes";
+import DeductionsRoutes from "./features/deductions/deductions-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
@@ -60,6 +61,10 @@ function App() {
               <Route
                 path={"/nomina/suspension/contrato/*"}
                 element={<SuspensionContractRoutes />}
+              />
+              <Route
+                path={"/nomina/deducciones/*"}
+                element={<DeductionsRoutes />}
               />
             </Routes>
           </Suspense>

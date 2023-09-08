@@ -290,6 +290,111 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   flex-direction: column;
 }
 
+.payroll-personal-information-document {
+  display: flex;
+  gap: 4px;
+  flex-direction: row;
+}
+
+.payroll-relatives-button-confirm {
+  @include generate-button(0, #533893, transparent, transparent solid 1px);
+  font-size: 2em;
+  margin: 0.2em;
+
+  &.hover-main:hover {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+  }
+
+  &.hover-three:hover {
+    color: $three-color;
+    border: $three-color solid 1px;
+    -webkit-box-shadow: 0px 0px 15px 0px $three-color;
+    -moz-box-shadow: 0px 0px 15px 0px $three-color;
+    box-shadow: 0px 0px 15px 0px $three-color;
+  }
+
+  &.disabled-black:disabled {
+    color: $input-color-border !important;
+    opacity: 1;
+  }
+}
+
+.payroll-relatives-button-cancel-edit {
+  @include generate-button(0, #533893, transparent, transparent solid 1px);
+  font-size: 2em;
+  margin: 0.2em;
+
+  &.hover-main:hover {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+  }
+
+  &.hover-three:hover {
+    color: $three-color;
+    border: $three-color solid 1px;
+    -webkit-box-shadow: 0px 0px 15px 0px $three-color;
+    -moz-box-shadow: 0px 0px 15px 0px $three-color;
+    box-shadow: 0px 0px 15px 0px $three-color;
+  }
+
+  &.disabled-black:disabled {
+    color: $input-color-border !important;
+    opacity: 1;
+  }
+}
+
+.payroll-relatives-button-delete {
+  @include generate-button(0, red, transparent, transparent solid 1px);
+  font-size: 2em;
+  margin: 0.2em;
+
+  &.hover-main:hover {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+  }
+
+  &.hover-three:hover {
+    color: $three-color;
+    border: $three-color solid 1px;
+    -webkit-box-shadow: 0px 0px 15px 0px $three-color;
+    -moz-box-shadow: 0px 0px 15px 0px $three-color;
+    box-shadow: 0px 0px 15px 0px $three-color;
+  }
+
+  &.disabled-black:disabled {
+    color: $input-color-border !important;
+    opacity: 1;
+  }
+}
+.payroll-relatives-button-edit {
+  @include generate-button(0, green, transparent, transparent solid 1px);
+  font-size: 2em;
+  margin: 0.2em;
+
+  &.hover-main:hover {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+    box-shadow: 0px 0px 15px 0px rgba(167, 25, 137, 0.6);
+  }
+
+  &.hover-three:hover {
+    color: $three-color;
+    border: $three-color solid 1px;
+    -webkit-box-shadow: 0px 0px 15px 0px $three-color;
+    -moz-box-shadow: 0px 0px 15px 0px $three-color;
+    box-shadow: 0px 0px 15px 0px $three-color;
+  }
+
+  &.disabled-black:disabled {
+    color: $input-color-border !important;
+    opacity: 1;
+  }
+}
+
 @media (min-width: 1024px) {
   div[id="single-spa-application:@sapiencia/payroll"] {
     width: initial;
@@ -299,36 +404,6 @@ div[id="single-spa-application:@sapiencia/payroll"] {
     display: flex;
     flex-direction: row;
   }
-
-  // .dashboard-margin {
-  //   grid-template-rows: 16em 1fr;
-  //   font-size: inherit;
-  // }
-
-  // .welcome-container {
-  //   margin: 0px 0px;
-  //   gap: 0px;
-  // }
-
-  // .applications-cards {
-  //   justify-content: center;
-  //   $card-height: 14em;
-  //   $card-width: 19em;
-  //   $margin-horizontal: 4em;
-  //   $margin-vertical: 2em;
-  //   $columns: repeat(auto-fit, $card-width);
-  //   $cursor: pointer;
-  //   $padding: 10px;
-  //   @include multiple-card-component(
-  //     $columns,
-  //     $margin-horizontal,
-  //     $margin-vertical,
-  //     $card-height,
-  //     $card-width,
-  //     $padding,
-  //     $cursor
-  //   );
-  // }
 
   .select-applications {
     display: flex;
@@ -461,6 +536,12 @@ div[id="single-spa-application:@sapiencia/payroll"] {
     opacity: 1;
     padding: 2em;
     margin: 1.5em 0em;
+  }
+
+  .payroll-personal-information-document {
+    display: flex;
+    gap: 12px;
+    flex-direction: row;
   }
 }
 

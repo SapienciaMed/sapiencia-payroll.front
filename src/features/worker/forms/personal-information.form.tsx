@@ -38,28 +38,30 @@ const InformationPersonalForm = ({
           <label className="text-black big bold">
             Documento de identidad <span>*</span>
           </label>
-          <div className="display-justify gap-15">
+          <div className="payroll-personal-information-document">
             <SelectComponent
               idInput={"worker.typeDocument"}
               control={control}
               errors={errors}
-              data={list[0]}
+              data={list[0].map((item)=>{
+                return {
+                  value:item.value,
+                  name: item.name.slice(0,3)
+                }
+              })}
               className="select-basic medium"
               classNameLabel="text-black big bold"
-              placeholder="Seleccione."
+              placeholder="Tipo"
               disabled={disabledFields}
             />
-            <InputGroupComponent
+            <InputComponent
               idInput="worker.numberDocument"
-              className="input-group-basic medium"
+              className="input-basic medium"
               typeInput="text"
               register={register}
               classNameLabel="text-black big bold"
-              direction={EDirection.row}
               errors={errors}
               placeholder={""}
-              iconLegend={"No."}
-              containerClassname="ml-5px big"
               disabled={disabledFields}
             />
           </div>

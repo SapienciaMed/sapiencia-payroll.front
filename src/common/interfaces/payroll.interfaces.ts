@@ -438,3 +438,51 @@ export interface IContractSuspensionData {
 export interface IFilterContractSuspension {
   codEmployment: number;
 }
+
+export interface IFormPeriod {
+  id?: number;
+  idFormType: number;
+  state: string;
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  cutoffDate: DateTime;
+  paidDate: DateTime;
+  month: number;
+  year: number;
+  observation?: string;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface IDeductionType {
+  id: number;
+  name: string;
+  cyclic?: boolean;
+}
+
+export interface IManualDeduction {
+  id?: number;
+  typeDeduction: string;
+  codEmployment: number;
+  //tipo eventuales - tipo ciclicas
+  codDeductionType?: number;
+  //si es ciclico manda true sino manda un false
+  cyclic: boolean;
+  // numero de cuotas solo aplica ciclicas (si es eventual null)
+  numberInstallments?: number;
+  // check aplica a extraordinaria solo en ciclica true o false (si es eventual null)
+  applyExtraordinary?: boolean;
+  // check porcentaje
+  porcentualValue?: boolean;
+  // valor deduccion (eventual) - valor por cuotas (ciclica)
+  value: number;
+  totalMount?: number;
+  // eventual periodo plantilla - periodo inicial planntilla
+  codFormsPeriod?: number;
+  // Estado siempre vigente
+  state: string;
+  //Observation
+  observation?: string;
+}

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { DateTime } from "luxon";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 import { ApiResponse } from "../../../common/utils/api-response";
 import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
 import { IGenericList } from "../../../common/interfaces/global.interface";
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import {
+  IFormPeriod,
   IIncapacityTypes,
   IReasonsForWithdrawal,
   IWorker,
@@ -16,9 +18,11 @@ export default function useListData() {
   const [activeWorkerList, setActiveWorkerList] = useState([]);
   const [typesIncapacityList, setTypesIncapacityList] = useState([]);
   const [reasonsForWithdrawal, setReasonsForWithdrawal] = useState([]);
+  const [lastPeriodsList, setLastPeriodsList] = useState([]);
 
   const { getListByGrouper } = useGenericListService();
-  const { getWorkers, getReasonsForWithdrawal } = usePayrollService();
+  const { getWorkers, getReasonsForWithdrawal, getLastPeriods } =
+    usePayrollService();
   const { typeIncapacity } = useIncapacityService();
 
   useEffect(() => {
@@ -86,6 +90,28 @@ export default function useListData() {
   }, []);
 
   useEffect(() => {
+    getLastPeriods()
+      .then((response: ApiResponse<IFormPeriod[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setLastPeriodsList(
+            response.data.map((item) => {
+              const list = {
+                name: `${DateTime.fromISO(
+                  item.dateStart
+                ).toLocaleString()} - ${DateTime.fromISO(
+                  item.dateEnd
+                ).toLocaleString()}`,
+                value: item.id,
+              };
+              return list;
+            })
+          );
+        }
+      })
+      .catch((err) => {});
+  }, []);
+
+  useEffect(() => {
     typeIncapacity()
       .then((response: ApiResponse<IIncapacityTypes[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
@@ -104,6 +130,7 @@ export default function useListData() {
     listPeriods,
     typesIncapacityList,
     reasonsForWithdrawal,
+    lastPeriodsList,
     getWorkersActive,
   };
 }

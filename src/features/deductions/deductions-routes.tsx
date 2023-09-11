@@ -3,6 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "../../common/utils/auth-private-guard";
 
 function DeductionsRoutes() {
+  const CreateUpdateDeductionsPage = lazy(
+    () => import("./pages/create-update-deductions.page")
+  );
+
   return (
     <Routes>
       <Route
@@ -22,11 +26,7 @@ function DeductionsRoutes() {
         path={"/crear"}
         element={
           <PrivateRoute
-            element={
-              <>
-                <h1>Crear deducciones</h1>
-              </>
-            }
+            element={<CreateUpdateDeductionsPage action="new" />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

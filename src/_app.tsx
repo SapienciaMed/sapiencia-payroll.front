@@ -63,7 +63,7 @@ function App() {
                 element={<SuspensionContractRoutes />}
               />
               <Route
-                path={"/nomina/deducciones/*"}
+                path={"/nomina/deduccion/*"}
                 element={<DeductionsRoutes />}
               />
             </Routes>

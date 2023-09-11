@@ -224,3 +224,32 @@ export const createSuspensionContractSchema = yup.object({
     .required("El campo es obligatorio")
     .max(500, "Solo se permiten 500 caracteres"),
 });
+
+export const createDeductionOneSchema = yup.object({
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  typeDeduction: yup.string().required("El campo es obligatorio"),
+});
+
+export const createDeductionTwoSchema = yup.object({
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  typeDeduction: yup.string().required("El campo es obligatorio"),
+  codDeductionType: yup.string().required("El campo es obligatorio"),
+  codFormsPeriod: yup.string().required("El campo es obligatorio"),
+  value: yup.number().required("El campo es obligatorio"),
+  observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
+});
+
+export const createDeductionThreeSchema = yup.object({
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  typeDeduction: yup.string().required("El campo es obligatorio"),
+  codDeductionType: yup.string().required("El campo es obligatorio"),
+  codFormsPeriod: yup.string().required("El campo es obligatorio"),
+  value: yup.number().required("El campo es obligatorio"),
+  observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
+});
+
+export const formDeduction = [
+  createDeductionOneSchema,
+  createDeductionTwoSchema,
+  createDeductionThreeSchema,
+];

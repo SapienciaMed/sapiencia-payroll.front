@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { AppContext } from "../../../common/contexts/app.context";
 
@@ -23,6 +23,7 @@ const useCreateAndUpdateDeductions = ({
 }: IPropsUseCreateAndUpdateDeductions) => {
   //react router dom
   const navigate = useNavigate();
+  const { id } = useParams();
 
   // Context
   const { setMessage } = useContext(AppContext);
@@ -33,7 +34,12 @@ const useCreateAndUpdateDeductions = ({
 
   //custom hooks
   const { activeWorkerList, lastPeriodsList } = useListData();
-  const { getDeductionTypesByType, createDeduction } = useDeductionService();
+  const {
+    getDeductionTypesByType,
+    createDeduction,
+    updateDeduction,
+    getDeductionById,
+  } = useDeductionService();
 
   //variables
   const typeDeductionList = [
@@ -107,7 +113,8 @@ const useCreateAndUpdateDeductions = ({
   }, [typeDeduction]);
 
   useEffect(() => {
-    setValue("value", null, { shouldValidate: true });
+    if (formState.dirtyFields.porcentualValue)
+      setValue("value", null, { shouldValidate: true });
 
     if (typeDeduction === EDeductionns.Ciclica) {
       setValue("numberInstallments", null);
@@ -149,6 +156,67 @@ const useCreateAndUpdateDeductions = ({
         state: "Vigente",
         observation: "",
       };
+    }
+
+    if (action === "edit") {
+      const { data, operation } = await getDeductionById(Number(id));
+
+      if (operation.code === EResponseCodes.OK) {
+        if (data.length > 0) {
+          console.log(data);
+          return {
+            id: data[0].id,
+            typeDeduction: data[0].cyclic ? "Ciclica" : "Eventual",
+            codEmployment: data[0].codEmployment,
+            codDeductionType: data[0].codDeductionType,
+            cyclic: data[0].cyclic,
+            numberInstallments: data[0].numberInstallments,
+            applyExtraordinary: data[0].applyExtraordinary,
+            porcentualValue: data[0].porcentualValue,
+            value: data[0].value,
+            totalMount: data[0].totalMount,
+            codFormsPeriod: data[0].codFormsPeriod,
+            state: data[0].state,
+            observation: data[0].observation,
+          };
+        } else {
+          handleModalError("No se han cargado los datos");
+
+          return {
+            id: null,
+            typeDeduction: "",
+            codEmployment: null,
+            codDeductionType: null,
+            cyclic: null,
+            numberInstallments: null,
+            applyExtraordinary: null,
+            porcentualValue: false,
+            value: null,
+            totalMount: null,
+            codFormsPeriod: null,
+            state: "Vigente",
+            observation: "",
+          };
+        }
+      } else {
+        handleModalError("No se han cargado los datos");
+
+        return {
+          id: null,
+          typeDeduction: "",
+          codEmployment: null,
+          codDeductionType: null,
+          cyclic: null,
+          numberInstallments: null,
+          applyExtraordinary: null,
+          porcentualValue: false,
+          value: null,
+          totalMount: null,
+          codFormsPeriod: null,
+          state: "Vigente",
+          observation: "",
+        };
+      }
     }
   };
 
@@ -199,8 +267,10 @@ const useCreateAndUpdateDeductions = ({
 
   const handleModalSuccess = () => {
     setMessage({
-      title: "Guardado",
-      description: `Deducción ejecutada exitosamente`,
+      title: ` ${action === "edit" ? "Editado" : "Guardado"}`,
+      description: `Deducción ${
+        action === "edit" ? "editada" : "ejecutada"
+      } exitosamente`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -220,12 +290,14 @@ const useCreateAndUpdateDeductions = ({
   const handleSubmitDeduction = handleSubmit((data: IManualDeduction) => {
     setMessage({
       title: "Confirmación de deducción",
-      description: `¿Estás segur@ de ejecutar
+      description: `¿Estás segur@ de ${
+        action === "edit" ? "editar" : "ejecutar"
+      }
       la deducción?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
-        handleCreateDeduction(data);
+        handleCreateOrUpdateDeduction(data);
         setMessage((prev) => {
           return { ...prev, show: false };
         });
@@ -235,8 +307,11 @@ const useCreateAndUpdateDeductions = ({
     });
   });
 
-  const handleCreateDeduction = async (data: IManualDeduction) => {
-    const { data: dataResponse, operation } = await createDeduction(data);
+  const handleCreateOrUpdateDeduction = async (data: IManualDeduction) => {
+    const { data: dataResponse, operation } =
+      action === "edit"
+        ? await updateDeduction(data)
+        : await createDeduction(data);
 
     if (operation.code === EResponseCodes.OK) {
       handleModalSuccess();

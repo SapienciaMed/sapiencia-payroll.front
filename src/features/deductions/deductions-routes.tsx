@@ -35,11 +35,7 @@ function DeductionsRoutes() {
         path={"/edit/:id"}
         element={
           <PrivateRoute
-            element={
-              <>
-                <h1>Editar deducciones</h1>
-              </>
-            }
+            element={<CreateUpdateDeductionsPage action="edit" />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

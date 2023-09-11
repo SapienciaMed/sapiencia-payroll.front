@@ -27,6 +27,21 @@ export function useDeductionService() {
     }
   }
 
+  async function getDeductionById(
+    id: number
+  ): Promise<ApiResponse<IManualDeduction[]>> {
+    try {
+      const endpoint: string = `/${id}`;
+      return await get(`${authUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IManualDeduction[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   async function createDeduction(
     data: IManualDeduction
   ): Promise<ApiResponse<IManualDeduction>> {
@@ -42,9 +57,26 @@ export function useDeductionService() {
     }
   }
 
+  async function updateDeduction(
+    data: IManualDeduction
+  ): Promise<ApiResponse<IManualDeduction>> {
+    try {
+      const endpoint: string = `/`;
+      return await put(`${authUrl}${endpoint}`, data);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IManualDeduction,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   return {
     getDeductionTypesByType,
     createDeduction,
+    updateDeduction,
+    getDeductionById,
   };
 }
 

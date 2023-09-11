@@ -47,6 +47,7 @@ const CreateUpdateDeductionsPage = ({
             typeDeductionList={typeDeductionList}
             deductionsTypeByTypeList={deductionsTypeByTypeList}
             lastPeriodsList={lastPeriodsList}
+            action={action}
             redirectCancel={redirectCancel}
             handleSubmitDeduction={handleSubmitDeduction}
           />

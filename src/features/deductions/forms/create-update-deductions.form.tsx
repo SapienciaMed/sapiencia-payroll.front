@@ -24,6 +24,7 @@ interface IPropsCreateUpdateDeductionsForm {
   typeDeductionList: any[];
   deductionsTypeByTypeList: any[];
   lastPeriodsList: any[];
+  action: string;
   redirectCancel: () => void;
   handleSubmitDeduction: (
     e?: BaseSyntheticEvent<object, any, any>
@@ -39,6 +40,7 @@ export const CreateUpdateDeductionsForm = ({
   typeDeductionList,
   deductionsTypeByTypeList,
   lastPeriodsList,
+  action,
   redirectCancel,
   handleSubmitDeduction,
 }: IPropsCreateUpdateDeductionsForm): React.JSX.Element => {
@@ -408,7 +410,7 @@ export const CreateUpdateDeductionsForm = ({
             action={redirectCancel}
           />
           <ButtonComponent
-            value={"Guardar"}
+            value={`${action === "edit" ? "Editar" : "Guardar"}`}
             className="button-save large disabled-black"
             disabled={!isValid}
           />

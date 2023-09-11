@@ -1,5 +1,6 @@
 import React, { BaseSyntheticEvent } from "react";
 import { Controller, Control, FormState } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 
 import {
   ButtonComponent,
@@ -245,7 +246,7 @@ export const CreateUpdateDeductionsForm = ({
                           <LabelComponent
                             value="Porcentaje"
                             className="text-black big bold"
-                            htmlFor="porcentaje"
+                            htmlFor="porcentualValue"
                           />
                         </InputComponent>
                       </div>
@@ -416,6 +417,7 @@ export const CreateUpdateDeductionsForm = ({
           />
         </div>
       </FormComponent>
+      {/* <DevTool control={control} /> set up the dev tool */}
     </>
   );
 };

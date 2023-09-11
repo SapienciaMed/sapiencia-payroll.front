@@ -77,7 +77,10 @@ const useCreateAndUpdateDeductions = ({
 
   //watch
   useEffect(() => {
-    // if (formState.dirtyFields.typeDeduction) {
+    if (formState.isDirty) {
+      setValue("codDeductionType", null);
+    }
+
     if (typeDeduction === EDeductionns.Eventuales) {
       setIndexArrayYupValidator(1);
       setValue("cyclic", false);
@@ -91,7 +94,6 @@ const useCreateAndUpdateDeductions = ({
       setIndexArrayYupValidator(0);
       setValue("cyclic", null);
     }
-    // }
 
     if (typeDeduction) {
       getDeductionTypesByType(typeDeduction)
@@ -113,23 +115,26 @@ const useCreateAndUpdateDeductions = ({
   }, [typeDeduction]);
 
   useEffect(() => {
-    if (formState.dirtyFields.porcentualValue)
+    if (formState.isDirty) {
       setValue("value", null, { shouldValidate: true });
 
-    if (typeDeduction === EDeductionns.Ciclica) {
-      setValue("numberInstallments", null);
-      setValue("totalMount", null);
+      if (typeDeduction === EDeductionns.Ciclica) {
+        setValue("numberInstallments", null);
+        setValue("totalMount", null);
+      }
     }
   }, [porcentualValue]);
 
   useEffect(() => {
     if (typeDeduction === EDeductionns.Ciclica) {
-      if (totalMount && numberInstallments) {
-        const valuePerQuota = totalMount / numberInstallments;
+      if (formState.isDirty) {
+        if (totalMount && numberInstallments) {
+          const valuePerQuota = totalMount / numberInstallments;
 
-        setValue("value", valuePerQuota, { shouldValidate: true });
-      } else {
-        setValue("value", null, { shouldValidate: true });
+          setValue("value", valuePerQuota, { shouldValidate: true });
+        } else {
+          setValue("value", null, { shouldValidate: true });
+        }
       }
     }
   }, [totalMount, numberInstallments]);
@@ -163,7 +168,6 @@ const useCreateAndUpdateDeductions = ({
 
       if (operation.code === EResponseCodes.OK) {
         if (data.length > 0) {
-          console.log(data);
           return {
             id: data[0].id,
             typeDeduction: data[0].cyclic ? "Ciclica" : "Eventual",
@@ -308,6 +312,7 @@ const useCreateAndUpdateDeductions = ({
   });
 
   const handleCreateOrUpdateDeduction = async (data: IManualDeduction) => {
+    console.log(data);
     const { data: dataResponse, operation } =
       action === "edit"
         ? await updateDeduction(data)

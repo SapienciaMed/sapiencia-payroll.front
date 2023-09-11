@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineX } from "react-icons/hi";
 import { RiSave3Fill } from "react-icons/ri";
-import { UseFormGetValues, useFieldArray, useForm } from "react-hook-form";
+import {
+  Controller,
+  UseFormGetValues,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import {
   InputComponent,
   SelectComponent,
@@ -99,17 +104,27 @@ const FamiliarInformationForm = ({
                 !disabledRows[index] ? "bg-editing" : "bg-disabled"
               }`}
             >
-              <InputComponent
-                idInput={`familiar.${index}.name`}
-                id={`fullName${index}`}
-                className="input-basic medium"
-                typeInput="text"
-                disabled={disabledRows[index] || disabledFields}
-                label="Nombre completo"
-                classNameLabel="text-black big bold"
-                errors={errors}
-                register={registerFamily}
-                fieldArray={true}
+              <Controller
+                control={control}
+                name={`familiar.${index}.name`}
+                render={({ field }) => {
+                  return (
+                    <InputComponent
+                      id={field.name}
+                      idInput={field.name}
+                      value={`${field.value}`}
+                      className="input-basic medium"
+                      typeInput="text"
+                      disabled={disabledRows[index] || disabledFields}
+                      label="Nombre completo"
+                      classNameLabel="text-black big bold"
+                      errors={errors}
+                      onChange={field.onChange}
+                      register={registerFamily}
+                      fieldArray={true}
+                    />
+                  );
+                }}
               />
 
               <DatePickerComponent
@@ -188,7 +203,7 @@ const FamiliarInformationForm = ({
                             handleDisableRow(index);
                           }
                         }}
-                        className="button-confirm disabled-black"
+                        className="payroll-relatives-button-confirm  disabled-black"
                         disabled={disabledFields}
                       />
                       <ButtonComponent
@@ -199,7 +214,7 @@ const FamiliarInformationForm = ({
                             handleDisableRow(index);
                           }
                         }}
-                        className="button-cancel-edit disabled-black"
+                        className="payroll-relatives-button-cancel-edit disabled-black"
                         disabled={disabledFields}
                       />
                     </>
@@ -209,7 +224,7 @@ const FamiliarInformationForm = ({
                         value={<HiOutlinePencil />}
                         type="button"
                         action={() => handleEnableRow(index)}
-                        className="button-edit disabled-black"
+                        className="payroll-relatives-button-edit disabled-black"
                         disabled={disabledFields}
                       />
                       <ButtonComponent
@@ -220,7 +235,7 @@ const FamiliarInformationForm = ({
                           const data = getValues("familiar");
                           setFamilyData({ familiar: data });
                         }}
-                        className="button-delete disabled-black"
+                        className="payroll-relatives-button-delete  disabled-black"
                         disabled={disabledFields}
                       />
                     </>

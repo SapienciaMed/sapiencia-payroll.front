@@ -2,40 +2,46 @@ import React, { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "../../common/utils/auth-private-guard";
 
-function DeductionsRoutes() {
-  const SearchDeductionsPage = lazy(
-    () => import("./pages/search-deductions.page")
-  );
-  
-  const CreateUpdateDeductionsPage = lazy(
-    () => import("./pages/create-update-deductions.page")
-  );
-
+function SpreadsSheetRoutes() {
   return (
     <Routes>
       <Route
         path={"/consultar"}
         element={
           <PrivateRoute
-            element={<SearchDeductionsPage />}
+            element={
+              <>
+                <h1>Hola mundo</h1>
+              </>
+            }
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }
       />
+
       <Route
         path={"/crear"}
         element={
           <PrivateRoute
-            element={<CreateUpdateDeductionsPage action="new" />}
+            element={
+              <>
+                <h1>Hola mundo crear</h1>
+              </>
+            }
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }
       />
+
       <Route
         path={"/edit/:id"}
         element={
           <PrivateRoute
-            element={<CreateUpdateDeductionsPage action="edit" />}
+            element={
+              <>
+                <h1>Hola mundo editar</h1>
+              </>
+            }
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }
@@ -44,4 +50,4 @@ function DeductionsRoutes() {
   );
 }
 
-export default React.memo(DeductionsRoutes);
+export default React.memo(SpreadsSheetRoutes);

@@ -14,6 +14,7 @@ import LicencesRoutes from "./features/Licences/licences-routes";
 import SalaryIncrementRoutes from "./features/salaryincrement/salary-increment-routes";
 import SuspensionContractRoutes from "./features/suspensioncontract/suspensioncontract-routes";
 import DeductionsRoutes from "./features/deductions/deductions-routes";
+import SpreadsSheetRoutes from "./features/spreadsheet/spreadsheet-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
@@ -65,6 +66,10 @@ function App() {
               <Route
                 path={"/nomina/deduccion/*"}
                 element={<DeductionsRoutes />}
+              />
+              <Route
+                path={"/nomina/planilla/*"}
+                element={<SpreadsSheetRoutes />}
               />
             </Routes>
           </Suspense>

@@ -15,6 +15,7 @@ const SearchDeductions = (): React.JSX.Element => {
     onSubmit,
     redirectCreate,
     clearFields,
+    typeDeductionList,
     formValues,
     showTable,
     charges,
@@ -40,6 +41,7 @@ const SearchDeductions = (): React.JSX.Element => {
         <FilterDeductionsForm
           control={control}
           formState={formState}
+          typeDeductionList = {typeDeductionList}
           redirectCreate={redirectCreate}
           clearFields={clearFields}
           onSubmit={onSubmit}
@@ -49,7 +51,7 @@ const SearchDeductions = (): React.JSX.Element => {
         
         {showTable && (
           <div className="container-sections-forms">
-
+              
           </div>
         )}
               

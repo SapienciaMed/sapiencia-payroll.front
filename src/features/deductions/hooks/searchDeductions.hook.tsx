@@ -47,6 +47,18 @@ export default function useSearchDeductionsHook() {
   //react-router-dom
   const navigate = useNavigate();
 
+  //variables
+  const typeDeductionList = [
+    {
+      name: "Eventuales",
+      Value: "Eventual",
+    },
+    {
+      name: "Cíclicas",
+      value: "Cíclica"
+    },
+  ]
+
   const { register, handleSubmit, control, formState, reset, watch } =
   useForm<IDeductionsFilter>({
     //resolver,
@@ -103,6 +115,7 @@ export default function useSearchDeductionsHook() {
 
   return {
     register,
+    typeDeductionList,
     control,
     formState,
     onSubmit,

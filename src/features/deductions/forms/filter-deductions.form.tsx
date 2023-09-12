@@ -23,6 +23,7 @@ import { IDeductionsFilter } from "../../../common/interfaces/payroll.interfaces
 interface IPropsFilterDeductions {
   control: Control<IDeductionsFilter, any>;
   formState: FormState<FieldValues>;
+  typeDeductionList: any[],
   redirectCreate: () => void;
   clearFields: () => void;
   onSubmit: () => Promise<void>;
@@ -33,6 +34,7 @@ interface IPropsFilterDeductions {
 export const FilterDeductionsForm = ({
   control,
   formState,
+  typeDeductionList,
   redirectCreate,
   clearFields,
   onSubmit,
@@ -67,7 +69,7 @@ export const FilterDeductionsForm = ({
               idInput={"codFormsPeriod"}
               control={control}
               errors={errors}
-              //data={typeDeductionList}
+              data={typeDeductionList}
               label={
                 <>
                   Tipo de deducción <span>*</span>
@@ -82,7 +84,7 @@ export const FilterDeductionsForm = ({
               idInput={"typeDeduction"}
               control={control}
               errors={errors}
-              //data={typeDeductionList}
+              data={typeDeductionList}
               label={
                 <>
                   periodo de planilla <span>*</span>

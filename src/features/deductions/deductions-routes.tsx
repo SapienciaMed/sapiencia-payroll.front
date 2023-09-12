@@ -3,17 +3,17 @@ import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "../../common/utils/auth-private-guard";
 
 function DeductionsRoutes() {
+  const SearchDeductionsPage = lazy(
+    () => import("./pages/search-deductions.page")
+  );
+
   return (
     <Routes>
       <Route
         path={"/consultar"}
         element={
           <PrivateRoute
-            element={
-              <>
-                <h1>Consultar deducciones</h1>
-              </>
-            }
+            element={<SearchDeductionsPage />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

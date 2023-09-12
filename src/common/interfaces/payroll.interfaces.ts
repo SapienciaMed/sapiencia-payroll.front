@@ -438,3 +438,7 @@ export interface IContractSuspensionData {
 export interface IFilterContractSuspension {
   codEmployment: number;
 }
+
+export interface IDeductionsFilter {
+  codCharge?: number;
+}

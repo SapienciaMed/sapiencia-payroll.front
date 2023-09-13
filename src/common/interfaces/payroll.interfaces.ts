@@ -455,6 +455,7 @@ export interface IFormPeriod {
   dateModified?: DateTime;
   userCreate?: string;
   dateCreate?: DateTime;
+  formsType?: IFormTypes;
 }
 
 export interface IDeductionsFilter {
@@ -492,4 +493,17 @@ export interface IManualDeduction {
   observation?: string;
   deductionsType?: IDeductionType
   employment?: IEmploymentWorker
+}
+
+export interface IFormPeriodFilters {
+  idFormType?: number;
+  state?: string;
+  paidDate?: DateTime;
+}
+
+export interface IFormTypes {
+  id?: number;
+  special: boolean;
+  name: string;
+  frecuencyPaid: string;
 }

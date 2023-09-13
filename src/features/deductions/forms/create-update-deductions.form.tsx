@@ -66,6 +66,7 @@ export const CreateUpdateDeductionsForm = ({
               classNameLabel="text-black big bold"
               placeholder="Seleccione."
               filter={true}
+              disabled={action === "edit" ? true : false}
             />
             <SelectComponent
               idInput={"typeDeduction"}
@@ -80,6 +81,7 @@ export const CreateUpdateDeductionsForm = ({
               className="select-basic medium"
               classNameLabel="text-black big bold"
               placeholder="Seleccione."
+              disabled={action === "edit" ? true : false}
             />
 
             {typeDeduction === EDeductionns.Eventuales && (
@@ -176,7 +178,9 @@ export const CreateUpdateDeductionsForm = ({
                     mode="decimal"
                     useGrouping={true}
                     minFractionDigits={1}
-                    maxFractionDigits={3}
+                    maxFractionDigits={1}
+                    min={0}
+                    max={100}
                   />
                 )}
 
@@ -326,7 +330,9 @@ export const CreateUpdateDeductionsForm = ({
                     mode="decimal"
                     useGrouping={true}
                     minFractionDigits={1}
-                    maxFractionDigits={3}
+                    maxFractionDigits={1}
+                    min={0}
+                    max={100}
                   />
                 )}
 

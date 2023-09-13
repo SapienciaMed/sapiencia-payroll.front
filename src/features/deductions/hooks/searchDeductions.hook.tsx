@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { DateTime } from "luxon";
 
-//import { filterIncrementSalarySchema } from "../../../common/schemas";
+import { filterIncrementSalarySchema } from "../../../common/schemas";
 
 import { formaterNumberToCurrency } from "../../../common/utils/helpers";
 
@@ -13,9 +13,11 @@ import {
   ITableAction,
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
-//import {ISalaryHistory,ISalaryIncrementFilter,} from "../../../common/interfaces/payroll.interfaces";
+import {IDeductionsFilter,ISalaryIncrementFilter,} from "../../../common/interfaces/payroll.interfaces";
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
+
+import useListData from "../../vacation/hooks/list.hook";
 
 import { TextAreaComponent } from "../../../common/components/Form";
 import {
@@ -25,9 +27,8 @@ import {
 
 import { AppContext } from "../../../common/contexts/app.context";
 
-import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
-import { IDeductionsFilter } from "../../../common/interfaces/payroll.interfaces";
+
 
 
 export default function useSearchDeductionsHook() {
@@ -36,6 +37,7 @@ export default function useSearchDeductionsHook() {
 
   //custom hooks
   const { getCharges } = usePayrollService();
+  const { activeWorkerList, lastPeriodsList } = useListData();
 
   //states
   const [showTable, setshowTable] = useState(false);
@@ -47,29 +49,29 @@ export default function useSearchDeductionsHook() {
   //react-router-dom
   const navigate = useNavigate();
 
-  //variables
-  const typeDeductionList = [
-    {
-      name: "Eventuales",
-      Value: "Eventual",
-    },
-    {
-      name: "Cíclicas",
-      value: "Cíclica"
-    },
-  ]
-
   const { register, handleSubmit, control, formState, reset, watch } =
   useForm<IDeductionsFilter>({
     //resolver,
     mode: "all",
-    defaultValues: {
-      //numberActApproval: "", 
-      codCharge: null,
+    defaultValues: { 
+      codEmployment: null,
     },
   });
 
   const formValues = watch();
+
+  //variables
+  const typeDeductionList = [
+    {
+      name: "Eventuales",
+      value: "Eventual",
+    },
+    {
+      name: "Cíclicas",
+      value: "Ciclica",
+    },
+  ];
+
 
   // carga combos
   useEffect(() => {
@@ -105,6 +107,80 @@ export default function useSearchDeductionsHook() {
     setshowTable(false);
   };
 
+
+const showDetailDeductions = (row: IDeductionsFilter) => {
+    if (row) {
+      const infoPersonalIncrement: DataItem[] = [
+        {
+          title: <span className="text-left">No. documento</span>,
+          value: row.employment.worker.numberDocument,
+        },
+        {
+          title: <span className="text-left">Nombre y apellido</span>,
+          value: `${row.employment.worker.firstName} ${
+            row.employment.worker.secondName
+          }${" "}
+          ${row.employment.worker.surname}${" "}
+          ${row.employment.worker.secondSurname}`,
+        },
+        {
+          title: <span className="text-left">Tipo de deducción</span>,
+          value: row.typeDeduction.name,
+        },
+        {
+          title: (
+            <span className="text-left">Nombre de deducción</span>
+          ),
+          value: "row",
+        },
+        {
+          title: (
+            <span className="text-left">Estado</span>
+          ),
+          value: "",
+        },
+        {
+          title: (
+            <span className="text-left">Periodo de planilla</span>
+          ),
+          value: "",
+        },
+      ];
+
+
+    return setMessage({
+        title: "Detalle de deducción",
+        show: true,
+        OkTitle: "Aceptar",
+        description: (
+          <div className="container-modal_description">
+            <ResponsiveTable data={infoPersonalIncrement} />
+            <div>
+              <h3 className="text-left  padding-left_16">
+                Detalle
+              </h3>
+
+            </div>
+            <TextAreaComponent
+              label={"Observaciones"}
+              idInput=""
+              //value={`${row.salaryIncrement.observation}`}
+              disabled={true}
+              className="text-area-basic"
+              classNameLabel="text-black big bold"
+              rows={5}
+            />
+          </div>
+        ),
+        size: "large",
+        background: true,
+      });
+    } else {
+      return;
+    }
+  };
+
+
   const onSubmit = handleSubmit(async (data: IDeductionsFilter) => {
     setshowTable(true);
 
@@ -113,9 +189,79 @@ export default function useSearchDeductionsHook() {
     }
   });
 
+ //variables
+ const tableColumns: ITableElement<IDeductionsFilter>[] = [
+  {
+    fieldName: "employment.worker.numberDocument",
+    header: "No. documento",
+    renderCell: (row) => {
+      return <>{row.employment.worker.numberDocument}</>;
+    },
+  },
+  {
+    fieldName: "row.employment.worker",
+    header: "Nombre completo",
+    renderCell: (row) => {
+      return (
+        <>
+          {row.employment.worker.firstName} {row.employment.worker.secondName}{" "}
+          {row.employment.worker.surname}{" "}
+          {row.employment.worker.secondSurname}
+        </>
+      );
+    },
+  },
+  {
+    fieldName: "row.typeDeduction.name",
+    header: "Tipo de deducción",
+    renderCell: (row) => {
+      return <>{row.typeDeduction}</>;
+    },
+  },
+  {
+    fieldName: "deductions.numberActApproval",
+    header: "Nombre de deducción",
+    renderCell: (row) => {
+      return <>{""}</>;
+    },
+  },
+  {
+    fieldName: "deductions.numberActApproval",
+    header: "Estado",
+    renderCell: (row) => {
+      return <>{""}</>;
+    },
+  },
+  {
+    fieldName: "deductions.numberActApproval",
+    header: "Periodo de planilla",
+    renderCell: (row) => {
+      return <>{""}</>;
+    },
+  },
+];
+
+
+  const tableActions: ITableAction<IDeductionsFilter>[] = [
+    {
+      icon: "Detail",
+      onClick: (row) => {
+        showDetailDeductions(row);
+      },
+    },
+    {
+      icon: "Edit",
+      onClick: (row) => {
+        navigate(`../edit/${row?.codEmployment}`);
+      },
+    },
+  ];
+
   return {
     register,
     typeDeductionList,
+    lastPeriodsList,
+    activeWorkerList,
     control,
     formState,
     onSubmit,
@@ -125,6 +271,8 @@ export default function useSearchDeductionsHook() {
     showTable,
     charges,
     tableComponentRef,
+    tableColumns,
+    tableActions,
     
   }
 }

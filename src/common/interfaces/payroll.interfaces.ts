@@ -439,9 +439,6 @@ export interface IFilterContractSuspension {
   codEmployment: number;
 }
 
-export interface IDeductionsFilter {
-  codCharge?: number;
-}
 
 export interface IFormPeriod {
   id?: number;
@@ -458,6 +455,15 @@ export interface IFormPeriod {
   dateModified?: DateTime;
   userCreate?: string;
   dateCreate?: DateTime;
+}
+
+
+export interface IDeductionsFilter {
+  codEmployment: number;
+  typeDeduction: IDeductionType
+  employment: IEmploymentWorker;
+
+
 }
 
 export interface IDeductionType {

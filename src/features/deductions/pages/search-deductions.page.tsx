@@ -16,12 +16,13 @@ const SearchDeductions = (): React.JSX.Element => {
     redirectCreate,
     clearFields,
     typeDeductionList,
+    lastPeriodsList,
     formValues,
     showTable,
     charges,
     tableComponentRef,
-    //tableColumns,
-    //tableActions,
+    tableColumns,
+    tableActions,
   } = useSearchDeductionsHook();
 
     return (
@@ -34,7 +35,7 @@ const SearchDeductions = (): React.JSX.Element => {
               className="title-button text-main biggest pointer"
               onClick={redirectCreate}
             >
-              Crear suspension <AiOutlinePlusCircle />
+              Crear deducción <AiOutlinePlusCircle />
             </div>
         </div>
           
@@ -42,6 +43,7 @@ const SearchDeductions = (): React.JSX.Element => {
           control={control}
           formState={formState}
           typeDeductionList = {typeDeductionList}
+          lastPeriodsList={lastPeriodsList}
           redirectCreate={redirectCreate}
           clearFields={clearFields}
           onSubmit={onSubmit}
@@ -51,10 +53,15 @@ const SearchDeductions = (): React.JSX.Element => {
         
         {showTable && (
           <div className="container-sections-forms">
-              
-          </div>
-        )}
-              
+          <TableComponent
+            ref={tableComponentRef}
+            url={`${process.env.urlApiPayroll}/api/v1/deduction/get-paginated`}
+            columns={tableColumns}
+            actions={tableActions}
+            isShowModal={false}
+          />
+        </div>
+        )}  
         </div>
       </div>
     );

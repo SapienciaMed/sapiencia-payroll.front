@@ -20,10 +20,13 @@ import {
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 import { IDeductionsFilter } from "../../../common/interfaces/payroll.interfaces";
 
+import useListData from "../../vacation/hooks/list.hook";
+
 interface IPropsFilterDeductions {
   control: Control<IDeductionsFilter, any>;
   formState: FormState<FieldValues>;
   typeDeductionList: any[],
+  lastPeriodsList: any[];
   redirectCreate: () => void;
   clearFields: () => void;
   onSubmit: () => Promise<void>;
@@ -35,6 +38,7 @@ export const FilterDeductionsForm = ({
   control,
   formState,
   typeDeductionList,
+  lastPeriodsList,
   redirectCreate,
   clearFields,
   onSubmit,
@@ -43,7 +47,9 @@ export const FilterDeductionsForm = ({
 }: IPropsFilterDeductions): React.JSX.Element => {
   const { errors, isValid } = formState;
 
-  const { codCharge } = formValues;
+  const { codEmployment } = formValues;
+
+  const { activeWorkerList } = useListData();
 
   return (
     <>
@@ -54,10 +60,10 @@ export const FilterDeductionsForm = ({
               idInput={"codEmployment"}
               control={control}
               errors={errors}
-              //data={activeWorkerList}
+              data={activeWorkerList}
               label={
                 <>
-                  Documento - Nombre del empleado. <span>*</span>
+                  Documento - Nombre del empleado.
                 </>
               }
               className="select-basic medium"
@@ -72,7 +78,7 @@ export const FilterDeductionsForm = ({
               data={typeDeductionList}
               label={
                 <>
-                  Tipo de deducción <span>*</span>
+                  Tipo de deducción 
                 </>
               }
               className="select-basic medium"
@@ -84,10 +90,10 @@ export const FilterDeductionsForm = ({
               idInput={"typeDeduction"}
               control={control}
               errors={errors}
-              data={typeDeductionList}
+              data={lastPeriodsList}
               label={
                 <>
-                  periodo de planilla <span>*</span>
+                  periodo de planilla
                 </>
               }
               className="select-basic medium"

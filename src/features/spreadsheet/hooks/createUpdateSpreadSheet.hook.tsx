@@ -79,7 +79,7 @@ const useCreateOrUpdateSpreadSheetHook = ({
             dateEnd: data[0].dateEnd,
             paidDate: data[0].paidDate,
             month: data[0].month,
-            year: data[0].month,
+            year: data[0].year,
             observation: data[0]?.observation,
           };
         } else {

@@ -466,6 +466,7 @@ export interface IDeductionType {
   id: number;
   name: string;
   cyclic?: boolean;
+  type?: string
 }
 
 export interface IManualDeduction {

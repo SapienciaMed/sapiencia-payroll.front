@@ -22,19 +22,6 @@ import { AppContext } from "../../../common/contexts/app.context";
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 export default function useSearchDeductionsHook() {
   // Context
   const { setMessage } = useContext(AppContext);
@@ -128,13 +115,13 @@ const showDetailDeductions = (row: IManualDeduction) => {
         },
         {
           title: <span className="text-left">Tipo de deducción</span>,
-          value: row.deductionsType.name,
+          value: row.deductionsType[0].type,
         },
         {
           title: (
             <span className="text-left">Nombre de deducción</span>
           ),
-          value: row.deductionsType.name,
+          value: row.deductionsType[0].name,
         },
         {
           title: (
@@ -146,7 +133,7 @@ const showDetailDeductions = (row: IManualDeduction) => {
           title: (
             <span className="text-left">Periodo de planilla</span>
           ),
-          value: "Periodo de planilla",
+          value: "",
         },
       ];
 
@@ -203,7 +190,7 @@ const showDetailDeductions = (row: IManualDeduction) => {
   },
   {
     fieldName: "row.employment.worker",
-    header: "Nombre completo",
+    header: "Nombre y apellido",
     renderCell: (row) => {
       return (
         <>
@@ -218,8 +205,7 @@ const showDetailDeductions = (row: IManualDeduction) => {
     fieldName: "row.deductionsType.name",
     header: "Tipo de deducción",
     renderCell: (row) => {
-      console.log("****************************Hola", row)
-      return <>{row.deductionsType.name}</>;
+      return <>{row.deductionsType[0].type}</>;
       
     },
   },
@@ -227,7 +213,7 @@ const showDetailDeductions = (row: IManualDeduction) => {
     fieldName: "deductions.numberActApproval",
     header: "Nombre de deducción",
     renderCell: (row) => {
-      return <>{""}</>;
+      return <>{row.deductionsType[0].name}</>;
     },
   },
   {

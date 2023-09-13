@@ -19,10 +19,29 @@ export default function useListData() {
   const [typesIncapacityList, setTypesIncapacityList] = useState([]);
   const [reasonsForWithdrawal, setReasonsForWithdrawal] = useState([]);
   const [lastPeriodsList, setLastPeriodsList] = useState([]);
+  const [typesSpreadSheetList, setTypesSpreadSheetList] = useState([]);
+  const [stateSpreadSheetList, setStateSpreadSheetList] = useState([
+    {
+      name: "Pendientes",
+      value: "Pendientes",
+    },
+    {
+      name: "Generadas",
+      value: "Generadas",
+    },
+    {
+      name: "Autorizadas",
+      value: "Autorizadas",
+    },
+  ]);
 
   const { getListByGrouper } = useGenericListService();
-  const { getWorkers, getReasonsForWithdrawal, getLastPeriods } =
-    usePayrollService();
+  const {
+    getWorkers,
+    getReasonsForWithdrawal,
+    getLastPeriods,
+    getTypeSpreadSheet,
+  } = usePayrollService();
   const { typeIncapacity } = useIncapacityService();
 
   useEffect(() => {
@@ -90,6 +109,27 @@ export default function useListData() {
   }, []);
 
   useEffect(() => {
+    getTypeSpreadSheet()
+      .then((response) => {
+        const { data, operation } = response;
+
+        if (operation.code === EResponseCodes.OK) {
+          const listSpreadSheet = data.map((item) => {
+            return {
+              name: item.name,
+              value: item.id,
+            };
+          });
+
+          setTypesSpreadSheetList(listSpreadSheet);
+        } else {
+          setTypesSpreadSheetList([]);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     getLastPeriods()
       .then((response: ApiResponse<IFormPeriod[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
@@ -131,6 +171,8 @@ export default function useListData() {
     typesIncapacityList,
     reasonsForWithdrawal,
     lastPeriodsList,
+    typesSpreadSheetList,
+    stateSpreadSheetList,
     getWorkersActive,
   };
 }

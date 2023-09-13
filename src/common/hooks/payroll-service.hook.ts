@@ -11,6 +11,7 @@ import {
   IRetirementEmployment,
   IContractSuspensionData,
   IFormPeriod,
+  IFormTypes,
 } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
@@ -18,6 +19,7 @@ import useCrudService from "./crud-service.hook";
 export function usePayrollService() {
   const baseURL: string = process.env.urlApiPayroll;
   const authUrl: string = "/api/v1/vinculation";
+  const payrollUrl: string = "/api/v1/payroll";
 
   const { get, post, put } = useCrudService(baseURL);
 
@@ -167,11 +169,24 @@ export function usePayrollService() {
 
   async function getLastPeriods(): Promise<ApiResponse<IFormPeriod[]>> {
     try {
-      const endpoint: string = `/`;
-      return await get(`/api/v1/payroll/last${endpoint}`);
+      const endpoint: string = `/last`;
+      return await get(`${payrollUrl}${endpoint}`);
     } catch (error) {
       return new ApiResponse(
         {} as IFormPeriod[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function getTypeSpreadSheet(): Promise<ApiResponse<IFormTypes[]>> {
+    try {
+      const endpoint: string = `/types`;
+      return await get(`${payrollUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormTypes[],
         EResponseCodes.FAIL,
         "Error no controlado"
       );
@@ -190,6 +205,7 @@ export function usePayrollService() {
     retirementEmployment,
     createSuspensionContract,
     getLastPeriods,
+    getTypeSpreadSheet,
   };
 }
 

@@ -253,3 +253,22 @@ export const formDeduction = [
   createDeductionTwoSchema,
   createDeductionThreeSchema,
 ];
+
+export const createOrUpdateSpreadSheetSchema = yup.object({
+  idFormType: yup.string().required("El campo es obligatorio"),
+  dateStart: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  dateEnd: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  paidDate: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  month: yup.number().required("El campo es obligatorio"),
+  year: yup.number().required("El campo es obligatorio"),
+  observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
+});

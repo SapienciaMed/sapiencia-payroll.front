@@ -24,6 +24,7 @@ interface IDateProps<T> {
   fieldArray?: boolean;
   optionsRegister?: {};
   shouldUnregister?: boolean;
+  view?: "date" | "month" | "year";
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -56,6 +57,7 @@ export function DatePickerComponent({
   disabledDays,
   optionsRegister,
   shouldUnregister,
+  view = "date",
 }: IDateProps<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");
@@ -114,6 +116,7 @@ export function DatePickerComponent({
               disabledDates={disabledDates}
               disabledDays={disabledDays}
               disabled={disabled}
+              view={view}
             />
           )}
         />

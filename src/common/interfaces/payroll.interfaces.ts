@@ -445,15 +445,10 @@ export interface IFormPeriod {
   state: string;
   dateStart: DateTime;
   dateEnd: DateTime;
-  cutoffDate: DateTime;
   paidDate: DateTime;
   month: number;
   year: number;
   observation?: string;
-  userModified?: string;
-  dateModified?: DateTime;
-  userCreate?: string;
-  dateCreate?: DateTime;
   formsType?: IFormTypes;
 }
 

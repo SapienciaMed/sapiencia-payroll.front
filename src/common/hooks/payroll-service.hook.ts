@@ -193,6 +193,51 @@ export function usePayrollService() {
     }
   }
 
+  async function createSpreadSheet(
+    data: IFormPeriod
+  ): Promise<ApiResponse<IFormPeriod>> {
+    try {
+      const endpoint: string = `/`;
+      return await post(`${payrollUrl}${endpoint}`, data);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function updateSpreadSheet(
+    data: IFormPeriod
+  ): Promise<ApiResponse<IFormPeriod>> {
+    try {
+      const endpoint: string = `/`;
+      return await put(`${payrollUrl}${endpoint}`, data);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function getByIdSpreadSheet(
+    id: number
+  ): Promise<ApiResponse<IFormPeriod[]>> {
+    try {
+      const endpoint: string = `/${id}`;
+      return await get(`${payrollUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   return {
     getTypesContracts,
     getCharges,
@@ -206,6 +251,9 @@ export function usePayrollService() {
     createSuspensionContract,
     getLastPeriods,
     getTypeSpreadSheet,
+    createSpreadSheet,
+    updateSpreadSheet,
+    getByIdSpreadSheet,
   };
 }
 

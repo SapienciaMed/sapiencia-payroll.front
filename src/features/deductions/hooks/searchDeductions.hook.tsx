@@ -1,19 +1,11 @@
 import { useState, useRef, useEffect, useContext } from "react";
-
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
-import { DateTime } from "luxon";
-
-import { filterIncrementSalarySchema } from "../../../common/schemas";
-
-import { formaterNumberToCurrency } from "../../../common/utils/helpers";
-
 import {
   ITableAction,
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
-import {IDeductionsFilter,ISalaryIncrementFilter,} from "../../../common/interfaces/payroll.interfaces";
+import {IDeductionsFilter,IManualDeduction,} from "../../../common/interfaces/payroll.interfaces";
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
@@ -28,6 +20,18 @@ import {
 import { AppContext } from "../../../common/contexts/app.context";
 
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -72,7 +76,6 @@ export default function useSearchDeductionsHook() {
     },
   ];
 
-
   // carga combos
   useEffect(() => {
       loadDropdown();
@@ -108,7 +111,7 @@ export default function useSearchDeductionsHook() {
   };
 
 
-const showDetailDeductions = (row: IDeductionsFilter) => {
+const showDetailDeductions = (row: IManualDeduction) => {
     if (row) {
       const infoPersonalIncrement: DataItem[] = [
         {
@@ -125,25 +128,25 @@ const showDetailDeductions = (row: IDeductionsFilter) => {
         },
         {
           title: <span className="text-left">Tipo de deducción</span>,
-          value: row.typeDeduction.name,
+          value: row.deductionsType.name,
         },
         {
           title: (
             <span className="text-left">Nombre de deducción</span>
           ),
-          value: "row",
+          value: row.deductionsType.name,
         },
         {
           title: (
             <span className="text-left">Estado</span>
           ),
-          value: "",
+          value: row.state,
         },
         {
           title: (
             <span className="text-left">Periodo de planilla</span>
           ),
-          value: "",
+          value: "Periodo de planilla",
         },
       ];
 
@@ -164,7 +167,7 @@ const showDetailDeductions = (row: IDeductionsFilter) => {
             <TextAreaComponent
               label={"Observaciones"}
               idInput=""
-              //value={`${row.salaryIncrement.observation}`}
+              value={`${row.observation}`}
               disabled={true}
               className="text-area-basic"
               classNameLabel="text-black big bold"
@@ -190,7 +193,7 @@ const showDetailDeductions = (row: IDeductionsFilter) => {
   });
 
  //variables
- const tableColumns: ITableElement<IDeductionsFilter>[] = [
+ const tableColumns: ITableElement<IManualDeduction>[] = [
   {
     fieldName: "employment.worker.numberDocument",
     header: "No. documento",
@@ -212,10 +215,12 @@ const showDetailDeductions = (row: IDeductionsFilter) => {
     },
   },
   {
-    fieldName: "row.typeDeduction.name",
+    fieldName: "row.deductionsType.name",
     header: "Tipo de deducción",
     renderCell: (row) => {
-      return <>{row.typeDeduction}</>;
+      console.log("****************************Hola", row)
+      return <>{row.deductionsType.name}</>;
+      
     },
   },
   {
@@ -229,7 +234,7 @@ const showDetailDeductions = (row: IDeductionsFilter) => {
     fieldName: "deductions.numberActApproval",
     header: "Estado",
     renderCell: (row) => {
-      return <>{""}</>;
+      return <>{row.state}</>;
     },
   },
   {
@@ -242,7 +247,7 @@ const showDetailDeductions = (row: IDeductionsFilter) => {
 ];
 
 
-  const tableActions: ITableAction<IDeductionsFilter>[] = [
+  const tableActions: ITableAction<IManualDeduction>[] = [
     {
       icon: "Detail",
       onClick: (row) => {

@@ -457,13 +457,8 @@ export interface IFormPeriod {
   dateCreate?: DateTime;
 }
 
-
 export interface IDeductionsFilter {
   codEmployment: number;
-  typeDeduction: IDeductionType
-  employment: IEmploymentWorker;
-
-
 }
 
 export interface IDeductionType {
@@ -495,4 +490,6 @@ export interface IManualDeduction {
   state: string;
   //Observation
   observation?: string;
+  deductionsType?: IDeductionType
+  employment?: IEmploymentWorker
 }

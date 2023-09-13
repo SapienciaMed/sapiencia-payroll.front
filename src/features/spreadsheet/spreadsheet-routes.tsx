@@ -7,6 +7,10 @@ function SpreadsSheetRoutes() {
     () => import("./pages/search-spreadsheet.page")
   );
 
+  const CreateUpdateSpreadSheetPage = lazy(
+    () => import("./pages/create-update-spreadsheet.page")
+  );
+
   return (
     <Routes>
       <Route
@@ -23,11 +27,7 @@ function SpreadsSheetRoutes() {
         path={"/crear"}
         element={
           <PrivateRoute
-            element={
-              <>
-                <h1>Hola mundo crear</h1>
-              </>
-            }
+            element={<CreateUpdateSpreadSheetPage action={"new"} />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }
@@ -37,11 +37,7 @@ function SpreadsSheetRoutes() {
         path={"/edit/:id"}
         element={
           <PrivateRoute
-            element={
-              <>
-                <h1>Hola mundo editar</h1>
-              </>
-            }
+            element={<CreateUpdateSpreadSheetPage action={"edit"} />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

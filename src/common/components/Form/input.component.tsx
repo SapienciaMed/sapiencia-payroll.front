@@ -1,7 +1,7 @@
 import React from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
-import {  UseFormRegister } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 
 import { MdOutlineError } from "react-icons/md";
 
@@ -11,7 +11,7 @@ interface IInputProps<T> {
   register?: UseFormRegister<T>;
   className?: string;
   placeholder?: string;
-  value?: string | boolean;
+  value?: string | boolean | number;
   defaultValue?: string;
   label?: string | React.JSX.Element;
   classNameLabel?: string;

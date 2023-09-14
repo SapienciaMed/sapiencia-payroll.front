@@ -167,7 +167,7 @@ export default function useCreateUpdateIncrementSalary(action: string) {
           incrementValue: data.incrementValue,
           previousSalary: data.previousSalary,
           newSalary: data.newSalary,
-          observation: data.observation,
+          observation: !data.observation ? "" : data.observation,
         } as ISalaryIncrement;
       } else {
         handleModalError("¡Ha ocurrido un error al cargar los datos!");

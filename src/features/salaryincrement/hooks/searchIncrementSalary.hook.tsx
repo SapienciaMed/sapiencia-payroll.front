@@ -98,25 +98,25 @@ export default function useSearchIncrementSalaryHook() {
       const infoPersonalIncrement: DataItem[] = [
         {
           title: <span className="text-left">Número de documento</span>,
-          value: row.employment.worker.numberDocument,
+          value: row.employment?.worker.numberDocument,
         },
         {
           title: <span className="text-left">Nombre empleado</span>,
-          value: `${row.employment.worker.firstName} ${
-            row.employment.worker.secondName
+          value: `${row.employment?.worker?.firstName} ${
+            row.employment?.worker?.secondName
           }${" "}
-          ${row.employment.worker.surname}${" "}
-          ${row.employment.worker.secondSurname}`,
+          ${row.employment?.worker?.surname}${" "}
+          ${row.employment?.worker?.secondSurname}`,
         },
         {
           title: <span className="text-left">Cargo</span>,
-          value: row.salaryIncrement.charge.name,
+          value: row.salaryIncrement?.charge.name,
         },
         {
           title: (
             <span className="text-left">Número de acta de aprobación</span>
           ),
-          value: row.salaryIncrement.numberActApproval,
+          value: row.salaryIncrement?.numberActApproval,
         },
       ];
 
@@ -124,18 +124,18 @@ export default function useSearchIncrementSalaryHook() {
         {
           title: "Salario anterior",
           value: String(
-            formaterNumberToCurrency(row.salaryIncrement.previousSalary)
+            formaterNumberToCurrency(row.salaryIncrement?.previousSalary)
           ),
         },
         {
           title: "Salario actual",
           value: String(
-            formaterNumberToCurrency(row.salaryIncrement.newSalary)
+            formaterNumberToCurrency(row.salaryIncrement?.newSalary)
           ),
         },
         {
           title: "Fecha efectiva",
-          value: DateTime.fromISO(row.effectiveDate).toLocaleString(),
+          value: DateTime.fromISO(row?.effectiveDate).toLocaleString(),
         },
       ];
 
@@ -155,7 +155,7 @@ export default function useSearchIncrementSalaryHook() {
             <TextAreaComponent
               label={"Observaciones"}
               idInput=""
-              value={`${row.salaryIncrement.observation}`}
+              value={`${row.salaryIncrement?.observation}`}
               disabled={true}
               className="text-area-basic"
               classNameLabel="text-black big bold"

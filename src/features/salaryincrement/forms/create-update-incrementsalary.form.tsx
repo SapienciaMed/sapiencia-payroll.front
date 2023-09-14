@@ -36,8 +36,6 @@ interface IPropsCreateUpdateIncremetSalary {
   action?: string;
 }
 
-let render = 0;
-
 export const CreateUpdateIncrementSalaryForm = ({
   register,
   control,
@@ -49,8 +47,6 @@ export const CreateUpdateIncrementSalaryForm = ({
   idChargeValue,
   action,
 }: IPropsCreateUpdateIncremetSalary): React.JSX.Element => {
-  render++;
-
   const { errors, isValid } = formState;
 
   return (
@@ -254,7 +250,7 @@ export const CreateUpdateIncrementSalaryForm = ({
             <Controller
               control={control}
               name={"observation"}
-              shouldUnregister={true}
+              // shouldUnregister={true}
               render={({ field }) => {
                 return (
                   <TextAreaComponent

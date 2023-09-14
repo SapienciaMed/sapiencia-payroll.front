@@ -98,16 +98,6 @@ export default function useSearchIncrementSalaryHook() {
 
   const showDetailIncrementSalary = (row: ISalaryHistory) => {
     if (row) {
-      console.log(row);
-
-      formatColombiaFecha(row?.effectiveDate);
-
-      console.log(
-        DateTime.fromISO(row?.effectiveDate)
-          .setZone("America/Bogota")
-          .toLocaleString(DateTime.DATETIME_FULL)
-      );
-
       const infoPersonalIncrement: DataItem[] = [
         {
           title: <span className="text-left">Número de documento</span>,
@@ -148,9 +138,7 @@ export default function useSearchIncrementSalaryHook() {
         },
         {
           title: "Fecha efectiva",
-          value: DateTime.fromISO(row?.effectiveDate)
-            .setZone("America/Bogota")
-            .toLocaleString(DateTime.DATETIME_FULL),
+          value: formatColombiaFecha(row?.effectiveDate),
         },
       ];
 

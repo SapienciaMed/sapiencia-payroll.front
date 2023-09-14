@@ -12,7 +12,10 @@ import {
 } from "../../../common/interfaces/payroll.interfaces";
 import { useNavigate } from "react-router-dom";
 import useEmploymentsData from "./employment.hook";
-import { removeEmptySpace } from "../../../common/utils/helpers";
+import {
+  formatColombiaFecha,
+  removeEmptySpace,
+} from "../../../common/utils/helpers";
 import { AppContext } from "../../../common/contexts/app.context";
 export default function useRecordsData() {
   const { typesContracts, activeWorker } = useEmploymentsData();
@@ -66,7 +69,11 @@ export default function useRecordsData() {
       header: "Fecha inicio",
       renderCell: (row) => {
         return (
-          <>{DateTime.fromISO(String(row.employment.startDate)).toLocaleString()}</>
+          <>
+            {DateTime.fromISO(
+              String(row.employment.startDate)
+            ).toLocaleString()}
+          </>
         );
       },
     },
@@ -74,7 +81,11 @@ export default function useRecordsData() {
       fieldName: "employment.endDate",
       header: "Fecha fin",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(String(row.employment.endDate)).toLocaleString()}</>;
+        return (
+          <>
+            {DateTime.fromISO(String(row.employment.endDate)).toLocaleString()}
+          </>
+        );
       },
     },
     {
@@ -84,7 +95,7 @@ export default function useRecordsData() {
         return (
           <>
             {row.employment.retirementDate
-              ? DateTime.fromISO(String(row.employment.retirementDate)).toLocaleString()
+              ? formatColombiaFecha(row.employment.retirementDate)
               : "Sin fecha de retiro"}
           </>
         );

@@ -243,7 +243,7 @@ const showDetailDeductions = (row: IManualDeduction) => {
     {
       icon: "Edit",
       onClick: (row) => {
-        navigate(`../edit/${row?.codEmployment}`);
+        navigate(`../edit/${row?.id}`);
       },
     },
   ];

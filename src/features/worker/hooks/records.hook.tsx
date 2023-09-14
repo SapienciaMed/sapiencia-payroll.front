@@ -12,10 +12,7 @@ import {
 } from "../../../common/interfaces/payroll.interfaces";
 import { useNavigate } from "react-router-dom";
 import useEmploymentsData from "./employment.hook";
-import {
-  formatColombiaFecha,
-  removeEmptySpace,
-} from "../../../common/utils/helpers";
+import { removeEmptySpace } from "../../../common/utils/helpers";
 import { AppContext } from "../../../common/contexts/app.context";
 export default function useRecordsData() {
   const { typesContracts, activeWorker } = useEmploymentsData();
@@ -95,7 +92,9 @@ export default function useRecordsData() {
         return (
           <>
             {row.employment.retirementDate
-              ? formatColombiaFecha(row.employment.retirementDate)
+              ? DateTime.fromISO(
+                  String(row.employment.retirementDate)
+                ).toLocaleString()
               : "Sin fecha de retiro"}
           </>
         );

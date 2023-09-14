@@ -7,10 +7,7 @@ import { DateTime } from "luxon";
 
 import { filterIncrementSalarySchema } from "../../../common/schemas";
 
-import {
-  formatColombiaFecha,
-  formaterNumberToCurrency,
-} from "../../../common/utils/helpers";
+import { formaterNumberToCurrency } from "../../../common/utils/helpers";
 
 import {
   ITableAction,
@@ -98,6 +95,8 @@ export default function useSearchIncrementSalaryHook() {
 
   const showDetailIncrementSalary = (row: ISalaryHistory) => {
     if (row) {
+      console.log(row);
+
       const infoPersonalIncrement: DataItem[] = [
         {
           title: <span className="text-left">Número de documento</span>,
@@ -138,7 +137,7 @@ export default function useSearchIncrementSalaryHook() {
         },
         {
           title: "Fecha efectiva",
-          value: formatColombiaFecha(row?.effectiveDate),
+          value: DateTime.fromISO(row?.effectiveDate).toLocaleString(),
         },
       ];
 

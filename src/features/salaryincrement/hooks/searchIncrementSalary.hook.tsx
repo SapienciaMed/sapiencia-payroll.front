@@ -137,7 +137,7 @@ export default function useSearchIncrementSalaryHook() {
         },
         {
           title: "Fecha efectiva",
-          value: (DateTime.fromISO(row?.effectiveDate).toString()).split('T')[0],
+          value: (DateTime.fromISO(row?.effectiveDate).toString()),
         },
       ];
 

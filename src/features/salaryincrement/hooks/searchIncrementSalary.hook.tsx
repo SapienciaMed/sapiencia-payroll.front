@@ -97,6 +97,12 @@ export default function useSearchIncrementSalaryHook() {
     if (row) {
       console.log(row);
 
+      console.log(
+        DateTime.fromISO(row?.effectiveDate)
+          .setZone("America/Bogota")
+          .toLocaleString(DateTime.DATETIME_FULL)
+      );
+
       const infoPersonalIncrement: DataItem[] = [
         {
           title: <span className="text-left">Número de documento</span>,

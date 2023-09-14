@@ -73,7 +73,14 @@ const useCreateSuspensionContract = () => {
         dateEndSuspension
       );
 
-      const newDateEndContract = addCalendarDays(dateEnd, diferenceDays, false);
+      const dateActual = new Date();
+      let newDateEndContract: Date = null;
+
+      newDateEndContract = addCalendarDays(dateEnd, diferenceDays, false);
+
+      if (newDateEndContract.getFullYear() > dateActual.getFullYear()) {
+        newDateEndContract = new Date(dateActual.getFullYear(), 11, 31);
+      }
 
       setValue("newDateEnd", newDateEndContract);
     } else {

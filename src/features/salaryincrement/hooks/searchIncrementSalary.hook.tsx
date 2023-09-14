@@ -185,7 +185,7 @@ export default function useSearchIncrementSalaryHook() {
       fieldName: "employment.worker.numberDocument",
       header: "Número de documento",
       renderCell: (row) => {
-        return <>{row.employment.worker.numberDocument}</>;
+        return <>{row.employment?.worker?.numberDocument}</>;
       },
     },
     {
@@ -194,9 +194,9 @@ export default function useSearchIncrementSalaryHook() {
       renderCell: (row) => {
         return (
           <>
-            {row.employment.worker.firstName} {row.employment.worker.secondName}{" "}
-            {row.employment.worker.surname}{" "}
-            {row.employment.worker.secondSurname}
+            {row.employment?.worker.firstName}{" "}
+            {row.employment?.worker.secondName} {row.employment?.worker.surname}{" "}
+            {row.employment?.worker.secondSurname}
           </>
         );
       },
@@ -205,14 +205,14 @@ export default function useSearchIncrementSalaryHook() {
       fieldName: "salaryIncrement.charge.name",
       header: "Cargo",
       renderCell: (row) => {
-        return <>{row.salaryIncrement.charge.name}</>;
+        return <>{row.salaryIncrement?.charge.name}</>;
       },
     },
     {
       fieldName: "salaryIncrement.numberActApproval",
       header: "Número de acta de aprobación",
       renderCell: (row) => {
-        return <>{row.salaryIncrement.numberActApproval}</>;
+        return <>{row.salaryIncrement?.numberActApproval}</>;
       },
     },
   ];

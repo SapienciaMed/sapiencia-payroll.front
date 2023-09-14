@@ -7,7 +7,10 @@ import { DateTime } from "luxon";
 
 import { filterIncrementSalarySchema } from "../../../common/schemas";
 
-import { formaterNumberToCurrency } from "../../../common/utils/helpers";
+import {
+  formatColombiaFecha,
+  formaterNumberToCurrency,
+} from "../../../common/utils/helpers";
 
 import {
   ITableAction,
@@ -96,6 +99,8 @@ export default function useSearchIncrementSalaryHook() {
   const showDetailIncrementSalary = (row: ISalaryHistory) => {
     if (row) {
       console.log(row);
+
+      formatColombiaFecha(row?.effectiveDate);
 
       console.log(
         DateTime.fromISO(row?.effectiveDate)

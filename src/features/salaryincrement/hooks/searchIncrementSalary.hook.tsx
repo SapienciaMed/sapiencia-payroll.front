@@ -137,7 +137,9 @@ export default function useSearchIncrementSalaryHook() {
         },
         {
           title: "Fecha efectiva",
-          value: DateTime.fromISO(row?.effectiveDate).toLocaleString(),
+          value: DateTime.fromISO(row?.effectiveDate)
+            .setZone("America/Bogota")
+            .toLocaleString(DateTime.DATETIME_FULL),
         },
       ];
 

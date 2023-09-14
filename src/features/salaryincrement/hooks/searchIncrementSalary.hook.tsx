@@ -95,6 +95,8 @@ export default function useSearchIncrementSalaryHook() {
 
   const showDetailIncrementSalary = (row: ISalaryHistory) => {
     if (row) {
+      console.log(row);
+
       const infoPersonalIncrement: DataItem[] = [
         {
           title: <span className="text-left">Número de documento</span>,

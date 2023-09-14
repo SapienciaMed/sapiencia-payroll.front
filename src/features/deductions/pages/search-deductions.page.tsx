@@ -16,7 +16,7 @@ const SearchDeductions = (): React.JSX.Element => {
     redirectCreate,
     clearFields,
     typeDeductionList,
-    lastPeriodsList,
+    periodsList,
     formValues,
     showTable,
     charges,
@@ -43,7 +43,7 @@ const SearchDeductions = (): React.JSX.Element => {
           control={control}
           formState={formState}
           typeDeductionList = {typeDeductionList}
-          lastPeriodsList={lastPeriodsList}
+          lastPeriodsList={periodsList}
           redirectCreate={redirectCreate}
           clearFields={clearFields}
           onSubmit={onSubmit}

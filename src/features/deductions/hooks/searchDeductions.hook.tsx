@@ -28,7 +28,7 @@ export default function useSearchDeductionsHook() {
 
   //custom hooks
   const { getCharges } = usePayrollService();
-  const { activeWorkerList, lastPeriodsList } = useListData();
+  const { activeWorkerList, periodsList } = useListData();
 
   //states
   const [showTable, setshowTable] = useState(false);
@@ -251,7 +251,7 @@ const showDetailDeductions = (row: IManualDeduction) => {
   return {
     register,
     typeDeductionList,
-    lastPeriodsList,
+    periodsList,
     activeWorkerList,
     control,
     formState,

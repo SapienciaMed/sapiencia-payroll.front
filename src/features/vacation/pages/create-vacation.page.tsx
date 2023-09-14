@@ -206,15 +206,24 @@ const createVacationPage = () => {
               />
             </div>
             <div>
-              <TextAreaComponent
-                idInput={"observation"}
-                className="text-area-basic"
-                classNameLabel="text-black big bold"
-                label="Observaciones"
-                register={register}
-                disabled={!checkCompensatoryDays && !checkEnjoyedDays}
-                errors={errors}
-                rows={5}
+              <Controller
+              control={control}
+              name={"observation"}
+              defaultValue={""}
+              render={({ field }) => {
+                return (
+                  <TextAreaComponent
+                    idInput={field.name}
+                    className="text-area-basic"
+                    classNameLabel="text-black big bold"
+                    label="Observaciones"
+                    register={register}
+                    value={`${field.value}`}
+                    onChange={field.onChange}
+                    disabled={!checkCompensatoryDays && !checkEnjoyedDays}
+                    errors={errors}
+                    rows={5}
+                  />)}}
               />
             </div>
           </FormComponent>

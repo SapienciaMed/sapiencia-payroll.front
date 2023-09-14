@@ -19,6 +19,7 @@ export default function useListData() {
   const [typesIncapacityList, setTypesIncapacityList] = useState([]);
   const [reasonsForWithdrawal, setReasonsForWithdrawal] = useState([]);
   const [lastPeriodsList, setLastPeriodsList] = useState([]);
+  const [periodsList, setPeriodsList] = useState([]);
   const [typesSpreadSheetList, setTypesSpreadSheetList] = useState([]);
   const [stateSpreadSheetList, setStateSpreadSheetList] = useState([
     {
@@ -90,6 +91,7 @@ export default function useListData() {
     getWorkers,
     getReasonsForWithdrawal,
     getLastPeriods,
+    getPeriods,
     getTypeSpreadSheet,
   } = usePayrollService();
   const { typeIncapacity } = useIncapacityService();
@@ -202,6 +204,28 @@ export default function useListData() {
   }, []);
 
   useEffect(() => {
+    getPeriods()
+      .then((response: ApiResponse<IFormPeriod[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setPeriodsList(
+            response.data.map((item) => {
+              const list = {
+                name: `${DateTime.fromISO(
+                  item.dateStart
+                ).toLocaleString()} - ${DateTime.fromISO(
+                  item.dateEnd
+                ).toLocaleString()}`,
+                value: item.id,
+              };
+              return list;
+            })
+          );
+        }
+      })
+      .catch((err) => {});
+  }, []);
+
+  useEffect(() => {
     typeIncapacity()
       .then((response: ApiResponse<IIncapacityTypes[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
@@ -221,6 +245,7 @@ export default function useListData() {
     typesIncapacityList,
     reasonsForWithdrawal,
     lastPeriodsList,
+    periodsList,
     typesSpreadSheetList,
     stateSpreadSheetList,
     monthList,

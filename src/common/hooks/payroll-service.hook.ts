@@ -180,6 +180,19 @@ export function usePayrollService() {
     }
   }
 
+  async function getPeriods(): Promise<ApiResponse<IFormPeriod[]>> {
+    try {
+      const endpoint: string = `/available`;
+      return await get(`${payrollUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   async function getTypeSpreadSheet(): Promise<ApiResponse<IFormTypes[]>> {
     try {
       const endpoint: string = `/types`;
@@ -250,6 +263,7 @@ export function usePayrollService() {
     retirementEmployment,
     createSuspensionContract,
     getLastPeriods,
+    getPeriods,
     getTypeSpreadSheet,
     createSpreadSheet,
     updateSpreadSheet,

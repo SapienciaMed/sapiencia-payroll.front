@@ -137,7 +137,7 @@ export default function useSearchIncrementSalaryHook() {
         },
         {
           title: "Fecha efectiva",
-          value: `${row?.effectiveDate}`,
+          value: new Date(row?.effectiveDate).toString(),
         },
       ];
 

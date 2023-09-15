@@ -1,7 +1,5 @@
 import { useRef, useState, useContext } from "react";
 
-import { Settings } from "luxon";
-
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -64,10 +62,6 @@ const useSearchSuspensionContract = () => {
       tableComponentRef.current.loadData(data);
     }
   });
-
-  //Settings.defaultZoneName = "America/Bogota";
-
-  console.log(Settings.defaultZone);
 
   const showDetailSuspensionContract = (row: IContractSuspensionData) => {
     if (row) {

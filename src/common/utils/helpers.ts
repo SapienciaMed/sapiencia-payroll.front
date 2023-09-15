@@ -107,6 +107,18 @@ export function formaterNumberToCurrency(number) {
   return formatter.format(number);
 }
 
+export function formaterDate(date:string) {
+  if(date){
+    let completeDate = date.split('T')[0];
+    let year = completeDate.split('-')[0];
+    let month = completeDate.split('-')[1];
+    let day = completeDate.split('-')[2];
+
+    return `${day}/${month}/${year}`
+  }
+  return '';
+}
+
 export function addBusinessDays(startDate, daysToAdd, holidays = []) {
   const oneDay = 24 * 60 * 60 * 1000; // Un día en milisegundos
   let currentDate = new Date(startDate);

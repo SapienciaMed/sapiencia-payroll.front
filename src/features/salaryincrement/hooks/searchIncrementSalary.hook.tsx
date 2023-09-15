@@ -7,7 +7,7 @@ import { DateTime } from "luxon";
 
 import { filterIncrementSalarySchema } from "../../../common/schemas";
 
-import { formaterNumberToCurrency } from "../../../common/utils/helpers";
+import { formaterDate, formaterNumberToCurrency } from "../../../common/utils/helpers";
 
 import {
   ITableAction,
@@ -137,7 +137,7 @@ export default function useSearchIncrementSalaryHook() {
         },
         {
           title: "Fecha efectiva",
-          value: DateTime.fromISO(row?.effectiveDate).toLocaleString(),
+          value: formaterDate(`${row?.effectiveDate}`),
         },
       ];
 

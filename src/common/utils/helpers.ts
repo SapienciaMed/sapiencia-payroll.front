@@ -10,17 +10,6 @@ export function calculateDifferenceYear(
   return Math.floor(differenceInYears);
 }
 
-export const formatColombiaFecha = (fecha) => {
-  if (!fecha) return "";
-  const d = new Date(fecha);
-  const localTime = d.getTime();
-  const localOffset = d.getTimezoneOffset() * 60000;
-  const utc = localTime + localOffset;
-  const offset = -5; //Formato UTC Colombia.
-  const colombia = utc + 3600000 * offset;
-  return new Date(colombia).toLocaleString();
-};
-
 export function calculateDifferenceDays(
   dateInit: string | Date,
   dateEnd?: string | Date
@@ -107,16 +96,16 @@ export function formaterNumberToCurrency(number) {
   return formatter.format(number);
 }
 
-export function formaterDate(date:string) {
-  if(date){
-    let completeDate = date.split('T')[0];
-    let year = completeDate.split('-')[0];
-    let month = completeDate.split('-')[1];
-    let day = completeDate.split('-')[2];
+export function formaterDate(date: string) {
+  if (date) {
+    let completeDate = date.split("T")[0];
+    let year = completeDate.split("-")[0];
+    let month = completeDate.split("-")[1];
+    let day = completeDate.split("-")[2];
 
-    return `${day}/${month}/${year}`
+    return `${day}/${month}/${year}`;
   }
-  return '';
+  return "";
 }
 
 export function addBusinessDays(startDate, daysToAdd, holidays = []) {

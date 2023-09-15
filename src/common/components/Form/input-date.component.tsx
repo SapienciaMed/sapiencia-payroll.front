@@ -93,32 +93,36 @@ export function DatePickerComponent({
           control={control}
           rules={optionsRegister}
           shouldUnregister={shouldUnregister}
-          render={({ field }) => (
-            <Calendar
-              id={field.name}
-              mask="99/99/9999"
-              dateFormat={dateFormat}
-              placeholder={placeholder}
-              className={`${className} ${messageError() ? "p-invalid" : ""}`}
-              showIcon
-              icon={
-                <span>
-                  <IoCalendarOutline />
-                </span>
-              }
-              showButtonBar
-              value={field.value && new Date(field.value)}
-              onChange={(e) => field.onChange(e.value)}
-              onBlur={(e) => field.onBlur()}
-              inputStyle={{ borderRight: "none" }}
-              minDate={minDate}
-              maxDate={maxDate}
-              disabledDates={disabledDates}
-              disabledDays={disabledDays}
-              disabled={disabled}
-              view={view}
-            />
-          )}
+          render={({ field }) => {
+            console.log(field.value);
+            console.log(new Date(field.value));
+            return (
+              <Calendar
+                id={field.name}
+                mask="99/99/9999"
+                dateFormat={dateFormat}
+                placeholder={placeholder}
+                className={`${className} ${messageError() ? "p-invalid" : ""}`}
+                showIcon
+                icon={
+                  <span>
+                    <IoCalendarOutline />
+                  </span>
+                }
+                showButtonBar
+                value={field.value && new Date(field.value)}
+                onChange={(e) => field.onChange(e.value)}
+                onBlur={(e) => field.onBlur()}
+                inputStyle={{ borderRight: "none" }}
+                minDate={minDate}
+                maxDate={maxDate}
+                disabledDates={disabledDates}
+                disabledDays={disabledDays}
+                disabled={disabled}
+                view={view}
+              />
+            );
+          }}
         />
 
         {messageError() && <span className="icon-error"></span>}

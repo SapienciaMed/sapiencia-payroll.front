@@ -379,7 +379,7 @@ export interface IRetirementEmployment {
 export interface ISalaryIncrement {
   id?: number;
   codCharge: number;
-  effectiveDate: DateTime;
+  effectiveDate: Date;
   numberActApproval: string;
   porcentualIncrement: boolean;
   incrementValue: number;
@@ -439,7 +439,6 @@ export interface IFilterContractSuspension {
   codEmployment: number;
 }
 
-
 export interface IFormPeriod {
   id?: number;
   idFormType: number;
@@ -461,7 +460,7 @@ export interface IDeductionType {
   id: number;
   name: string;
   cyclic?: boolean;
-  type?: string
+  type?: string;
 }
 
 export interface IManualDeduction {
@@ -487,8 +486,8 @@ export interface IManualDeduction {
   state: string;
   //Observation
   observation?: string;
-  deductionsType?: IDeductionType
-  employment?: IEmploymentWorker
+  deductionsType?: IDeductionType;
+  employment?: IEmploymentWorker;
 }
 
 export interface IFormPeriodFilters {

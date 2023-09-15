@@ -115,6 +115,7 @@ export const CreateSuspensionContractForm = ({
             disabled={true}
             placeholder="DD/MM/YYYY"
             dateFormat="dd/mm/yy"
+            shouldUnregister={true}
           />
 
           <DatePickerComponent
@@ -127,6 +128,7 @@ export const CreateSuspensionContractForm = ({
             disabled={true}
             placeholder="DD/MM/YYYY"
             dateFormat="dd/mm/yy"
+            shouldUnregister={true}
           />
 
           <DatePickerComponent
@@ -144,6 +146,7 @@ export const CreateSuspensionContractForm = ({
             dateFormat="dd/mm/yy"
             minDate={new Date(dateStart)}
             maxDate={maxDateSuspension()}
+            shouldUnregister={true}
           />
 
           <DatePickerComponent
@@ -161,6 +164,7 @@ export const CreateSuspensionContractForm = ({
             dateFormat="dd/mm/yy"
             minDate={new Date(dateStartSuspension)}
             maxDate={maxDateSuspension()}
+            shouldUnregister={true}
           />
 
           <div className="grid-span-3-columns">
@@ -210,6 +214,7 @@ export const CreateSuspensionContractForm = ({
                   disabled={true}
                   placeholder="DD/MM/YYYY"
                   dateFormat="dd/mm/yy"
+                  shouldUnregister={true}
                 />
               )}
             </div>

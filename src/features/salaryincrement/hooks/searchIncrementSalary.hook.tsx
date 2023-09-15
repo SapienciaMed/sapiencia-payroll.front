@@ -3,8 +3,10 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-
-import { formaterDate, formaterNumberToCurrency } from "../../../common/utils/helpers";
+import {
+  formaterDate,
+  formaterNumberToCurrency,
+} from "../../../common/utils/helpers";
 
 import {
   ITableAction,
@@ -91,8 +93,6 @@ export default function useSearchIncrementSalaryHook() {
 
   const showDetailIncrementSalary = (row: ISalaryHistory) => {
     if (row) {
-      console.log(row);
-
       const infoPersonalIncrement: DataItem[] = [
         {
           title: <span className="text-left">Número de documento</span>,

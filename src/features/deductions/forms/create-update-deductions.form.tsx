@@ -283,7 +283,7 @@ export const CreateUpdateDeductionsForm = ({
                       control={control}
                       label={
                         <>
-                          NO de cuotas <span>*</span>
+                          No de cuotas <span>*</span>
                         </>
                       }
                       errors={errors}

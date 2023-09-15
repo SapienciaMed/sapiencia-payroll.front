@@ -104,7 +104,6 @@ export default function useRecordsData() {
       fieldName: "employment.state",
       header: "Estado",
       renderCell: (row) => {
-        console.log(row.employment.state);
         return <>{row.employment.state !== "0" ? "Activo" : "Inactivo"}</>;
       },
     },

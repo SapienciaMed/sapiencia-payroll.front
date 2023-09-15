@@ -49,7 +49,7 @@ export default function useLicenceData() {
   const [dateEnd, dateStart, licenceType] = watch([
     "dateEnd",
     "dateStart",
-    "idLicenceType"
+    "idLicenceType",
   ]);
 
   useEffect(() => {
@@ -162,7 +162,6 @@ export default function useLicenceData() {
       dateStart: new Date(dateStart).toISOString(),
     };
 
-    console.log(dataformated);
     setSending(true);
     await createLicence(dataformated)
       .then((response: ApiResponse<ILicence>) => {
@@ -189,8 +188,7 @@ export default function useLicenceData() {
           setMessage({
             type: EResponseCodes.FAIL,
             title: "Error al registrar la licencia.",
-            description:
-              response?.operation?.message ,
+            description: response?.operation?.message,
             show: true,
             OkTitle: "Aceptar",
             background: true,

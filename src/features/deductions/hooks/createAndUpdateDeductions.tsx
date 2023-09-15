@@ -312,7 +312,6 @@ const useCreateAndUpdateDeductions = ({
   });
 
   const handleCreateOrUpdateDeduction = async (data: IManualDeduction) => {
-    console.log(data);
     const { data: dataResponse, operation } =
       action === "edit"
         ? await updateDeduction(data)

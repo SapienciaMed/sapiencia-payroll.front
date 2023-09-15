@@ -30,7 +30,7 @@ const CreateLicencePage = () => {
     numberDays,
     typeDays,
   } = useLicenceData();
-  console.log(isValid);
+
   return (
     <>
       <div className="main-page">

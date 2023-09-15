@@ -133,7 +133,7 @@ export default function useSearchIncrementSalaryHook() {
         },
         {
           title: "Fecha efectiva",
-          value: formaterDate(`${row?.effectiveDate}`),
+          value: row?.effectiveDate,
         },
       ];
 

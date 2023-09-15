@@ -159,31 +159,52 @@ const CreateLicencePage = () => {
                   placeholder="Seleccione"
                   disabled={true}
                 />
-
-                <InputComponent
-                  idInput={"resolutionNumber"}
-                  className="input-basic medium"
-                  errors={errors}
-                  typeInput="text"
-                  classNameLabel="text-black big bold"
-                  label={
-                    <>
-                      Número de resolución <span>*</span>
-                    </>
-                  }
-                  register={register}
+                <Controller
+                  control={control}
+                  name={"resolutionNumber"}
+                  defaultValue=""
+                  render={({ field }) => {
+                    return (
+                      <InputComponent
+                        idInput={field.name}
+                        value={`${field.value}`}
+                        className="input-basic medium"
+                        errors={errors}
+                        typeInput="text"
+                        classNameLabel="text-black big bold"
+                        label={
+                          <>
+                            Número de resolución <span>*</span>
+                          </>
+                        }
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        register={register}
+                      />
+                    );
+                  }}
                 />
 
                 <div className=" grid-span-3-columns">
-                  <TextAreaComponent
-                    idInput={"observation"}
-                    className="text-area-basic"
-                    classNameLabel="text-black big bold"
-                    label="Observaciones"
-                    register={register}
-                    disabled={false}
-                    errors={errors}
-                    rows={5}
+                  <Controller
+                    control={control}
+                    name={"observation"}
+                    render={({ field }) => {
+                      return (
+                        <TextAreaComponent
+                          idInput={field.name}
+                          className="text-area-basic"
+                          classNameLabel="text-black big bold"
+                          label="Observaciones"
+                          register={register}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          disabled={false}
+                          errors={errors}
+                          rows={5}
+                        />
+                      );
+                    }}
                   />
                   <div className="text-right">
                     <span className="text-span ">Max. {500} carácteres</span>

@@ -1,7 +1,5 @@
 import { useContext, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { DateTime } from "luxon";
-
 import {
   IFormPeriod,
   IFormPeriodFilters,
@@ -11,14 +9,13 @@ import {
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
 
-import { AppContext } from "../../../common/contexts/app.context";
 import { useNavigate } from "react-router-dom";
 
 import useListData from "../../vacation/hooks/list.hook";
+import { formaterDate } from "../../../common/utils/helpers";
 
 export default function useSearchSpreadSheetHook() {
   // Context
-  const { setMessage } = useContext(AppContext);
 
   //custom hooks
   const { typesSpreadSheetList, stateSpreadSheetList } = useListData();
@@ -74,21 +71,21 @@ export default function useSearchSpreadSheetHook() {
       fieldName: "dateStart",
       header: "Fecha inicio",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row.dateStart).toLocaleString()}</>;
+        return <>{formaterDate(row.dateStart)}</>;
       },
     },
     {
       fieldName: "dateEnd",
       header: "Fecha finn",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row.dateEnd).toLocaleString()}</>;
+        return <>{formaterDate(row.dateEnd)}</>;
       },
     },
     {
       fieldName: "paidDate",
       header: "Fecha pago",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row.paidDate).toLocaleString()}</>;
+        return <>{formaterDate(row.paidDate)}</>;
       },
     },
     {

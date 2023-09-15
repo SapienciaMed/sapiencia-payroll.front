@@ -1,8 +1,7 @@
-import React, { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { DateTime } from "luxon";
 
 import { AppContext } from "../../../common/contexts/app.context";
 
@@ -24,6 +23,7 @@ import { filterSuspensionContractSchema } from "../../../common/schemas";
 
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import useListData from "../../vacation/hooks/list.hook";
+import { formaterDate } from "../../../common/utils/helpers";
 
 const useSearchSuspensionContract = () => {
   // Context
@@ -131,9 +131,7 @@ const useSearchSuspensionContract = () => {
                     typeInput={"text"}
                     label={<>Fecha inicio</>}
                     disabled={true}
-                    value={`${DateTime.fromISO(
-                      row.employment.startDate
-                    ).toLocaleString()}`}
+                    value={`${formaterDate(row.employment.startDate)}`}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
                   />
@@ -143,9 +141,7 @@ const useSearchSuspensionContract = () => {
                     typeInput={"text"}
                     label={<>Fecha fin</>}
                     disabled={true}
-                    value={`${DateTime.fromISO(
-                      row.employment.endDate
-                    ).toLocaleString()}`}
+                    value={`${formaterDate(row.employment.endDate)}`}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
                   />
@@ -158,9 +154,7 @@ const useSearchSuspensionContract = () => {
                     errors={""}
                     typeInput={"text"}
                     label={<>Fecha inicio suspensión</>}
-                    value={`${DateTime.fromISO(
-                      row.dateStart
-                    ).toLocaleString()}`}
+                    value={`${formaterDate(row.dateStart)}`}
                     disabled={true}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
@@ -171,7 +165,7 @@ const useSearchSuspensionContract = () => {
                     typeInput={"text"}
                     label={<>Fecha fin suspensión</>}
                     disabled={true}
-                    value={`${DateTime.fromISO(row.dateEnd).toLocaleString()}`}
+                    value={`${formaterDate(row.dateEnd)}`}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
                   />
@@ -181,9 +175,7 @@ const useSearchSuspensionContract = () => {
                     typeInput={"text"}
                     label={<>Nueva fecha fin contrato</>}
                     disabled={true}
-                    value={`${DateTime.fromISO(
-                      row.newDateEnd
-                    ).toLocaleString()}`}
+                    value={`${formaterDate(row.newDateEnd)}`}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
                   />

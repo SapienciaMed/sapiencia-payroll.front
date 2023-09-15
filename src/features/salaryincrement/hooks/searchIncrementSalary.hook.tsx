@@ -3,9 +3,6 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import { DateTime } from "luxon";
-
-import { filterIncrementSalarySchema } from "../../../common/schemas";
 
 import { formaterDate, formaterNumberToCurrency } from "../../../common/utils/helpers";
 
@@ -28,7 +25,6 @@ import {
 
 import { AppContext } from "../../../common/contexts/app.context";
 
-import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 
 export default function useSearchIncrementSalaryHook() {

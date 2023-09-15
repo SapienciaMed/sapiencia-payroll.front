@@ -17,8 +17,7 @@ import {
   DataItem,
 } from "../../../common/components/Form/table-detail.component";
 import { TextAreaComponent } from "../../../common/components/Form";
-import { DateTime } from "luxon";
-import { calculateDifferenceDays } from "../../../common/utils/helpers";
+import { calculateDifferenceDays, formaterDate } from "../../../common/utils/helpers";
 
 export default function useSearchLicenceData() {
   const tableComponentRef = useRef(null);
@@ -64,16 +63,16 @@ export default function useSearchLicenceData() {
       const dataPeriod: DataItem[] = [
         {
           title: "Fecha inicio",
-          value: DateTime.fromISO(data[0].dateStart).toLocaleString(),
+          value: formaterDate(data[0].dateStart),
         },
         {
           title: "Fecha fin",
-          value: DateTime.fromISO(data[0].dateEnd).toLocaleString(),
+          value: formaterDate(data[0].dateEnd),
         },
 
         {
           title: "Total días",
-          value: calculateDifferenceDays(data[0].dateStart, data[0].dateEnd),
+          value: `${calculateDifferenceDays(data[0].dateStart, data[0].dateEnd)}`,
         },
       ];
 

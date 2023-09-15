@@ -4,7 +4,6 @@ import {
   ITableAction,
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
-import { DateTime } from "luxon";
 import {
   IFilterVacation,
   IWorkersVacationDetail,
@@ -13,6 +12,7 @@ import VacationTable from "../forms/vacationTable";
 import { AppContext } from "../../../common/contexts/app.context";
 import useListData from "./list.hook";
 import { useNavigate } from "react-router-dom";
+import { formaterDate } from "../../../common/utils/helpers";
 
 export default function useSearchVacationData() {
   const tableComponentRef = useRef(null);
@@ -50,14 +50,14 @@ export default function useSearchVacationData() {
       fieldName: "dateFrom",
       header: "Desde",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row.dateFrom).toLocaleString()}</>;
+        return <>{formaterDate(row.dateFrom)}</>;
       },
     },
     {
       fieldName: "dateUntil",
       header: "Hasta",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row.dateUntil).toLocaleString()}</>;
+        return <>{formaterDate(row.dateUntil)}</>;
       },
     },
     {

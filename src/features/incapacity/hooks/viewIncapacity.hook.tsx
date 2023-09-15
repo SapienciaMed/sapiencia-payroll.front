@@ -3,8 +3,10 @@ import { AppContext } from "../../../common/contexts/app.context";
 import useIncapacityService from "../../../common/hooks/incapacity-service.hook";
 import { IGetIncapacity } from "../../../common/interfaces/payroll.interfaces";
 import { useNavigate } from "react-router-dom";
-import { DateTime } from "luxon";
-import { calculateDifferenceDays } from "../../../common/utils/helpers";
+import {
+  calculateDifferenceDays,
+  formaterDate,
+} from "../../../common/utils/helpers";
 import { ResponsiveTable } from "../../../common/components/Form/table-detail.component";
 import { TextAreaComponent } from "../../../common/components/Form";
 
@@ -19,7 +21,7 @@ export default function useViewIncapacityDetail() {
     const worker = [
       {
         title: <span className="text-left">Numero de documento</span>,
-        value: data.employment?.worker?.numberDocument,
+        value: `${data.employment?.worker?.numberDocument}`,
       },
       {
         title: <span className="text-left">Nombre empleado</span>,
@@ -39,15 +41,15 @@ export default function useViewIncapacityDetail() {
     const dates = [
       {
         title: "Fecha de inicio",
-        value: DateTime.fromISO(data.dateInitial).toLocaleString(),
+        value: formaterDate(data.dateInitial),
       },
       {
         title: "Fecha de fin",
-        value: DateTime.fromISO(data.dateFinish).toLocaleString(),
+        value: formaterDate(data.dateFinish),
       },
       {
         title: "Total días",
-        value: calculateDaysIncapacity === 0 ? 1 : calculateDaysIncapacity,
+        value: `${calculateDaysIncapacity === 0 ? 1 : calculateDaysIncapacity}`,
       },
     ];
 

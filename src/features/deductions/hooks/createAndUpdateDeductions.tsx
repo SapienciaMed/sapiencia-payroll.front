@@ -4,7 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { AppContext } from "../../../common/contexts/app.context";
 
-import { IManualDeduction } from "../../../common/interfaces/payroll.interfaces";
+import {
+  IFormPeriod,
+  IManualDeduction,
+} from "../../../common/interfaces/payroll.interfaces";
 import { EDeductionns } from "../../../common/constants/deductions.enum";
 
 import { formDeduction } from "../../../common/schemas";
@@ -13,6 +16,9 @@ import { EResponseCodes } from "../../../common/constants/api.enum";
 import useListData from "../../vacation/hooks/list.hook";
 import useDeductionService from "../../../common/hooks/deduction-service.hook";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
+import { ApiResponse } from "../../../common/utils/api-response";
+import usePayrollService from "../../../common/hooks/payroll-service.hook";
+import { DateTime } from "luxon";
 
 interface IPropsUseCreateAndUpdateDeductions {
   action: string;
@@ -31,9 +37,11 @@ const useCreateAndUpdateDeductions = ({
   //useState
   const [deductionsTypeByTypeList, setDeductionsTypeByTypeList] = useState([]);
   const [indexArrayYupValidator, setIndexArrayYupValidator] = useState(0);
-
+  const [lastPeriodsList, setLastPeriodsList] = useState([]);
   //custom hooks
-  const { activeWorkerList, lastPeriodsList } = useListData();
+  const { activeWorkerList, workerInfo } = useListData();
+  const { getLastPeriods } = usePayrollService();
+
   const {
     getDeductionTypesByType,
     createDeduction,
@@ -65,13 +73,19 @@ const useCreateAndUpdateDeductions = ({
       resolver,
     });
 
-  const [typeDeduction, porcentualValue, totalMount, numberInstallments] =
-    watch([
-      "typeDeduction",
-      "porcentualValue",
-      "totalMount",
-      "numberInstallments",
-    ]);
+  const [
+    typeDeduction,
+    porcentualValue,
+    totalMount,
+    numberInstallments,
+    codEmployment,
+  ] = watch([
+    "typeDeduction",
+    "porcentualValue",
+    "totalMount",
+    "numberInstallments",
+    "codEmployment",
+  ]);
 
   //useEffect
 
@@ -138,6 +152,29 @@ const useCreateAndUpdateDeductions = ({
       }
     }
   }, [totalMount, numberInstallments]);
+
+  useEffect(() => {
+    if (codEmployment) {
+      const contractType = workerInfo.find(
+        (item) => item.employment.id == codEmployment
+      ).employment?.idTypeContract;
+      getLastPeriods(contractType)
+        .then((response: ApiResponse<IFormPeriod[]>) => {
+          if (response && response?.operation?.code === EResponseCodes.OK) {
+            setLastPeriodsList(
+              response.data.map((item) => {
+                const list = {
+                  name: `${item.dateStart} - ${item.dateEnd}`,
+                  value: item.id,
+                };
+                return list;
+              })
+            );
+          }
+        })
+        .catch((err) => {});
+    }
+  }, [codEmployment]);
 
   //functions
   const renderTitleDeduction = () => {

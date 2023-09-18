@@ -167,9 +167,9 @@ export function usePayrollService() {
     }
   }
 
-  async function getLastPeriods(): Promise<ApiResponse<IFormPeriod[]>> {
+  async function getLastPeriods(id:number): Promise<ApiResponse<IFormPeriod[]>> {
     try {
-      const endpoint: string = `/last`;
+      const endpoint: string = `/last/${id}`;
       return await get(`${payrollUrl}${endpoint}`);
     } catch (error) {
       return new ApiResponse(

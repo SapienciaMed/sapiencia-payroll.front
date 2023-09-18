@@ -72,7 +72,7 @@ export const FilterDeductionsForm = ({
               placeholder="Seleccione."
             />
             <SelectComponent
-              idInput={"codFormsPeriod"}
+              idInput={"typeDeduction"}
               control={control}
               errors={errors}
               data={typeDeductionList}
@@ -87,7 +87,7 @@ export const FilterDeductionsForm = ({
               placeholder="Seleccione."
             />
             <SelectComponent
-              idInput={"typeDeduction"}
+              idInput={"codFormsPeriod"}
               control={control}
               errors={errors}
               data={lastPeriodsList}

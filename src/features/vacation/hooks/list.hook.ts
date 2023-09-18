@@ -18,8 +18,8 @@ export default function useListData() {
   const [activeWorkerList, setActiveWorkerList] = useState([]);
   const [typesIncapacityList, setTypesIncapacityList] = useState([]);
   const [reasonsForWithdrawal, setReasonsForWithdrawal] = useState([]);
-  const [lastPeriodsList, setLastPeriodsList] = useState([]);
   const [periodsList, setPeriodsList] = useState([]);
+  const [workerInfo, setWorkerInfo] = useState([]);
   const [typesSpreadSheetList, setTypesSpreadSheetList] = useState([]);
   const [stateSpreadSheetList, setStateSpreadSheetList] = useState([
     {
@@ -90,7 +90,6 @@ export default function useListData() {
   const {
     getWorkers,
     getReasonsForWithdrawal,
-    getLastPeriods,
     getPeriods,
     getTypeSpreadSheet,
   } = usePayrollService();
@@ -118,6 +117,7 @@ export default function useListData() {
     getWorkers()
       .then((response: ApiResponse<IWorker[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
+          setWorkerInfo(response.data);
           setActiveWorkerList(
             response.data.map((item) => {
               const list = {
@@ -182,39 +182,13 @@ export default function useListData() {
   }, []);
 
   useEffect(() => {
-    getLastPeriods()
-      .then((response: ApiResponse<IFormPeriod[]>) => {
-        if (response && response?.operation?.code === EResponseCodes.OK) {
-          setLastPeriodsList(
-            response.data.map((item) => {
-              const list = {
-                name: `${DateTime.fromISO(
-                  item.dateStart
-                ).toLocaleString()} - ${DateTime.fromISO(
-                  item.dateEnd
-                ).toLocaleString()}`,
-                value: item.id,
-              };
-              return list;
-            })
-          );
-        }
-      })
-      .catch((err) => {});
-  }, []);
-
-  useEffect(() => {
     getPeriods()
       .then((response: ApiResponse<IFormPeriod[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           setPeriodsList(
             response.data.map((item) => {
               const list = {
-                name: `${DateTime.fromISO(
-                  item.dateStart
-                ).toLocaleString()} - ${DateTime.fromISO(
-                  item.dateEnd
-                ).toLocaleString()}`,
+                name: `${item.dateStart} - ${item.dateEnd}`,
                 value: item.id,
               };
               return list;
@@ -244,11 +218,11 @@ export default function useListData() {
     listPeriods,
     typesIncapacityList,
     reasonsForWithdrawal,
-    lastPeriodsList,
     periodsList,
     typesSpreadSheetList,
     stateSpreadSheetList,
     monthList,
     getWorkersActive,
+    workerInfo,
   };
 }

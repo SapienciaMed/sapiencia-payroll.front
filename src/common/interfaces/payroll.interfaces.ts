@@ -482,6 +482,7 @@ export interface IManualDeduction {
   totalMount?: number;
   // eventual periodo plantilla - periodo inicial planntilla
   codFormsPeriod?: number;
+  formsPeriod?: IFormPeriod;
   // Estado siempre vigente
   state: string;
   //Observation

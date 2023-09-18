@@ -5,7 +5,10 @@ import {
   ITableAction,
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
-import {IDeductionsFilter,IManualDeduction,} from "../../../common/interfaces/payroll.interfaces";
+import {
+  IDeductionsFilter,
+  IManualDeduction,
+} from "../../../common/interfaces/payroll.interfaces";
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
@@ -20,7 +23,6 @@ import {
 import { AppContext } from "../../../common/contexts/app.context";
 
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
-
 
 export default function useSearchDeductionsHook() {
   // Context
@@ -41,13 +43,13 @@ export default function useSearchDeductionsHook() {
   const navigate = useNavigate();
 
   const { register, handleSubmit, control, formState, reset, watch } =
-  useForm<IDeductionsFilter>({
-    //resolver,
-    mode: "all",
-    defaultValues: { 
-      codEmployment: null,
-    },
-  });
+    useForm<IDeductionsFilter>({
+      //resolver,
+      mode: "all",
+      defaultValues: {
+        codEmployment: null,
+      },
+    });
 
   const formValues = watch();
 
@@ -65,14 +67,13 @@ export default function useSearchDeductionsHook() {
 
   // carga combos
   useEffect(() => {
-      loadDropdown();
+    loadDropdown();
   }, []);
 
   //functions
   const loadDropdown = async () => {
-    
-  //charges
-  const { data, operation } = await getCharges();
+    //charges
+    const { data, operation } = await getCharges();
     if (operation.code === EResponseCodes.OK) {
       const chargesList = data.map((item) => {
         return {
@@ -80,7 +81,7 @@ export default function useSearchDeductionsHook() {
           value: item.id,
         };
       });
-  
+
       setCharges(chargesList);
     } else {
       setCharges([]);
@@ -97,8 +98,7 @@ export default function useSearchDeductionsHook() {
     setshowTable(false);
   };
 
-
-const showDetailDeductions = (row: IManualDeduction) => {
+  const showDetailDeductions = (row: IManualDeduction) => {
     if (row) {
       const infoPersonalIncrement: DataItem[] = [
         {
@@ -118,27 +118,20 @@ const showDetailDeductions = (row: IManualDeduction) => {
           value: row.deductionsType[0].type,
         },
         {
-          title: (
-            <span className="text-left">Nombre de deducción</span>
-          ),
+          title: <span className="text-left">Nombre de deducción</span>,
           value: row.deductionsType[0].name,
         },
         {
-          title: (
-            <span className="text-left">Estado</span>
-          ),
+          title: <span className="text-left">Estado</span>,
           value: row.state,
         },
         {
-          title: (
-            <span className="text-left">Periodo de planilla</span>
-          ),
+          title: <span className="text-left">Periodo de planilla</span>,
           value: "",
         },
       ];
 
-
-    return setMessage({
+      return setMessage({
         title: "Detalle de deducción",
         show: true,
         OkTitle: "Aceptar",
@@ -146,10 +139,7 @@ const showDetailDeductions = (row: IManualDeduction) => {
           <div className="container-modal_description">
             <ResponsiveTable data={infoPersonalIncrement} />
             <div>
-              <h3 className="text-left  padding-left_16">
-                Detalle
-              </h3>
-
+              <h3 className="text-left  padding-left_16">Detalle</h3>
             </div>
             <TextAreaComponent
               label={"Observaciones"}
@@ -170,7 +160,6 @@ const showDetailDeductions = (row: IManualDeduction) => {
     }
   };
 
-
   const onSubmit = handleSubmit(async (data: IDeductionsFilter) => {
     setshowTable(true);
 
@@ -179,59 +168,57 @@ const showDetailDeductions = (row: IManualDeduction) => {
     }
   });
 
- //variables
- const tableColumns: ITableElement<IManualDeduction>[] = [
-  {
-    fieldName: "employment.worker.numberDocument",
-    header: "No. documento",
-    renderCell: (row) => {
-      return <>{row.employment.worker.numberDocument}</>;
+  //variables
+  const tableColumns: ITableElement<IManualDeduction>[] = [
+    {
+      fieldName: "employment.worker.numberDocument",
+      header: "No. documento",
+      renderCell: (row) => {
+        return <>{row.employment.worker.numberDocument}</>;
+      },
     },
-  },
-  {
-    fieldName: "row.employment.worker",
-    header: "Nombre y apellido",
-    renderCell: (row) => {
-      return (
-        <>
-          {row.employment.worker.firstName} {row.employment.worker.secondName}{" "}
-          {row.employment.worker.surname}{" "}
-          {row.employment.worker.secondSurname}
-        </>
-      );
+    {
+      fieldName: "row.employment.worker",
+      header: "Nombre y apellido",
+      renderCell: (row) => {
+        return (
+          <>
+            {row.employment.worker.firstName} {row.employment.worker.secondName}{" "}
+            {row.employment.worker.surname}{" "}
+            {row.employment.worker.secondSurname}
+          </>
+        );
+      },
     },
-  },
-  {
-    fieldName: "row.deductionsType.name",
-    header: "Tipo de deducción",
-    renderCell: (row) => {
-      return <>{row.deductionsType[0].type}</>;
-      
+    {
+      fieldName: "row.deductionsType.name",
+      header: "Tipo de deducción",
+      renderCell: (row) => {
+        return <>{row.deductionsType[0].type}</>;
+      },
     },
-  },
-  {
-    fieldName: "deductions.numberActApproval",
-    header: "Nombre de deducción",
-    renderCell: (row) => {
-      return <>{row.deductionsType[0].name}</>;
+    {
+      fieldName: "deductions.numberActApproval",
+      header: "Nombre de deducción",
+      renderCell: (row) => {
+        return <>{row.deductionsType[0].name}</>;
+      },
     },
-  },
-  {
-    fieldName: "deductions.numberActApproval",
-    header: "Estado",
-    renderCell: (row) => {
-      return <>{row.state}</>;
+    {
+      fieldName: "deductions.numberActApproval",
+      header: "Estado",
+      renderCell: (row) => {
+        return <>{row.state}</>;
+      },
     },
-  },
-  {
-    fieldName: "deductions.numberActApproval",
-    header: "Periodo de planilla",
-    renderCell: (row) => {
-      return <>{""}</>;
+    {
+      fieldName: "deductions.numberActApproval",
+      header: "Periodo de planilla",
+      renderCell: (row) => {
+        return <>{`${row.formsPeriod.dateStart}-${row.formsPeriod.dateEnd}`}</>;
+      },
     },
-  },
-];
-
+  ];
 
   const tableActions: ITableAction<IManualDeduction>[] = [
     {
@@ -264,6 +251,5 @@ const showDetailDeductions = (row: IManualDeduction) => {
     tableComponentRef,
     tableColumns,
     tableActions,
-    
-  }
+  };
 }

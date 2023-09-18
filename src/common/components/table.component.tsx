@@ -198,6 +198,7 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
           {columns.map((col) => (
             <Column
               key={col.fieldName}
+              sortable={col.sortable}
               field={col.fieldName}
               header={col.header}
               body={col.renderCell}

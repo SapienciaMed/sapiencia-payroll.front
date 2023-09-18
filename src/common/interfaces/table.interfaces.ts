@@ -2,6 +2,7 @@ export interface ITableElement<T> {
   header: string;
   fieldName: string;
   required?: boolean;
+  sortable?:boolean;
   dataList?: IListTableElement[];
   renderCell?: (row: T) => JSX.Element;
   width?: string | number;

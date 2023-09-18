@@ -23,6 +23,7 @@ import {
 import { AppContext } from "../../../common/contexts/app.context";
 
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
+import { formaterNumberToCurrency } from "../../../common/utils/helpers";
 
 export default function useSearchDeductionsHook() {
   // Context
@@ -100,10 +101,10 @@ export default function useSearchDeductionsHook() {
 
   const showDetailDeductions = (row: IManualDeduction) => {
     if (row) {
-      const infoPersonalIncrement: DataItem[] = [
+      const infoPersonal: DataItem[] = [
         {
           title: <span className="text-left">No. documento</span>,
-          value: row.employment.worker.numberDocument,
+          value: `${row.employment.worker.typeDocument} ${row.employment.worker.numberDocument}`,
         },
         {
           title: <span className="text-left">Nombre y apellido</span>,
@@ -114,33 +115,37 @@ export default function useSearchDeductionsHook() {
           ${row.employment.worker.secondSurname}`,
         },
         {
-          title: <span className="text-left">Tipo de deducción</span>,
-          value: row.deductionsType[0].type,
-        },
-        {
-          title: <span className="text-left">Nombre de deducción</span>,
-          value: row.deductionsType[0].name,
-        },
-        {
           title: <span className="text-left">Estado</span>,
           value: row.state,
         },
         {
-          title: <span className="text-left">Periodo de planilla</span>,
-          value: "",
+          title: <span className="text-left">Tipo de deducción</span>,
+          value: row.deductionsType[0].type,
         },
       ];
-
+      const infoDeductionValue = [
+        {
+          title: <span className="text-left">Tipo evantualidad</span>,
+          value: row.deductionsType[0].name,
+        },
+        {
+          title: <span className="text-left">Periodo inicial de planilla</span>,
+          value: `${row.formsPeriod.dateStart}-${row.formsPeriod.dateEnd}`,
+        },
+        {
+          title: <span className="text-left">Valor deducción</span>,
+          value: `${formaterNumberToCurrency(row.value)}`,
+        },
+      ];
       return setMessage({
         title: "Detalle de deducción",
         show: true,
         OkTitle: "Aceptar",
         description: (
           <div className="container-modal_description">
-            <ResponsiveTable data={infoPersonalIncrement} />
-            <div>
-              <h3 className="text-left  padding-left_16">Detalle</h3>
-            </div>
+            <ResponsiveTable data={infoPersonal} />
+            <ResponsiveTable data={infoDeductionValue} />
+            <div></div>
             <TextAreaComponent
               label={"Observaciones"}
               idInput=""
@@ -178,8 +183,9 @@ export default function useSearchDeductionsHook() {
       },
     },
     {
-      fieldName: "row.employment.worker",
+      fieldName: "row.employment.worker.firstName",
       header: "Nombre y apellido",
+      sortable: true,
       renderCell: (row) => {
         return (
           <>

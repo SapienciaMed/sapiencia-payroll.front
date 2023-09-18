@@ -469,25 +469,16 @@ export interface IManualDeduction {
   id?: number;
   typeDeduction: string;
   codEmployment: number;
-  //tipo eventuales - tipo ciclicas
   codDeductionType?: number;
-  //si es ciclico manda true sino manda un false
   cyclic: boolean;
-  // numero de cuotas solo aplica ciclicas (si es eventual null)
   numberInstallments?: number;
-  // check aplica a extraordinaria solo en ciclica true o false (si es eventual null)
   applyExtraordinary?: boolean;
-  // check porcentaje
   porcentualValue?: boolean;
-  // valor deduccion (eventual) - valor por cuotas (ciclica)
   value: number;
   totalMount?: number;
-  // eventual periodo plantilla - periodo inicial planntilla
   codFormsPeriod?: number;
   formsPeriod?: IFormPeriod;
-  // Estado siempre vigente
   state: string;
-  //Observation
   observation?: string;
   deductionsType?: IDeductionType;
   employment?: IEmploymentWorker;

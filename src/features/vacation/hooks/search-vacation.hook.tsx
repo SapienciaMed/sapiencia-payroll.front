@@ -50,14 +50,14 @@ export default function useSearchVacationData() {
       fieldName: "dateFrom",
       header: "Desde",
       renderCell: (row) => {
-        return <>{formaterDate(row.dateFrom)}</>;
+        return <>{(row.dateFrom)}</>;
       },
     },
     {
       fieldName: "dateUntil",
       header: "Hasta",
       renderCell: (row) => {
-        return <>{formaterDate(row.dateUntil)}</>;
+        return <>{(row.dateUntil)}</>;
       },
     },
     {

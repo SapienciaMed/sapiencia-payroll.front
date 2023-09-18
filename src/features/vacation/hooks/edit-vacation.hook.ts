@@ -38,6 +38,11 @@ export default function useEditVacationData() {
     await getWorkerVacatioByParam(params)
       .then((response: ApiResponse<IVacationResult>) => {
         if (response?.operation?.code === EResponseCodes.OK) {
+          console.log(
+            response.data.vacationDay
+              .filter((day) => !day.paid)
+              .sort((a, b) => b.id - a.id)[0]
+          );
           setVacation(response.data);
           setValueRegister(
             "dateFrom",

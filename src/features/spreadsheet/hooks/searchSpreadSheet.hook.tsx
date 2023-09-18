@@ -76,7 +76,7 @@ export default function useSearchSpreadSheetHook() {
     },
     {
       fieldName: "dateEnd",
-      header: "Fecha finn",
+      header: "Fecha fin",
       renderCell: (row) => {
         return <>{formaterDate(row.dateEnd)}</>;
       },

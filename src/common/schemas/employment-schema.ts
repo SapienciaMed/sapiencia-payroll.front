@@ -268,7 +268,22 @@ export const createOrUpdateSpreadSheetSchema = yup.object({
     .date()
     .required("El campo es obligatorio")
     .typeError("Fecha invalida"),
-  month: yup.number().required("El campo es obligatorio"),
-  year: yup.number().required("El campo es obligatorio"),
+  month: yup
+    .number()
+    .typeError("El campo debe ser obligatorio")
+    .required("El campo es obligatorio"),
+  year: yup
+    .number()
+    .test("is-year-actual", "El año debe ser el actual", (value) => {
+      const yearActual = new Date().getFullYear();
+
+      if (value === yearActual) {
+        return true;
+      }
+
+      return false;
+    })
+    .typeError("El valor debe ser un numero")
+    .required("El campo debe ser obligatorio"),
   observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
 });

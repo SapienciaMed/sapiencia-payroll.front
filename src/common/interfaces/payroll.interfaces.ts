@@ -453,7 +453,9 @@ export interface IFormPeriod {
 }
 
 export interface IDeductionsFilter {
-  codEmployment: number;
+  codEmployment?: number;
+  typeDeduction?: string;
+  codFormsPeriod?: number;
 }
 
 export interface IDeductionType {

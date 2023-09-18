@@ -38,15 +38,113 @@ const useCreateOrUpdateSpreadSheetHook = ({
   //use form
   const resolver = useYupValidationResolver(createOrUpdateSpreadSheetSchema);
 
-  const { control, formState, handleSubmit } = useForm<IFormPeriod>({
-    defaultValues: async () => loadDefaultValues(),
-    mode: "all",
-    resolver,
-  });
+  const { control, formState, handleSubmit, watch, setValue } =
+    useForm<IFormPeriod>({
+      defaultValues: async () => loadDefaultValues(),
+      mode: "all",
+      resolver,
+    });
+
+  const [month, year, dateStart, dateEnd, idFormType] = watch([
+    "month",
+    "year",
+    "dateStart",
+    "dateEnd",
+    "idFormType",
+  ]);
 
   //useEffect
 
+  useEffect(() => {
+    setValue("dateStart", null);
+  }, [idFormType, month, year]);
+
+  useEffect(() => {
+    if (formState.isDirty) {
+      setValue("dateEnd", null);
+    }
+  }, [dateStart]);
+
   //functions
+
+  const validateDatesStart = (): {
+    validateDateStart: Date;
+    validateDateEnd: Date;
+  } => {
+    if (month && year) {
+      return {
+        validateDateStart: new Date(year, month - 1, 1),
+        validateDateEnd: new Date(year, month, 0),
+      };
+    }
+  };
+
+  const validateDatesEnd = (): {
+    validateDateStart: Date;
+    validateDateEnd: Date;
+  } => {
+    if (idFormType === 1) {
+      // Quincenal
+      const dateEndNew = new Date(dateStart);
+
+      dateEndNew.setDate(dateEndNew.getDate() + 14);
+
+      return {
+        validateDateStart: new Date(dateStart),
+        validateDateEnd: dateEndNew,
+      };
+    }
+
+    if (idFormType == 2) {
+      // Mensual
+      const dateEndNew = new Date(dateStart);
+
+      if (month === 12) {
+        dateEndNew.setDate(31);
+      } else {
+        dateEndNew.setMonth(dateEndNew.getMonth() + 1);
+      }
+
+      return {
+        validateDateStart: new Date(dateStart),
+        validateDateEnd: dateEndNew,
+      };
+    }
+
+    if (idFormType == 3) {
+      // Prima solo debe permitir 6 meses
+      const dateEndNew = new Date(dateStart);
+
+      if (month === 6) {
+        dateEndNew.setMonth(12);
+      } else {
+        dateEndNew.setMonth(dateEndNew.getMonth() + 5);
+      }
+
+      return {
+        validateDateStart: new Date(dateStart),
+        validateDateEnd: dateEndNew,
+      };
+    }
+
+    if (idFormType == 4) {
+      // Prima Bonificacion debe permitir un 1 a;o
+      const dateEndNew = new Date(dateStart);
+
+      dateEndNew.setFullYear(dateEndNew.getFullYear() + 1);
+
+      return {
+        validateDateStart: new Date(dateStart),
+        validateDateEnd: dateEndNew,
+      };
+    }
+
+    return {
+      validateDateStart: new Date(dateStart),
+      validateDateEnd: new Date(year, 12, 0),
+    };
+  };
+
   const renderTitleDeduction = () => {
     return action === "edit" ? "Editar planilla" : "Crear planilla";
   };
@@ -56,7 +154,7 @@ const useCreateOrUpdateSpreadSheetHook = ({
       return {
         id: null,
         idFormType: null,
-        state: "Generada",
+        state: "Pendiente",
         dateStart: null,
         dateEnd: null,
         paidDate: null,
@@ -74,10 +172,10 @@ const useCreateOrUpdateSpreadSheetHook = ({
           return {
             id: data[0].id,
             idFormType: data[0].idFormType,
-            state: "Generada",
-            dateStart: new Date(data[0].dateStart),
-            dateEnd: new Date(data[0].dateEnd),
-            paidDate: new Date(data[0].paidDate),
+            state: "Pendiente",
+            dateStart: data[0].dateStart,
+            dateEnd: data[0].dateEnd,
+            paidDate: data[0].paidDate,
             month: data[0].month,
             year: data[0].year,
             observation: data[0]?.observation,
@@ -103,7 +201,7 @@ const useCreateOrUpdateSpreadSheetHook = ({
         return {
           id: null,
           idFormType: null,
-          state: "Generadas",
+          state: "Pendiente",
           dateStart: null,
           dateEnd: null,
           paidDate: null,
@@ -218,6 +316,13 @@ const useCreateOrUpdateSpreadSheetHook = ({
     formState,
     typesSpreadSheetList,
     monthList,
+    month,
+    year,
+    idFormType,
+    dateStart,
+    dateEnd,
+    validateDatesStart,
+    validateDatesEnd,
     renderTitleDeduction,
     redirectCancel,
     handleSubmitSpreadSheet,

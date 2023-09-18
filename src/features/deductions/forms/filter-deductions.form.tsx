@@ -25,7 +25,7 @@ import useListData from "../../vacation/hooks/list.hook";
 interface IPropsFilterDeductions {
   control: Control<IDeductionsFilter, any>;
   formState: FormState<FieldValues>;
-  typeDeductionList: any[],
+  typeDeductionList: any[];
   lastPeriodsList: any[];
   redirectCreate: () => void;
   clearFields: () => void;
@@ -47,7 +47,7 @@ export const FilterDeductionsForm = ({
 }: IPropsFilterDeductions): React.JSX.Element => {
   const { errors, isValid } = formState;
 
-  const { codEmployment } = formValues;
+  const { codEmployment, typeDeduction, codFormsPeriod } = formValues;
 
   const { activeWorkerList } = useListData();
 
@@ -61,11 +61,7 @@ export const FilterDeductionsForm = ({
               control={control}
               errors={errors}
               data={activeWorkerList}
-              label={
-                <>
-                  Documento - Nombre del empleado.
-                </>
-              }
+              label={<>Documento - Nombre del empleado.</>}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               filter={true}
@@ -76,11 +72,7 @@ export const FilterDeductionsForm = ({
               control={control}
               errors={errors}
               data={typeDeductionList}
-              label={
-                <>
-                  Tipo de deducción 
-                </>
-              }
+              label={<>Tipo de deducción</>}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               filter={true}
@@ -91,11 +83,7 @@ export const FilterDeductionsForm = ({
               control={control}
               errors={errors}
               data={lastPeriodsList}
-              label={
-                <>
-                  periodo de planilla
-                </>
-              }
+              label={<>Periodo de planilla</>}
               className="select-basic medium"
               classNameLabel="text-black big bold"
               filter={true}
@@ -113,10 +101,10 @@ export const FilterDeductionsForm = ({
             <ButtonComponent
               value={"Buscar"}
               className="button-save disabled-black big"
-              disabled={!isValid}
+              disabled={!codEmployment && !codFormsPeriod && !typeDeduction}
             />
           </div>
-        </div>      
+        </div>
       </FormComponent>
     </>
   );

@@ -94,8 +94,6 @@ export function DatePickerComponent({
           rules={optionsRegister}
           shouldUnregister={shouldUnregister}
           render={({ field }) => {
-            console.log(field.value);
-            console.log(new Date(field.value));
             return (
               <Calendar
                 id={field.name}

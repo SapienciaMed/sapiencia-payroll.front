@@ -1,6 +1,8 @@
 import React from "react";
 import { Control, Controller, FormState } from "react-hook-form";
 
+import { DateTime } from "luxon";
+
 import {
   FormComponent,
   SelectComponent,
@@ -18,6 +20,19 @@ interface IPropsCreateUpdateSpreadSheetForm {
   formState: FormState<IFormPeriod>;
   typesSpreadSheetList: any[];
   monthList: any[];
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  idFormType: number;
+  month: number;
+  year: number;
+  validateDatesStart: () => {
+    validateDateStart: Date;
+    validateDateEnd: Date;
+  };
+  validateDatesEnd: () => {
+    validateDateStart: Date;
+    validateDateEnd: Date;
+  };
   handleSubmitSpreadSheet: (
     e?: React.BaseSyntheticEvent<object, any, any>
   ) => Promise<void>;
@@ -30,6 +45,13 @@ export const CreateUpdateSpreadSheetForm = ({
   formState,
   typesSpreadSheetList,
   monthList,
+  dateStart,
+  dateEnd,
+  month,
+  year,
+  idFormType,
+  validateDatesStart,
+  validateDatesEnd,
   handleSubmitSpreadSheet,
   redirectCancel,
 }: IPropsCreateUpdateSpreadSheetForm): React.JSX.Element => {
@@ -82,7 +104,7 @@ export const CreateUpdateSpreadSheetForm = ({
                   <InputComponent
                     idInput={field.name}
                     errors={errors}
-                    typeInput={"text"}
+                    typeInput={"number"}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
                     value={field.value}
@@ -111,6 +133,9 @@ export const CreateUpdateSpreadSheetForm = ({
               className="dataPicker-basic  medium "
               placeholder="DD/MM/YYYY"
               dateFormat="dd/mm/yy"
+              minDate={validateDatesStart()?.validateDateStart}
+              maxDate={validateDatesStart()?.validateDateEnd}
+              disabled={!month || !year || !idFormType}
             />
 
             <DatePickerComponent
@@ -126,6 +151,9 @@ export const CreateUpdateSpreadSheetForm = ({
               className="dataPicker-basic  medium "
               placeholder="DD/MM/YYYY"
               dateFormat="dd/mm/yy"
+              minDate={validateDatesEnd()?.validateDateStart}
+              maxDate={validateDatesEnd()?.validateDateEnd}
+              disabled={!dateStart}
             />
 
             <DatePickerComponent
@@ -141,6 +169,8 @@ export const CreateUpdateSpreadSheetForm = ({
               className="dataPicker-basic  medium "
               placeholder="DD/MM/YYYY"
               dateFormat="dd/mm/yy"
+              minDate={dateStart}
+              maxDate={dateEnd}
             />
 
             <div className="grid-span-3-columns">

@@ -204,21 +204,21 @@ export default function useSearchDeductionsHook() {
       },
     },
     {
-      fieldName: "deductions.numberActApproval",
+      fieldName: "deductionsType",
       header: "Nombre de deducción",
       renderCell: (row) => {
         return <>{row.deductionsType[0].name}</>;
       },
     },
     {
-      fieldName: "deductions.numberActApproval",
+      fieldName: "state",
       header: "Estado",
       renderCell: (row) => {
         return <>{row.state}</>;
       },
     },
     {
-      fieldName: "deductions.numberActApproval",
+      fieldName: "formPeriod",
       header: "Periodo de planilla",
       renderCell: (row) => {
         return <>{`${row.formsPeriod.dateStart}-${row.formsPeriod.dateEnd}`}</>;

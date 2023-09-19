@@ -1,22 +1,12 @@
 import React from "react";
-import {
-  Control,
-  Controller,
-  FieldValues,
-  FormState,
-  UseFormGetValues,
-} from "react-hook-form";
-
+import { Control, FieldValues, FormState } from "react-hook-form";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-
 import {
   FormComponent,
   SelectComponent,
-  InputComponent,
   ButtonComponent,
   DatePickerComponent,
 } from "../../../common/components/Form";
-
 import { IFormPeriodFilters } from "../../../common/interfaces/payroll.interfaces";
 
 interface IPropsFilterSpreadSheetForm {
@@ -40,7 +30,7 @@ export const FilterSpreadSheetForm = ({
   clearFields,
   onSubmit,
 }: IPropsFilterSpreadSheetForm): React.JSX.Element => {
-  const { errors, isValid } = formState;
+  const { errors } = formState;
 
   const { idFormType, paidDate, state } = formValues;
 

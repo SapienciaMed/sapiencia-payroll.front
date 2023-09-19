@@ -8,9 +8,7 @@ import {
   ITableAction,
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
-
 import { useNavigate } from "react-router-dom";
-
 import useListData from "../../vacation/hooks/list.hook";
 
 export default function useSearchSpreadSheetHook() {
@@ -48,6 +46,7 @@ export default function useSearchSpreadSheetHook() {
   };
 
   const onSubmit = handleSubmit((data: IFormPeriodFilters) => {
+    console.log(data);
     setshowTable(true);
 
     if (tableComponentRef.current) {

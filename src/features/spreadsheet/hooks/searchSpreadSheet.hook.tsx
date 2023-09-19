@@ -46,11 +46,14 @@ export default function useSearchSpreadSheetHook() {
   };
 
   const onSubmit = handleSubmit((data: IFormPeriodFilters) => {
-    console.log(data);
+    const dataModified = {
+      ...data,
+      paidDate: new Date(String(data.paidDate)).toDateString(),
+    };
     setshowTable(true);
 
     if (tableComponentRef.current) {
-      tableComponentRef.current.loadData(data);
+      tableComponentRef.current.loadData(dataModified);
     }
   });
 

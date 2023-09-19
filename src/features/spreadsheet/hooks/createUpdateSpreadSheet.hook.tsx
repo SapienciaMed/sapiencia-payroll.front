@@ -56,12 +56,15 @@ const useCreateOrUpdateSpreadSheetHook = ({
   //useEffect
 
   useEffect(() => {
-    setValue("dateStart", null);
+    if (formState.isDirty) {
+      setValue("dateStart", null);
+    }
   }, [idFormType, month, year]);
 
   useEffect(() => {
     if (formState.isDirty) {
       setValue("dateEnd", null);
+      setValue("paidDate", null);
     }
   }, [dateStart]);
 
@@ -99,11 +102,7 @@ const useCreateOrUpdateSpreadSheetHook = ({
       // Mensual
       const dateEndNew = new Date(dateStart);
 
-      if (month === 12) {
-        dateEndNew.setDate(31);
-      } else {
-        dateEndNew.setMonth(dateEndNew.getMonth() + 1);
-      }
+      dateEndNew.setMonth(dateEndNew.getMonth() + 1, 0);
 
       return {
         validateDateStart: new Date(dateStart),

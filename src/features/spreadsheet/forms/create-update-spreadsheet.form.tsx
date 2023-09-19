@@ -169,8 +169,9 @@ export const CreateUpdateSpreadSheetForm = ({
               className="dataPicker-basic  medium "
               placeholder="DD/MM/YYYY"
               dateFormat="dd/mm/yy"
-              minDate={dateStart}
-              maxDate={dateEnd}
+              minDate={new Date(dateStart)}
+              maxDate={new Date(dateEnd)}
+              disabled={!dateStart || !dateEnd}
             />
 
             <div className="grid-span-3-columns">

@@ -123,6 +123,7 @@ export default function useSearchDeductionsHook() {
           value: row.deductionsType[0].type,
         },
       ];
+
       const infoDeductionValue = [
         {
           title: <span className="text-left">Tipo evantualidad</span>,
@@ -134,9 +135,24 @@ export default function useSearchDeductionsHook() {
         },
         {
           title: <span className="text-left">Valor deducción</span>,
-          value: `${formaterNumberToCurrency(row.value)}`,
+          value: `${
+            row.porcentualValue
+              ? "%" + row.value
+              : formaterNumberToCurrency(row.value)
+          }`,
         },
       ];
+      const infoDeductionValueCiclyc = [
+        {
+          title: <span className="text-left">Valor deducción</span>,
+          value: `${
+            row.porcentualValue
+              ? "%" + row.value
+              : formaterNumberToCurrency(row.value)
+          }`,
+        },
+      ];
+
       return setMessage({
         title: "Detalle de deducción",
         show: true,
@@ -197,14 +213,14 @@ export default function useSearchDeductionsHook() {
       },
     },
     {
-      fieldName: "row.deductionsType.name",
+      fieldName: "deductionsType",
       header: "Tipo de deducción",
       renderCell: (row) => {
         return <>{row.deductionsType[0].type}</>;
       },
     },
     {
-      fieldName: "deductionsType",
+      fieldName: "row.deductionsType.name",
       header: "Nombre de deducción",
       renderCell: (row) => {
         return <>{row.deductionsType[0].name}</>;

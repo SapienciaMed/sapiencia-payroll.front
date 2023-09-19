@@ -126,7 +126,7 @@ export default function useSearchDeductionsHook() {
 
       const infoDeductionValue = [
         {
-          title: <span className="text-left">Tipo evantualidad</span>,
+          title: <span className="text-left">Tipo eventualidad</span>,
           value: row.deductionsType[0].name,
         },
         {

@@ -80,7 +80,7 @@ export default function useEmploymentsData(action?: string) {
     setValue: setValueRegister,
   } = useForm<IVinculation>({
     defaultValues: vinculation,
-    // resolver: yupResolver(currentValidationSchema), akive
+    resolver: yupResolver(currentValidationSchema),
     mode: "all",
   });
   const [changedData, changeData] = useState<number>(null);

@@ -487,7 +487,7 @@ export interface IManualDeduction {
 export interface IFormPeriodFilters {
   idFormType?: number;
   state?: string;
-  paidDate?: DateTime;
+  paidDate?: Date;
 }
 
 export interface IFormTypes {

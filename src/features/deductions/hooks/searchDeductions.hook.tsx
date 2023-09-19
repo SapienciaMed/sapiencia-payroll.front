@@ -142,25 +142,68 @@ export default function useSearchDeductionsHook() {
           }`,
         },
       ];
-      const infoDeductionValueCiclyc = [
+      const infoPersonalDeductionCiclyc = [
         {
-          title: <span className="text-left">Valor deducción</span>,
+          title: <span className="text-left">No. documento</span>,
+          value: `${row.employment.worker.typeDocument} ${row.employment.worker.numberDocument}`,
+        },
+        {
+          title: <span className="text-left">Nombre y apellido</span>,
+          value: `${row.employment.worker.firstName} ${
+            row.employment.worker.secondName
+          }${" "}
+  ${row.employment.worker.surname}${" "}
+  ${row.employment.worker.secondSurname}`,
+        },
+        {
+          title: <span className="text-left">Tipo de deducción</span>,
+          value: row.deductionsType[0].type,
+        },
+        {
+          title: <span className="text-left">Tipo cíclica</span>,
+          value: row.deductionsType[0].name,
+        },
+      ];
+
+      const infoDeductionValueCyclic = [
+        {
+          title: <span className="text-left">Valor total deducción</span>,
+          value: `${formaterNumberToCurrency(row?.totalMount) ?? ""}`,
+        },
+        {
+          title: <span className="text-left">No de cuotas</span>,
+          value: `${row?.numberInstallments}`,
+        },
+        {
+          title: <span className="text-left">Valor por cuota</span>,
           value: `${
             row.porcentualValue
               ? "%" + row.value
               : formaterNumberToCurrency(row.value)
           }`,
         },
+        {
+          title: <span className="text-left">Periodo planilla</span>,
+          value: `${row?.formsPeriod?.dateStart}-${row?.formsPeriod?.dateEnd}`,
+        },
       ];
-
       return setMessage({
         title: "Detalle de deducción",
         show: true,
         OkTitle: "Aceptar",
         description: (
           <div className="container-modal_description">
-            <ResponsiveTable data={infoPersonal} />
-            <ResponsiveTable data={infoDeductionValue} />
+            {row.cyclic ? (
+              <>
+                <ResponsiveTable data={infoPersonalDeductionCiclyc} />
+                <ResponsiveTable data={infoDeductionValueCyclic} />{" "}
+              </>
+            ) : (
+              <>
+                <ResponsiveTable data={infoPersonal} />
+                <ResponsiveTable data={infoDeductionValue} />
+              </>
+            )}
             <div></div>
             <TextAreaComponent
               label={"Observaciones"}

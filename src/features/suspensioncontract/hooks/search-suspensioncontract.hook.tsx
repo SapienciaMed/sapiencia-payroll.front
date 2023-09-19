@@ -23,7 +23,6 @@ import { filterSuspensionContractSchema } from "../../../common/schemas";
 
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import useListData from "../../vacation/hooks/list.hook";
-import { formaterDate } from "../../../common/utils/helpers";
 
 const useSearchSuspensionContract = () => {
   // Context
@@ -131,7 +130,7 @@ const useSearchSuspensionContract = () => {
                     typeInput={"text"}
                     label={<>Fecha inicio</>}
                     disabled={true}
-                    value={`${formaterDate(row.employment.startDate)}`}
+                    value={`${row.employment.startDate}`}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
                   />
@@ -141,7 +140,7 @@ const useSearchSuspensionContract = () => {
                     typeInput={"text"}
                     label={<>Fecha fin</>}
                     disabled={true}
-                    value={`${formaterDate(row.employment.endDate)}`}
+                    value={`${row.employment.endDate}`}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
                   />
@@ -154,7 +153,7 @@ const useSearchSuspensionContract = () => {
                     errors={""}
                     typeInput={"text"}
                     label={<>Fecha inicio suspensión</>}
-                    value={`${formaterDate(row.dateStart)}`}
+                    value={`${row.dateStart}`}
                     disabled={true}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
@@ -165,7 +164,7 @@ const useSearchSuspensionContract = () => {
                     typeInput={"text"}
                     label={<>Fecha fin suspensión</>}
                     disabled={true}
-                    value={`${formaterDate(row.dateEnd)}`}
+                    value={`${row.dateEnd}`}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
                   />
@@ -175,7 +174,7 @@ const useSearchSuspensionContract = () => {
                     typeInput={"text"}
                     label={<>Nueva fecha fin contrato</>}
                     disabled={true}
-                    value={`${formaterDate(row.newDateEnd)}`}
+                    value={`${row.newDateEnd}`}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
                   />

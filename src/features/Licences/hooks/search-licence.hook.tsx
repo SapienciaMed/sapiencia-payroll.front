@@ -17,7 +17,7 @@ import {
   DataItem,
 } from "../../../common/components/Form/table-detail.component";
 import { TextAreaComponent } from "../../../common/components/Form";
-import { calculateDifferenceDays, formaterDate } from "../../../common/utils/helpers";
+import { calculateDifferenceDays } from "../../../common/utils/helpers";
 
 export default function useSearchLicenceData() {
   const tableComponentRef = useRef(null);
@@ -63,16 +63,19 @@ export default function useSearchLicenceData() {
       const dataPeriod: DataItem[] = [
         {
           title: "Fecha inicio",
-          value: formaterDate(data[0].dateStart),
+          value: data[0].dateStart,
         },
         {
           title: "Fecha fin",
-          value: formaterDate(data[0].dateEnd),
+          value: data[0].dateEnd,
         },
 
         {
           title: "Total días",
-          value: `${calculateDifferenceDays(data[0].dateStart, data[0].dateEnd)}`,
+          value: `${calculateDifferenceDays(
+            data[0].dateStart,
+            data[0].dateEnd
+          )}`,
         },
       ];
 
@@ -113,7 +116,7 @@ export default function useSearchLicenceData() {
     formState: { errors },
     control,
     reset,
-    watch
+    watch,
   } = useForm<ILicenceFilters>();
   const tableColumns: ITableElement<ILicenceResult>[] = [
     {
@@ -170,8 +173,11 @@ export default function useSearchLicenceData() {
     },
   ];
 
-  const [codEmployment,idLicenceType]= watch(["codEmployment","idLicenceType"]);
-  const [stateLicence] = watch(["licenceState"])
+  const [codEmployment, idLicenceType] = watch([
+    "codEmployment",
+    "idLicenceType",
+  ]);
+  const [stateLicence] = watch(["licenceState"]);
   function loadTableData(searchCriteria?: object): void {
     if (tableComponentRef.current) {
       tableComponentRef.current.loadData(searchCriteria);
@@ -195,6 +201,6 @@ export default function useSearchLicenceData() {
     setTableView,
     codEmployment,
     idLicenceType,
-    stateLicence
+    stateLicence,
   };
 }

@@ -1,7 +1,6 @@
 import { useRef, useContext } from "react";
 
 import { useForm } from "react-hook-form";
-import { DateTime } from "luxon";
 import {
   ITableAction,
   ITableElement,
@@ -65,24 +64,14 @@ export default function useRecordsData() {
       fieldName: "employment.startDate",
       header: "Fecha inicio",
       renderCell: (row) => {
-        return (
-          <>
-            {DateTime.fromISO(
-              String(row.employment.startDate)
-            ).toLocaleString()}
-          </>
-        );
+        return <>{row.employment.startDate}</>;
       },
     },
     {
       fieldName: "employment.endDate",
       header: "Fecha fin",
       renderCell: (row) => {
-        return (
-          <>
-            {DateTime.fromISO(String(row.employment.endDate)).toLocaleString()}
-          </>
-        );
+        return <>{row.employment.endDate}</>;
       },
     },
     {
@@ -92,9 +81,7 @@ export default function useRecordsData() {
         return (
           <>
             {row.employment.retirementDate
-              ? DateTime.fromISO(
-                  String(row.employment.retirementDate)
-                ).toLocaleString()
+              ? row.employment.retirementDate
               : "Sin fecha de retiro"}
           </>
         );

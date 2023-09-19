@@ -1,6 +1,5 @@
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
 import { IWorkersVacationDetail } from "../../../common/interfaces/payroll.interfaces";
-import { DateTime } from "luxon";
 import { ResponsiveTable } from "../../../common/components/Form/table-detail.component";
 
 const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
@@ -23,23 +22,13 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
     {
       title: "Desde",
       value: row?.vacationDay.map((day) => {
-        if (!day?.paid)
-          return (
-            <p key={day?.id}>
-              {DateTime.fromISO(day?.dateFrom).toLocaleString()}
-            </p>
-          );
+        if (!day?.paid) return <p key={day?.id}>{day?.dateFrom}</p>;
       }),
     },
     {
       title: "Hasta",
       value: row?.vacationDay.map((day) => {
-        if (!day?.paid)
-          return (
-            <p key={day?.id}>
-              {DateTime.fromISO(day?.dateUntil).toLocaleString()}
-            </p>
-          );
+        if (!day?.paid) return <p key={day?.id}>{day?.dateUntil}</p>;
       }),
     },
     {
@@ -54,13 +43,7 @@ const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
       title: "Desde",
       value: row?.vacationDay.map((day) => {
         if (day?.paid)
-          return (
-            <p key={day?.id}>
-              {DateTime.fromISO(day?.dateFrom)
-                .toLocaleString()
-                .replace(",", "")}
-            </p>
-          );
+          return <p key={day?.id}>{day?.dateFrom.replace(",", "")}</p>;
         else return;
       }),
     },

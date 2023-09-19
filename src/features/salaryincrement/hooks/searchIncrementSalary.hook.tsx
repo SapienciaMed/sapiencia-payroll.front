@@ -3,10 +3,7 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import {
-  formaterDate,
-  formaterNumberToCurrency,
-} from "../../../common/utils/helpers";
+import { formaterNumberToCurrency } from "../../../common/utils/helpers";
 
 import {
   ITableAction,

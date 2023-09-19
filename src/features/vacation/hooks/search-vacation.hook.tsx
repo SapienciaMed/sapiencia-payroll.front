@@ -12,7 +12,6 @@ import VacationTable from "../forms/vacationTable";
 import { AppContext } from "../../../common/contexts/app.context";
 import useListData from "./list.hook";
 import { useNavigate } from "react-router-dom";
-import { formaterDate } from "../../../common/utils/helpers";
 
 export default function useSearchVacationData() {
   const tableComponentRef = useRef(null);
@@ -50,14 +49,14 @@ export default function useSearchVacationData() {
       fieldName: "dateFrom",
       header: "Desde",
       renderCell: (row) => {
-        return <>{(row.dateFrom)}</>;
+        return <>{row.dateFrom}</>;
       },
     },
     {
       fieldName: "dateUntil",
       header: "Hasta",
       renderCell: (row) => {
-        return <>{(row.dateUntil)}</>;
+        return <>{row.dateUntil}</>;
       },
     },
     {

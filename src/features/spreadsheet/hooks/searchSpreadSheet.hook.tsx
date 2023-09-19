@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   IFormPeriod,
@@ -12,7 +12,6 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import useListData from "../../vacation/hooks/list.hook";
-import { formaterDate } from "../../../common/utils/helpers";
 
 export default function useSearchSpreadSheetHook() {
   // Context
@@ -71,21 +70,21 @@ export default function useSearchSpreadSheetHook() {
       fieldName: "dateStart",
       header: "Fecha inicio",
       renderCell: (row) => {
-        return <>{formaterDate(row.dateStart)}</>;
+        return <>{row.dateStart}</>;
       },
     },
     {
       fieldName: "dateEnd",
       header: "Fecha fin",
       renderCell: (row) => {
-        return <>{formaterDate(row.dateEnd)}</>;
+        return <>{row.dateEnd}</>;
       },
     },
     {
       fieldName: "paidDate",
       header: "Fecha pago",
       renderCell: (row) => {
-        return <>{formaterDate(row.paidDate)}</>;
+        return <>{row.paidDate}</>;
       },
     },
     {

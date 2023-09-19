@@ -15,7 +15,6 @@ import { DatePickerComponent } from "../../../common/components/Form/input-date.
 import TableComponent from "../../../common/components/table.component";
 import { AppContext } from "../../../common/contexts/app.context";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
-import { DateTime } from "luxon";
 import {
   IEmployment,
   IVinculation,
@@ -117,7 +116,7 @@ const ContractualInformationForm = ({
             label={"Fecha de inicio"}
             className="input-basic medium"
             classNameLabel="text-black big bold"
-            value={`${DateTime.fromISO(data.startDate).toLocaleString()}`}
+            value={`${data.startDate}`}
             disabled={disabledFields}
           />
           <InputComponent
@@ -126,7 +125,7 @@ const ContractualInformationForm = ({
             label={"Fecha de fin"}
             className="input-basic medium"
             classNameLabel="text-black big bold"
-            value={`${DateTime.fromISO(data.endDate).toLocaleString()}`}
+            value={`${data.endDate}`}
             disabled={disabledFields}
           />
           <InputComponent
@@ -195,14 +194,14 @@ const ContractualInformationForm = ({
       fieldName: "startDate",
       header: "Fecha inicio",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row.startDate).toLocaleString()}</>;
+        return <>{row.startDate}</>;
       },
     },
     {
       fieldName: "endDate",
       header: "Fecha fin",
       renderCell: (row) => {
-        return <>{DateTime.fromISO(row.endDate).toLocaleString()}</>;
+        return <>{row.endDate}</>;
       },
     },
   ];

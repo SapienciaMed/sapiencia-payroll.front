@@ -3,10 +3,7 @@ import { AppContext } from "../../../common/contexts/app.context";
 import useIncapacityService from "../../../common/hooks/incapacity-service.hook";
 import { IGetIncapacity } from "../../../common/interfaces/payroll.interfaces";
 import { useNavigate } from "react-router-dom";
-import {
-  calculateDifferenceDays,
-  formaterDate,
-} from "../../../common/utils/helpers";
+import { calculateDifferenceDays } from "../../../common/utils/helpers";
 import { ResponsiveTable } from "../../../common/components/Form/table-detail.component";
 import { TextAreaComponent } from "../../../common/components/Form";
 
@@ -41,11 +38,11 @@ export default function useViewIncapacityDetail() {
     const dates = [
       {
         title: "Fecha de inicio",
-        value: formaterDate(data.dateInitial),
+        value: data.dateInitial,
       },
       {
         title: "Fecha de fin",
-        value: formaterDate(data.dateFinish),
+        value: data.dateFinish,
       },
       {
         title: "Total días",

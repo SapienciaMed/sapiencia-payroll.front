@@ -48,7 +48,9 @@ export default function useSearchSpreadSheetHook() {
   const onSubmit = handleSubmit((data: IFormPeriodFilters) => {
     const dataModified = {
       ...data,
-      paidDate: new Date(String(data.paidDate)).toDateString(),
+      paidDate: data.paidDate
+        ? new Date(String(data.paidDate)).toDateString()
+        : null,
     };
     setshowTable(true);
 

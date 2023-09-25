@@ -167,17 +167,17 @@ const useCreateOrUpdateSpreadSheetHook = ({
       const { data, operation } = await getByIdSpreadSheet(Number(id));
 
       if (operation.code === EResponseCodes.OK) {
-        if (data.length > 0) {
+        if (data) {
           return {
-            id: data[0].id,
-            idFormType: data[0].idFormType,
+            id: data.id,
+            idFormType: data.idFormType,
             state: "Pendiente",
-            dateStart: data[0].dateStart,
-            dateEnd: data[0].dateEnd,
-            paidDate: data[0].paidDate,
-            month: data[0].month,
-            year: data[0].year,
-            observation: data[0]?.observation,
+            dateStart: data.dateStart,
+            dateEnd: data.dateEnd,
+            paidDate: data.paidDate,
+            month: data.month,
+            year: data.year,
+            observation: data?.observation,
           };
         } else {
           handleModalError("No se han cargado los datos");

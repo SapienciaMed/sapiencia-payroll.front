@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useContext } from "react";
+
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
@@ -24,6 +25,7 @@ import { AppContext } from "../../../common/contexts/app.context";
 
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import { formaterNumberToCurrency } from "../../../common/utils/helpers";
+import usePayrollGenerate from "../../../common/hooks/payroll-generate.hook";
 
 export default function useSearchDeductionsHook() {
   // Context
@@ -244,7 +246,7 @@ export default function useSearchDeductionsHook() {
     {
       fieldName: "row.employment.worker.firstName",
       header: "Nombre y apellido",
-      sortable: true,
+      sorteable: true,
       renderCell: (row) => {
         return (
           <>

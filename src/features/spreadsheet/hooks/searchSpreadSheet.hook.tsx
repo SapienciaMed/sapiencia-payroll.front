@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { BsCheckCircle } from "react-icons/bs";
 import { useForm } from "react-hook-form";
 import {
   IFormPeriod,
@@ -8,11 +9,17 @@ import {
   ITableAction,
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
+
 import { useNavigate } from "react-router-dom";
 import useListData from "../../vacation/hooks/list.hook";
+import usePayrollGenerate from "../../../common/hooks/payroll-generate.hook";
+import { AppContext } from "../../../common/contexts/app.context";
 
 export default function useSearchSpreadSheetHook() {
   // Context
+  const { setMessage } = useContext(AppContext);
+
+  const { generatePayroll } = usePayrollGenerate();
 
   //custom hooks
   const { typesSpreadSheetList, stateSpreadSheetList } = useListData();
@@ -101,6 +108,28 @@ export default function useSearchSpreadSheetHook() {
   ];
 
   const tableActions: ITableAction<IFormPeriod>[] = [
+    {
+      onClick: (row) => {
+        setMessage({
+          title: `Generar planilla`,
+          description: `¿Estás segur@ de generar
+          planilla quincenal?`,
+          show: true,
+          OkTitle: "Aceptar",
+          onOk: () => {
+            generatePayroll(row.id);
+            setMessage((prev) => {
+              return { ...prev, show: false };
+            });
+          },
+          cancelTitle: "Cancelar",
+          background: true,
+        });
+      },
+      customIcon: () => {
+        return <BsCheckCircle color="#0cae2a" />;
+      },
+    },
     {
       icon: "Detail",
       onClick: (row) => {

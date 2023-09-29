@@ -117,7 +117,22 @@ export default function useSearchSpreadSheetHook() {
           show: true,
           OkTitle: "Aceptar",
           onOk: () => {
-            generatePayroll(row.id);
+            generatePayroll(row.id)
+              .then((result) => {
+                console.log(result.data);
+                if (result?.data) {
+                  setMessage({
+                    title: `Generar planilla`,
+                    description: <div>{JSON.stringify(result?.data[0])}</div>,
+                    show: true,
+                    OkTitle: "Aceptar",
+                    size: "extra-large",
+                  });
+                }
+              })
+              .catch((err) => {
+                console.log("algo fallo");
+              });
             setMessage((prev) => {
               return { ...prev, show: false };
             });

@@ -167,7 +167,9 @@ export function usePayrollService() {
     }
   }
 
-  async function getLastPeriods(id:number): Promise<ApiResponse<IFormPeriod[]>> {
+  async function getLastPeriods(
+    id: number
+  ): Promise<ApiResponse<IFormPeriod[]>> {
     try {
       const endpoint: string = `/last/${id}`;
       return await get(`${payrollUrl}${endpoint}`);
@@ -238,13 +240,13 @@ export function usePayrollService() {
 
   async function getByIdSpreadSheet(
     id: number
-  ): Promise<ApiResponse<IFormPeriod[]>> {
+  ): Promise<ApiResponse<IFormPeriod>> {
     try {
       const endpoint: string = `/${id}`;
       return await get(`${payrollUrl}${endpoint}`);
     } catch (error) {
       return new ApiResponse(
-        {} as IFormPeriod[],
+        {} as IFormPeriod,
         EResponseCodes.FAIL,
         "Error no controlado"
       );

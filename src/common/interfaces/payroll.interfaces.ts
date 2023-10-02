@@ -331,7 +331,7 @@ export interface ILicence {
   licenceState: string;
   resolutionNumber: string;
   observation?: string;
-  licenceType: ILicenceType[];
+  licenceType: ILicenceType;
   employment: IEmploymentWorker;
 }
 export interface ILicenceType {
@@ -360,7 +360,7 @@ export interface ILicenceResult {
   resolutionNumber: string;
   observation?: string;
   employment?: IEmploymentResult;
-  licenceType?: ILicenceType[];
+  licenceType?: ILicenceType;
 }
 
 export interface IReasonsForWithdrawal {

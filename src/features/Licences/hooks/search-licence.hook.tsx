@@ -52,7 +52,7 @@ export default function useSearchLicenceData() {
 
         {
           title: <span className="text-left">Tipo de licencia</span>,
-          value: data[0].licenceType[0].name,
+          value: data[0].licenceType.name,
         },
         {
           title: <span className="text-left">Estado</span>,
@@ -153,7 +153,7 @@ export default function useSearchLicenceData() {
       fieldName: "licenceType.id",
       header: "Tipo de licencia",
       renderCell: (row) => {
-        return <>{row.licenceType[0].name}</>;
+        return <>{row.licenceType.name}</>;
       },
     },
     {

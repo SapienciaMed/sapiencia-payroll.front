@@ -54,7 +54,6 @@ export function DatePickerComponent({
   dateFormat,
   disabled,
   disabledDates,
-
   disabledDays,
   optionsRegister,
   shouldUnregister,
@@ -110,10 +109,7 @@ export function DatePickerComponent({
                 }
                 showButtonBar
                 value={field.value && new Date(field.value)}
-                onChange={(e) => {
-                  field.onChange(e.value);
-                  //field.onChange(new Date(String(e.value)).toDateString());
-                }}
+                onChange={(e) => field.onChange(e.value)}
                 onBlur={(e) => field.onBlur()}
                 inputStyle={{ borderRight: "none" }}
                 minDate={minDate}

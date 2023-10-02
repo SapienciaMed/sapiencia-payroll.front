@@ -8,7 +8,7 @@ export function usePayrollGenerate() {
 
   const { get } = useCrudService(baseURL);
 
-  async function generatePayroll(id: number): Promise<ApiResponse<boolean>> {
+  async function generatePayroll(id: number): Promise<ApiResponse<any>> {
     try {
       const endpoint: string = `/generate-by-id/${id}`;
       return await get(`${authUrl}${endpoint}`);

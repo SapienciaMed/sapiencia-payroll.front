@@ -1,4 +1,6 @@
 import { useContext, useRef, useState } from "react";
+import { ProgressBar } from "primereact/progressbar";
+
 import { BsCheckCircle } from "react-icons/bs";
 import { useForm } from "react-hook-form";
 import {
@@ -14,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import useListData from "../../vacation/hooks/list.hook";
 import usePayrollGenerate from "../../../common/hooks/payroll-generate.hook";
 import { AppContext } from "../../../common/contexts/app.context";
+import { EResponseCodes } from "../../../common/constants/api.enum";
 
 export default function useSearchSpreadSheetHook() {
   // Context
@@ -66,7 +69,61 @@ export default function useSearchSpreadSheetHook() {
     }
   });
 
-  const showDetailSpreadSheet = (data: IFormPeriod) => {};
+  const showDetailSpreadSheet = (data: IFormPeriod) => {
+    // handleModalLoad();
+  };
+
+  const handleModalLoad = () => {
+    setMessage({
+      title: `Generar planilla`,
+      description: (
+        <div className="container-modal_load">
+          <h3>Generando planilla quincenal</h3>
+          <ProgressBar
+            mode="indeterminate"
+            style={{ height: "6px" }}
+          ></ProgressBar>
+        </div>
+      ),
+      show: true,
+      size: "small",
+      OkTitle: "Generando...",
+      onOk: () => {
+        return false;
+      },
+      onClose: () => {
+        return false;
+      },
+    });
+  };
+
+  const handleModalSuccess = (data: any) => {
+    setMessage({
+      title: `Generar planilla`,
+      description: <div>{JSON.stringify(data[0])}</div>,
+      show: true,
+      OkTitle: "Aceptar",
+      size: "extra-large",
+    });
+  };
+
+  const handleModalError = (msg: string = "Error, algo fallo") => {
+    setMessage({
+      title: "Error",
+      description: msg,
+      show: true,
+      OkTitle: "cerrar",
+      onOk: () => {
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      onClose: () => {
+        setMessage({});
+      },
+      background: true,
+    });
+  };
 
   //variables
   const tableColumns: ITableElement<IFormPeriod>[] = [
@@ -117,25 +174,18 @@ export default function useSearchSpreadSheetHook() {
           show: true,
           OkTitle: "Aceptar",
           onOk: () => {
+            handleModalLoad();
+
             generatePayroll(row.id)
-              .then((result) => {
-                console.log(result.data);
-                if (result?.data) {
-                  setMessage({
-                    title: `Generar planilla`,
-                    description: <div>{JSON.stringify(result?.data[0])}</div>,
-                    show: true,
-                    OkTitle: "Aceptar",
-                    size: "extra-large",
-                  });
+              .then(({ data, operation }) => {
+                if (operation.code === EResponseCodes.OK) {
+                  handleModalSuccess(data);
                 }
               })
               .catch((err) => {
-                console.log("algo fallo");
+                handleModalError("Error en la generación de planilla");
+                console.log("algo fallo", err);
               });
-            setMessage((prev) => {
-              return { ...prev, show: false };
-            });
           },
           cancelTitle: "Cancelar",
           background: true,

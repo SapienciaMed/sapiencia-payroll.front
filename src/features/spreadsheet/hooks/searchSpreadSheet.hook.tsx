@@ -100,7 +100,7 @@ export default function useSearchSpreadSheetHook() {
   const handleModalSuccess = (data: any) => {
     setMessage({
       title: `Generar planilla`,
-      description: <div>{JSON.stringify(data[0])}</div>,
+      description: <div>{JSON.stringify(data)}</div>,
       show: true,
       OkTitle: "Aceptar",
       size: "extra-large",
@@ -170,7 +170,7 @@ export default function useSearchSpreadSheetHook() {
         setMessage({
           title: `Generar planilla`,
           description: `¿Estás segur@ de generar
-          planilla quincenal?`,
+          planilla ${row.formsType[0].name}?`,
           show: true,
           OkTitle: "Aceptar",
           onOk: () => {

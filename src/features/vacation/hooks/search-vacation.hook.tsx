@@ -123,7 +123,7 @@ export default function useSearchVacationData() {
     loadTableData(data);
   });
 
-  const { listPeriods, activeWorkerList } = useListData();
+  const { listPeriods, activeWorkerList } = useListData("no");
 
   const [workerId, period] = watch(["workerId", "period"]);
 

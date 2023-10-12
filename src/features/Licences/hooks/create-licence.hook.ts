@@ -33,7 +33,7 @@ export default function useLicenceData() {
     resolver,
     mode: "all",
   });
-  const { activeWorkerList } = useListData();
+  const { activeWorkerList } = useListData("no");
   const { createLicence, getLicenceTypesList } = useLicencesService();
   const { getListByGrouper } = useGenericListService();
   const navigate = useNavigate();

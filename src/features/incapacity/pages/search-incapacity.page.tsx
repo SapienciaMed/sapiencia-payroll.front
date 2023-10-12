@@ -21,7 +21,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import useViewIncapacityDetail from "../hooks/viewIncapacity.hook";
 
 const SearchIncapacity = () => {
-  const { activeWorkerList } = useListData();
+  const { activeWorkerList } = useListData("no");
 
   const { showDetailIncapacity } = useViewIncapacityDetail();
 
@@ -36,10 +36,10 @@ const SearchIncapacity = () => {
     formState: { errors },
     control,
     reset,
-    watch
+    watch,
   } = useForm<IFilterIncapacity>({ defaultValues: { workerId: "" } });
 
-  const workerId = watch("workerId")
+  const workerId = watch("workerId");
   const tableColumns: ITableElement<IGetIncapacity>[] = [
     {
       fieldName: "numberDocument",
@@ -143,7 +143,11 @@ const SearchIncapacity = () => {
                   reset();
                 }}
               />
-              <ButtonComponent value={"Buscar"} className="button-save big disabled-black" disabled={!workerId} />
+              <ButtonComponent
+                value={"Buscar"}
+                className="button-save big disabled-black"
+                disabled={!workerId}
+              />
             </div>
           </FormComponent>
         </div>

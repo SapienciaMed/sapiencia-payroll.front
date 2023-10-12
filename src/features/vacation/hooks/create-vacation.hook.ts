@@ -1,4 +1,4 @@
-import  { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
@@ -21,7 +21,7 @@ export default function useCreateVacationData() {
   const navigate = useNavigate();
   const resolver = useYupValidationResolver(searchRecord);
   const { setMessage } = useContext(AppContext);
-  const { activeWorkerList, listPeriods } = useListData();
+  const { activeWorkerList, listPeriods } = useListData("no");
   const { getWorkerVacatioByParam, createVacation } = useVacationService();
   const {
     handleSubmit,

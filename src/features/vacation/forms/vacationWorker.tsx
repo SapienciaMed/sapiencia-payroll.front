@@ -32,7 +32,7 @@ const SearchWorker = () => {
   const navigate = useNavigate();
   const resolver = useYupValidationResolver(searchRecord);
   const { setMessage } = useContext(AppContext);
-  const { activeWorkerList, listPeriods } = useListData();
+  const { activeWorkerList, listPeriods } = useListData("no");
   const { getWorkerVacatioByParam, createVacation } = useVacationService();
   const {
     handleSubmit,

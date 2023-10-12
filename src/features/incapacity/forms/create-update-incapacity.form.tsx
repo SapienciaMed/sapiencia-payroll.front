@@ -22,7 +22,7 @@ interface IPropsCreateAndUpdateIncapacityForm {
 export const CreateUpdateIncapacityForm = ({
   action,
 }: IPropsCreateAndUpdateIncapacityForm) => {
-  const { activeWorkerList, typesIncapacityList } = useListData();
+  const { activeWorkerList, typesIncapacityList } = useListData("no");
 
   const {
     onSubmit,

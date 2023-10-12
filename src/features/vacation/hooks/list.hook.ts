@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { DateTime } from "luxon";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 import { ApiResponse } from "../../../common/utils/api-response";
 import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
@@ -13,7 +12,7 @@ import {
 } from "../../../common/interfaces/payroll.interfaces";
 import useIncapacityService from "../../../common/hooks/incapacity-service.hook";
 
-export default function useListData() {
+export default function useListData(temporary = "si") {
   const [listPeriods, setListPeriods] = useState([]);
   const [activeWorkerList, setActiveWorkerList] = useState([]);
   const [typesIncapacityList, setTypesIncapacityList] = useState([]);
@@ -114,7 +113,7 @@ export default function useListData() {
   }, []);
 
   const getWorkersActive = () => {
-    getWorkers()
+    getWorkers(temporary)
       .then((response: ApiResponse<IWorker[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           setWorkerInfo(response.data);

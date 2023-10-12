@@ -64,10 +64,12 @@ export function usePayrollService() {
     }
   }
 
-  async function getWorkers(): Promise<ApiResponse<IWorker[]>> {
+  async function getWorkers(
+    temporary: string
+  ): Promise<ApiResponse<IWorker[]>> {
     try {
       const endpoint: string = `/worker`;
-      return await get(`${authUrl}${endpoint}`);
+      return await get(`${authUrl}${endpoint}`, { temporary });
     } catch (error) {
       return new ApiResponse(
         {} as IWorker[],

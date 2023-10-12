@@ -298,6 +298,7 @@ const useCreateOrUpdateSpreadSheetHook = ({
   });
 
   const handleCreateOrUpdateSpreadSheet = async (data: IFormPeriod) => {
+    console.log(data);
     const { data: dataResponse, operation } =
       action === "edit"
         ? await updateSpreadSheet(data)

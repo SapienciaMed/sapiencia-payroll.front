@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FormSteps from "../../../common/components/Form/form-steps.component";
 import { FormStebs } from "../../../common/interfaces/tabs-menu.interface";
 import useEmploymentsData from "../hooks/employment.hook";
@@ -52,6 +52,9 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     bankList,
     accountType,
   } = useEmploymentsData(action);
+  useEffect(() => {
+    setStep(0);
+  }, []);
 
   const handleNavigation = () => {
     navigate("../expedientes");

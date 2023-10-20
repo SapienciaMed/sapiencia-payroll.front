@@ -20,7 +20,7 @@ import { EResponseCodes } from "../../../common/constants/api.enum";
 
 export default function useSearchSpreadSheetHook() {
   // Context
-  const { setMessage } = useContext(AppContext);
+  const { setMessage, validateActionAccess } = useContext(AppContext);
 
   const { generatePayroll } = usePayrollGenerate();
 
@@ -46,7 +46,18 @@ export default function useSearchSpreadSheetHook() {
 
   //functions
   const redirectCreate = () => {
-    navigate("../crear");
+    if (validateActionAccess("PLANILLA_CREAR")) {
+      navigate("../crear");
+    } else {
+      setMessage({
+        title: "Crear Planilla",
+        show: true,
+        OkTitle: "Aceptar",
+        description: "No tienes permisos para esta acción",
+        size: "large",
+        background: true,
+      });
+    }
   };
 
   const clearFields = () => {
@@ -200,12 +211,14 @@ export default function useSearchSpreadSheetHook() {
       onClick: (row) => {
         showDetailSpreadSheet(row);
       },
+      hide: !validateActionAccess("PLANILLA_CONSULTAR"),
     },
     {
       icon: "Edit",
       onClick: (row) => {
         navigate(`../edit/${row.id}`);
       },
+      hide: !validateActionAccess("PLANILLA_EDITAR"),
     },
   ];
 

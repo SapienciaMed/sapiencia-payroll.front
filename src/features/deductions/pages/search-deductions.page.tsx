@@ -23,26 +23,41 @@ const SearchDeductions = (): React.JSX.Element => {
     tableComponentRef,
     tableColumns,
     tableActions,
+    validateActionAccess,
+    setMessage,
   } = useSearchDeductionsHook();
 
-    return (
-      <div className="main-page">
-        <div className="card-table">
-          <div className="title-area">
-            <label className="text-black extra-large bold">Deducciones</label>
-            
-            <div
-              className="title-button text-main biggest pointer"
-              onClick={redirectCreate}
-            >
-              Crear deducción <AiOutlinePlusCircle />
-            </div>
+  return (
+    <div className="main-page">
+      <div className="card-table">
+        <div className="title-area">
+          <label className="text-black extra-large bold">Deducciones</label>
+
+          <div
+            className="title-button text-main biggest pointer"
+            onClick={() => {
+              if (validateActionAccess("DEDUCCION_CREAR")) {
+                redirectCreate();
+              } else {
+                setMessage({
+                  title: "Crear deducción",
+                  show: true,
+                  OkTitle: "Aceptar",
+                  description: "No tienes permisos para esta acción",
+                  size: "large",
+                  background: true,
+                });
+              }
+            }}
+          >
+            Crear deducción <AiOutlinePlusCircle />
+          </div>
         </div>
-          
+
         <FilterDeductionsForm
           control={control}
           formState={formState}
-          typeDeductionList = {typeDeductionList}
+          typeDeductionList={typeDeductionList}
           lastPeriodsList={periodsList}
           redirectCreate={redirectCreate}
           clearFields={clearFields}
@@ -50,21 +65,21 @@ const SearchDeductions = (): React.JSX.Element => {
           chargesState={charges}
           formValues={formValues}
         />
-        
+
         {showTable && (
           <div className="container-sections-forms">
-          <TableComponent
-            ref={tableComponentRef}
-            url={`${process.env.urlApiPayroll}/api/v1/deduction/get-paginated`}
-            columns={tableColumns}
-            actions={tableActions}
-            isShowModal={false}
-          />
-        </div>
-        )}  
-        </div>
+            <TableComponent
+              ref={tableComponentRef}
+              url={`${process.env.urlApiPayroll}/api/v1/deduction/get-paginated`}
+              columns={tableColumns}
+              actions={tableActions}
+              isShowModal={false}
+            />
+          </div>
+        )}
       </div>
-    );
-  };
-  
-  export default React.memo(SearchDeductions);
+    </div>
+  );
+};
+
+export default React.memo(SearchDeductions);

@@ -23,7 +23,7 @@ export default function useSearchLicenceData() {
   const tableComponentRef = useRef(null);
   const [tableView, setTableView] = useState<boolean>(false);
 
-  const { setMessage } = useContext(AppContext);
+  const { setMessage, validateActionAccess } = useContext(AppContext);
 
   const { getLicenceById } = useLicencesService();
 
@@ -170,6 +170,7 @@ export default function useSearchLicenceData() {
       onClick: (row) => {
         showDetailLicence(row.id);
       },
+      hide: !validateActionAccess("LICENCIA_CONSULTAR"),
     },
   ];
 
@@ -202,5 +203,7 @@ export default function useSearchLicenceData() {
     codEmployment,
     idLicenceType,
     stateLicence,
+    setMessage,
+    validateActionAccess,
   };
 }

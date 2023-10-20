@@ -25,11 +25,11 @@ import { AppContext } from "../../../common/contexts/app.context";
 
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import { formaterNumberToCurrency } from "../../../common/utils/helpers";
-import usePayrollGenerate from "../../../common/hooks/payroll-generate.hook";
+
 
 export default function useSearchDeductionsHook() {
   // Context
-  const { setMessage } = useContext(AppContext);
+  const { setMessage,validateActionAccess} = useContext(AppContext);
 
   //custom hooks
   const { getCharges } = usePayrollService();
@@ -293,12 +293,14 @@ export default function useSearchDeductionsHook() {
       onClick: (row) => {
         showDetailDeductions(row);
       },
+      hide: !validateActionAccess("DEDUCCION_CONSULTAR")
     },
     {
       icon: "Edit",
       onClick: (row) => {
         navigate(`../edit/${row?.id}`);
       },
+      hide:  !validateActionAccess("DEDUCCION_EDITAR")
     },
   ];
 
@@ -318,5 +320,7 @@ export default function useSearchDeductionsHook() {
     tableComponentRef,
     tableColumns,
     tableActions,
+    validateActionAccess,
+    setMessage
   };
 }

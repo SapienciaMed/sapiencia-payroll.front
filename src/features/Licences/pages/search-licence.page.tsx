@@ -25,6 +25,8 @@ const SearchLicencePage = () => {
     codEmployment,
     idLicenceType,
     stateLicence,
+    setMessage,
+    validateActionAccess,
   } = useSearchLicenceData();
   const { activeWorkerList, licenceTypesList, listLicencesStates } =
     useLicenceData();
@@ -38,7 +40,18 @@ const SearchLicencePage = () => {
             <div
               className="title-button text-main biggest pointer"
               onClick={() => {
-                navigate("../crear");
+                if (validateActionAccess("LICENCIA_CREAR")) {
+                  navigate("../crear");
+                } else {
+                  setMessage({
+                    title: "Crear Licencia",
+                    show: true,
+                    OkTitle: "Aceptar",
+                    description: "No tienes permisos para esta acción",
+                    size: "large",
+                    background: true,
+                  });
+                }
               }}
             >
               Crear Licencia <AiOutlinePlusCircle />

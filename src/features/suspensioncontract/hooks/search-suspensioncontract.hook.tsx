@@ -26,7 +26,7 @@ import useListData from "../../vacation/hooks/list.hook";
 
 const useSearchSuspensionContract = () => {
   // Context
-  const { setMessage } = useContext(AppContext);
+  const { setMessage, validateActionAccess } = useContext(AppContext);
 
   //states
   const [showTable, setShowTable] = useState<boolean>(false);
@@ -216,8 +216,18 @@ const useSearchSuspensionContract = () => {
       await trigger("codEmployment");
       return;
     }
-
-    navigate(`../crear/${codEmployment}`);
+    if (validateActionAccess("SUSPENSION_CREAR")) {
+      navigate(`../crear/${codEmployment}`);
+    } else {
+      setMessage({
+        title: "Crear Suspensión",
+        show: true,
+        OkTitle: "Aceptar",
+        description: "No tienes permisos para esta acción",
+        size: "large",
+        background: true,
+      });
+    }
   };
 
   //variables
@@ -275,6 +285,7 @@ const useSearchSuspensionContract = () => {
       onClick: (row) => {
         showDetailSuspensionContract(row);
       },
+      hide: !validateActionAccess("SUSPENSION_CONSULTAR"),
     },
   ];
 

@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function useSearchVacationData() {
   const tableComponentRef = useRef(null);
-  const { setMessage } = useContext(AppContext);
+  const { setMessage, validateActionAccess } = useContext(AppContext);
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -92,6 +92,7 @@ export default function useSearchVacationData() {
           size: "extra-large",
         });
       },
+      hide: !validateActionAccess("VACACION_CONSULTAR"),
     },
     {
       icon: "Edit",
@@ -110,6 +111,7 @@ export default function useSearchVacationData() {
           navigate(`../editar/${idEnjoyedDay}/${row.period}`);
         }
       },
+      hide: !validateActionAccess("VACACION_EDITAR"),
     },
   ];
 
@@ -140,5 +142,7 @@ export default function useSearchVacationData() {
     workerId,
     tableColumns,
     tableActions,
+    setMessage,
+    validateActionAccess,
   };
 }

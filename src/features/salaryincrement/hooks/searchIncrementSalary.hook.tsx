@@ -28,7 +28,7 @@ import usePayrollService from "../../../common/hooks/payroll-service.hook";
 
 export default function useSearchIncrementSalaryHook() {
   // Context
-  const { setMessage } = useContext(AppContext);
+  const { setMessage, validateActionAccess } = useContext(AppContext);
 
   //custom hooks
   const { getCharges } = usePayrollService();
@@ -79,7 +79,18 @@ export default function useSearchIncrementSalaryHook() {
   };
 
   const redirectCreate = () => {
-    navigate("../crear");
+    if (validateActionAccess("INCREMENTO_CREAR")) {
+      navigate("../crear");
+    } else {
+      setMessage({
+        title: "Crear incremento",
+        show: true,
+        OkTitle: "Aceptar",
+        description: "No tienes permisos para esta acción",
+        size: "large",
+        background: true,
+      });
+    }
   };
 
   const clearFields = () => {
@@ -218,12 +229,14 @@ export default function useSearchIncrementSalaryHook() {
       onClick: (row) => {
         showDetailIncrementSalary(row);
       },
+      hide: !validateActionAccess("INCREMENTO_CONSULTAR"),
     },
     {
       icon: "Edit",
       onClick: (row) => {
         navigate(`../edit/${row.salaryIncrement.id}`);
       },
+      hide: !validateActionAccess("INCREMENTO_EDITAR"),
     },
   ];
 

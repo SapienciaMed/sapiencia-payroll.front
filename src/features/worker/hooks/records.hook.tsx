@@ -19,7 +19,7 @@ export default function useRecordsData() {
   const tableComponentRef = useRef(null);
   const navigate = useNavigate();
 
-  const { setMessage } = useContext(AppContext);
+  const { setMessage, validateActionAccess } = useContext(AppContext);
 
   const {
     handleSubmit,
@@ -101,6 +101,7 @@ export default function useRecordsData() {
       onClick: (row) => {
         navigate(`./view/${row?.id}`);
       },
+      hide: !validateActionAccess("NMN_CONSULTAR_TRABAJADOR"),
     },
     {
       icon: "Edit",
@@ -125,6 +126,7 @@ export default function useRecordsData() {
           });
         }
       },
+      hide: !validateActionAccess("NMN_TRABAJADOR_CONTRATAR"),
     },
   ];
 

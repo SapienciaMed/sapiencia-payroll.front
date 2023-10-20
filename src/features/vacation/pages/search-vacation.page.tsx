@@ -23,6 +23,8 @@ const SearchVacationPage = () => {
     workerId,
     tableColumns,
     tableActions,
+    setMessage,
+    validateActionAccess,
   } = useSearchVacationData();
 
   return (
@@ -35,7 +37,18 @@ const SearchVacationPage = () => {
             <div
               className="title-button text-main biggest pointer"
               onClick={() => {
-                navigate("../crear");
+                if (validateActionAccess("VACACION_CREAR")) {
+                  navigate("../crear");
+                } else {
+                  setMessage({
+                    title: "Crear Vacaciones",
+                    show: true,
+                    OkTitle: "Aceptar",
+                    description: "No tienes permisos para esta acción",
+                    size: "large",
+                    background: true,
+                  });
+                }
               }}
             >
               Crear vacaciones <AiOutlinePlusCircle />

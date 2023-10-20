@@ -22,6 +22,8 @@ export const WithDrawalStaffPage = () => {
     reasonsForWithdrawal,
     clearDataEmployment,
     handleModalCancel,
+    setMessage,
+    validateActionAccess,
   } = useSearchStaff();
 
   const {
@@ -197,6 +199,20 @@ export const WithDrawalStaffPage = () => {
                       value={"Buscar"}
                       className="button-save big  disabled-black"
                       disabled={!isValidStaff}
+                      type="button"
+                      action={() => {
+                        if (validateActionAccess("RETIRO_CREAR")) {
+                          onSubmitStaff();
+                        } else {
+                          setMessage({
+                            title: "Crear Retiro",
+                            show: true,
+                            OkTitle: "Aceptar",
+                            description: "No tienes permisos para esta acción",
+                            background: true,
+                          });
+                        }
+                      }}
                     />
                   </div>
                 </FormComponent>

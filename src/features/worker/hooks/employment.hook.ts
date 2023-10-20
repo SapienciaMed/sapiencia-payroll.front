@@ -78,6 +78,7 @@ export default function useEmploymentsData(action?: string) {
     trigger,
     watch,
     setValue: setValueRegister,
+    reset
   } = useForm<IVinculation>({
     defaultValues: vinculation,
     resolver: yupResolver(currentValidationSchema),
@@ -614,5 +615,6 @@ export default function useEmploymentsData(action?: string) {
     navigate,
     accountType,
     bankList,
+    reset
   };
 }

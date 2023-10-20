@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import TableComponent from "../../../common/components/table.component";
 import { useForm } from "react-hook-form";
 import {
@@ -19,8 +19,10 @@ import { useNavigate } from "react-router-dom";
 import useListData from "../../vacation/hooks/list.hook";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import useViewIncapacityDetail from "../hooks/viewIncapacity.hook";
+import { AppContext } from "../../../common/contexts/app.context";
 
 const SearchIncapacity = () => {
+  const { validateActionAccess, setMessage } = useContext(AppContext);
   const { activeWorkerList } = useListData("no");
 
   const { showDetailIncapacity } = useViewIncapacityDetail();
@@ -77,12 +79,14 @@ const SearchIncapacity = () => {
       onClick: (row) => {
         showDetailIncapacity(row?.id);
       },
+      hide: !validateActionAccess("INCAPACIDAD_CONSULTAR"),
     },
     {
       icon: "Edit",
       onClick: (row) => {
         navigate(`../edit/${row?.id}`);
       },
+      hide: !validateActionAccess("INCAPACIDAD_EDITAR"),
     },
   ];
 
@@ -106,7 +110,18 @@ const SearchIncapacity = () => {
           <div
             className="title-button text-main biggest pointer"
             onClick={() => {
-              navigate("../crear");
+              if (validateActionAccess("INCAPACIDAD_CREAR")) {
+                navigate("../crear");
+              } else {
+                setMessage({
+                  title: "Crear Incapacidad",
+                  show: true,
+                  OkTitle: "Aceptar",
+                  description: "No tienes permisos para esta acción",
+                  size: "large",
+                  background: true,
+                });
+              }
             }}
           >
             Crear incapacidad <AiOutlinePlusCircle />

@@ -16,7 +16,7 @@ export default function useSearchStaff() {
 
   const { activeWorkerList, reasonsForWithdrawal, getWorkersActive } =
     useListData();
-    const { setMessage } = useContext(AppContext);
+  const { setMessage, validateActionAccess } = useContext(AppContext);
   const { getEmploymentById } = usePayrollService();
 
   const resolver = useYupValidationResolver(searchStaff);
@@ -43,14 +43,14 @@ export default function useSearchStaff() {
     }
   });
 
-  const handleModalCancel= () => {
+  const handleModalCancel = () => {
     setMessage({
       title: "Retiro de personal",
       description: `¿Estás segur@ que deseas cancelar el retiro de personal?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
-        clearDataEmployment()
+        clearDataEmployment();
         setMessage((prev) => {
           return { ...prev, show: false };
         });
@@ -78,6 +78,8 @@ export default function useSearchStaff() {
     reasonsForWithdrawal,
     getWorkersActive,
     clearDataEmployment,
-    handleModalCancel
+    handleModalCancel,
+    setMessage,
+    validateActionAccess,
   };
 }

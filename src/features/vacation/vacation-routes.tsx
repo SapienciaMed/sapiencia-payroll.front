@@ -16,7 +16,7 @@ function VacationRoutes() {
         element={
           <PrivateRoute
             element={<CreationVacationPage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -25,7 +25,7 @@ function VacationRoutes() {
         element={
           <PrivateRoute
             element={<SearchVacationPage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -34,7 +34,7 @@ function VacationRoutes() {
         element={
           <PrivateRoute
             element={<EditVacationPage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />

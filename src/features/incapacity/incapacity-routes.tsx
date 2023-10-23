@@ -16,7 +16,7 @@ function IncapacityRoutes() {
         element={
           <PrivateRoute
             element={<CreateAndUpdateIncapacity action="new" />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -26,7 +26,7 @@ function IncapacityRoutes() {
         element={
           <PrivateRoute
             element={<CreateAndUpdateIncapacity action="edit" />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -36,7 +36,7 @@ function IncapacityRoutes() {
         element={
           <PrivateRoute
             element={<SearchIncapacity />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />

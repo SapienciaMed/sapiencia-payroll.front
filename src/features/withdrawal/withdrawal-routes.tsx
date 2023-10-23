@@ -11,7 +11,7 @@ function WithDrawalRoutes() {
         element={
           <PrivateRoute
             element={<WithDrawalStaffPage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />

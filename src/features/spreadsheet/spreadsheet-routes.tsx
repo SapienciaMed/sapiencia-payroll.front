@@ -18,7 +18,7 @@ function SpreadsSheetRoutes() {
         element={
           <PrivateRoute
             element={<SearchSpreedSheetPage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"PLANILLA_CONSULTAR"}
           />
         }
       />
@@ -28,7 +28,7 @@ function SpreadsSheetRoutes() {
         element={
           <PrivateRoute
             element={<CreateUpdateSpreadSheetPage action={"new"} />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"PLANILLA_CONSULTAR"}
           />
         }
       />
@@ -38,7 +38,7 @@ function SpreadsSheetRoutes() {
         element={
           <PrivateRoute
             element={<CreateUpdateSpreadSheetPage action={"edit"} />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"PLANILLA_CONSULTAR"}
           />
         }
       />

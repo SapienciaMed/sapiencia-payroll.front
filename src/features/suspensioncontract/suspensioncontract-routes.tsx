@@ -18,7 +18,7 @@ function SuspensionContractRoutes() {
         element={
           <PrivateRoute
             element={<CreateSuspensionContract />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -27,7 +27,7 @@ function SuspensionContractRoutes() {
         element={
           <PrivateRoute
             element={<SearchSuspensionContract />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />

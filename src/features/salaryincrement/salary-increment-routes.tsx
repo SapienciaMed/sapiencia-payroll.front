@@ -18,7 +18,7 @@ function SalaryIncrementRoutes() {
         element={
           <PrivateRoute
             element={<SearchIncrementSalary />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -28,7 +28,7 @@ function SalaryIncrementRoutes() {
         element={
           <PrivateRoute
             element={<CreateUpdateIncrementSalary action={"new"} />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -38,7 +38,7 @@ function SalaryIncrementRoutes() {
         element={
           <PrivateRoute
             element={<CreateUpdateIncrementSalary action={"edit"} />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />

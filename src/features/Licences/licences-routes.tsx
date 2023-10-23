@@ -18,7 +18,7 @@ function LicencesRoutes() {
         element={
           <PrivateRoute
             element={<CreationLicencePage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -27,7 +27,7 @@ function LicencesRoutes() {
         element={
           <PrivateRoute
             element={<SearchLicencePage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />

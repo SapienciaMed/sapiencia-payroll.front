@@ -18,7 +18,7 @@ function DeductionsRoutes() {
         element={
           <PrivateRoute
             element={<SearchDeductionsPage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -27,7 +27,7 @@ function DeductionsRoutes() {
         element={
           <PrivateRoute
             element={<CreateUpdateDeductionsPage action="new" />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -36,7 +36,7 @@ function DeductionsRoutes() {
         element={
           <PrivateRoute
             element={<CreateUpdateDeductionsPage action="edit" />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />

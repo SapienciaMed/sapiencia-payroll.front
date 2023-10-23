@@ -15,6 +15,8 @@ import SalaryIncrementRoutes from "./features/salaryincrement/salary-increment-r
 import SuspensionContractRoutes from "./features/suspensioncontract/suspensioncontract-routes";
 import DeductionsRoutes from "./features/deductions/deductions-routes";
 import SpreadsSheetRoutes from "./features/spreadsheet/spreadsheet-routes";
+import OtherIncomeRoutes from "./features/otherIncome/otherIncome-routes";
+import IncomeDeductions from "./features/incomeDeductions/incomeDeductions-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
@@ -70,6 +72,14 @@ function App() {
               <Route
                 path={"/nomina/planilla/*"}
                 element={<SpreadsSheetRoutes />}
+              />
+              <Route
+                path={"/nomina/ingresos/otros/*"}
+                element={<OtherIncomeRoutes />}
+              />
+              <Route
+                path={"/nomina/deduccion/renta/*"}
+                element={<IncomeDeductions />}
               />
             </Routes>
           </Suspense>

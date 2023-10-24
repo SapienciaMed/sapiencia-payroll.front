@@ -12,12 +12,13 @@ import {
 } from "../../../common/components/Form";
 
 import { EDirection } from "../../../common/constants/input.enum";
+import { IDropdownProps } from "../../../common/interfaces/select.interface";
 
 interface IPropsCreateUpdateDeductionsForm {
   control: Control<any, any>;
   formState: FormState<any>;
   activeWorkerList: any[];
-  typeDeductionList: any[];
+  typeDeductionList: IDropdownProps[];
   action: string;
   redirectCancel: () => void;
   handleSubmitOtherIncome: (
@@ -51,10 +52,9 @@ export const CreateUpdateOtherIncomeDeductionsForm = ({
                       idInput={field.name}
                       errors={errors}
                       typeInput={"text"}
-                      direction={EDirection.column}
+                      value={field.value}
                       onChange={field.onChange}
                       onBlur={field.onBlur}
-                      value={field.value}
                       className="input-basic medium"
                       classNameLabel="text-black big bold"
                       label={
@@ -81,11 +81,11 @@ export const CreateUpdateOtherIncomeDeductionsForm = ({
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
                 filter={true}
-                disabled={action === "edit" ? true : false}
+                //disabled={action === "edit" ? true : false}
               />
 
               <SelectComponent
-                idInput={"typeDeduction"}
+                idInput={"type"}
                 control={control}
                 errors={errors}
                 data={typeDeductionList}
@@ -97,7 +97,7 @@ export const CreateUpdateOtherIncomeDeductionsForm = ({
                 className="select-basic medium"
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
-                disabled={action === "edit" ? true : false}
+                //disabled={action === "edit" ? true : false}
               />
             </div>
 

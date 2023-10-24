@@ -12,6 +12,7 @@ const CreateUpdateIncomeDeductionsPage = ({
 }: IPropsCreateUpdateOtherIncomePage): React.JSX.Element => {
   const {
     activeWorkerList,
+    typeTaxDeduction,
     formState,
     control,
     renderTitleDeduction,
@@ -33,7 +34,7 @@ const CreateUpdateIncomeDeductionsPage = ({
           control={control}
           formState={formState}
           activeWorkerList={activeWorkerList}
-          typeDeductionList={[{}]}
+          typeDeductionList={typeTaxDeduction}
           redirectCancel={redirectCancel}
           handleSubmitOtherIncome={handleSubmitOtherIncome}
         />

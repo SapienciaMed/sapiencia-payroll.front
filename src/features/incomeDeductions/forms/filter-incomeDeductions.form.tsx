@@ -7,15 +7,18 @@ import {
   LabelComponent,
 } from "../../../common/components/Form";
 
+import { DevTool } from "@hookform/devtools";
+
 import { Control, Controller, FieldValues, FormState } from "react-hook-form";
 
 import { EDirection } from "../../../common/constants/input.enum";
+import { IFilterTaxDeductible } from "../../../common/interfaces/payroll.interfaces";
 
 interface IPropsFilterIncomeDeductionsForm {
   control: Control<any, any>;
   formState: FormState<FieldValues>;
   activeWorkerList: any[];
-  formValues: any;
+  formValues: IFilterTaxDeductible;
   clearFields: () => void;
   onSubmit: () => Promise<void>;
 }
@@ -28,12 +31,14 @@ export const FilterIncomeDeductionsForm = ({
   formValues,
   activeWorkerList,
 }: IPropsFilterIncomeDeductionsForm): React.JSX.Element => {
-  const {} = formValues;
-  const { errors } = formState;
-
+  const { year } = formValues;
   return (
     <>
-      <FormComponent className="form-signIn" action={onSubmit}>
+      <FormComponent
+        className="form-signIn"
+        id="searchTaxDeduction"
+        action={onSubmit}
+      >
         <div className="container-sections-forms">
           <div className="grid-form-2-container gap-25">
             <Controller
@@ -43,12 +48,10 @@ export const FilterIncomeDeductionsForm = ({
                 return (
                   <InputComponent
                     idInput={field.name}
-                    errors={errors}
                     typeInput={"text"}
-                    direction={EDirection.column}
+                    value={field.value}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
-                    value={field.value}
                     className="input-basic medium"
                     classNameLabel="text-black big bold"
                     label={
@@ -60,11 +63,9 @@ export const FilterIncomeDeductionsForm = ({
                 );
               }}
             />
-
             <SelectComponent
               idInput={"codEmployment"}
               control={control}
-              errors={errors}
               data={activeWorkerList}
               label={<>Documento - Nombre del empleado.</>}
               className="select-basic medium"
@@ -84,10 +85,11 @@ export const FilterIncomeDeductionsForm = ({
             <ButtonComponent
               value={"Buscar"}
               className="button-save disabled-black big"
-              //disabled={!codEmployment && !codFormsPeriod && !typeDeduction}
+              disabled={!year}
             />
           </div>
         </div>
+        <DevTool control={control} />
       </FormComponent>
     </>
   );

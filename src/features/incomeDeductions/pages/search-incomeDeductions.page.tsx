@@ -50,7 +50,7 @@ export const SearchIncomeDeductionsPage = (): React.JSX.Element => {
           <div className="container-sections-forms">
             <TableComponent
               ref={tableComponentRef}
-              url={`${process.env.urlApiPayroll}/api/v1/deduction/get-paginated`}
+              url={`${process.env.urlApiPayroll}/api/v1/taxDeductible/get-paginated`}
               columns={tableColumns}
               actions={tableActions}
               isShowModal={false}

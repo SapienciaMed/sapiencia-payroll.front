@@ -4,21 +4,18 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { AppContext } from "../../../common/contexts/app.context";
 
-import {
-  IFormPeriod,
-  IManualDeduction,
-} from "../../../common/interfaces/payroll.interfaces";
-import { EDeductionns } from "../../../common/constants/deductions.enum";
-
-import { formDeduction } from "../../../common/schemas";
+import { createOrUpdateTaxDeductible } from "../../../common/schemas";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
-import useListData from "../../vacation/hooks/list.hook";
-import useDeductionService from "../../../common/hooks/deduction-service.hook";
+import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
+
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { ApiResponse } from "../../../common/utils/api-response";
-import usePayrollService from "../../../common/hooks/payroll-service.hook";
-import { DateTime } from "luxon";
+
+import useListData from "../../vacation/hooks/list.hook";
+
+import { IDropdownProps } from "../../../common/interfaces/select.interface";
+import { ITaxDeductible } from "../../../common/interfaces/payroll.interfaces";
+import useTaxDeductionService from "../../../common/hooks/taxDeductions-service.hook";
 
 interface IPropsUseCreateAndUpdateOtherIncome {
   action: string;
@@ -29,39 +26,39 @@ const useCreateAndUpdateIncomeDeduction = ({
 }: IPropsUseCreateAndUpdateOtherIncome) => {
   //react router dom
   const navigate = useNavigate();
+
   const { id } = useParams();
+
+  // hooks
+  const { getListByGroupers } = useGenericListService();
+  const { createTaxDeductible, updateTaxDeductible, getByIdTaxDeductible } =
+    useTaxDeductionService();
 
   // Context
   const { setMessage } = useContext(AppContext);
 
   //useState
-  const [deductionsTypeByTypeList, setDeductionsTypeByTypeList] = useState([]);
-  const [indexArrayYupValidator, setIndexArrayYupValidator] = useState(0);
-  const [lastPeriodsList, setLastPeriodsList] = useState([]);
-  //custom hooks
-  const { activeWorkerList, workerInfo } = useListData();
-  const { getLastPeriods } = usePayrollService();
+  const [typeTaxDeduction, setTypeTaxDeduction] = useState<IDropdownProps[]>(
+    []
+  );
 
-  const {
-    getDeductionTypesByType,
-    createDeduction,
-    updateDeduction,
-    getDeductionById,
-  } = useDeductionService();
+  //custom hooks
+  const { activeWorkerList } = useListData();
 
   //use form
-  const currentValidationSchema = formDeduction[indexArrayYupValidator];
+  const resolver = useYupValidationResolver(createOrUpdateTaxDeductible);
 
-  const resolver = useYupValidationResolver(currentValidationSchema);
-
-  const { control, formState, setValue, watch, handleSubmit } =
-    useForm<IManualDeduction>({
-      defaultValues: async () => loadDefaultValues(),
-      mode: "all",
-      resolver,
-    });
+  const { control, formState, handleSubmit } = useForm<ITaxDeductible>({
+    defaultValues: async () => loadDefaultValues(),
+    mode: "all",
+    resolver,
+  });
 
   //useEffect
+
+  useEffect(() => {
+    loadInitList();
+  }, []);
 
   //watch
 
@@ -72,7 +69,63 @@ const useCreateAndUpdateIncomeDeduction = ({
       : "Crear deducciones de renta";
   };
 
-  const loadDefaultValues = async (): Promise<any> => {};
+  const loadInitList = async (): Promise<void> => {
+    const groupers = ["TIPO_DEDUCCION_RENTA"];
+
+    const { data, operation } = await getListByGroupers(groupers);
+
+    if (EResponseCodes.OK === operation.code) {
+      const optionsTypeTaxDeductions = data.map((item) => {
+        return {
+          name: item.itemDescription,
+          value: item.itemCode,
+        } as IDropdownProps;
+      });
+
+      setTypeTaxDeduction(optionsTypeTaxDeductions);
+    } else {
+      setTypeTaxDeduction([]);
+    }
+  };
+
+  const loadDefaultValues = async (): Promise<ITaxDeductible> => {
+    if (action === "new") {
+      return {
+        id: null,
+        codEmployment: null,
+        type: null,
+        state: "Pendiente",
+        value: null,
+        year: null,
+      } as ITaxDeductible;
+    }
+
+    if (action === "edit") {
+      const { data, operation } = await getByIdTaxDeductible(Number(id));
+
+      if (operation.code === EResponseCodes.OK) {
+        return {
+          id: data.id,
+          codEmployment: data.codEmployment,
+          type: data.type,
+          state: data.state,
+          value: data.value,
+          year: data.year,
+        } as ITaxDeductible;
+      } else {
+        handleModalError("No se han cargado los datos");
+
+        return {
+          id: null,
+          codEmployment: null,
+          type: null,
+          state: "Pendiente",
+          value: null,
+          year: null,
+        } as ITaxDeductible;
+      }
+    }
+  };
 
   const redirectCancel = () => {
     setMessage({
@@ -141,9 +194,9 @@ const useCreateAndUpdateIncomeDeduction = ({
     });
   };
 
-  const handleSubmitOtherIncome = handleSubmit((data: IManualDeduction) => {
+  const handleSubmitOtherIncome = handleSubmit((data: ITaxDeductible) => {
     setMessage({
-      title: "Confirmación de deducción",
+      title: "Confirmación de deducción de renta",
       description: `¿Estás segur@ de ${
         action === "edit" ? "editar" : "ejecutar"
       }
@@ -161,14 +214,24 @@ const useCreateAndUpdateIncomeDeduction = ({
     });
   });
 
-  const handleCreateOrUpdateOtherIncome = async (data: IManualDeduction) => {};
+  const handleCreateOrUpdateOtherIncome = async (data: ITaxDeductible) => {
+    const { data: dataResponse, operation } =
+      action === "edit"
+        ? await updateTaxDeductible(data)
+        : await createTaxDeductible(data);
+
+    if (operation.code === EResponseCodes.OK) {
+      handleModalSuccess();
+    } else {
+      handleModalError(operation.message, false);
+    }
+  };
 
   return {
     control,
     formState,
     activeWorkerList,
-    deductionsTypeByTypeList,
-    lastPeriodsList,
+    typeTaxDeduction,
     renderTitleDeduction,
     redirectCancel,
     handleSubmitOtherIncome,

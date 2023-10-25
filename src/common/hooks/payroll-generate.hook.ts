@@ -1,4 +1,5 @@
 import { EResponseCodes } from "../constants/api.enum";
+import { IIncomeType } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
 
@@ -16,8 +17,24 @@ export function usePayrollGenerate() {
       return new ApiResponse(false, EResponseCodes.FAIL, "Error no controlado");
     }
   }
+
+  async function getIncomeTypeByType(
+    type: string
+  ): Promise<ApiResponse<IIncomeType[]>> {
+    try {
+      const endpoint: string = `/incomeType`;
+      return await get(`${authUrl}${endpoint}`, { type });
+    } catch (error) {
+      return new ApiResponse(
+        {} as IIncomeType[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
   return {
     generatePayroll,
+    getIncomeTypeByType,
   };
 }
 

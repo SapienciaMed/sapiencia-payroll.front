@@ -17,7 +17,7 @@ function OtherIncomeRoutes() {
         path={"/crear"}
         element={
           <PrivateRoute
-            element={<CreateUpdateOtherIncome action={"crear"} />}
+            element={<CreateUpdateOtherIncome action={"new"} />}
             allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
           />
         }

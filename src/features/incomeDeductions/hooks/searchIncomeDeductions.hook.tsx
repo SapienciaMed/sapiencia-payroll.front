@@ -59,8 +59,6 @@ export default function useSearchIncomeDeductionsHook() {
     tableComponentRef.current?.emptyData();
   };
 
-  const showDetailDeductions = (row: IManualDeduction) => {};
-
   const onSubmit = handleSubmit(async (data: IFilterTaxDeductible) => {
     setshowTable(true);
 

@@ -2,30 +2,27 @@ import { useState, useRef, useEffect, useContext } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+
 import {
   ITableAction,
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
+
 import {
   IDeductionsFilter,
+  IFilterOtherIncome,
+  IGetOtherIncome,
   IManualDeduction,
 } from "../../../common/interfaces/payroll.interfaces";
+
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
 import useListData from "../../vacation/hooks/list.hook";
 
-import { TextAreaComponent } from "../../../common/components/Form";
-import {
-  DataItem,
-  ResponsiveTable,
-} from "../../../common/components/Form/table-detail.component";
-
 import { AppContext } from "../../../common/contexts/app.context";
 
-import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import { formaterNumberToCurrency } from "../../../common/utils/helpers";
-import usePayrollGenerate from "../../../common/hooks/payroll-generate.hook";
 
 export default function useSearchOtherIncomeHook() {
   // Context
@@ -44,10 +41,11 @@ export default function useSearchOtherIncomeHook() {
   const navigate = useNavigate();
 
   const { register, handleSubmit, control, formState, reset, watch } =
-    useForm<IDeductionsFilter>({
+    useForm<IFilterOtherIncome>({
       //resolver,
       mode: "all",
       defaultValues: {
+        codPayroll: null,
         codEmployment: null,
       },
     });
@@ -67,8 +65,6 @@ export default function useSearchOtherIncomeHook() {
     setshowTable(false);
   };
 
-  const showDetailDeductions = (row: IManualDeduction) => {};
-
   const onSubmit = handleSubmit(async (data: IDeductionsFilter) => {
     setshowTable(true);
 
@@ -78,9 +74,56 @@ export default function useSearchOtherIncomeHook() {
   });
 
   //variables
-  const tableColumns: ITableElement<IManualDeduction>[] = [];
+  const tableColumns: ITableElement<IGetOtherIncome>[] = [
+    {
+      fieldName: "employment.worker.numberDocument",
+      header: "No. documento",
+      renderCell: (row) => {
+        return <>{row.employment.worker.numberDocument}</>;
+      },
+    },
+    {
+      fieldName: "employment.worker",
+      header: "Nombre completo",
+      renderCell: (row) => {
+        return (
+          <>{`${row.employment.worker.firstName} ${row.employment.worker.secondName} ${row.employment.worker.surname} ${row.employment.worker.secondSurname}`}</>
+        );
+      },
+    },
+    {
+      fieldName: "type",
+      header: "Tipo de ingreso",
+      renderCell: (row) => {
+        return <>{row.incomeType.name}</>;
+      },
+    },
+    {
+      fieldName: "value",
+      header: "Valor total",
+      renderCell: (row) => {
+        console.log(row.value);
+        return <>{formaterNumberToCurrency(row.value)}</>;
+      },
+    },
+    {
+      fieldName: "state",
+      header: "Estado",
+      renderCell: (row) => {
+        return <>{row.state}</>;
+      },
+    },
+  ];
 
-  const tableActions: ITableAction<IManualDeduction>[] = [];
+  const tableActions: ITableAction<IGetOtherIncome>[] = [
+    {
+      icon: "Edit",
+      onClick: (row) => {
+        navigate(`../edit/${row?.id}`);
+      },
+      // hide:  !validateActionAccess("DEDUCCION_EDITAR")
+    },
+  ];
 
   return {
     register,

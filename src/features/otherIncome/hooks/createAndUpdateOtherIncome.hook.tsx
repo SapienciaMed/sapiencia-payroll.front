@@ -1,24 +1,20 @@
+import { DateTime } from "luxon";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { AppContext } from "../../../common/contexts/app.context";
 
-import {
-  IFormPeriod,
-  IManualDeduction,
-} from "../../../common/interfaces/payroll.interfaces";
-import { EDeductionns } from "../../../common/constants/deductions.enum";
+import { IOtherIncome } from "../../../common/interfaces/payroll.interfaces";
 
-import { formDeduction } from "../../../common/schemas";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
 import useListData from "../../vacation/hooks/list.hook";
-import useDeductionService from "../../../common/hooks/deduction-service.hook";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { ApiResponse } from "../../../common/utils/api-response";
-import usePayrollService from "../../../common/hooks/payroll-service.hook";
-import { DateTime } from "luxon";
+import useOtherIncomeService from "../../../common/hooks/otherIncome-service.hook";
+import usePayrollGenerate from "../../../common/hooks/payroll-generate.hook";
+import { IDropdownProps } from "../../../common/interfaces/select.interface";
+import { createOrUpdateOtherIncome } from "../../../common/schemas";
 
 interface IPropsUseCreateAndUpdateOtherIncome {
   action: string;
@@ -35,50 +31,103 @@ const useCreateAndUpdateOtherIncome = ({
   const { setMessage } = useContext(AppContext);
 
   //useState
-  const [deductionsTypeByTypeList, setDeductionsTypeByTypeList] = useState([]);
-  const [indexArrayYupValidator, setIndexArrayYupValidator] = useState(0);
-  const [lastPeriodsList, setLastPeriodsList] = useState([]);
+  const [typeIncomeByTypeList, setTypeIncomeByTypeList] = useState<
+    IDropdownProps[]
+  >([]);
+
   //custom hooks
   const { activeWorkerList, periodsList } = useListData();
-  const { getLastPeriods } = usePayrollService();
+  const { createOtherIncome, updateOtherIncome, getByIdOtherIncome } =
+    useOtherIncomeService();
 
-  const {
-    getDeductionTypesByType,
-    createDeduction,
-    updateDeduction,
-    getDeductionById,
-  } = useDeductionService();
+  const { getIncomeTypeByType } = usePayrollGenerate();
 
   //use form
-  const currentValidationSchema = formDeduction[indexArrayYupValidator];
 
-  const resolver = useYupValidationResolver(currentValidationSchema);
+  const resolver = useYupValidationResolver(createOrUpdateOtherIncome);
 
-  const { control, formState, setValue, watch, handleSubmit } =
-    useForm<IManualDeduction>({
-      defaultValues: async () => loadDefaultValues(),
-      mode: "all",
-      resolver,
-    });
+  const { control, formState, handleSubmit } = useForm<IOtherIncome>({
+    defaultValues: async () => loadDefaultValues(),
+    mode: "all",
+    resolver,
+  });
 
   //useEffect
+  useEffect(() => {
+    loadInitList();
+  }, []);
 
   //watch
 
   //functions
-  const renderTitleDeduction = () => {
-    return action === "edit"
-      ? "Editar deducciones de renta"
-      : "Crear deducciones de renta";
+
+  const loadInitList = async (): Promise<void> => {
+    const { data, operation } = await getIncomeTypeByType("otros");
+
+    if (EResponseCodes.OK === operation.code) {
+      const optionsTypeIncomeByType = data.map((item) => {
+        return {
+          name: item.name,
+          value: item.id,
+        } as IDropdownProps;
+      });
+
+      setTypeIncomeByTypeList(optionsTypeIncomeByType);
+    } else {
+      setTypeIncomeByTypeList([]);
+    }
   };
 
-  const loadDefaultValues = async (): Promise<any> => {};
+  const renderTitleDeduction = () => {
+    return action === "edit"
+      ? "Editar otros ingresos de renta"
+      : "Crear otros ingresos de renta";
+  };
+
+  const loadDefaultValues = async (): Promise<IOtherIncome> => {
+    if (action === "new") {
+      return {
+        id: null,
+        codEmployment: null,
+        codPayroll: null,
+        codTypeIncome: null,
+        state: "Pendiente",
+        value: null,
+      } as IOtherIncome;
+    }
+
+    if (action === "edit") {
+      const { data, operation } = await getByIdOtherIncome(Number(id));
+
+      if (operation.code === EResponseCodes.OK) {
+        return {
+          id: data.id,
+          codEmployment: data.codEmployment,
+          codPayroll: data.codPayroll,
+          codTypeIncome: data.codTypeIncome,
+          state: data.state,
+          value: data.value,
+        } as IOtherIncome;
+      } else {
+        handleModalError("No se han cargado los datos");
+
+        return {
+          id: null,
+          codEmployment: null,
+          codPayroll: null,
+          codTypeIncome: null,
+          state: "Pendiente",
+          value: null,
+        } as IOtherIncome;
+      }
+    }
+  };
 
   const redirectCancel = () => {
     setMessage({
       title: "Cancelar",
       description: `¿Estás segur@ que deseas 
-      cancelar la deducción de renta?`,
+      cancelar el ingreso?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -141,13 +190,13 @@ const useCreateAndUpdateOtherIncome = ({
     });
   };
 
-  const handleSubmitOtherIncome = handleSubmit((data: IManualDeduction) => {
+  const handleSubmitOtherIncome = handleSubmit((data: IOtherIncome) => {
     setMessage({
-      title: "Confirmación de deducción",
+      title: "Confirmación de ingreso",
       description: `¿Estás segur@ de ${
         action === "edit" ? "editar" : "ejecutar"
       }
-      la deducción?`,
+      el ingreso?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -161,15 +210,25 @@ const useCreateAndUpdateOtherIncome = ({
     });
   });
 
-  const handleCreateOrUpdateOtherIncome = async (data: IManualDeduction) => {};
+  const handleCreateOrUpdateOtherIncome = async (data: IOtherIncome) => {
+    const { data: dataResponse, operation } =
+      action === "edit"
+        ? await updateOtherIncome(data)
+        : await createOtherIncome(data);
+
+    if (operation.code === EResponseCodes.OK) {
+      handleModalSuccess();
+    } else {
+      handleModalError(operation.message, false);
+    }
+  };
 
   return {
     control,
     formState,
     periodsList,
     activeWorkerList,
-    deductionsTypeByTypeList,
-    lastPeriodsList,
+    typeIncomeByTypeList,
     renderTitleDeduction,
     redirectCancel,
     handleSubmitOtherIncome,

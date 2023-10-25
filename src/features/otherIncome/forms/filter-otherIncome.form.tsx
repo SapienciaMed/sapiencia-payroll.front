@@ -8,14 +8,14 @@ import {
 
 import { Control, Controller, FieldValues, FormState } from "react-hook-form";
 
-import { EDirection } from "../../../common/constants/input.enum";
+import { IFilterOtherIncome } from "../../../common/interfaces/payroll.interfaces";
 
 interface IPropsFilterOtherIncomeForm {
   control: Control<any, any>;
   formState: FormState<FieldValues>;
   activeWorkerList: any[];
   periodsList: any[];
-  formValues: any;
+  formValues: IFilterOtherIncome;
   clearFields: () => void;
   onSubmit: () => Promise<void>;
 }
@@ -29,7 +29,7 @@ export const FilterOtherIncomeForm = ({
   activeWorkerList,
   periodsList,
 }: IPropsFilterOtherIncomeForm): React.JSX.Element => {
-  const {} = formValues;
+  const { codPayroll } = formValues;
   const { errors } = formState;
 
   return (
@@ -38,7 +38,7 @@ export const FilterOtherIncomeForm = ({
         <div className="container-sections-forms">
           <div className="grid-form-2-container gap-25">
             <SelectComponent
-              idInput={"codEmployment"}
+              idInput={"codPayroll"}
               control={control}
               errors={errors}
               data={periodsList}
@@ -76,7 +76,7 @@ export const FilterOtherIncomeForm = ({
             <ButtonComponent
               value={"Buscar"}
               className="button-save disabled-black big"
-              //disabled={!codEmployment && !codFormsPeriod && !typeDeduction}
+              disabled={!codPayroll}
             />
           </div>
         </div>

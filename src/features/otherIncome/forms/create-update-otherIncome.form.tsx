@@ -12,13 +12,14 @@ import {
 } from "../../../common/components/Form";
 
 import { EDirection } from "../../../common/constants/input.enum";
+import { IDropdownProps } from "../../../common/interfaces/select.interface";
 
 interface IPropsCreateUpdateDeductionsForm {
   control: Control<any, any>;
   formState: FormState<any>;
   activeWorkerList: any[];
   periodsList: any[];
-  typeDeductionList: any[];
+  typeIncomeByTypeList: IDropdownProps[];
   action: string;
   redirectCancel: () => void;
   handleSubmitOtherIncome: (
@@ -31,7 +32,7 @@ export const CreateUpdateOtherIncomeForm = ({
   formState,
   activeWorkerList,
   periodsList,
-  typeDeductionList,
+  typeIncomeByTypeList,
   action,
   redirectCancel,
   handleSubmitOtherIncome,
@@ -45,7 +46,7 @@ export const CreateUpdateOtherIncomeForm = ({
           <div className="grid gap-25">
             <div className="grid-form-3-container gap-25">
               <SelectComponent
-                idInput={"codEmployment"}
+                idInput={"codPayroll"}
                 control={control}
                 errors={errors}
                 data={periodsList}
@@ -58,7 +59,7 @@ export const CreateUpdateOtherIncomeForm = ({
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
                 filter={true}
-                disabled={action === "edit" ? true : false}
+                // disabled={action === "edit" ? true : false}
               />
 
               <SelectComponent
@@ -75,23 +76,23 @@ export const CreateUpdateOtherIncomeForm = ({
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
                 filter={true}
-                disabled={action === "edit" ? true : false}
+                // disabled={action === "edit" ? true : false}
               />
 
               <SelectComponent
-                idInput={"typeDeduction"}
+                idInput={"codTypeIncome"}
                 control={control}
                 errors={errors}
-                data={typeDeductionList}
+                data={typeIncomeByTypeList}
                 label={
                   <>
-                    Tipo de deducción renta<span>*</span>
+                    Tipo de ingresos<span>*</span>
                   </>
                 }
                 className="select-basic medium"
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
-                disabled={action === "edit" ? true : false}
+                // disabled={action === "edit" ? true : false}
               />
             </div>
 
@@ -101,7 +102,7 @@ export const CreateUpdateOtherIncomeForm = ({
                 control={control}
                 label={
                   <>
-                    Valor total del certificado <span>*</span>
+                    Valor <span>*</span>
                   </>
                 }
                 errors={errors}

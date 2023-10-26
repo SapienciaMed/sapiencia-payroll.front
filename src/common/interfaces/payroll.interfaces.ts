@@ -496,3 +496,57 @@ export interface IFormTypes {
   name: string;
   frecuencyPaid: string;
 }
+
+export interface ITaxDeductible {
+  id?: number;
+  year: number;
+  codEmployment: number;
+  type: string;
+  value: number;
+  state: string;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface IGetTaxDeductible extends ITaxDeductible {
+  employment: IEmploymentWorker;
+}
+
+export interface IFilterTaxDeductible {
+  year: string;
+  codEmployment: number;
+}
+
+export interface IOtherIncome {
+  id?: number;
+  codTypeIncome: number;
+  codEmployment: number;
+  codPayroll: number;
+  value: number;
+  state: string;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface IIncomeType {
+  id: number;
+  name: string;
+  accountingAccount: string;
+  type: string;
+}
+
+export interface IGetOtherIncome extends IOtherIncome {
+  employment: IEmploymentWorker;
+  incomeType: IIncomeType;
+}
+
+export interface IFilterOtherIncome {
+  page: number;
+  perPage: number;
+  codPayroll: number;
+  codEmployment: number;
+}

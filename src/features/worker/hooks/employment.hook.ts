@@ -274,9 +274,56 @@ export default function useEmploymentsData(action?: string) {
             }
           }
         );
+      } else {
+        setVinculation({
+          worker: {
+            id: null,
+            typeDocument: "",
+            numberDocument: "",
+            firstName: "",
+            secondName: "",
+            surname: "",
+            secondSurname: "",
+            gender: "",
+            bloodType: "",
+            birthDate: "",
+            nationality: "",
+            email: "",
+            contactNumber: "",
+            department: "",
+            municipality: "",
+            neighborhood: "",
+            address: "",
+            socioEconomic: "",
+            eps: "",
+            fundPension: "",
+            severanceFund: "",
+            arl: "",
+            riskLevel: "",
+            housingType: "",
+          },
+          relatives: [],
+          employment: {
+            idTypeContract: "",
+            contractNumber: "",
+            institutionalMail: "",
+            startDate: "",
+            endDate: "",
+            idCharge: "",
+            idReasonRetirement: "",
+            state: "",
+            salary: null,
+            observation: "",
+            totalValue: null,
+          },
+        } as IVinculation);
       }
     });
   }, [id]);
+
+  useEffect(() => {
+    setStep(0);
+  }, [action]);
 
   useEffect(() => {
     if (!vinculation) return;
@@ -303,12 +350,7 @@ export default function useEmploymentsData(action?: string) {
       return;
     }
 
-    if (vinculation.worker.id) {
-      setValueRegister("worker", vinculation?.worker, {
-        shouldValidate: true,
-      });
-    }
-
+    setValueRegister("worker", vinculation?.worker);
     setValueRegister("relatives", vinculation?.relatives);
     setValueRegister("employment", vinculation?.employment[0]);
 

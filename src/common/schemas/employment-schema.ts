@@ -287,3 +287,17 @@ export const createOrUpdateSpreadSheetSchema = yup.object({
     .required("El campo debe ser obligatorio"),
   observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
 });
+
+export const createOrUpdateTaxDeductible = yup.object({
+  year: yup.string().required("El campo es obligatorio"),
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  type: yup.string().required("El campo es obligatorio"),
+  value: yup.number().required("El campo es obligatorio"),
+});
+
+export const createOrUpdateOtherIncome = yup.object({
+  codPayroll: yup.string().required("El campo es obligatorio"),
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  codTypeIncome: yup.string().required("El campo es obligatorio"),
+  value: yup.number().required("El campo es obligatorio"),
+});

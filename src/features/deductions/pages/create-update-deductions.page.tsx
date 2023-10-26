@@ -7,13 +7,9 @@ interface IPropsCreateUpdateDeductions {
   action: string;
 }
 
-let render = 0;
-
 const CreateUpdateDeductionsPage = ({
   action,
 }: IPropsCreateUpdateDeductions): React.JSX.Element => {
-  render++;
-
   const {
     control,
     formState,

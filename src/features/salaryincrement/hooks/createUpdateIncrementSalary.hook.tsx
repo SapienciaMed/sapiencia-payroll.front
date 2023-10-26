@@ -155,7 +155,6 @@ export default function useCreateUpdateIncrementSalary(action: string) {
       const { data, operation } = await getByIdIncrementSalary(Number(id));
 
       if (operation.code === EResponseCodes.OK) {
-        console.log(data.effectiveDate)
         return {
           id: data.id,
           codCharge: data.codCharge,

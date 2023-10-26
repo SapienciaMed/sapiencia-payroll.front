@@ -42,6 +42,8 @@ export function usePayrollGenerate() {
   }
   return {
     generatePayroll,
+    downloadPayroll,
+    getIncomeTypeByType,
   };
 }
 

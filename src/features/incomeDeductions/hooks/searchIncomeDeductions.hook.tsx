@@ -17,16 +17,24 @@ import useListData from "../../vacation/hooks/list.hook";
 
 import { AppContext } from "../../../common/contexts/app.context";
 import { formaterNumberToCurrency } from "../../../common/utils/helpers";
+import { IDropdownProps } from "../../../common/interfaces/select.interface";
+import { EResponseCodes } from "../../../common/constants/api.enum";
+import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
 
 export default function useSearchIncomeDeductionsHook() {
   // Context
-  const { setMessage } = useContext(AppContext);
+  const { setMessage, validateActionAccess } = useContext(AppContext);
 
   //custom hooks
   const { activeWorkerList, periodsList } = useListData();
+  const { getListByGroupers } = useGenericListService();
 
   //states
   const [showTable, setshowTable] = useState(false);
+
+  const [typeTaxDeduction, setTypeTaxDeduction] = useState<IDropdownProps[]>(
+    []
+  );
 
   //ref
   const tableComponentRef = useRef(null);
@@ -48,9 +56,43 @@ export default function useSearchIncomeDeductionsHook() {
 
   // carga combos
 
+  useEffect(() => {
+    loadInitList();
+  }, []);
+
   //functions
-  const redirectCreate = () => {
-    navigate("../crear");
+
+  const loadInitList = async (): Promise<void> => {
+    const groupers = ["TIPO_DEDUCCION_RENTA"];
+
+    const { data, operation } = await getListByGroupers(groupers);
+
+    if (EResponseCodes.OK === operation.code) {
+      const optionsTypeTaxDeductions = data.map((item) => {
+        return {
+          name: item.itemDescription,
+          value: item.itemCode,
+        } as IDropdownProps;
+      });
+
+      setTypeTaxDeduction(optionsTypeTaxDeductions);
+    } else {
+      setTypeTaxDeduction([]);
+    }
+  };
+
+  const redirectCreate = (): void => {
+    if (validateActionAccess("CREAR_DEDUCCION_RENTA")) {
+      navigate("../crear");
+    } else {
+      setMessage({
+        title: "Crear deducciones de renta",
+        show: true,
+        OkTitle: "Aceptar",
+        description: "No tienes permisos para esta acción.",
+        background: true,
+      });
+    }
   };
 
   const clearFields = () => {
@@ -87,9 +129,13 @@ export default function useSearchIncomeDeductionsHook() {
     },
     {
       fieldName: "type",
-      header: "Tipo de deduccion",
+      header: "Tipo de deducción",
       renderCell: (row) => {
-        return <>{row.type}</>;
+        const valueSelected = typeTaxDeduction.find(
+          (i) => i.value === row.type
+        );
+
+        return <>{valueSelected.name}</>;
       },
     },
     {
@@ -127,6 +173,7 @@ export default function useSearchIncomeDeductionsHook() {
     onSubmit,
     redirectCreate,
     clearFields,
+    validateActionAccess,
     formValues,
     showTable,
     tableComponentRef,

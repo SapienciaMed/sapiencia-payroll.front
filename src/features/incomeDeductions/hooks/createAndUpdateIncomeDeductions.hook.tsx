@@ -6,6 +6,7 @@ import { AppContext } from "../../../common/contexts/app.context";
 
 import { createOrUpdateTaxDeductible } from "../../../common/schemas";
 import { EResponseCodes } from "../../../common/constants/api.enum";
+import { EStatesTaxDeduction } from "../../../common/constants/taxdeduction.enum";
 
 import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
 
@@ -42,17 +43,37 @@ const useCreateAndUpdateIncomeDeduction = ({
     []
   );
 
+  const [statesTaxDeductionList, setStatesTaxDeductionList] = useState<
+    IDropdownProps[]
+  >([
+    {
+      name: "Pendiente",
+      value: "Pendiente",
+    },
+    {
+      name: "Finalizado",
+      value: "Finalizado",
+    },
+    {
+      name: "Anulado",
+      value: "Anulado",
+    },
+  ]);
+
   //custom hooks
   const { activeWorkerList } = useListData();
 
   //use form
   const resolver = useYupValidationResolver(createOrUpdateTaxDeductible);
 
-  const { control, formState, handleSubmit } = useForm<ITaxDeductible>({
-    defaultValues: async () => loadDefaultValues(),
-    mode: "all",
-    resolver,
-  });
+  const { control, formState, handleSubmit, watch, getFieldState } =
+    useForm<ITaxDeductible>({
+      defaultValues: async () => loadDefaultValues(),
+      mode: "all",
+      resolver,
+    });
+
+  const state = watch("state");
 
   //useEffect
 
@@ -67,6 +88,24 @@ const useCreateAndUpdateIncomeDeduction = ({
     return action === "edit"
       ? "Editar deducciones de renta"
       : "Crear deducciones de renta";
+  };
+
+  const validateStateField = (): boolean => {
+    if (action === "new") {
+      return true;
+    }
+
+    if (action === "edit") {
+      const { isDirty } = getFieldState("state");
+
+      if (!isDirty && state != EStatesTaxDeduction.Pendiente) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return false;
   };
 
   const loadInitList = async (): Promise<void> => {
@@ -94,7 +133,7 @@ const useCreateAndUpdateIncomeDeduction = ({
         id: null,
         codEmployment: null,
         type: null,
-        state: "Pendiente",
+        state: EStatesTaxDeduction.Pendiente,
         value: null,
         year: null,
       } as ITaxDeductible;
@@ -119,7 +158,7 @@ const useCreateAndUpdateIncomeDeduction = ({
           id: null,
           codEmployment: null,
           type: null,
-          state: "Pendiente",
+          state: EStatesTaxDeduction.Pendiente,
           value: null,
           year: null,
         } as ITaxDeductible;
@@ -175,7 +214,7 @@ const useCreateAndUpdateIncomeDeduction = ({
   const handleModalSuccess = () => {
     setMessage({
       title: ` ${action === "edit" ? "Editado" : "Guardado"}`,
-      description: `Deducción ${
+      description: `Deducción de renta ${
         action === "edit" ? "editada" : "ejecutada"
       } exitosamente`,
       show: true,
@@ -232,8 +271,10 @@ const useCreateAndUpdateIncomeDeduction = ({
     formState,
     activeWorkerList,
     typeTaxDeduction,
+    statesTaxDeductionList,
     renderTitleDeduction,
     redirectCancel,
+    validateStateField,
     handleSubmitOtherIncome,
   };
 };

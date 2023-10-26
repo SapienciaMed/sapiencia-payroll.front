@@ -18,7 +18,7 @@ function IncomeDeductions() {
         element={
           <PrivateRoute
             element={<CreateUpdateIncomeDeductionPage action="new" />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"CREAR_DEDUCCION_RENTA"}
           />
         }
       />

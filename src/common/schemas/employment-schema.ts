@@ -289,7 +289,10 @@ export const createOrUpdateSpreadSheetSchema = yup.object({
 });
 
 export const createOrUpdateTaxDeductible = yup.object({
-  year: yup.string().required("El campo es obligatorio"),
+  year: yup
+    .string()
+    .required("El campo es obligatorio")
+    .max(4, "Solo se permiten 4 caracteres"),
   codEmployment: yup.string().required("El campo es obligatorio"),
   type: yup.string().required("El campo es obligatorio"),
   value: yup.number().required("El campo es obligatorio"),

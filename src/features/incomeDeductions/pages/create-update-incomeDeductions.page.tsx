@@ -13,11 +13,13 @@ const CreateUpdateIncomeDeductionsPage = ({
   const {
     activeWorkerList,
     typeTaxDeduction,
+    statesTaxDeductionList,
     formState,
     control,
     renderTitleDeduction,
     redirectCancel,
     handleSubmitOtherIncome,
+    validateStateField,
   } = useCreateAndUpdateIncomeDeductions({ action });
 
   return (
@@ -34,6 +36,8 @@ const CreateUpdateIncomeDeductionsPage = ({
           control={control}
           formState={formState}
           activeWorkerList={activeWorkerList}
+          statesTaxDeductionList={statesTaxDeductionList}
+          validateStateField={validateStateField}
           typeDeductionList={typeTaxDeduction}
           redirectCancel={redirectCancel}
           handleSubmitOtherIncome={handleSubmitOtherIncome}

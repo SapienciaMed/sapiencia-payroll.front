@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from "react";
 import { ProgressBar } from "primereact/progressbar";
-
+import { RiFileExcel2Line } from "react-icons/ri";
 import { BsCheckCircle } from "react-icons/bs";
 import { useForm } from "react-hook-form";
 import {
@@ -22,7 +22,7 @@ export default function useSearchSpreadSheetHook() {
   // Context
   const { setMessage, validateActionAccess } = useContext(AppContext);
 
-  const { generatePayroll } = usePayrollGenerate();
+  const { generatePayroll, downloadPayroll } = usePayrollGenerate();
 
   //custom hooks
   const { typesSpreadSheetList, stateSpreadSheetList } = useListData();
@@ -219,6 +219,53 @@ export default function useSearchSpreadSheetHook() {
         navigate(`../edit/${row.id}`);
       },
       hide: !validateActionAccess("PLANILLA_EDITAR"),
+    },
+    {
+      onClick: (row) => {
+        downloadPayroll(row.id)
+          .then(({ data, operation }) => {
+            if (operation.code === EResponseCodes.OK) {
+              const buffer = new Uint8Array(data.data); // Convierte el Array del búfer en Uint8Array
+              const blob = new Blob([buffer]);
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `${row.formsType[0].name}.xlsx`;
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url);
+              setMessage({
+                title: `Descargar excel`,
+                description: `El archivo fue descargado con éxito`,
+                show: true,
+                OkTitle: "Aceptar",
+                background: true,
+              });
+            } else {
+              setMessage({
+                title: `Descargar excel`,
+                description: `El archivo no pudo ser descargado : ${operation.message}`,
+                show: true,
+                OkTitle: "Aceptar",
+                background: true,
+              });
+            }
+          })
+          .catch((err) => {
+            setMessage({
+              title: `Descargar excel`,
+              description: `El archivo no pudo ser descargado`,
+              show: true,
+              OkTitle: "Aceptar",
+              background: true,
+            });
+            console.log("algo fallo", err);
+          });
+      },
+      customIcon: () => {
+        return <RiFileExcel2Line color="#21A366" />;
+      },
+      hide: !validateActionAccess("PLANILLA_DESCARGAR"),
     },
   ];
 

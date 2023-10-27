@@ -44,7 +44,6 @@ const SearchDeductions = (): React.JSX.Element => {
                   show: true,
                   OkTitle: "Aceptar",
                   description: "No tienes permisos para esta acción",
-                  size: "large",
                   background: true,
                 });
               }

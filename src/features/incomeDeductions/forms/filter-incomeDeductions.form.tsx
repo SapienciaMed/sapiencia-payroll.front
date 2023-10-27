@@ -4,14 +4,9 @@ import {
   SelectComponent,
   ButtonComponent,
   InputComponent,
-  LabelComponent,
 } from "../../../common/components/Form";
 
-import { DevTool } from "@hookform/devtools";
-
 import { Control, Controller, FieldValues, FormState } from "react-hook-form";
-
-import { EDirection } from "../../../common/constants/input.enum";
 import { IFilterTaxDeductible } from "../../../common/interfaces/payroll.interfaces";
 
 interface IPropsFilterIncomeDeductionsForm {

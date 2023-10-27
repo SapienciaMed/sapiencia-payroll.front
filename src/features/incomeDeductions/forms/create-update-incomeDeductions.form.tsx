@@ -19,21 +19,25 @@ interface IPropsCreateUpdateDeductionsForm {
   formState: FormState<any>;
   activeWorkerList: any[];
   typeDeductionList: IDropdownProps[];
+  statesTaxDeductionList: IDropdownProps[];
   action: string;
   redirectCancel: () => void;
   handleSubmitOtherIncome: (
     e?: BaseSyntheticEvent<object, any, any>
   ) => Promise<void>;
+  validateStateField: () => boolean;
 }
 
 export const CreateUpdateOtherIncomeDeductionsForm = ({
   control,
   formState,
   activeWorkerList,
+  statesTaxDeductionList,
   typeDeductionList,
   action,
   redirectCancel,
   handleSubmitOtherIncome,
+  validateStateField,
 }: IPropsCreateUpdateDeductionsForm): React.JSX.Element => {
   const { errors, isValid } = formState;
 
@@ -57,6 +61,7 @@ export const CreateUpdateOtherIncomeDeductionsForm = ({
                       onBlur={field.onBlur}
                       className="input-basic medium"
                       classNameLabel="text-black big bold"
+                      disabled={action === "edit" ? true : false}
                       label={
                         <>
                           Año <span>*</span>
@@ -81,7 +86,7 @@ export const CreateUpdateOtherIncomeDeductionsForm = ({
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
                 filter={true}
-                //disabled={action === "edit" ? true : false}
+                disabled={action === "edit" ? true : false}
               />
 
               <SelectComponent
@@ -97,7 +102,7 @@ export const CreateUpdateOtherIncomeDeductionsForm = ({
                 className="select-basic medium"
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
-                //disabled={action === "edit" ? true : false}
+                disabled={action === "edit" ? true : false}
               />
             </div>
 
@@ -119,26 +124,21 @@ export const CreateUpdateOtherIncomeDeductionsForm = ({
                 minFractionDigits={2}
                 maxFractionDigits={2}
               />
-              <Controller
+
+              <SelectComponent
+                idInput={"state"}
                 control={control}
-                name={"state"}
-                render={({ field }) => {
-                  return (
-                    <InputComponent
-                      idInput={field.name}
-                      errors={errors}
-                      typeInput={"text"}
-                      direction={EDirection.column}
-                      onChange={field.onChange}
-                      onBlur={field.onBlur}
-                      value={field.value}
-                      className="input-basic medium"
-                      classNameLabel="text-black big bold"
-                      disabled={true}
-                      label={<>Estado</>}
-                    />
-                  );
-                }}
+                errors={errors}
+                data={statesTaxDeductionList}
+                label={
+                  <>
+                    Estado <span>*</span>
+                  </>
+                }
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
+                disabled={validateStateField()}
               />
             </div>
           </div>

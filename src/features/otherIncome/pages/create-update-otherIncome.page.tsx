@@ -15,6 +15,8 @@ const CreateUpdateOtherIncomePage = ({
     periodsList,
     formState,
     control,
+    statesOtherIncomeList,
+    validateStateField,
     renderTitleDeduction,
     redirectCancel,
     handleSubmitOtherIncome,
@@ -36,6 +38,8 @@ const CreateUpdateOtherIncomePage = ({
           activeWorkerList={activeWorkerList}
           periodsList={periodsList}
           typeIncomeByTypeList={typeIncomeByTypeList}
+          statesOtherIncomeList={statesOtherIncomeList}
+          validateStateField={validateStateField}
           redirectCancel={redirectCancel}
           handleSubmitOtherIncome={handleSubmitOtherIncome}
         />

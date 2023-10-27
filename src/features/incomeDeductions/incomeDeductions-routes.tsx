@@ -27,7 +27,7 @@ function IncomeDeductions() {
         element={
           <PrivateRoute
             element={<SearchIncomeDeductionsPage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"CONSULTAR_DEDUCCION_RENTA"}
           />
         }
       />
@@ -36,7 +36,7 @@ function IncomeDeductions() {
         element={
           <PrivateRoute
             element={<CreateUpdateIncomeDeductionPage action="edit" />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"EDITAR_DEDUCCION_RENTA"}
           />
         }
       />

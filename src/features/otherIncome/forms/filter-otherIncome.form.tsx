@@ -3,7 +3,6 @@ import {
   FormComponent,
   SelectComponent,
   ButtonComponent,
-  InputComponent,
 } from "../../../common/components/Form";
 
 import { Control, Controller, FieldValues, FormState } from "react-hook-form";

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useContext } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -12,11 +12,7 @@ import {
   IDeductionsFilter,
   IFilterOtherIncome,
   IGetOtherIncome,
-  IManualDeduction,
 } from "../../../common/interfaces/payroll.interfaces";
-
-import { IDropdownProps } from "../../../common/interfaces/select.interface";
-import { EResponseCodes } from "../../../common/constants/api.enum";
 
 import useListData from "../../vacation/hooks/list.hook";
 
@@ -26,7 +22,7 @@ import { formaterNumberToCurrency } from "../../../common/utils/helpers";
 
 export default function useSearchOtherIncomeHook() {
   // Context
-  const { setMessage } = useContext(AppContext);
+  const { setMessage, validateActionAccess } = useContext(AppContext);
 
   //custom hooks
   const { activeWorkerList, periodsList } = useListData();
@@ -56,7 +52,17 @@ export default function useSearchOtherIncomeHook() {
 
   //functions
   const redirectCreate = () => {
-    navigate("../crear");
+    if (validateActionAccess("CREAR_OTROS_INGRESOS")) {
+      navigate("../crear");
+    } else {
+      setMessage({
+        title: "Crear otros ingresos.",
+        show: true,
+        OkTitle: "Aceptar",
+        description: "No tienes permisos para esta acción.",
+        background: true,
+      });
+    }
   };
 
   const clearFields = () => {
@@ -121,7 +127,7 @@ export default function useSearchOtherIncomeHook() {
       onClick: (row) => {
         navigate(`../edit/${row?.id}`);
       },
-      // hide:  !validateActionAccess("DEDUCCION_EDITAR")
+      hide: !validateActionAccess("EDITAR_OTROS_INGRESOS"),
     },
   ];
 

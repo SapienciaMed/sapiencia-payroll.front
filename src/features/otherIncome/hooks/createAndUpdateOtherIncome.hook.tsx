@@ -1,4 +1,3 @@
-import { DateTime } from "luxon";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,6 +14,8 @@ import useOtherIncomeService from "../../../common/hooks/otherIncome-service.hoo
 import usePayrollGenerate from "../../../common/hooks/payroll-generate.hook";
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 import { createOrUpdateOtherIncome } from "../../../common/schemas";
+import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
+import { EStatesOtherIncome } from "../../../common/constants/otherincome.enum";
 
 interface IPropsUseCreateAndUpdateOtherIncome {
   action: string;
@@ -35,8 +36,27 @@ const useCreateAndUpdateOtherIncome = ({
     IDropdownProps[]
   >([]);
 
+  const [statesOtherIncomeList, setStatesOtherIncomeList] = useState<
+    IDropdownProps[]
+  >([
+    {
+      name: "Pendiente",
+      value: "Pendiente",
+    },
+    {
+      name: "Finalizado",
+      value: "Finalizado",
+    },
+    {
+      name: "Anulado",
+      value: "Anulado",
+    },
+  ]);
+
   //custom hooks
   const { activeWorkerList, periodsList } = useListData();
+  const { getParametersByCodes } = useGenericListService();
+
   const { createOtherIncome, updateOtherIncome, getByIdOtherIncome } =
     useOtherIncomeService();
 
@@ -46,23 +66,46 @@ const useCreateAndUpdateOtherIncome = ({
 
   const resolver = useYupValidationResolver(createOrUpdateOtherIncome);
 
-  const { control, formState, handleSubmit } = useForm<IOtherIncome>({
-    defaultValues: async () => loadDefaultValues(),
-    mode: "all",
-    resolver,
-  });
+  const { control, formState, handleSubmit, watch, getFieldState, setValue } =
+    useForm<IOtherIncome>({
+      defaultValues: async () => loadDefaultValues(),
+      mode: "all",
+      resolver,
+    });
+
+  const [codTypeIncome, state] = watch(["codTypeIncome", "state"]);
 
   //useEffect
   useEffect(() => {
     loadInitList();
   }, []);
 
-  //watch
+  useEffect(() => {
+    if (formState.isDirty) setValue("value", null, { shouldValidate: true });
+  }, [codTypeIncome]);
 
   //functions
 
+  const validateStateField = (): boolean => {
+    if (action === "new") {
+      return true;
+    }
+
+    if (action === "edit") {
+      const { isDirty } = getFieldState("state");
+
+      if (!isDirty && state != EStatesOtherIncome.Pendiente) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return false;
+  };
+
   const loadInitList = async (): Promise<void> => {
-    const { data, operation } = await getIncomeTypeByType("otros");
+    const { data, operation } = await getIncomeTypeByType("Eventual");
 
     if (EResponseCodes.OK === operation.code) {
       const optionsTypeIncomeByType = data.map((item) => {
@@ -79,12 +122,13 @@ const useCreateAndUpdateOtherIncome = ({
   };
 
   const renderTitleDeduction = () => {
-    return action === "edit"
-      ? "Editar otros ingresos de renta"
-      : "Crear otros ingresos de renta";
+    return action === "edit" ? "Editar otros ingresos" : "Crear otros ingresos";
   };
 
   const loadDefaultValues = async (): Promise<IOtherIncome> => {
+    const { data: dataMaxValues, operation: operationMaxValues } =
+      await getParametersByCodes(["TOPE_APROVECHAMIENTO_LIBRE"]);
+
     if (action === "new") {
       return {
         id: null,
@@ -93,6 +137,8 @@ const useCreateAndUpdateOtherIncome = ({
         codTypeIncome: null,
         state: "Pendiente",
         value: null,
+        valuesMax:
+          operationMaxValues.code === EResponseCodes.OK ? dataMaxValues : [],
       } as IOtherIncome;
     }
 
@@ -107,6 +153,8 @@ const useCreateAndUpdateOtherIncome = ({
           codTypeIncome: data.codTypeIncome,
           state: data.state,
           value: data.value,
+          valuesMax:
+            operationMaxValues.code === EResponseCodes.OK ? dataMaxValues : [],
         } as IOtherIncome;
       } else {
         handleModalError("No se han cargado los datos");
@@ -118,6 +166,8 @@ const useCreateAndUpdateOtherIncome = ({
           codTypeIncome: null,
           state: "Pendiente",
           value: null,
+          valuesMax:
+            operationMaxValues.code === EResponseCodes.OK ? dataMaxValues : [],
         } as IOtherIncome;
       }
     }
@@ -170,10 +220,8 @@ const useCreateAndUpdateOtherIncome = ({
 
   const handleModalSuccess = () => {
     setMessage({
-      title: ` ${action === "edit" ? "Editado" : "Guardado"}`,
-      description: `Deducción ${
-        action === "edit" ? "editada" : "ejecutada"
-      } exitosamente`,
+      title: `Cambios guardados`,
+      description: `Cambios guardados exitosamente`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -229,6 +277,8 @@ const useCreateAndUpdateOtherIncome = ({
     periodsList,
     activeWorkerList,
     typeIncomeByTypeList,
+    statesOtherIncomeList,
+    validateStateField,
     renderTitleDeduction,
     redirectCancel,
     handleSubmitOtherIncome,

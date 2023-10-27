@@ -1,26 +1,22 @@
 import React, { BaseSyntheticEvent } from "react";
-import { Controller, Control, FormState } from "react-hook-form";
-
+import { Control, FormState } from "react-hook-form";
 import {
   ButtonComponent,
   FormComponent,
-  InputComponent,
   InputNumberComponent,
-  LabelComponent,
   SelectComponent,
-  TextAreaComponent,
 } from "../../../common/components/Form";
-
-import { EDirection } from "../../../common/constants/input.enum";
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 
 interface IPropsCreateUpdateDeductionsForm {
+  action: string;
   control: Control<any, any>;
   formState: FormState<any>;
   activeWorkerList: any[];
   periodsList: any[];
   typeIncomeByTypeList: IDropdownProps[];
-  action: string;
+  statesOtherIncomeList: IDropdownProps[];
+  validateStateField: () => boolean;
   redirectCancel: () => void;
   handleSubmitOtherIncome: (
     e?: BaseSyntheticEvent<object, any, any>
@@ -34,6 +30,8 @@ export const CreateUpdateOtherIncomeForm = ({
   periodsList,
   typeIncomeByTypeList,
   action,
+  statesOtherIncomeList,
+  validateStateField,
   redirectCancel,
   handleSubmitOtherIncome,
 }: IPropsCreateUpdateDeductionsForm): React.JSX.Element => {
@@ -59,7 +57,7 @@ export const CreateUpdateOtherIncomeForm = ({
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
                 filter={true}
-                // disabled={action === "edit" ? true : false}
+                disabled={action === "edit" ? true : false}
               />
 
               <SelectComponent
@@ -76,7 +74,7 @@ export const CreateUpdateOtherIncomeForm = ({
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
                 filter={true}
-                // disabled={action === "edit" ? true : false}
+                disabled={action === "edit" ? true : false}
               />
 
               <SelectComponent
@@ -92,7 +90,7 @@ export const CreateUpdateOtherIncomeForm = ({
                 className="select-basic medium"
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
-                // disabled={action === "edit" ? true : false}
+                disabled={action === "edit" ? true : false}
               />
             </div>
 
@@ -115,26 +113,20 @@ export const CreateUpdateOtherIncomeForm = ({
                 maxFractionDigits={2}
               />
 
-              <Controller
+              <SelectComponent
+                idInput={"state"}
                 control={control}
-                name={"state"}
-                render={({ field }) => {
-                  return (
-                    <InputComponent
-                      idInput={field.name}
-                      errors={errors}
-                      typeInput={"text"}
-                      direction={EDirection.column}
-                      onChange={field.onChange}
-                      onBlur={field.onBlur}
-                      value={field.value}
-                      className="input-basic medium"
-                      classNameLabel="text-black big bold"
-                      disabled={true}
-                      label={<>Estado</>}
-                    />
-                  );
-                }}
+                errors={errors}
+                data={statesOtherIncomeList}
+                label={
+                  <>
+                    Estado <span>*</span>
+                  </>
+                }
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
+                disabled={validateStateField()}
               />
             </div>
           </div>

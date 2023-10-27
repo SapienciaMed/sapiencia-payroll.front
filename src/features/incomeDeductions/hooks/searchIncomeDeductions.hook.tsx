@@ -7,10 +7,8 @@ import {
   ITableElement,
 } from "../../../common/interfaces/table.interfaces";
 import {
-  IDeductionsFilter,
   IFilterTaxDeductible,
   IGetTaxDeductible,
-  IManualDeduction,
 } from "../../../common/interfaces/payroll.interfaces";
 
 import useListData from "../../vacation/hooks/list.hook";
@@ -160,7 +158,7 @@ export default function useSearchIncomeDeductionsHook() {
       onClick: (row) => {
         navigate(`../edit/${row?.id}`);
       },
-      // hide:  !validateActionAccess("DEDUCCION_EDITAR")
+      hide: !validateActionAccess("EDITAR_DEDUCCION_RENTA"),
     },
   ];
 

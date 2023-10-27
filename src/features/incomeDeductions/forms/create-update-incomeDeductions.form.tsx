@@ -6,12 +6,8 @@ import {
   FormComponent,
   InputComponent,
   InputNumberComponent,
-  LabelComponent,
   SelectComponent,
-  TextAreaComponent,
 } from "../../../common/components/Form";
-
-import { EDirection } from "../../../common/constants/input.enum";
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 
 interface IPropsCreateUpdateDeductionsForm {

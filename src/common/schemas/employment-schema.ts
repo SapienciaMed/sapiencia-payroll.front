@@ -1,5 +1,8 @@
 import * as yup from "yup";
 import { calculateLimiteEdad, calculateMayorEdad } from "../utils/helpers";
+import { EIncomeType } from "../constants/otherincome.enum";
+import useCreateAndUpdateOtherIncome from "../../features/otherIncome/hooks/createAndUpdateOtherIncome.hook";
+import { IParameter } from "../interfaces/payroll.interfaces";
 
 const personalInformationLocalization = yup.object({
   worker: yup.object({
@@ -302,5 +305,37 @@ export const createOrUpdateOtherIncome = yup.object({
   codPayroll: yup.string().required("El campo es obligatorio"),
   codEmployment: yup.string().required("El campo es obligatorio"),
   codTypeIncome: yup.string().required("El campo es obligatorio"),
-  value: yup.number().required("El campo es obligatorio"),
+  valuesMax: yup.array(),
+  value: yup
+    .number()
+    .test(
+      "tope-year",
+      "El  valor sobrepasa el tope esperado",
+      async (value, context) => {
+        const { codTypeIncome, valuesMax } = context.parent;
+
+        if (codTypeIncome === String(EIncomeType.AprovechamientoTiempoLibre)) {
+          const valueMax = valuesMax.find(
+            (i: IParameter) => i.id === "TOPE_APROVECHAMIENTO_LIBRE"
+          ) as IParameter;
+
+          if (Number(value) > Number(valueMax.value)) {
+            return false;
+          }
+
+          return true;
+        }
+
+        if (codTypeIncome === String(EIncomeType.ApoyoEstudiantil)) {
+          if (Number(value) > 5000000) {
+            return false;
+          }
+
+          return true;
+        }
+
+        return true;
+      }
+    )
+    .required("El campo es obligatorio"),
 });

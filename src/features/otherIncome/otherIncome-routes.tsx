@@ -18,7 +18,7 @@ function OtherIncomeRoutes() {
         element={
           <PrivateRoute
             element={<CreateUpdateOtherIncome action={"new"} />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"CREAR_OTROS_INGRESOS"}
           />
         }
       />
@@ -27,7 +27,7 @@ function OtherIncomeRoutes() {
         element={
           <PrivateRoute
             element={<SearchOtherIncomePage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"CONSULTAR_OTROS_INGRESOS"}
           />
         }
       />
@@ -37,7 +37,7 @@ function OtherIncomeRoutes() {
         element={
           <PrivateRoute
             element={<CreateUpdateOtherIncome action={"edit"} />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"EDITAR_OTROS_INGRESOS"}
           />
         }
       />

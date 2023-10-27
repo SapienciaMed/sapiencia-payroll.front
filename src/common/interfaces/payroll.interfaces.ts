@@ -526,6 +526,7 @@ export interface IOtherIncome {
   codPayroll: number;
   value: number;
   state: string;
+  valuesMax?: IParameter[];
   userModified?: string;
   dateModified?: DateTime;
   userCreate?: string;
@@ -549,4 +550,12 @@ export interface IFilterOtherIncome {
   perPage: number;
   codPayroll: number;
   codEmployment: number;
+}
+
+export interface IParameter {
+  id: string;
+  name: string;
+  description?: string;
+  value: string;
+  aplicationId: number;
 }

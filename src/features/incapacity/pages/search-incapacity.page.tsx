@@ -23,7 +23,7 @@ import { AppContext } from "../../../common/contexts/app.context";
 
 const SearchIncapacity = () => {
   const { validateActionAccess, setMessage } = useContext(AppContext);
-  const { activeWorkerList } = useListData("no");
+  const { activeWorkerList } = useListData(false);
 
   const { showDetailIncapacity } = useViewIncapacityDetail();
 

@@ -125,7 +125,7 @@ export default function useSearchVacationData() {
     loadTableData(data);
   });
 
-  const { listPeriods, activeWorkerList } = useListData("no");
+  const { listPeriods, activeWorkerList } = useListData(false);
 
   const [workerId, period] = watch(["workerId", "period"]);
 

@@ -65,7 +65,7 @@ export function usePayrollService() {
   }
 
   async function getWorkers(
-    temporary: string
+    temporary: boolean
   ): Promise<ApiResponse<IWorker[]>> {
     try {
       const endpoint: string = `/worker`;

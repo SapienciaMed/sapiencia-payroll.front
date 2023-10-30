@@ -21,7 +21,7 @@ export default function useCreateVacationData() {
   const navigate = useNavigate();
   const resolver = useYupValidationResolver(searchRecord);
   const { setMessage } = useContext(AppContext);
-  const { activeWorkerList, listPeriods } = useListData("no");
+  const { activeWorkerList, listPeriods } = useListData(false);
   const { getWorkerVacatioByParam, createVacation } = useVacationService();
   const {
     handleSubmit,

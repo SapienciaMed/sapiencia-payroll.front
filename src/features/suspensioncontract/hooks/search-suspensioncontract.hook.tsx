@@ -35,7 +35,7 @@ const useSearchSuspensionContract = () => {
   const tableComponentRef = useRef(null);
 
   //custom hooks
-  const { activeWorkerList } = useListData();
+  const { activeWorkerList } = useListData(true);
 
   // react router dom
   const navigate = useNavigate();

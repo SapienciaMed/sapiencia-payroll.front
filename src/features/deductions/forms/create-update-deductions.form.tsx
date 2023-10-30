@@ -184,7 +184,7 @@ export const CreateUpdateDeductionsForm = ({
                   />
                 )}
 
-                {/* <div className="grid-span-3-columns">
+                <div className="grid-span-3-columns">
                   <Controller
                     control={control}
                     name={"observation"}
@@ -208,7 +208,7 @@ export const CreateUpdateDeductionsForm = ({
                   <div className="text-right">
                     <span className="text-span ">Max. {500} caracteres</span>
                   </div>
-                </div> */}
+                </div>
               </>
             )}
 
@@ -380,7 +380,7 @@ export const CreateUpdateDeductionsForm = ({
                   placeholder="Seleccione."
                 />
 
-                {/* <div className="grid-span-3-columns">
+                <div className="grid-span-3-columns">
                   <Controller
                     control={control}
                     name={"observation"}
@@ -404,7 +404,7 @@ export const CreateUpdateDeductionsForm = ({
                   <div className="text-right">
                     <span className="text-span ">Max. {500} caracteres</span>
                   </div>
-                </div> */}
+                </div>
               </>
             )}
           </div>

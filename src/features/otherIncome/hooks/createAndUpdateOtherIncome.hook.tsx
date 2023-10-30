@@ -54,7 +54,7 @@ const useCreateAndUpdateOtherIncome = ({
   ]);
 
   //custom hooks
-  const { activeWorkerList, periodsList } = useListData();
+  const { activeWorkerList, periodsList } = useListData(false);
   const { getParametersByCodes } = useGenericListService();
 
   const { createOtherIncome, updateOtherIncome, getByIdOtherIncome } =

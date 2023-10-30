@@ -24,7 +24,7 @@ export default function useSearchIncomeDeductionsHook() {
   const { setMessage, validateActionAccess } = useContext(AppContext);
 
   //custom hooks
-  const { activeWorkerList, periodsList } = useListData();
+  const { activeWorkerList, periodsList } = useListData(false);
   const { getListByGroupers } = useGenericListService();
 
   //states

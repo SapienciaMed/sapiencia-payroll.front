@@ -33,7 +33,7 @@ export default function useSearchDeductionsHook() {
 
   //custom hooks
   const { getCharges } = usePayrollService();
-  const { activeWorkerList, periodsList } = useListData();
+  const { activeWorkerList, periodsList } = useListData(false);
 
   //states
   const [showTable, setshowTable] = useState(false);

@@ -61,7 +61,7 @@ const useCreateAndUpdateIncomeDeduction = ({
   ]);
 
   //custom hooks
-  const { activeWorkerList } = useListData();
+  const { activeWorkerList } = useListData(false);
 
   //use form
   const resolver = useYupValidationResolver(createOrUpdateTaxDeductible);

@@ -25,7 +25,7 @@ export default function useSearchOtherIncomeHook() {
   const { setMessage, validateActionAccess } = useContext(AppContext);
 
   //custom hooks
-  const { activeWorkerList, periodsList } = useListData();
+  const { activeWorkerList, periodsList } = useListData(false);
 
   //states
   const [showTable, setshowTable] = useState(false);

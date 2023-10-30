@@ -206,13 +206,13 @@ export default function useSearchSpreadSheetHook() {
         return <BsCheckCircle color="#0cae2a" />;
       },
     },
-    {
-      icon: "Detail",
-      onClick: (row) => {
-        showDetailSpreadSheet(row);
-      },
-      hide: !validateActionAccess("PLANILLA_CONSULTAR"),
-    },
+    // {
+    //   icon: "Detail",
+    //   onClick: (row) => {
+    //     showDetailSpreadSheet(row);
+    //   },
+    //   hide: !validateActionAccess("PLANILLA_CONSULTAR"),
+    // },
     {
       icon: "Edit",
       onClick: (row) => {

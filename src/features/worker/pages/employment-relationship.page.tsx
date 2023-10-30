@@ -54,7 +54,6 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
   } = useEmploymentsData(action);
   useEffect(() => {
     setStep(0);
-    console.log(step)
   }, []);
 
   const handleNavigation = () => {

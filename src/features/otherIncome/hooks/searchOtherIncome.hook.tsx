@@ -108,7 +108,6 @@ export default function useSearchOtherIncomeHook() {
       fieldName: "value",
       header: "Valor total",
       renderCell: (row) => {
-        console.log(row.value);
         return <>{formaterNumberToCurrency(row.value)}</>;
       },
     },

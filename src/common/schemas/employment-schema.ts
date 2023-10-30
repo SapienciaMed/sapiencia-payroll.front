@@ -239,7 +239,7 @@ export const createDeductionTwoSchema = yup.object({
   codDeductionType: yup.string().required("El campo es obligatorio"),
   codFormsPeriod: yup.string().required("El campo es obligatorio"),
   value: yup.number().required("El campo es obligatorio"),
-  //observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
+  observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
 });
 
 export const createDeductionThreeSchema = yup.object({
@@ -248,7 +248,7 @@ export const createDeductionThreeSchema = yup.object({
   codDeductionType: yup.string().required("El campo es obligatorio"),
   codFormsPeriod: yup.string().required("El campo es obligatorio"),
   value: yup.number().required("El campo es obligatorio"),
-  //observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
+  observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
 });
 
 export const formDeduction = [

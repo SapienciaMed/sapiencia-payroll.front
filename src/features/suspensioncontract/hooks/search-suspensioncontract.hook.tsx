@@ -35,7 +35,7 @@ const useSearchSuspensionContract = () => {
   const tableComponentRef = useRef(null);
 
   //custom hooks
-  const { activeWorkerList } = useListData(true);
+  const { activeContractorsList } = useListData();
 
   // react router dom
   const navigate = useNavigate();
@@ -296,7 +296,7 @@ const useSearchSuspensionContract = () => {
     clearFields,
     redirectCreate,
     tableComponentRef,
-    activeWorkerList,
+    activeContractorsList,
     codEmployment,
     showTable,
     tableColumns,

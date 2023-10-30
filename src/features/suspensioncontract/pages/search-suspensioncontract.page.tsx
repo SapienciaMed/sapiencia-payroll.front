@@ -19,7 +19,7 @@ const SearchSuspensionContractPage = (): React.JSX.Element => {
     clearFields,
     redirectCreate,
     tableComponentRef,
-    activeWorkerList,
+    activeContractorsList,
     showTable,
     tableColumns,
     tableActions,
@@ -53,7 +53,7 @@ const SearchSuspensionContractPage = (): React.JSX.Element => {
               idInput={"codEmployment"}
               control={control}
               errors={errors}
-              data={activeWorkerList}
+              data={activeContractorsList}
               label={
                 <>
                   Documento - Nombre del empleado. <span>*</span>

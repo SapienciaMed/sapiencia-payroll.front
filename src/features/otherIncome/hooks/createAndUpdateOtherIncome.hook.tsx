@@ -43,10 +43,10 @@ const useCreateAndUpdateOtherIncome = ({
       name: "Pendiente",
       value: "Pendiente",
     },
-    {
-      name: "Finalizado",
-      value: "Finalizado",
-    },
+    // {
+    //   name: "Finalizado",
+    //   value: "Finalizado",
+    // },
     {
       name: "Anulado",
       value: "Anulado",

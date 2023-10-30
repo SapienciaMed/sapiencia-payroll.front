@@ -49,7 +49,7 @@ export const FilterDeductionsForm = ({
 
   const { codEmployment, typeDeduction, codFormsPeriod } = formValues;
 
-  const { activeWorkerList } = useListData();
+  const { activeWorkerList } = useListData(false);
 
   return (
     <>

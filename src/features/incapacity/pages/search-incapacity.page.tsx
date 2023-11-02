@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import TableComponent from "../../../common/components/table.component";
 import { useForm } from "react-hook-form";
 import {
@@ -18,21 +18,30 @@ import {
 import { useNavigate } from "react-router-dom";
 import useListData from "../../vacation/hooks/list.hook";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import useViewIncapacityDetail from "../hooks/viewIncapacity.hook";
+import { AppContext } from "../../../common/contexts/app.context";
 
 const SearchIncapacity = () => {
-  const { activeWorkerList } = useListData();
+  const { validateActionAccess, setMessage } = useContext(AppContext);
+  const { activeWorkerList } = useListData(false);
+
+  const { showDetailIncapacity } = useViewIncapacityDetail();
 
   const tableComponentRef = useRef(null);
 
   const navigate = useNavigate();
+
+  const [showTable, setshowTable] = useState(false);
 
   const {
     handleSubmit,
     formState: { errors },
     control,
     reset,
+    watch,
   } = useForm<IFilterIncapacity>({ defaultValues: { workerId: "" } });
 
+  const workerId = watch("workerId");
   const tableColumns: ITableElement<IGetIncapacity>[] = [
     {
       fieldName: "numberDocument",
@@ -63,18 +72,21 @@ const SearchIncapacity = () => {
       },
     },
   ];
+
   const tableActions: ITableAction<IGetVinculation>[] = [
     {
       icon: "Detail",
       onClick: (row) => {
-        navigate(`./view/${row?.id}`);
+        showDetailIncapacity(row?.id);
       },
+      hide: !validateActionAccess("INCAPACIDAD_CONSULTAR"),
     },
     {
       icon: "Edit",
       onClick: (row) => {
-        navigate(`../edit/${row.id}`);
+        navigate(`../edit/${row?.id}`);
       },
+      hide: !validateActionAccess("INCAPACIDAD_EDITAR"),
     },
   ];
 
@@ -85,6 +97,7 @@ const SearchIncapacity = () => {
   }
 
   const onSubmit = handleSubmit(async (data: IFilterIncapacity) => {
+    setshowTable(true);
     loadTableData(data);
   });
 
@@ -97,7 +110,18 @@ const SearchIncapacity = () => {
           <div
             className="title-button text-main biggest pointer"
             onClick={() => {
-              navigate("../crear");
+              if (validateActionAccess("INCAPACIDAD_CREAR")) {
+                navigate("../crear");
+              } else {
+                setMessage({
+                  title: "Crear Incapacidad",
+                  show: true,
+                  OkTitle: "Aceptar",
+                  description: "No tienes permisos para esta acción",
+                  size: "large",
+                  background: true,
+                });
+              }
             }}
           >
             Crear incapacidad <AiOutlinePlusCircle />
@@ -129,22 +153,32 @@ const SearchIncapacity = () => {
                 value={"Limpiar campos"}
                 className="button-clean bold"
                 type="button"
-                action={reset}
+                action={() => {
+                  setshowTable(false);
+                  reset();
+                }}
               />
-              <ButtonComponent value={"Buscar"} className="button-save big" />
+              <ButtonComponent
+                value={"Buscar"}
+                className="button-save big disabled-black"
+                disabled={!workerId}
+              />
             </div>
           </FormComponent>
         </div>
 
-        <div className="container-sections-forms">
-          <TableComponent
-            ref={tableComponentRef}
-            url={`${process.env.urlApiPayroll}/api/v1/incapacity/get-paginated`}
-            columns={tableColumns}
-            actions={tableActions}
-            isShowModal={true}
-          />
-        </div>
+        {showTable && (
+          <div className="container-sections-forms">
+            <TableComponent
+              ref={tableComponentRef}
+              url={`${process.env.urlApiPayroll}/api/v1/incapacity/get-paginated`}
+              columns={tableColumns}
+              actions={tableActions}
+              isShowModal={true}
+              titleMessageModalNoResult="Sin resultados."
+            />
+          </div>
+        )}
       </div>
     </div>
   );

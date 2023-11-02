@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FormSteps from "../../../common/components/Form/form-steps.component";
 import { FormStebs } from "../../../common/interfaces/tabs-menu.interface";
 import useEmploymentsData from "../hooks/employment.hook";
@@ -48,8 +48,17 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     setFamilyData,
     handleUpdateWorker,
     watch,
-  } = useEmploymentsData();
+    navigate,
+    bankList,
+    accountType,
+  } = useEmploymentsData(action);
+  useEffect(() => {
+    setStep(0);
+  }, []);
 
+  const handleNavigation = () => {
+    navigate("../expedientes");
+  };
   const stebs: FormStebs[] = [
     {
       titleSteb: "1. Informacion personal",
@@ -116,7 +125,15 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           errors={errors}
           control={control}
           setValueRegister={setValueRegister}
-          list={[epsList, pensionList, arlList, levelRiskList, layoffList]}
+          list={[
+            epsList,
+            pensionList,
+            arlList,
+            levelRiskList,
+            layoffList,
+            accountType,
+            bankList,
+          ]}
           action={action}
           changedData={changedData}
           getValueRegister={getValueRegister}
@@ -165,6 +182,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
         }
         action={action}
         watch={watch}
+        navigate={handleNavigation}
       />
     </>
   );

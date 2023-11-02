@@ -17,9 +17,14 @@ interface IDateProps<T> {
   children?: React.JSX.Element | React.JSX.Element[];
   errors?: any;
   disabled?: boolean;
+  disabledDays?: number[];
+  disabledDates?: Date[];
   maxDate?: Date;
   minDate?: Date;
   fieldArray?: boolean;
+  optionsRegister?: {};
+  shouldUnregister?: boolean;
+  view?: "date" | "month" | "year";
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -48,6 +53,11 @@ export function DatePickerComponent({
   control,
   dateFormat,
   disabled,
+  disabledDates,
+  disabledDays,
+  optionsRegister,
+  shouldUnregister,
+  view = "date",
 }: IDateProps<any>): React.JSX.Element {
   const messageError = () => {
     const keysError = idInput.split(".");
@@ -81,28 +91,36 @@ export function DatePickerComponent({
         <Controller
           name={idInput}
           control={control}
-          render={({ field }) => (
-            <Calendar
-              id={field.name}
-              mask="99/99/9999"
-              dateFormat={dateFormat}
-              placeholder={placeholder}
-              className={`${className} ${messageError() ? "p-invalid" : ""}`}
-              showIcon
-              icon={
-                <span>
-                  <IoCalendarOutline />
-                </span>
-              }
-              showButtonBar
-              value={field.value && new Date(field.value)}
-              onChange={(e) => field.onChange(e.value)}
-              inputStyle={{ borderRight: "none" }}
-              minDate={minDate}
-              maxDate={maxDate}
-              disabled={disabled}
-            />
-          )}
+          rules={optionsRegister}
+          shouldUnregister={shouldUnregister}
+          render={({ field }) => {
+            return (
+              <Calendar
+                id={field.name}
+                mask="99/99/9999"
+                dateFormat={dateFormat}
+                placeholder={placeholder}
+                className={`${className} ${messageError() ? "p-invalid" : ""}`}
+                showIcon
+                icon={
+                  <span>
+                    <IoCalendarOutline />
+                  </span>
+                }
+                showButtonBar
+                value={field.value && new Date(field.value)}
+                onChange={(e) => field.onChange(e.value)}
+                onBlur={(e) => field.onBlur()}
+                inputStyle={{ borderRight: "none" }}
+                minDate={minDate}
+                maxDate={maxDate}
+                disabledDates={disabledDates}
+                disabledDays={disabledDays}
+                disabled={disabled}
+                view={view}
+              />
+            );
+          }}
         />
 
         {messageError() && <span className="icon-error"></span>}

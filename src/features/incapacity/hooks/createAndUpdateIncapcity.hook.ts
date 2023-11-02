@@ -44,12 +44,12 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     });
   };
 
-  const handleModalError = () => {
+  const handleModalError = (message: string) => {
     setMessage({
-      title: "Incapacidad",
-      description: `Error al ${
+      title: `Error al ${
         action !== "new" ? "editar" : "crear"
-      } la incapacidad, vuelve a intentarlo`,
+      } la incapacidad.`,
+      description: `${message || "Error"}, vuelve a intentarlo`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -67,7 +67,6 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
   const loadDefaultValues = async (): Promise<IIncapacity> => {
     if (action !== "new") {
       const { data } = await getByIdIncapacity(Number(id));
-
       return {
         id: data.id,
         codEmployment: data.codEmployment,
@@ -101,17 +100,34 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     mode: "all",
   });
 
-  const [startDate, endDate] = watch(["dateInitial", "dateFinish"]);
+  const [startDate, endDate, isExtension] = watch([
+    "dateInitial",
+    "dateFinish",
+    "isExtension",
+  ]);
 
   const showDays = () => {
     if (startDate && endDate) {
-      return calculateDifferenceDays(startDate, endDate);
+      const days = calculateDifferenceDays(startDate, endDate);
+      return days == 0 ? "1" : days;
     } else {
       return "0";
     }
   };
 
-  const onSubmit = handleSubmit(async (data: IIncapacity) => {
+  const disabledFields = (validate = false) => {
+    if (isExtension && action !== "new" && validate) {
+      return false;
+    }
+
+    if (action === "new") {
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleCreateUpdateLicense = async (data: IIncapacity) => {
     const response =
       action !== "new"
         ? await updateIncapacity(data)
@@ -120,8 +136,31 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     if (response.operation.code === EResponseCodes.OK) {
       handleModalSuccess();
     } else {
-      handleModalError();
+      handleModalError(response.operation.message);
     }
+  };
+
+  const onSubmit = handleSubmit(async (data: IIncapacity) => {
+    setMessage({
+      title: `${
+        action === "edit" ? "Editar incapacidad" : "Confirmacion de incapacidad"
+      }`,
+      description: `${
+        action === "edit"
+          ? "¿Estás segur@ de editar esta incapacidad?"
+          : "¿Estás segur@ de ejecutar esta acción?"
+      }`,
+      show: true,
+      OkTitle: "Aceptar",
+      onOk: () => {
+        handleCreateUpdateLicense(data);
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      cancelTitle: "Cancelar",
+      background: true,
+    });
   });
 
   return {
@@ -131,5 +170,8 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
     control,
     showDays,
     navigate,
+    disabledFields,
+    startDate,
+    endDate,
   };
 }

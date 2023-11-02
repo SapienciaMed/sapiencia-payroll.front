@@ -13,6 +13,7 @@ export interface IEmployment {
   salary?: number;
   totalValue?: number;
   idReasonRetirement: string;
+  retirementDate?: DateTime;
   charges?: ICharge[];
   typesContracts?: ITypesContracts[];
 }
@@ -118,17 +119,7 @@ export interface IGetVinculation {
   dateModified?: DateTime;
   userCreate?: string;
   dateCreate?: DateTime;
-  employment: {
-    idCharge: string;
-    institutionalMail: string;
-    idTypeContract: string;
-    contractNumber: string;
-    startDate: DateTime;
-    endDate: DateTime;
-    state: string;
-    idReasonRetirement: string;
-    typesContracts?: ITypesContracts[];
-  };
+  employment: IEmployment;
 }
 
 export interface ITypesContracts {
@@ -211,6 +202,7 @@ export interface IWorkersVacationDetail {
   periodFormer: string;
   enjoyed: string;
   available: number;
+  refund?: number;
   days: string;
   periodClosed: boolean;
   employment?: IEmploymentResult;
@@ -228,6 +220,22 @@ export interface IVacation {
   available: number;
   days: string;
   periodClosed: boolean;
+  refund: number;
+}
+
+export interface IVacationResult {
+  id?: number;
+  codEmployment: string;
+  period: string;
+  dateFrom: DateTime;
+  dateUntil: DateTime;
+  periodFormer: string;
+  enjoyed: string;
+  available: number;
+  days: string;
+  periodClosed: boolean;
+  employment?: IEmploymentResult;
+  vacationDay?: IVacationDay[];
 }
 
 export interface IFilterIncapacity {
@@ -250,6 +258,16 @@ export interface IIncapacity {
 
 export interface IFilterIncapacity {
   idEmployee?: number;
+}
+
+export interface IIncapacityTypes {
+  id?: number;
+  name?: string;
+}
+
+export interface IGetIncapacity extends IIncapacity {
+  employment?: IEmploymentWorker;
+  typeIncapacity: IIncapacityTypes | null;
 }
 export interface IVacationDay {
   id?: number;
@@ -290,22 +308,254 @@ export interface ICreateVacation {
 }
 
 export interface IEditVacation {
-  id?: number;
+  id: number;
+  idVacationDay: number;
   dateFrom: DateTime;
   dateUntil: DateTime;
+  observation: string;
+  available: number;
+  refundTypes: number;
+  refund: number;
+  enjoyed: number;
   totalDays?: number;
   pendingTotalDays?: number;
-  incapacityRefund?: boolean;
-  generalRefund?: boolean;
-  observation?: string;
 }
 
-export interface IIncapacityTypes {
+export interface ILicence {
   id?: number;
-  name?: string;
+  codEmployment: number;
+  idLicenceType?: number;
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  totalDays?: number;
+  licenceState: string;
+  resolutionNumber: string;
+  observation?: string;
+  licenceType: ILicenceType;
+  employment: IEmploymentWorker;
+}
+export interface ILicenceType {
+  id?: number;
+  name: string;
+  numberDays: number;
+  daysType: string;
 }
 
-export interface IGetIncapacity extends IIncapacity {
+export interface ILicenceFilters {
+  codEmployment?: number;
+  licenceState?: string;
+  idLicenceType?: number;
+  page: number;
+  perPage: number;
+}
+
+export interface ILicenceResult {
+  id?: number;
+  codEmployment: number;
+  idLicenceType?: number;
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  totalDays?: number;
+  licenceState: string;
+  resolutionNumber: string;
+  observation?: string;
+  employment?: IEmploymentResult;
+  licenceType?: ILicenceType;
+}
+
+export interface IReasonsForWithdrawal {
+  id: number;
+  name: string;
+}
+
+export interface IRetirementEmployment {
+  idReasonRetirement: string;
+  retirementDate: DateTime;
+  observation: string;
+  idEmployment: number;
+  state: string;
+}
+
+export interface ISalaryIncrement {
+  id?: number;
+  codCharge: number;
+  effectiveDate: Date;
+  numberActApproval: string;
+  porcentualIncrement: boolean;
+  incrementValue: number;
+  previousSalary: number;
+  newSalary: number;
+  observation?: string;
+  porcentualValue: number;
+  charge?: ICharge;
+}
+
+export interface ISalaryIncrementFilter {
+  codCharge?: number;
+  numberActApproval?: string;
+}
+
+export interface ISalaryHistory {
+  id?: number;
+  codEmployment: number;
+  codIncrement: number;
+  previousSalary?: number;
+  salary: number;
+  validity: boolean;
+  salaryIncrement: ISalaryIncrement;
+  effectiveDate: DateTime;
+  employment: IEmploymentWorker;
+}
+
+export interface IContractSuspension {
+  id: number;
+  document: string;
+  names: string;
+  surnames: string;
+  typeContract: string;
+  nroContract: string;
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  codEmployment: number;
+  dateStartSuspension: DateTime;
+  dateEndSuspension: DateTime;
+  adjustEndDate: boolean;
+  newDateEnd: DateTime;
+  observation: string;
+}
+
+export interface IContractSuspensionData {
+  id?: number;
+  codEmployment: number;
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  adjustEndDate: boolean;
+  newDateEnd: DateTime;
+  observation: string;
   employment?: IEmploymentWorker;
-  typeIncapacity: IIncapacityTypes | null;
+}
+
+export interface IFilterContractSuspension {
+  codEmployment: number;
+}
+
+export interface IFormPeriod {
+  id?: number;
+  idFormType: number;
+  state: string;
+  dateStart: DateTime;
+  dateEnd: DateTime;
+  paidDate: DateTime;
+  month: number;
+  year: number;
+  observation?: string;
+  formsType?: IFormTypes;
+}
+
+export interface IDeductionsFilter {
+  codEmployment?: number;
+  typeDeduction?: string;
+  codFormsPeriod?: number;
+}
+
+export interface IDeductionType {
+  id: number;
+  name: string;
+  cyclic?: boolean;
+  type?: string;
+}
+
+export interface IManualDeduction {
+  id?: number;
+  typeDeduction: string;
+  codEmployment: number;
+  codDeductionType?: number;
+  cyclic: boolean;
+  numberInstallments?: number;
+  applyExtraordinary?: boolean;
+  porcentualValue?: boolean;
+  value: number;
+  totalMount?: number;
+  codFormsPeriod?: number;
+  formsPeriod?: IFormPeriod;
+  state: string;
+  observation?: string;
+  deductionsType?: IDeductionType;
+  employment?: IEmploymentWorker;
+}
+
+export interface IFormPeriodFilters {
+  idFormType?: number;
+  state?: string;
+  paidDate?: Date;
+}
+
+export interface IFormTypes {
+  id?: number;
+  special: boolean;
+  name: string;
+  frecuencyPaid: string;
+}
+
+export interface ITaxDeductible {
+  id?: number;
+  year: number;
+  codEmployment: number;
+  type: string;
+  value: number;
+  state: string;
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface IGetTaxDeductible extends ITaxDeductible {
+  employment: IEmploymentWorker;
+}
+
+export interface IFilterTaxDeductible {
+  year: string;
+  codEmployment: number;
+}
+
+export interface IOtherIncome {
+  id?: number;
+  codTypeIncome: number;
+  codEmployment: number;
+  codPayroll: number;
+  value: number;
+  state: string;
+  valuesMax?: IParameter[];
+  userModified?: string;
+  dateModified?: DateTime;
+  userCreate?: string;
+  dateCreate?: DateTime;
+}
+
+export interface IIncomeType {
+  id: number;
+  name: string;
+  accountingAccount: string;
+  type: string;
+}
+
+export interface IGetOtherIncome extends IOtherIncome {
+  employment: IEmploymentWorker;
+  incomeType: IIncomeType;
+}
+
+export interface IFilterOtherIncome {
+  page: number;
+  perPage: number;
+  codPayroll: number | null;
+  codEmployment: number | null;
+}
+
+export interface IParameter {
+  id: string;
+  name: string;
+  description?: string;
+  value: string;
+  aplicationId: number;
 }

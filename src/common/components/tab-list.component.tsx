@@ -40,7 +40,7 @@ function TabListComponent({
   }, [index]);
 
   return (
-    <div className={`tabs-component ${className ? className : ""}`}>
+    <div className={`tabs-component ${className || ""}`}>
       <div className="tabs-selection">
         {tabs.map((tab) => {
           let active = "";

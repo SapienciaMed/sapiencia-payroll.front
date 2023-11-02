@@ -1,4 +1,4 @@
-FROM node:14-alpine AS root
+FROM node:16-alpine AS root
 WORKDIR /app
 COPY . .
 COPY .env.qa /app/.env

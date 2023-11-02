@@ -5,6 +5,13 @@ import {
   IVinculation,
   ITypesContracts,
   IWorker,
+  IEmployment,
+  IReasonsForWithdrawal,
+  IEmploymentWorker,
+  IRetirementEmployment,
+  IContractSuspensionData,
+  IFormPeriod,
+  IFormTypes,
 } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
@@ -12,10 +19,13 @@ import useCrudService from "./crud-service.hook";
 export function usePayrollService() {
   const baseURL: string = process.env.urlApiPayroll;
   const authUrl: string = "/api/v1/vinculation";
+  const payrollUrl: string = "/api/v1/payroll";
 
-  const { get, post, put} = useCrudService(null, baseURL);
+  const { get, post, put } = useCrudService(baseURL);
 
-  async function getVinculationById(id:number): Promise<ApiResponse<IVinculation>> {
+  async function getVinculationById(
+    id: number
+  ): Promise<ApiResponse<IVinculation>> {
     try {
       const endpoint: string = `/`;
       return await get(`${authUrl}${endpoint}${id}`);
@@ -54,10 +64,12 @@ export function usePayrollService() {
     }
   }
 
-  async function getWorkers(): Promise<ApiResponse<IWorker[]>> {
+  async function getWorkers(
+    temporary: boolean
+  ): Promise<ApiResponse<IWorker[]>> {
     try {
       const endpoint: string = `/worker`;
-      return await get(`${authUrl}${endpoint}`);
+      return await get(`${authUrl}${endpoint}`, { temporary });
     } catch (error) {
       return new ApiResponse(
         {} as IWorker[],
@@ -66,8 +78,6 @@ export function usePayrollService() {
       );
     }
   }
-
-
 
   async function createWorker(
     data: IVinculation
@@ -99,6 +109,151 @@ export function usePayrollService() {
     }
   }
 
+  async function getEmploymentById(
+    id: number
+  ): Promise<ApiResponse<IEmploymentWorker[]>> {
+    try {
+      const endpoint: string = `/employment`;
+      return await get(`${authUrl}${endpoint}/${id}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IEmploymentWorker[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function getReasonsForWithdrawal(): Promise<
+    ApiResponse<IReasonsForWithdrawal[]>
+  > {
+    try {
+      const endpoint: string = `/reasonsForWithdrawal`;
+      return await get(`${authUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IReasonsForWithdrawal[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function retirementEmployment(
+    data: IRetirementEmployment
+  ): Promise<ApiResponse<IEmployment>> {
+    try {
+      const endpoint: string = `/employment/retirement`;
+      return await put(`${authUrl}${endpoint}`, data);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IEmployment,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function createSuspensionContract(
+    data: IContractSuspensionData
+  ): Promise<ApiResponse<IEmployment>> {
+    try {
+      const endpoint: string = `/suspension`;
+      return await post(`${authUrl}${endpoint}`, data);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IEmployment,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function getLastPeriods(
+    id: number
+  ): Promise<ApiResponse<IFormPeriod[]>> {
+    try {
+      const endpoint: string = `/last/${id}`;
+      return await get(`${payrollUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function getPeriods(): Promise<ApiResponse<IFormPeriod[]>> {
+    try {
+      const endpoint: string = `/available`;
+      return await get(`${payrollUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function getTypeSpreadSheet(): Promise<ApiResponse<IFormTypes[]>> {
+    try {
+      const endpoint: string = `/types`;
+      return await get(`${payrollUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormTypes[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function createSpreadSheet(
+    data: IFormPeriod
+  ): Promise<ApiResponse<IFormPeriod>> {
+    try {
+      const endpoint: string = `/`;
+      return await post(`${payrollUrl}${endpoint}`, data);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function updateSpreadSheet(
+    data: IFormPeriod
+  ): Promise<ApiResponse<IFormPeriod>> {
+    try {
+      const endpoint: string = `/`;
+      return await put(`${payrollUrl}${endpoint}`, data);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function getByIdSpreadSheet(
+    id: number
+  ): Promise<ApiResponse<IFormPeriod>> {
+    try {
+      const endpoint: string = `/${id}`;
+      return await get(`${payrollUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod,
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
 
   return {
     getTypesContracts,
@@ -106,7 +261,17 @@ export function usePayrollService() {
     createWorker,
     getVinculationById,
     updateWorker,
-    getWorkers
+    getWorkers,
+    getEmploymentById,
+    getReasonsForWithdrawal,
+    retirementEmployment,
+    createSuspensionContract,
+    getLastPeriods,
+    getPeriods,
+    getTypeSpreadSheet,
+    createSpreadSheet,
+    updateSpreadSheet,
+    getByIdSpreadSheet,
   };
 }
 

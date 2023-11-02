@@ -65,10 +65,8 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
   const { width } = useWidth();
   const { setMessage } = useContext(AppContext);
 
-  const token = localStorage.getItem("token");
-
   // Declaraciones
-  const { post } = useCrudService(token, url);
+  const { post } = useCrudService(url);
   useImperativeHandle(ref, () => ({
     loadData: loadData,
   }));
@@ -79,11 +77,9 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
     currentPage?: number
   ): Promise<void> {
     setLoading(true);
-
     if (newSearchCriteria) {
       setSearchCriteria(newSearchCriteria);
     }
-
     const body = newSearchCriteria || searchCriteria || {};
     const res = await post<IPagingData<any>>(url, {
       ...body,
@@ -92,18 +88,29 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
     });
     if (res.operation.code === EResponseCodes.OK) {
       setResultData(res.data);
+
+      if (res.data.array.length <= 0 && isShowModal) {
+        setMessage({
+          title: `${titleMessageModalNoResult || ""}`,
+          show: true,
+          description: "No hay resultado para la búsqueda",
+          OkTitle: "Aceptar",
+          background: true,
+        });
+      }
     } else {
-      // generar mensaje de error / advetencia
-    }
-    if (res.data.array.length <= 0 && isShowModal) {
       setMessage({
-        title: `${titleMessageModalNoResult || ""}`,
+        title: `Error en la consulta de datos`,
         show: true,
-        description: "No hay resultado para la búsqueda",
+        description: res.operation.message,
         OkTitle: "Aceptar",
         background: true,
+        onOk: () => {
+          setMessage({});
+        },
       });
     }
+
     setLoading(false);
   }
 
@@ -131,29 +138,48 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
       <div className="card-grid-item">
         <div className="card-header">
           {columns.map((column) => {
+            const properties = column.fieldName.split(".");
+            let field =
+              properties.length === 2
+                ? item[properties[0]][properties[1]]
+                : item[properties[0]];
             return (
               <div key={item} className="item-value-container">
                 <p className="text-black bold">{column.header}</p>
-                <p>
-                  {" "}
-                  {column.renderCell
-                    ? column.renderCell(item)
-                    : item[column.fieldName]}{" "}
-                </p>
+                <p> {column.renderCell ? column.renderCell(item) : field} </p>
               </div>
             );
           })}
         </div>
         <div className="card-footer">
-          {actions.map((action) => (
-            <div key={action.icon} onClick={() => action.onClick(item)}>
-              {getIconElement(action.icon, "src")}
-            </div>
-          ))}
+          {actions.map((action, index) => {
+            return (
+              <div key={index} onClick={() => action.onClick(item)}>
+                {action.customIcon ? (
+                  <div className="button grid-button button-link">
+                    {action.customIcon()}
+                  </div>
+                ) : (
+                  getIconElement(action.icon, "src")
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     );
   };
+
+  useImperativeHandle(ref, () => ({
+    loadData: loadData,
+    emptyData: EmptyData,
+  }));
+
+  async function EmptyData(): Promise<void> {
+    setLoading(true);
+    setResultData({ array: [], meta: { total: 0 } });
+    setLoading(false);
+  }
 
   return (
     <div className="spc-common-table">
@@ -183,6 +209,7 @@ const TableComponent = forwardRef<IRef, IProps<any>>((props, ref) => {
               field={col.fieldName}
               header={col.header}
               body={col.renderCell}
+              sortable={col.sorteable}
             />
           ))}
 
@@ -238,6 +265,12 @@ function getIconElement(icon: string, element: "name" | "src") {
         "Eliminar"
       ) : (
         <Icons.FaTrashAlt className="button grid-button button-delete" />
+      );
+    case "Link":
+      return element == "name" ? (
+        "Vincular"
+      ) : (
+        <Icons.FaLink className="button grid-button button-link" />
       );
     default:
       return "";
@@ -349,9 +382,19 @@ const ActionComponent = (props: {
 }): React.JSX.Element => {
   return (
     <div className="spc-table-action-button">
-      {props.actions.map((action) => (
-        <div key={action.icon} onClick={() => action.onClick(props.row)}>
-          {getIconElement(action.icon, "src")}
+      {props.actions.map((action, index) => (
+        <div
+          style={{ display: action.hide ? "none" : "block" }}
+          key={index}
+          onClick={() => action.onClick(props.row)}
+        >
+          {action.customIcon ? (
+            <div className="button grid-button button-link">
+              {action.customIcon()}
+            </div>
+          ) : (
+            getIconElement(action.icon, "src")
+          )}
         </div>
       ))}
     </div>

@@ -7,6 +7,7 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import { FormStebs } from "../../interfaces/tabs-menu.interface";
+import { NavigateFunction, NavigateOptions, To } from "react-router-dom";
 
 interface IFormStepsProp {
   titleForm: string;
@@ -21,6 +22,7 @@ interface IFormStepsProp {
   actionSubmit: any;
   action: string;
   watch: any;
+  navigate: NavigateFunction;
 }
 
 const FormSteps = ({
@@ -36,6 +38,7 @@ const FormSteps = ({
   register,
   action,
   watch,
+  navigate,
 }: // watch,
 IFormStepsProp) => {
   const { step } = useContext(AppContext);
@@ -59,9 +62,7 @@ IFormStepsProp) => {
               <div key={infoSteb.position}>
                 <div
                   className={`steb-option ${
-                    infoSteb.position === step || step > infoSteb.position
-                      ? "active"
-                      : ""
+                    infoSteb.position === step ? "active" : ""
                   }`}
                 >
                   {infoSteb.titleSteb}
@@ -84,27 +85,43 @@ IFormStepsProp) => {
                   {step === infoStep.position && infoStep.contentStep}
 
                   <div className="container-actions_formTabs">
-                    {step !== 0 && (
+                    {step == 0 && action === "new" ? (
+                      <></>
+                    ) : (
                       <ButtonComponent
-                        value={"Anterior"}
-                        className={`${"button-tab_save hover-three big"}`}
-                        action={handleBackStep}
+                        value={
+                          step == 0 && action != "new" ? "Regresar" : "Anterior"
+                        }
+                        className={`${"button-save big"}`}
+                        action={() => {
+                          if (step == 0) {
+                            navigate("/");
+                          } else {
+                            handleBackStep();
+                          }
+                        }}
+                        type="button"
                       />
                     )}
-                    <ButtonComponent
-                      value={step === stepsAmount ? "Guardar" : "Siguiente"}
-                      className={`${
-                        validForm
-                          ? "button-tab_save hover-three big"
-                          : "button-tab_save invalid big"
-                      } ${
-                        step === stepsAmount && action === "view"
-                          ? "disabled"
-                          : ""
-                      }`}
-                      type={step === stepsAmount ? "submit" : "button"}
-                      action={handleNextStep}
-                    />
+
+                    {action === "view" && step === stepsAmount ? (
+                      <></>
+                    ) : (
+                      <ButtonComponent
+                        value={step === stepsAmount ? "Guardar" : "Siguiente"}
+                        className={`${
+                          validForm
+                            ? "button-save big"
+                            : "button-save  invalid big"
+                        } ${
+                          step === stepsAmount && action === "view"
+                            ? "disabled"
+                            : ""
+                        }`}
+                        type={step === stepsAmount ? "submit" : "button"}
+                        action={handleNextStep}
+                      />
+                    )}
                   </div>
                 </div>
               );

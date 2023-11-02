@@ -1,113 +1,28 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import TableComponent from "../../../common/components/table.component";
 import { InputComponent } from "../../../common/components/Form/input.component";
-import { Controller, useForm } from "react-hook-form";
-import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { searchRecord } from "../../../common/schemas";
-import { DateTime } from "luxon";
 import {
   ButtonComponent,
   FormComponent,
   SelectComponent,
 } from "../../../common/components/Form";
-import {
-  ITableAction,
-  ITableElement,
-} from "../../../common/interfaces/table.interfaces";
-import {
-  IFilterVinculation,
-  IGetVinculation,
-} from "../../../common/interfaces/payroll.interfaces";
-import { useNavigate } from "react-router-dom";
-import useEmploymentsData from "../hooks/employment.hook";
+import useRecordsData from "../hooks/records.hook";
+import { Controller } from "react-hook-form";
 
 const EmploymentRecordsPage = () => {
-  const { typesContracts, activeWorker } = useEmploymentsData();
-  const tableComponentRef = useRef(null);
-  const navigate = useNavigate();
-  const resolver = useYupValidationResolver(searchRecord);
+  const [tableView, setTableView] = useState<boolean>(false);
   const {
-    handleSubmit,
+    onSubmit,
     register,
-    formState: { errors },
-    setValue: setValueRegister,
+    errors,
     control,
+    activeWorker,
+    typesContracts,
     reset,
-  } = useForm<IFilterVinculation>({ resolver });
-  const tableColumns: ITableElement<IGetVinculation>[] = [
-    {
-      fieldName: "numberDocument",
-      header: "Tipo y # documento",
-      renderCell: (row) => {
-        return <>{row.typeDocument + " " + row.numberDocument}</>;
-      },
-    },
-    {
-      fieldName: "firstName",
-      header: "Nombres y Apellidos",
-      renderCell: (row) => {
-        return (
-          <>
-            {row.firstName +
-              " " +
-              row.secondName +
-              " " +
-              row.surname +
-              " " +
-              row.secondSurname}
-          </>
-        );
-      },
-    },
-    {
-      fieldName: "employment.typesContracts",
-      header: "Tipo de vinculación",
-      renderCell: (row) => {
-        return <>{row.employment?.typesContracts[0].name}</>;
-      },
-    },
-    {
-      fieldName: "employment.startDate",
-      header: "Fecha inicio",
-      renderCell: (row) => {
-        return (
-          <>{DateTime.fromISO(row.employment.startDate).toLocaleString()}</>
-        );
-      },
-    },
-    {
-      fieldName: "employment.endDate",
-      header: "Fecha fin",
-      renderCell: (row) => {
-        return <>{DateTime.fromISO(row.employment.endDate).toLocaleString()}</>;
-      },
-    },
-  ];
-  const tableActions: ITableAction<IGetVinculation>[] = [
-    {
-      icon: "Detail",
-      onClick: (row) => {
-        navigate(`./view/${row?.id}`);
-      },
-    },
-    {
-      icon: "Edit",
-      onClick: (row) => {
-        navigate(`./edit/${row.id}`);
-      },
-    },
-  ];
-
-  function loadTableData(searchCriteria?: object): void {
-    if (tableComponentRef.current) {
-      tableComponentRef.current.loadData(searchCriteria);
-    }
-  }
-
-  const onSubmit = handleSubmit(async (data: IFilterVinculation) => {
-    loadTableData(data);
-  });
-
+    tableComponentRef,
+    tableColumns,
+    tableActions,
+  } = useRecordsData();
   return (
     <>
       <div className="container-sections-forms m-24px">
@@ -124,14 +39,24 @@ const EmploymentRecordsPage = () => {
           >
             <div className="container-sections-forms">
               <div className="grid-form-3-container gap-25">
-                <InputComponent
-                  idInput={"documentNumber"}
-                  label={<>No. Documento</>}
-                  typeInput={"text"}
-                  register={register}
-                  errors={errors}
-                  className="input-basic medium"
-                  classNameLabel="text-black big bold"
+                <Controller
+                  control={control}
+                  name={"documentNumber"}
+                  render={({ field }) => {
+                    return (
+                      <InputComponent
+                        idInput={field.name}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        label={<>No. Documento</>}
+                        typeInput={"text"}
+                        register={register}
+                        errors={errors}
+                        className="input-basic medium"
+                        classNameLabel="text-black big bold"
+                      />
+                    );
+                  }}
                 />
                 <SelectComponent
                   idInput={"state"}
@@ -154,24 +79,44 @@ const EmploymentRecordsPage = () => {
                   placeholder="Seleccione"
                 />
               </div>
-              <div className="grid-form-2-container gap-25 mt-14px">
-                <InputComponent
-                  idInput={"name"}
-                  label={<>Nombre</>}
-                  typeInput={"text"}
-                  register={register}
-                  errors={errors}
-                  className="input-basic medium"
-                  classNameLabel="text-black big bold"
+              <div className="grid-form-2-container gap-25">
+                <Controller
+                  control={control}
+                  name={"name"}
+                  render={({ field }) => {
+                    return (
+                      <InputComponent
+                        idInput={field.name}
+                        label={<>Nombre</>}
+                        typeInput={"text"}
+                        register={register}
+                        errors={errors}
+                        className="input-basic medium"
+                        classNameLabel="text-black big bold"
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                      />
+                    );
+                  }}
                 />
-                <InputComponent
-                  idInput={"lastName"}
-                  label={<>Apellido</>}
-                  typeInput={"text"}
-                  register={register}
-                  errors={errors}
-                  className="input-basic medium"
-                  classNameLabel="text-black big bold"
+                <Controller
+                  control={control}
+                  name={"lastName"}
+                  render={({ field }) => {
+                    return (
+                      <InputComponent
+                        idInput={field.name}
+                        label={<>Apellido</>}
+                        typeInput={"text"}
+                        register={register}
+                        errors={errors}
+                        className="input-basic medium"
+                        classNameLabel="text-black big bold"
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                      />
+                    );
+                  }}
                 />
               </div>
             </div>
@@ -180,22 +125,35 @@ const EmploymentRecordsPage = () => {
                 value={"Limpiar campos"}
                 className="button-clean bold"
                 type="button"
-                action={reset}
+                action={() => {
+                  reset();
+                  tableComponentRef.current.emptyData();
+                  setTableView(false);
+                }}
               />
-              <ButtonComponent value={"Buscar"} className="button-save big" />
+              <ButtonComponent
+                value={"Buscar"}
+                className="button-save big"
+                form="searchRecordForm"
+                action={() => {
+                  setTableView(true);
+                }}
+                type="submit"
+              />
             </div>
           </FormComponent>
         </div>
-
-        <div className="container-sections-forms">
-          <TableComponent
-            ref={tableComponentRef}
-            url={`${process.env.urlApiPayroll}/api/v1/vinculation/get-paginated`}
-            columns={tableColumns}
-            actions={tableActions}
-            isShowModal={false}
-          />
-        </div>
+        {tableView && (
+          <div className="container-sections-forms">
+            <TableComponent
+              ref={tableComponentRef}
+              url={`${process.env.urlApiPayroll}/api/v1/vinculation/get-paginated`}
+              columns={tableColumns}
+              actions={tableActions}
+              isShowModal={false}
+            />
+          </div>
+        )}
       </div>
     </>
   );

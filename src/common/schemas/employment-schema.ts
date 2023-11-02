@@ -1,5 +1,8 @@
 import * as yup from "yup";
 import { calculateLimiteEdad, calculateMayorEdad } from "../utils/helpers";
+import { EIncomeType } from "../constants/otherincome.enum";
+import useCreateAndUpdateOtherIncome from "../../features/otherIncome/hooks/createAndUpdateOtherIncome.hook";
+import { IParameter } from "../interfaces/payroll.interfaces";
 
 const personalInformationLocalization = yup.object({
   worker: yup.object({
@@ -106,9 +109,8 @@ const afiliaciones = yup.object({
 });
 
 export const searchRecord = yup.object({
-  name: yup.string().max(15, "máximo 15 caracteres"),
-  lastName: yup.string().max(15, "máximo 15 caracteres"),
-  documentNumber: yup.string().max(15, "máximo 15 caracteres"),
+  idWorker: yup.number().required("Seleccionar colaborador es obligatorio"),
+  period: yup.number().required("Seleccionar un periodo es obligatorio"),
 });
 
 export const formsPayroll = [
@@ -130,4 +132,210 @@ export const createAndUpdateIncapacity = yup.object({
     .required("El campo es obligatorio")
     .typeError("Fecha invalida"),
   // comments: yup.string().required("El campo es obligatorio"),
+});
+
+export const createLicenceSchema = yup.object({
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  idLicenceType: yup.string().required("El campo es obligatorio"),
+  dateStart: yup.string().required("El campo es obligatorio"),
+  dateEnd: yup.string().required("El campo es obligatorio"),
+  licenceState: yup.string().required("El campo es obligatorio"),
+  resolutionNumber: yup
+    .string()
+    .required("El campo es obligatorio")
+    .max(50, "máximo 50 carácteres"),
+  observation: yup.string().optional().max(500, "máximo 500 carácteres"),
+});
+// comments: yup.string().required("El campo es obligatorio"),
+export const searchStaff = yup.object({
+  workerId: yup.string().required("El campo es obligatorio"),
+});
+
+export const retirementEmploymentSchema = yup.object({
+  idReasonRetirement: yup.string().required("El campo es obligatorio"),
+  retirementDate: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  observation: yup
+    .string()
+    .required("El campo es obligatorio")
+    .min(3, "Ingrese al menos 3 caracteres")
+    .max(1000, "Solo se permiten 1000 caracteres"),
+});
+
+export const filterIncrementSalarySchema = yup.object({
+  numberActApproval: yup.string().required("El campo es obligatorio"),
+});
+
+export const createUpdateIncrementSalarySchema = yup.object({
+  codCharge: yup.string().required("El campo es obligatorio"),
+  previousSalary: yup.string(),
+  numberActApproval: yup
+    .string()
+    .required("El campo es obligatorio")
+    .max(100, "Solo se permiten 100 caracteres"),
+  newSalary: yup
+    .string()
+    .required("El campo es obligatorio")
+    .test(
+      "mayor-salaryActual",
+      "El nuevo salario debe ser mayor al salario actual",
+      (value, context) => {
+        const { previousSalary } = context.parent;
+        if (value && previousSalary) {
+          return parseFloat(value) >= parseFloat(previousSalary);
+        }
+        return true;
+      }
+    ),
+  effectiveDate: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  incrementValue: yup
+    .string()
+    .required("El campo es obligatorio")
+    .test(
+      "incremento-valido",
+      "Debe existir un incremento valido",
+      (value, context) => {
+        if (value) {
+          return Number(value) <= 0 ? false : true;
+        }
+        return true;
+      }
+    ),
+  observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
+});
+
+export const filterSuspensionContractSchema = yup.object({
+  codEmployment: yup.string().required("El campo es obligatorio"),
+});
+
+export const createSuspensionContractSchema = yup.object({
+  dateStartSuspension: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  dateEndSuspension: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  observation: yup
+    .string()
+    .required("El campo es obligatorio")
+    .max(500, "Solo se permiten 500 caracteres"),
+});
+
+export const createDeductionOneSchema = yup.object({
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  typeDeduction: yup.string().required("El campo es obligatorio"),
+});
+
+export const createDeductionTwoSchema = yup.object({
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  typeDeduction: yup.string().required("El campo es obligatorio"),
+  codDeductionType: yup.string().required("El campo es obligatorio"),
+  codFormsPeriod: yup.string().required("El campo es obligatorio"),
+  value: yup.number().required("El campo es obligatorio"),
+  observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
+});
+
+export const createDeductionThreeSchema = yup.object({
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  typeDeduction: yup.string().required("El campo es obligatorio"),
+  codDeductionType: yup.string().required("El campo es obligatorio"),
+  codFormsPeriod: yup.string().required("El campo es obligatorio"),
+  value: yup.number().required("El campo es obligatorio"),
+  observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
+});
+
+export const formDeduction = [
+  createDeductionOneSchema,
+  createDeductionTwoSchema,
+  createDeductionThreeSchema,
+];
+
+export const createOrUpdateSpreadSheetSchema = yup.object({
+  idFormType: yup.string().required("El campo es obligatorio"),
+  dateStart: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  dateEnd: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  paidDate: yup
+    .date()
+    .required("El campo es obligatorio")
+    .typeError("Fecha invalida"),
+  month: yup
+    .number()
+    .typeError("El campo debe ser obligatorio")
+    .required("El campo es obligatorio"),
+  year: yup
+    .number()
+    .test("is-year-actual", "El año debe ser el actual", (value) => {
+      const yearActual = new Date().getFullYear();
+
+      if (value === yearActual) {
+        return true;
+      }
+
+      return false;
+    })
+    .typeError("El valor debe ser un numero")
+    .required("El campo debe ser obligatorio"),
+  observation: yup.string().max(500, "Solo se permiten 500 caracteres"),
+});
+
+export const createOrUpdateTaxDeductible = yup.object({
+  year: yup
+    .string()
+    .required("El campo es obligatorio")
+    .max(4, "Solo se permiten 4 caracteres"),
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  type: yup.string().required("El campo es obligatorio"),
+  value: yup.number().required("El campo es obligatorio"),
+});
+
+export const createOrUpdateOtherIncome = yup.object({
+  codPayroll: yup.string().required("El campo es obligatorio"),
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  codTypeIncome: yup.string().required("El campo es obligatorio"),
+  valuesMax: yup.array(),
+  value: yup
+    .number()
+    .test(
+      "tope-year",
+      "El  valor sobrepasa el tope esperado",
+      async (value, context) => {
+        const { codTypeIncome, valuesMax } = context.parent;
+
+        if (codTypeIncome === String(EIncomeType.AprovechamientoTiempoLibre)) {
+          const valueMax = valuesMax.find(
+            (i: IParameter) => i.id === "TOPE_APROVECHAMIENTO_LIBRE"
+          ) as IParameter;
+
+          if (Number(value) > Number(valueMax.value)) {
+            return false;
+          }
+
+          return true;
+        }
+
+        if (codTypeIncome === String(EIncomeType.ApoyoEstudiantil)) {
+          if (Number(value) > 5000000) {
+            return false;
+          }
+
+          return true;
+        }
+
+        return true;
+      }
+    )
+    .required("El campo es obligatorio"),
 });

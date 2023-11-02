@@ -1,179 +1,123 @@
-import React, { useContext, useRef } from "react";
-import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import { searchRecord } from "../../../common/schemas";
-import { Controller, useForm } from "react-hook-form";
-import {
-  ITableAction,
-  ITableElement,
-} from "../../../common/interfaces/table.interfaces";
+import { useState } from "react";
 import {
   ButtonComponent,
   FormComponent,
   SelectComponent,
 } from "../../../common/components/Form";
 import TableComponent from "../../../common/components/table.component";
-import { DateTime } from "luxon";
-import {
-  IFilterVacation,
-  IWorkersVacation,
-  IWorkersVacationDetail,
-} from "../../../common/interfaces/payroll.interfaces";
-import VacationTable from "../forms/vacationTable";
-import { AppContext } from "../../../common/contexts/app.context";
-import useListData from "../hooks/list.hook";
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import useSearchVacationData from "../hooks/search-vacation.hook";
 
 const SearchVacationPage = () => {
-  const tableComponentRef = useRef(null);
-  const resolver = useYupValidationResolver(searchRecord);
-  const { setMessage } = useContext(AppContext);
+  const [tableView, setTableView] = useState<boolean>(false);
   const {
-    handleSubmit,
-    register,
-    formState: { errors },
-    setValue: setValueRegister,
+    navigate,
+    onSubmit,
     control,
+    errors,
+    activeWorkerList,
+    listPeriods,
     reset,
-  } = useForm<IFilterVacation>({ resolver });
-  const tableColumns: ITableElement<IWorkersVacationDetail>[] = [
-    {
-      fieldName: "employment.worker.firstName",
-      header: "Colaborador",
-      renderCell: (row) => {
-        return (
-          <>
-            {row.employment.worker.firstName +
-              " " +
-              row.employment.worker.surname}
-          </>
-        );
-      },
-    },
-    {
-      fieldName: "period",
-      header: "Periodo",
-      renderCell: (row) => {
-        return <>{row.period}</>;
-      },
-    },
-    {
-      fieldName: "dateFrom",
-      header: "Desde",
-      renderCell: (row) => {
-        return <>{DateTime.fromISO(row.dateFrom).toLocaleString()}</>;
-      },
-    },
-    {
-      fieldName: "dateUntil",
-      header: "Hasta",
-      renderCell: (row) => {
-        return <>{DateTime.fromISO(row.dateUntil).toLocaleString()}</>;
-      },
-    },
-    {
-      fieldName: "periodClosed",
-      header: "Finalizado",
-      renderCell: (row) => {
-        return <>{row.periodClosed ? "si" : "No"}</>;
-      },
-    },
-    {
-      fieldName: "pendingDays",
-      header: "Días",
-      renderCell: (row) => {
-        return <>{row.periodFormer}</>;
-      },
-    },
-  ];
-  const tableActions: ITableAction<IWorkersVacationDetail>[] = [
-    {
-      icon: "Detail",
-      onClick: (row) => {
-        
+    tableComponentRef,
+    period,
+    workerId,
+    tableColumns,
+    tableActions,
+    setMessage,
+    validateActionAccess,
+  } = useSearchVacationData();
 
-        setMessage({
-          title: "Detalle posición presupuestaria",
-          show: true,
-          OkTitle: "Aceptar",
-          description: (
-            <>
-              <VacationTable row={row} />
-            </>
-          ),
-          size: "large",
-          background: true,
-        });
-      },
-    },
-  ];
-
-  function loadTableData(searchCriteria?: object): void {
-    if (tableComponentRef.current) {
-      tableComponentRef.current.loadData(searchCriteria);
-    }
-  }
-
-  const onSubmit = handleSubmit(async (data: IFilterVacation) => {
-    loadTableData(data);
-  });
-
-  const { listPeriods, activeWorkerList } = useListData();
   return (
     <>
-      <div className="container-sections-forms m-24px">
-        <div>
-          <span className="text-black extra-large bold">Vacaciones</span>
-        </div>
-        <div>
-          <FormComponent
-            id="searchRecordForm"
-            className="form-signIn"
-            action={onSubmit}
-          >
-            <div className="container-sections-forms">
-              <div className="grid-form-2-container gap-25">
-                <SelectComponent
-                  idInput={"workerId"}
-                  control={control}
-                  errors={errors}
-                  data={activeWorkerList}
-                  label={"Colaborador"}
-                  className="select-basic medium"
-                  classNameLabel="text-black big bold"
-                  placeholder="Seleccione"
-                  filter={true}
+      <div className="main-page">
+        <div className="card-table">
+          <div className="title-area">
+            <label className="text-black extra-large bold">Vacaciones</label>
+
+            <div
+              className="title-button text-main biggest pointer"
+              onClick={() => {
+                if (validateActionAccess("VACACION_CREAR")) {
+                  navigate("../crear");
+                } else {
+                  setMessage({
+                    title: "Crear Vacaciones",
+                    show: true,
+                    OkTitle: "Aceptar",
+                    description: "No tienes permisos para esta acción",
+                    size: "large",
+                    background: true,
+                  });
+                }
+              }}
+            >
+              Crear vacaciones <AiOutlinePlusCircle />
+            </div>
+          </div>
+          <div>
+            <FormComponent
+              id="searchRecordForm"
+              className="form-signIn"
+              action={onSubmit}
+            >
+              <div className="container-sections-forms">
+                <div className="grid-form-2-container gap-25">
+                  <SelectComponent
+                    idInput={"workerId"}
+                    control={control}
+                    errors={errors}
+                    data={activeWorkerList}
+                    label={"Documento-Nombre del empleado"}
+                    className="select-basic medium"
+                    classNameLabel="text-black big bold"
+                    placeholder="Seleccione"
+                    filter={true}
+                  />
+                  <SelectComponent
+                    idInput={"period"}
+                    control={control}
+                    errors={errors}
+                    data={listPeriods}
+                    label={"Periodo"}
+                    className="select-basic medium"
+                    classNameLabel="text-black big bold"
+                    placeholder="Seleccione"
+                  />
+                </div>
+              </div>
+              <div className="button-save-container-display">
+                <ButtonComponent
+                  value={"Limpiar campos"}
+                  className="button-clean bold"
+                  type="button"
+                  action={() => {
+                    reset();
+                    tableComponentRef.current.emptyData();
+                    setTableView(false);
+                  }}
                 />
-                <SelectComponent
-                  idInput={"period"}
-                  control={control}
-                  errors={errors}
-                  data={listPeriods}
-                  label={"Periodo"}
-                  className="select-basic medium"
-                  classNameLabel="text-black big bold"
-                  placeholder="Seleccione"
+                <ButtonComponent
+                  value={"Buscar"}
+                  className="button-save disabled-black big"
+                  action={() => {
+                    setTableView(true);
+                  }}
+                  disabled={!period && !workerId}
                 />
               </div>
-            </div>
-            <div className="button-save-container-display">
-              <ButtonComponent
-                value={"Limpiar campos"}
-                className="button-clean bold"
-                type="button"
-                action={reset}
+            </FormComponent>
+          </div>
+          {tableView && (
+            <div className="container-sections-forms">
+              <TableComponent
+                ref={tableComponentRef}
+                url={`${process.env.urlApiPayroll}/api/v1/vacations/get-paginated`}
+                columns={tableColumns}
+                actions={tableActions}
+                isShowModal={false}
               />
-              <ButtonComponent value={"Buscar"} className="button-save big" />
             </div>
-          </FormComponent>
-        </div>
-
-        <div className="container-sections-forms">
-          <TableComponent
-            ref={tableComponentRef}
-            url={`${process.env.urlApiPayroll}/api/v1/vacations/get-paginated`}
-            columns={tableColumns}
-            actions={tableActions}
-            isShowModal={false}
-          />
+          )}
         </div>
       </div>
     </>

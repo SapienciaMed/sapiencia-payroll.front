@@ -1,7 +1,7 @@
 import React from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import {  UseFormRegister } from "react-hook-form";
 
 import { MdOutlineError } from "react-icons/md";
 
@@ -19,6 +19,7 @@ interface IInputProps<T> {
   errors?: any;
   disabled?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   id?: string;
   fieldArray?: boolean;
   rows?: number;
@@ -45,6 +46,7 @@ function TextAreaElement({
   value,
   disabled,
   onChange,
+  onBlur,
   defaultValue,
   id,
   rows,
@@ -61,6 +63,7 @@ function TextAreaElement({
       defaultValue={defaultValue}
       disabled={disabled}
       onChange={onChange}
+      onBlur={onBlur}
       value={value}
       rows={rows}
       cols={cols}
@@ -81,6 +84,7 @@ export function TextAreaComponent({
   errors,
   disabled,
   onChange,
+  onBlur,
   defaultValue,
   id,
   fieldArray,
@@ -125,6 +129,7 @@ export function TextAreaComponent({
           value={value}
           disabled={disabled}
           onChange={onChange}
+          onBlur={onBlur}
           defaultValue={defaultValue}
           id={id}
           rows={rows}

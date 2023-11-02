@@ -9,6 +9,14 @@ import ApplicationProvider from "./application-provider";
 import WorkerRoutes from "./features/worker/worker-routes";
 import VacationRoutes from "./features/vacation/vacation-routes";
 import IncapacityRoutes from "./features/incapacity/incapacity-routes";
+import WithDrawalRoutes from "./features/withdrawal/withdrawal-routes";
+import LicencesRoutes from "./features/Licences/licences-routes";
+import SalaryIncrementRoutes from "./features/salaryincrement/salary-increment-routes";
+import SuspensionContractRoutes from "./features/suspensioncontract/suspensioncontract-routes";
+import DeductionsRoutes from "./features/deductions/deductions-routes";
+import SpreadsSheetRoutes from "./features/spreadsheet/spreadsheet-routes";
+import OtherIncomeRoutes from "./features/otherIncome/otherIncome-routes";
+import IncomeDeductions from "./features/incomeDeductions/incomeDeductions-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
@@ -17,7 +25,7 @@ function App() {
 
   // Effect que comunica la aplicacion actual
   useEffect(() => {
-    localStorage.setItem('currentAplication',process.env.aplicationId)
+    localStorage.setItem("currentAplication", process.env.aplicationId);
     setTimeout(
       () => publish("currentAplication", process.env.aplicationId),
       500
@@ -32,8 +40,47 @@ function App() {
           <Suspense fallback={<p>Loading...</p>}>
             <Routes>
               <Route path={"/nomina/"} element={<HomePage />} />;
-              <Route path={"/nomina/trabajadores/*"} element={<WorkerRoutes />} />
-              <Route path={"/nomina/vacaciones/*"} element={<VacationRoutes />} />
+              <Route
+                path={"/nomina/trabajadores/*"}
+                element={<WorkerRoutes />}
+              />
+              <Route
+                path={"/nomina/vacaciones/*"}
+                element={<VacationRoutes />}
+              />
+              <Route
+                path={"/nomina/incapacidades/*"}
+                element={<IncapacityRoutes />}
+              />
+              <Route
+                path={"/nomina/licencias/*"}
+                element={<LicencesRoutes />}
+              />
+              <Route path={"/nomina/retiro/*"} element={<WithDrawalRoutes />} />
+              <Route
+                path={"/nomina/incremento/salario/*"}
+                element={<SalaryIncrementRoutes />}
+              />
+              <Route
+                path={"/nomina/suspension/contrato/*"}
+                element={<SuspensionContractRoutes />}
+              />
+              <Route
+                path={"/nomina/deduccion/*"}
+                element={<DeductionsRoutes />}
+              />
+              <Route
+                path={"/nomina/planilla/*"}
+                element={<SpreadsSheetRoutes />}
+              />
+              <Route
+                path={"/nomina/ingresos/otros/*"}
+                element={<OtherIncomeRoutes />}
+              />
+              <Route
+                path={"/nomina/deduccion/renta/*"}
+                element={<IncomeDeductions />}
+              />
             </Routes>
           </Suspense>
         </Router>

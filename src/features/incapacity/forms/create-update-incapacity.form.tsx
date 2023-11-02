@@ -1,3 +1,4 @@
+import { Controller } from "react-hook-form";
 import {
   FormComponent,
   SelectComponent,
@@ -5,7 +6,11 @@ import {
   ButtonComponent,
   DatePickerComponent,
   TextAreaComponent,
+  SwitchComponent,
+  LabelComponent,
 } from "../../../common/components/Form";
+
+import { EDirection } from "../../../common/constants/input.enum";
 
 import useListData from "../../vacation/hooks/list.hook";
 import useCreateAndUpdateIncapacityHook from "../hooks/createAndUpdateIncapcity.hook";
@@ -17,22 +22,51 @@ interface IPropsCreateAndUpdateIncapacityForm {
 export const CreateUpdateIncapacityForm = ({
   action,
 }: IPropsCreateAndUpdateIncapacityForm) => {
-  const { activeWorkerList, typesIncapacityList } = useListData();
+  const { activeWorkerList, typesIncapacityList } = useListData(false);
 
-  const { onSubmit, register, errors, control, showDays, navigate } =
-    useCreateAndUpdateIncapacityHook(action);
+  const {
+    onSubmit,
+    register,
+    errors,
+    control,
+    showDays,
+    navigate,
+    disabledFields,
+    startDate,
+    endDate,
+  } = useCreateAndUpdateIncapacityHook(action);
 
   return (
     <>
       <FormComponent className="form-signIn" action={onSubmit}>
         <div className="container-sections-forms">
           <div className="grid gap-25">
+            {action === "edit" && (
+              <div className="grid-span-3-columns">
+                <SwitchComponent
+                  idInput="isExtension"
+                  control={control}
+                  errors={errors}
+                  direction={EDirection.row}
+                  children={
+                    <>
+                      <LabelComponent
+                        value="Prorroga"
+                        className="text-black big bold"
+                        htmlFor="isExtension"
+                      />
+                    </>
+                  }
+                />
+              </div>
+            )}
             <div className="grid-form-2-container gap-25">
               <SelectComponent
                 idInput={"codEmployment"}
                 control={control}
                 errors={errors}
                 data={activeWorkerList}
+                disabled={disabledFields()}
                 label={
                   <>
                     Documento - Nombre empleado <span>*</span>
@@ -49,6 +83,7 @@ export const CreateUpdateIncapacityForm = ({
                 control={control}
                 errors={errors}
                 data={typesIncapacityList}
+                disabled={disabledFields()}
                 label={
                   <>
                     Origen de incapacidad <span>*</span>
@@ -64,6 +99,7 @@ export const CreateUpdateIncapacityForm = ({
               <DatePickerComponent
                 idInput={"dateInitial"}
                 control={control}
+                disabled={disabledFields()}
                 label={
                   <>
                     Fecha inicio <span>*</span>
@@ -75,11 +111,12 @@ export const CreateUpdateIncapacityForm = ({
                 // disabled={disabledFields}
                 placeholder="DD/MM/YYYY"
                 dateFormat="dd/mm/yy"
-                maxDate={new Date()}
+                maxDate={!endDate ? new Date() : new Date(endDate)}
               />
               <DatePickerComponent
                 idInput={"dateFinish"}
                 control={control}
+                disabled={disabledFields(true)}
                 label={
                   <>
                     Fecha fin <span>*</span>
@@ -88,21 +125,19 @@ export const CreateUpdateIncapacityForm = ({
                 errors={errors}
                 classNameLabel="text-black big bold"
                 className="dataPicker-basic  medium "
-                // disabled={disabledFields}
                 placeholder="DD/MM/YYYY"
                 dateFormat="dd/mm/yy"
-                maxDate={new Date()}
+                minDate={new Date(startDate)}
               />
 
               <InputComponent
-                idInput={"totalDay"}
+                idInput={""}
                 label={
                   <>
                     Total dias <span>*</span>
                   </>
                 }
                 typeInput={"text"}
-                register={register}
                 errors={errors}
                 disabled={true}
                 value={`${showDays()}`}
@@ -111,15 +146,27 @@ export const CreateUpdateIncapacityForm = ({
               />
 
               <div className="grid-span-3-columns">
-                <TextAreaComponent
-                  label={"Observaciones"}
-                  idInput={"comments"}
-                  // disabled={disabledFields}
-                  className="text-area-basic"
-                  classNameLabel="text-black big bold"
-                  register={register}
-                  errors={errors}
-                  rows={5}
+                <Controller
+                  control={control}
+                  name={"comments"}
+                  shouldUnregister={true}
+                  render={({ field }) => {
+                    return (
+                      <TextAreaComponent
+                        label={"Observaciones"}
+                        idInput={field.name}
+                        disabled={disabledFields(true)}
+                        className="text-area-basic"
+                        classNameLabel="text-black big bold"
+                        register={register}
+                        errors={errors}
+                        rows={5}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        value={field.value}
+                      />
+                    );
+                  }}
                 />
               </div>
             </div>

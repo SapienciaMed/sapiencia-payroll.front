@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import {
   Control,
-  Controller,
   FieldErrors,
   UseFormGetValues,
   UseFormRegister,
@@ -28,11 +27,8 @@ const AffiliationsForm = ({
   register,
   errors,
   control,
-  setValueRegister,
   list,
   action,
-  changedData,
-  getValueRegister,
 }: IOtherInformationProp) => {
   const { setDisabledFields, disabledFields } = useContext(AppContext);
   setDisabledFields(action == "view" ? true : false);
@@ -91,7 +87,7 @@ const AffiliationsForm = ({
           control={control}
           errors={errors}
           data={list[4]}
-          label={<>Riesgo</>}
+          label={<>Fondo de cesantías</>}
           className="select-basic medium"
           classNameLabel="text-black big bold"
           placeholder="Seleccione."
@@ -116,7 +112,7 @@ const AffiliationsForm = ({
           idInput={"worker.accountBankType"}
           control={control}
           errors={errors}
-          data={[]}
+          data={list[5]}
           label={<>Tipo de cuenta</>}
           className="select-basic medium"
           classNameLabel="text-black big bold"
@@ -127,7 +123,7 @@ const AffiliationsForm = ({
           idInput={"worker.bank"}
           control={control}
           errors={errors}
-          data={[]}
+          data={list[6]}
           label={<>Banco</>}
           className="select-basic medium"
           classNameLabel="text-black big bold"

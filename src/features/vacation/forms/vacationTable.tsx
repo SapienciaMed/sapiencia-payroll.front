@@ -1,130 +1,107 @@
-import React from "react";
 import { TextAreaComponent } from "../../../common/components/Form/input-text-area.component";
 import { IWorkersVacationDetail } from "../../../common/interfaces/payroll.interfaces";
-import { DateTime } from "luxon";
+import { ResponsiveTable } from "../../../common/components/Form/table-detail.component";
 
 const VacationTable = ({ row }: { row: IWorkersVacationDetail }) => {
+  const workerData = [
+    {
+      title: "Nro. documento",
+      value: `${row?.employment.worker.numberDocument}`,
+    },
+    {
+      title: "Nombre",
+      value: `${
+        row?.employment.worker.firstName + " " + row.employment.worker.surname
+      }`,
+    },
+    { title: "Cargo", value: `${row?.employment.charges[0].name}` },
+    { title: "Salario", value: `${row?.employment.salary}` },
+    { title: "Periodo", value: `${row?.period}` },
+  ];
+  const daysData = [
+    {
+      title: "Desde",
+      value: row?.vacationDay.map((day) => {
+        if (!day?.paid) return <p key={day?.id}>{day?.dateFrom}</p>;
+      }),
+    },
+    {
+      title: "Hasta",
+      value: row?.vacationDay.map((day) => {
+        if (!day?.paid) return <p key={day?.id}>{day?.dateUntil}</p>;
+      }),
+    },
+    {
+      title: "Total días",
+      value: row?.vacationDay.map((day) => {
+        if (!day?.paid) return <p key={day?.id}>{day?.enjoyedDays}</p>;
+      }),
+    },
+  ];
+  const daysCompensated = [
+    {
+      title: "Desde",
+      value: row?.vacationDay.map((day) => {
+        if (day?.paid)
+          return <p key={day?.id}>{day?.dateFrom.replace(",", "")}</p>;
+        else return;
+      }),
+    },
+    {
+      title: "Días compensados",
+      value: row?.vacationDay.map((day) => {
+        if (day?.paid) return <p key={day?.id}>{day?.enjoyedDays}</p>;
+      }),
+    },
+  ];
+  const refundDays = [
+    {
+      title: "Días pendientes",
+      value: `${row?.available}`,
+    },
+    { title: "Reintegro", value: `${row?.refund ? "si" : "no"}` },
+  ];
+  const balanceDays = [
+    { title: "Saldo anterior", value: `${row?.periodFormer}` },
+    { title: "Días ganados", value: `${row?.days}` },
+    { title: "Saldo actual", value: `${row?.available}` },
+  ];
   return (
     <>
-      <table className="details-table">
-        <h2>Datos Colaborador</h2>
-        <table className="table-items">
-          <tr>
-            <th>{"Nro. documento"}</th>
-            <th>{"Nombre"}</th>
-            <th>{"Cargo"}</th>
-            <th>{"Salario"}</th>
-            <th>{"Periodo"}</th>
-          </tr>
-          <tr>
-            <td>{row?.employment.worker.numberDocument}</td>
-            <td>
-              {row?.employment.worker.firstName +
-                " " +
-                row.employment.worker.surname}
-            </td>
-            <td>{row?.employment.charges[0].name}</td>
-            <td>{row?.employment.salary}</td>
-            <td>{row?.period}</td>
-          </tr>
-        </table>
+      <div>
+        <ResponsiveTable data={workerData} />
         <h2>Liquidación vacaciones</h2>
-        <h3 className="text-left">Dias Disfrutados</h3>
-        <table className="table-items">
-          <tr>
-            <th>Desde</th>
-            <th>Hasta</th>
-            <th>Total días</th>
-          </tr>
-          <tr>
-            <td>
-              {row?.vacationDay.map((day) => {
-                if (!day?.paid)
-                  return DateTime.fromISO(day?.dateFrom).toLocaleString();
-                else return;
-              })}
-            </td>
-            <td>
-              {row?.vacationDay.map((day) => {
-                if (!day?.paid)
-                  return DateTime.fromISO(day?.dateUntil).toLocaleString();
-                else return;
-              })}
-            </td>
-            <td>
-              {row?.vacationDay.map((day) => {
-                if (!day?.paid) return day?.enjoyedDays;
-                else return;
-              })}
-            </td>
-          </tr>
-        </table>
-        <h3 className="text-left">Dias Compensados</h3>
-        <table className="table-items">
-          <tr>
-            <th>Desde</th>
-            <th>Días compensados</th>
-          </tr>
-          <tr>
-            <td>
-              {row?.vacationDay.map((day) => {
-                if (day?.paid)
-                  return DateTime.fromISO(day?.dateFrom).toLocaleString();
-                else return;
-              })}
-            </td>
-            <td>
-              {row?.vacationDay.map((day) => {
-                if (day?.paid) return day?.enjoyedDays;
-                else return;
-              })}
-            </td>
-          </tr>
-        </table>
-        <table className="table-items">
-          <tr>
-            <th>Días pendientes</th>
-            <th>Reintegro</th>
-          </tr>
-          <tr>
-            <td>
-              {row?.vacationDay.reduce((pendingDays, day) => {
-                const enjoyedDays = day?.enjoyedDays || 0;
-                return pendingDays - enjoyedDays;
-              }, row?.available || 0)}
-            </td>
-            <td>{row?.periodFormer ? "si" : "no"}</td>
-          </tr>
-        </table>
-        <table className="table-items">
-          <tr>
-            <th>Saldo anterior</th>
-            <th>Días ganados</th>
-            <th>Saldo actual</th>
-          </tr>
-          <tr>
-            <td>{row?.periodFormer}</td>
-            <td>{row?.days}</td>
-            <td>{row?.available}</td>
-          </tr>
-        </table>
         <div>
-        <TextAreaComponent
-          idInput={"observation"}
-          value={row?.vacationDay
-            .map((day) => {
-              let observation = day?.observation || "";
-              return observation;
-            })
-            .join("\n")}
-          className="text-area-basic"
-          label={"Observaciones"}
-          classNameLabel="text-black big bold text-left"
-          rows={3}
-          disabled={true}
-        />
+          <h2 className="text-left">Días disfrutados</h2>
+          <ResponsiveTable data={daysData} />
         </div>
-      </table>
+        <div>
+          <h2 className="text-left">Días compensados</h2>
+          <ResponsiveTable data={daysCompensated} />
+        </div>
+        <ResponsiveTable data={refundDays} />
+        <ResponsiveTable data={balanceDays} />
+
+        <div>
+          <TextAreaComponent
+            idInput={"observation"}
+            value={
+              (row?.vacationDay
+                .filter((day) => !day.paid)
+                .sort((a, b) => b.id - a.id)[0]?.observation || "") +
+              " " +
+              row?.vacationDay
+                .filter((day) => day.paid)
+                .sort((a, b) => b.id - a.id)[0]?.observation
+            }
+            className="text-area-basic"
+            label={"Observaciones"}
+            classNameLabel="text-black big bold text-left"
+            rows={3}
+            disabled={true}
+          />
+        </div>
+      </div>
     </>
   );
 };

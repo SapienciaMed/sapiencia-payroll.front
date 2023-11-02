@@ -12,12 +12,11 @@ import {
   ITypesContracts,
   IRelative,
 } from "../../../common/interfaces/payroll.interfaces";
-import useAppCominicator from "../../../common/hooks/app-communicator.hook";
 import { useForm } from "react-hook-form";
 import { formsPayroll } from "../../../common/schemas/employment-schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export default function useEmploymentsData() {
+export default function useEmploymentsData(action?: string) {
   const { id } = useParams();
   const { step, setStep } = useContext(AppContext);
   const currentValidationSchema = formsPayroll[step];
@@ -79,6 +78,7 @@ export default function useEmploymentsData() {
     trigger,
     watch,
     setValue: setValueRegister,
+    reset
   } = useForm<IVinculation>({
     defaultValues: vinculation,
     resolver: yupResolver(currentValidationSchema),
@@ -104,6 +104,8 @@ export default function useEmploymentsData() {
   const [levelRiskList, setLevelRiskList] = useState([]);
   const [typesContracts, setTypesContracts] = useState([]);
   const [activeWorker, setActiveWorker] = useState([]);
+  const [accountType, setAccountType] = useState([]);
+  const [bankList, setBankList] = useState([]);
 
   /*instances*/
   const { getListByParent, getListByGroupers } = useGenericListService();
@@ -119,8 +121,6 @@ export default function useEmploymentsData() {
     updateWorker,
   } = usePayrollService();
 
-  const { publish, subscribe, unsubscribe } = useAppCominicator();
-
   const handleModal = () => {
     setMessage({
       title: "Vincular Trabajador",
@@ -128,13 +128,13 @@ export default function useEmploymentsData() {
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
-        navigate("/");
+        navigate("../expedientes/");
         setMessage((prev) => {
           return { ...prev, show: false };
         });
       },
       onClose: () => {
-        navigate("/");
+        navigate("../expedientes/");
         setMessage({});
       },
       background: true,
@@ -274,19 +274,83 @@ export default function useEmploymentsData() {
             }
           }
         );
+      } else {
+        setVinculation({
+          worker: {
+            id: null,
+            typeDocument: "",
+            numberDocument: "",
+            firstName: "",
+            secondName: "",
+            surname: "",
+            secondSurname: "",
+            gender: "",
+            bloodType: "",
+            birthDate: "",
+            nationality: "",
+            email: "",
+            contactNumber: "",
+            department: "",
+            municipality: "",
+            neighborhood: "",
+            address: "",
+            socioEconomic: "",
+            eps: "",
+            fundPension: "",
+            severanceFund: "",
+            arl: "",
+            riskLevel: "",
+            housingType: "",
+          },
+          relatives: [],
+          employment: {
+            idTypeContract: "",
+            contractNumber: "",
+            institutionalMail: "",
+            startDate: "",
+            endDate: "",
+            idCharge: "",
+            idReasonRetirement: "",
+            state: "",
+            salary: null,
+            observation: "",
+            totalValue: null,
+          },
+        } as IVinculation);
       }
     });
   }, [id]);
 
   useEffect(() => {
+    setStep(0);
+  }, [action]);
+
+  useEffect(() => {
     if (!vinculation) return;
 
-    if (vinculation.worker.id) {
-      setValueRegister("worker", vinculation?.worker, {
-        shouldValidate: true,
+    if (action === "edit" && vinculation.employment[0]?.state === "0") {
+      setMessage({
+        title: "Vinculación inactiva",
+        description: `No se permite editar la vinculacion debido a su estado inactiva.`,
+        show: true,
+        OkTitle: "Aceptar",
+        onOk: () => {
+          navigate("../expedientes");
+          setMessage((prev) => {
+            return { ...prev, show: false };
+          });
+        },
+        onClose: () => {
+          navigate("../expedientes");
+          setMessage({});
+        },
+        background: true,
       });
+
+      return;
     }
 
+    setValueRegister("worker", vinculation?.worker);
     setValueRegister("relatives", vinculation?.relatives);
     setValueRegister("employment", vinculation?.employment[0]);
 
@@ -310,6 +374,8 @@ export default function useEmploymentsData() {
       "FONDO_CESANTIAS",
       "RIESGO_LABORAL",
       "ESTADO_TRABAJADOR",
+      "TIPO_CUENTA",
+      "BANCO",
     ];
 
     const response = await getListByGroupers(groupers);
@@ -457,6 +523,28 @@ export default function useEmploymentsData() {
             return list;
           })
       );
+      setAccountType(
+        response.data
+          .filter((grouper) => grouper.grouper == "TIPO_CUENTA")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
+      setBankList(
+        response.data
+          .filter((grouper) => grouper.grouper == "BANCO")
+          .map((item) => {
+            const list = {
+              name: item.itemDescription,
+              value: item.itemCode,
+            };
+            return list;
+          })
+      );
     }
   }
   const handleCreateWorker = async (data: IVinculation) => {
@@ -469,7 +557,7 @@ export default function useEmploymentsData() {
         } else {
           setMessage({
             type: EResponseCodes.FAIL,
-            title: "Error al registrar la vinculacion.",
+            title: "Error al registrar la vinculación.",
             description:
               "Se ha presentado un error, por favor vuelve a intentarlo.",
             show: true,
@@ -482,7 +570,7 @@ export default function useEmploymentsData() {
       .catch((err) => {
         setMessage({
           type: EResponseCodes.FAIL,
-          title: "Error al registrar la vinculacion.",
+          title: "Error al registrar la vinculación.",
           description:
             "Se ha presentado un error, por favor vuelve a intentarlo.",
           show: true,
@@ -503,7 +591,7 @@ export default function useEmploymentsData() {
         } else {
           setMessage({
             type: EResponseCodes.FAIL,
-            title: "Error al editar la vinculacion.",
+            title: "Error al editar la vinculación.",
             description:
               "Se ha presentado un error, por favor vuelve a intentarlo.",
             show: true,
@@ -516,7 +604,7 @@ export default function useEmploymentsData() {
       .catch((err) => {
         setMessage({
           type: EResponseCodes.FAIL,
-          title: "Error al editar la vinculacion.",
+          title: "Error al editar la vinculación.",
           description:
             "Se ha presentado un error, por favor vuelve a intentarlo.",
           show: true,
@@ -566,5 +654,9 @@ export default function useEmploymentsData() {
     familyData,
     setFamilyData,
     watch,
+    navigate,
+    accountType,
+    bankList,
+    reset
   };
 }

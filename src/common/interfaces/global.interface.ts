@@ -7,7 +7,7 @@ export interface IMessage {
   description?: string | React.JSX.Element;
   onClickOutClose?: boolean;
   background?: boolean;
-  size?: string;
+  size?: "small" | "medium" | "big" | "large" | "extra-large";
   style?: string;
   OkTitle?: string;
   cancelTitle?: string;
@@ -17,14 +17,16 @@ export interface IMessage {
   onCancel?: () => void;
   onClose?: () => void;
 }
-
 export interface IGenericList {
   id: number;
   grouper: string;
   itemCode: string;
   itemDescription: string;
-  parentGrouper?: string;
-  parentItemCode?: string;
+  additionalFields?: object;
 }
 
-
+export interface IAdditionalField {
+  grouper: string;
+  parentItemCode: string;
+  fieldName?: string;
+}

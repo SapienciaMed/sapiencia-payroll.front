@@ -6,9 +6,8 @@ function VacationRoutes() {
   const CreationVacationPage = lazy(
     () => import("./pages/create-vacation.page")
   );
-  const SearchVacationPage = lazy(
-    () => import("./pages/search-vacation.page")
-  );
+  const SearchVacationPage = lazy(() => import("./pages/search-vacation.page"));
+  const EditVacationPage = lazy(() => import("./pages/edit-vacation.page"));
 
   return (
     <Routes>
@@ -17,7 +16,7 @@ function VacationRoutes() {
         element={
           <PrivateRoute
             element={<CreationVacationPage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />
@@ -26,7 +25,16 @@ function VacationRoutes() {
         element={
           <PrivateRoute
             element={<SearchVacationPage />}
-            allowedAction={"NMN_TRABAJADOR_CONTRATAR"}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
+          />
+        }
+      />
+      <Route
+        path={"/editar/:id/:period"}
+        element={
+          <PrivateRoute
+            element={<EditVacationPage />}
+            allowedAction={"NMN_CONSULTAR_NOVEDADES"}
           />
         }
       />

@@ -12,7 +12,7 @@ import {
 } from "../../../common/interfaces/payroll.interfaces";
 import useIncapacityService from "../../../common/hooks/incapacity-service.hook";
 
-export default function useListData(temporary = true) {
+export default function useListData(temporary = false) {
   const [listPeriods, setListPeriods] = useState([]);
   const [activeWorkerList, setActiveWorkerList] = useState([]);
   const [activeContractorsList, setActiveContractorsList] = useState([]);

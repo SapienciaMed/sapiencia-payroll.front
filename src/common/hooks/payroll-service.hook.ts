@@ -79,6 +79,19 @@ export function usePayrollService() {
     }
   }
 
+  async function getContractors(): Promise<ApiResponse<IWorker[]>> {
+    try {
+      const endpoint: string = `/contractors`;
+      return await get(`${authUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IWorker[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   async function createWorker(
     data: IVinculation
   ): Promise<ApiResponse<IVinculation>> {
@@ -272,6 +285,7 @@ export function usePayrollService() {
     createSpreadSheet,
     updateSpreadSheet,
     getByIdSpreadSheet,
+    getContractors
   };
 }
 

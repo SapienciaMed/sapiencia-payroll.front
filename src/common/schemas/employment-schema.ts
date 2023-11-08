@@ -58,17 +58,15 @@ const personalInformationLocalization = yup.object({
   }),
 });
 
-export const familiarValidator = yup.object().shape({
-  familiar: yup.array().of(
+export const familiarValidator = yup.object({
+  relatives: yup.array().of(
     yup.object().shape({
       name: yup
         .string()
         .required("El campo es obligatorio")
         .min(8, "Ingrese al menos 8 caracteres"),
-      relationship: yup
-        .string()
-        .required("El campo es obligatorio")
-        .max(10, "Ingrese al menos 10 caracteres"),
+      relationship: yup.string().required("El campo es obligatorio"),
+      dependent: yup.string().required("El campo es obligatorio"),
     })
   ),
 });
@@ -115,7 +113,7 @@ export const searchRecord = yup.object({
 
 export const formsPayroll = [
   personalInformationLocalization,
-  yup.object({}),
+  familiarValidator,
   contractualInformation,
   afiliaciones,
 ];

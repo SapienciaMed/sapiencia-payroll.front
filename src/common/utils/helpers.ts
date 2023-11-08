@@ -21,6 +21,32 @@ export function calculateDifferenceDays(
   return Math.floor(differenceInDays);
 }
 
+export function calculateMonthBetweenDates(
+  fechaInicioDate: string | Date,
+  fechaFinDate: string | Date
+): number {
+  const dateStart = new Date(fechaInicioDate);
+  const dateEnd = new Date(fechaFinDate);
+
+  // Verifica si las cadenas de texto son fechas válidas
+  if (isNaN(dateStart.getTime()) || isNaN(dateEnd.getTime())) {
+    throw new Error("Formato de fecha no válido");
+  }
+
+  const yearInicio = dateStart.getFullYear();
+  const monthInicio = dateStart.getMonth();
+  const yearFin = dateEnd.getFullYear();
+  const monthFin = dateEnd.getMonth();
+
+  if (yearInicio === yearFin && monthInicio === monthFin) {
+    return 1;
+  }
+
+  const meses = (yearFin - yearInicio) * 12 + (monthFin - monthInicio);
+
+  return meses + 1;
+}
+
 export function addCalendarDays(date, daysToAdd, substractionOneDay = true) {
   if (substractionOneDay) {
     const oneDay = 24 * 60 * 60 * 1000;

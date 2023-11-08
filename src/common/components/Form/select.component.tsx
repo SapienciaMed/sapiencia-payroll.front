@@ -2,7 +2,7 @@ import React from "react";
 import { EDirection } from "../../constants/input.enum";
 import { LabelComponent } from "./label.component";
 
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, useController } from "react-hook-form";
 import { Dropdown } from "primereact/dropdown";
 import { IDropdownProps } from "../../interfaces/select.interface";
 
@@ -21,6 +21,8 @@ interface ISelectProps<T> {
   fieldArray?: boolean;
   filter?: boolean;
   emptyMessage?: string;
+  shouldUnregister?: boolean;
+  optionsRegister?: {};
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -49,6 +51,8 @@ export function SelectComponent({
   fieldArray,
   filter,
   emptyMessage = "Sin resultados.",
+  shouldUnregister,
+  optionsRegister,
 }: ISelectProps<any>): React.JSX.Element {
   if (data) {
     const seleccione: IDropdownProps = { name: placeholder, value: "" };
@@ -58,27 +62,38 @@ export function SelectComponent({
     if (!dataSelect) data.unshift(seleccione);
   }
 
-  const messageError = () => {
-    const keysError = idInput.split(".");
-    let errs = errors;
-    if (fieldArray) {
-      const errorKey = `${keysError[0]}[${keysError[1]}].${keysError[2]}`;
-      return errors[errorKey]?.message;
-    } else {
-      for (let key of keysError) {
-        errs = errs?.[key];
-        if (!errs) {
-          break;
-        }
-      }
-      return errs?.message ?? null;
-    }
-  };
+  const {
+    field,
+    fieldState: { error, invalid },
+    formState: {},
+  } = useController({
+    name: idInput,
+    control,
+    shouldUnregister,
+    rules: optionsRegister,
+  });
+
+  // const messageError = () => {
+  //   const keysError = idInput.split(".");
+  //   let errs = errors;
+  //   if (fieldArray) {
+  //     const errorKey = `${keysError[0]}[${keysError[1]}].${keysError[2]}`;
+  //     return errors[errorKey]?.message;
+  //   } else {
+  //     for (let key of keysError) {
+  //       errs = errs?.[key];
+  //       if (!errs) {
+  //         break;
+  //       }
+  //     }
+  //     return errs?.message ?? null;
+  //   }
+  // };
 
   return (
     <div
       className={
-        messageError() ? `${direction} container-icon_error` : direction
+        error?.message ? `${direction} container-icon_error` : direction
       }
     >
       <LabelElement
@@ -87,31 +102,32 @@ export function SelectComponent({
         classNameLabel={classNameLabel}
       />
       <div>
-        <Controller
+        {/* <Controller
           name={idInput}
           control={control}
-          render={({ field }) => (
-            <Dropdown
-              id={field.name}
-              value={data?.find((row) => row.value === field.value)?.value}
-              onChange={(e) => field.onChange(e.value)}
-              onBlur={(e) => field.onBlur()}
-              options={data}
-              optionLabel="name"
-              placeholder={placeholder}
-              className={`${className} ${messageError() ? "p-invalid" : ""}`}
-              disabled={disabled}
-              filter={filter}
-              emptyMessage={emptyMessage}
-              emptyFilterMessage={emptyMessage}
-            />
-          )}
+          render={({ field }) => ( */}
+        <Dropdown
+          id={field.name}
+          name={field.name}
+          value={data?.find((row) => row.value === field.value)?.value}
+          onChange={(e) => field.onChange(e.value)}
+          onBlur={(e) => field.onBlur()}
+          options={data}
+          optionLabel="name"
+          placeholder={placeholder}
+          className={`${className} ${error?.message ? "p-invalid" : ""}`}
+          disabled={disabled}
+          filter={filter}
+          emptyMessage={emptyMessage}
+          emptyFilterMessage={emptyMessage}
         />
-        {messageError() && <span className="icon-error"></span>}
+        {/* )}
+        /> */}
+        {error?.message && <span className="icon-error"></span>}
       </div>
-      {messageError() && (
+      {error?.message && (
         <p className="error-message bold not-margin-padding">
-          {messageError()}
+          {error?.message}
         </p>
       )}
       {children}

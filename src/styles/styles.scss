@@ -296,6 +296,18 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   flex-direction: row;
 }
 
+.container-documentId {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .container-documentId_inputs {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+  }
+}
+
 .payroll-relatives-button-confirm {
   @include generate-button(0, #533893, transparent, transparent solid 1px);
   font-size: 2em;
@@ -344,6 +356,10 @@ div[id="single-spa-application:@sapiencia/payroll"] {
     color: $input-color-border !important;
     opacity: 1;
   }
+}
+
+.payroll-relatives-container-actions {
+  @include generate-flex-container(row, null, center, null, null, null);
 }
 
 .payroll-relatives-button-delete {
@@ -527,7 +543,7 @@ div[id="single-spa-application:@sapiencia/payroll"] {
 
   .button-save-container-display {
     display: flex;
-    justify-content: flex-end;
+    justify-content: end;
     flex-direction: row;
   }
   .container-table-result-responsive {

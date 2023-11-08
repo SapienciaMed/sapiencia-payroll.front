@@ -1,268 +1,181 @@
-import React, { useContext, useEffect, useState } from "react";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlineX } from "react-icons/hi";
-import { RiSave3Fill } from "react-icons/ri";
+import React from "react";
+
+import { HiOutlineTrash } from "react-icons/hi";
+
+import { Control, UseFormSetValue } from "react-hook-form";
+
 import {
-  Controller,
-  UseFormGetValues,
-  useFieldArray,
-  useForm,
-} from "react-hook-form";
-import {
-  InputComponent,
   SelectComponent,
   ButtonComponent,
 } from "../../../common/components/Form";
+
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
-import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import {
-  IRelative,
-  IVinculation,
-} from "../../../common/interfaces/payroll.interfaces";
-import { familiarValidator } from "../../../common/schemas";
-import { AppContext } from "../../../common/contexts/app.context";
-import { calculateDifferenceYear } from "../../../common/utils/helpers";
+
+import { IVinculation } from "../../../common/interfaces/payroll.interfaces";
+
+import { DevTool } from "@hookform/devtools";
+
+import { InputComponent } from "../../../common/components/Form/input-refactor.component";
+
+import useRelativesInformation from "../hooks/relativesInformation.hook";
 
 interface IFamiliarInformationProp {
-  setFamilyData: React.Dispatch<
-    React.SetStateAction<{
-      familiar: IRelative[];
-    }>
-  >;
-  familyData: { familiar: IRelative[] };
-  list: any[][];
   action: string;
-  getValueRegister: UseFormGetValues<IVinculation>;
-  data: IVinculation;
+  control: Control<IVinculation>;
+  setValueRegister: UseFormSetValue<IVinculation>;
+  list: any[][];
 }
+
 const FamiliarInformationForm = ({
-  setFamilyData,
-  list,
   action,
-  familyData,
-}: IFamiliarInformationProp) => {
-  const { setDisabledFields, disabledFields } = useContext(AppContext);
-  setDisabledFields(action == "view" ? true : false);
-
-  const resolver = useYupValidationResolver(familiarValidator);
-
+  control,
+  list,
+  setValueRegister,
+}: IFamiliarInformationProp): React.JSX.Element => {
   const {
-    register: registerFamily,
-    handleSubmit,
+    dependentList,
+    fields,
+    append,
+    handleDisabledFields,
+    handleModalDelete,
+    handleChangeAge,
+  } = useRelativesInformation({
+    action,
+    list,
     control,
-    setValue: setValueRegister,
-    formState: { errors, isValid },
-    getValues,
-    watch,
-  } = useForm<{ familiar: IRelative[] }>({
-    defaultValues: {
-      familiar: familyData.familiar,
-    },
-    mode: "all",
-    resolver,
+    setValueRegister,
   });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "familiar",
-  });
-
-  const [disabledRows, setDisabledRows] = useState<boolean[]>(
-    Array.from({ length: fields?.length }, () => true)
-  );
-
-  const onSubmit = handleSubmit((data: any) => {
-    setFamilyData(data);
-  });
-
-  const handleEnableRow = (index: number) => {
-    const updatedDisabledRows = [...disabledRows];
-    updatedDisabledRows[index] = false;
-    setDisabledRows(updatedDisabledRows);
-  };
-
-  const handleDisableRow = (index: number) => {
-    const updatedDisabledRows = [...disabledRows];
-    updatedDisabledRows[index] = true;
-    setDisabledRows(updatedDisabledRows);
-  };
-
-  useEffect(() => {
-    if (familyData?.familiar?.length > 0) {
-      setValueRegister("familiar", familyData.familiar);
-    }
-  }, [familyData]);
 
   return (
     <div>
       <div className="container-sections-forms">
         <span className="text-black large bold">Datos de familiares</span>
         <form>
-          {fields.map((field, index) => (
-            <div
-              key={field.id}
-              className={`grid-form-6-container  ${
-                !disabledRows[index] ? "bg-editing" : "bg-disabled"
-              }`}
-            >
-              <Controller
-                control={control}
-                name={`familiar.${index}.name`}
-                render={({ field }) => {
-                  return (
-                    <InputComponent
-                      id={field.name}
-                      idInput={field.name}
-                      value={`${field.value}`}
-                      className="input-basic medium"
-                      typeInput="text"
-                      disabled={disabledRows[index] || disabledFields}
-                      label="Nombre completo"
-                      classNameLabel="text-black big bold"
-                      errors={errors}
-                      onChange={field.onChange}
-                      register={registerFamily}
-                      fieldArray={true}
+          {fields.map((fieldMap, index) => {
+            return (
+              <div
+                key={fieldMap.id}
+                className={`grid-form-7-container bg-editing`}
+              >
+                <InputComponent
+                  control={control}
+                  idInput={`relatives.${index}.name` as const}
+                  typeInput="text"
+                  className="input-basic medium"
+                  classNameLabel="text-black big break-line bold"
+                  label={
+                    <>
+                      Nombre completo <span>*</span>
+                    </>
+                  }
+                  disabled={handleDisabledFields()}
+                />
+
+                <DatePickerComponent
+                  idInput={`relatives.${index}.birthDate` as const}
+                  control={control}
+                  label="Fecha de Nacimiento"
+                  classNameLabel="text-black big break-line bold"
+                  className="dataPicker-basic medium"
+                  placeholder="DD/MM/YYYY"
+                  dateFormat="dd/mm/yy"
+                  maxDate={new Date()}
+                  onChange={handleChangeAge}
+                  disabled={handleDisabledFields()}
+                />
+
+                <InputComponent
+                  control={control}
+                  idInput={`relatives.${index}.age` as const}
+                  typeInput="text"
+                  className="input-basic medium"
+                  classNameLabel="text-black big bold"
+                  label={<>Edad</>}
+                  disabled={true}
+                />
+
+                <SelectComponent
+                  idInput={`relatives.${index}.gender` as const}
+                  control={control}
+                  data={list[0]}
+                  label={<>Género</>}
+                  className="select-basic medium"
+                  classNameLabel="text-black big bold"
+                  placeholder="Seleccione."
+                  disabled={handleDisabledFields()}
+                />
+
+                <SelectComponent
+                  idInput={`relatives.${index}.relationship` as const}
+                  control={control}
+                  data={list[1]}
+                  label={
+                    <>
+                      Parentesco <span>*</span>
+                    </>
+                  }
+                  className="select-basic medium"
+                  classNameLabel="text-black big bold"
+                  placeholder="Seleccione."
+                  disabled={handleDisabledFields()}
+                />
+
+                <SelectComponent
+                  idInput={`relatives.${index}.dependent` as const}
+                  control={control}
+                  data={dependentList}
+                  label={
+                    <>
+                      Dependiente <span>*</span>
+                    </>
+                  }
+                  className="select-basic medium"
+                  classNameLabel="text-black big bold"
+                  placeholder="Seleccione."
+                  disabled={handleDisabledFields()}
+                />
+                <div>
+                  <label
+                    htmlFor=""
+                    className="text-black big bold display-justify-flex-center"
+                  >
+                    Acciones
+                  </label>
+
+                  <div className="payroll-relatives-container-actions">
+                    <ButtonComponent
+                      value={<HiOutlineTrash />}
+                      type="button"
+                      disabled={handleDisabledFields()}
+                      action={() => handleModalDelete(index)}
+                      className="payroll-relatives-button-delete  disabled-black"
                     />
-                  );
-                }}
-              />
-
-              <DatePickerComponent
-                idInput={`familiar.${index}.birthDate`}
-                control={control}
-                label="Fecha de Nacimiento"
-                errors={errors}
-                classNameLabel="text-black big break-line bold"
-                className="dataPicker-basic medium"
-                disabled={disabledRows[index] || disabledFields}
-                placeholder="DD/MM/YYYY"
-                dateFormat="dd/mm/yy"
-                maxDate={new Date()}
-                fieldArray={true}
-              />
-
-              <InputComponent
-                idInput={`familiar.${index}.age`}
-                id={`age${index}`}
-                className="input-basic medium"
-                typeInput="text"
-                classNameLabel="text-black big bold"
-                label="Edad"
-                disabled={true}
-                errors={errors}
-                value={`${
-                  watch(`familiar.${index}.birthDate`)
-                    ? calculateDifferenceYear(
-                        watch(`familiar.${index}.birthDate`)
-                      )
-                    : 0
-                }`}
-                fieldArray={true}
-              />
-              <SelectComponent
-                idInput={`familiar.${index}.gender`}
-                control={control}
-                errors={errors}
-                data={list[0]}
-                label={<>Género</>}
-                className="select-basic medium"
-                classNameLabel="text-black big bold"
-                placeholder="Tipo"
-                disabled={disabledRows[index] || disabledFields}
-                fieldArray={true}
-              />
-              <SelectComponent
-                idInput={`familiar.${index}.relationship`}
-                control={control}
-                errors={errors}
-                data={list[1]}
-                label={<>Parentesco</>}
-                className="select-basic medium"
-                classNameLabel="text-black big bold"
-                placeholder="Tipo"
-                disabled={disabledRows[index] || disabledFields}
-                fieldArray={true}
-              />
-              <div>
-                <label
-                  htmlFor=""
-                  className="text-black big bold display-justify-flex-center"
-                >
-                  Acciones
-                </label>
-                <div className="button-container-display">
-                  {!disabledRows[index] ? (
-                    <>
-                      <ButtonComponent
-                        value={<RiSave3Fill />}
-                        type="button"
-                        action={() => {
-                          onSubmit();
-
-                          if (isValid) {
-                            handleDisableRow(index);
-                          }
-                        }}
-                        className="payroll-relatives-button-confirm  disabled-black"
-                        disabled={disabledFields}
-                      />
-                      <ButtonComponent
-                        value={<HiOutlineX />}
-                        type="button"
-                        action={() => {
-                          if (isValid) {
-                            handleDisableRow(index);
-                          }
-                        }}
-                        className="payroll-relatives-button-cancel-edit disabled-black"
-                        disabled={disabledFields}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <ButtonComponent
-                        value={<HiOutlinePencil />}
-                        type="button"
-                        action={() => handleEnableRow(index)}
-                        className="payroll-relatives-button-edit disabled-black"
-                        disabled={disabledFields}
-                      />
-                      <ButtonComponent
-                        value={<HiOutlineTrash />}
-                        type="button"
-                        action={() => {
-                          remove(index);
-                          const data = getValues("familiar");
-                          setFamilyData({ familiar: data });
-                        }}
-                        className="payroll-relatives-button-delete  disabled-black"
-                        disabled={disabledFields}
-                      />
-                    </>
-                  )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+
           <div className="button-save-container-display">
             <ButtonComponent
               type="button"
               value="Agregar familiar"
+              disabled={handleDisabledFields()}
               action={() =>
                 append({
                   name: "",
                   birthDate: "",
                   gender: "",
+                  age: 0,
                   relationship: "",
+                  dependent: null,
                 })
               }
-              className="button-save large disabled-black"
-              disabled={disabledFields}
+              className="button-save extra_large disabled-black"
             />
           </div>
         </form>
       </div>
-      {/* <DevTool control={control} /> */}
     </div>
   );
 };

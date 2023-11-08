@@ -7,10 +7,12 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+
 import {
   SelectComponent,
   InputComponent,
 } from "../../../common/components/Form";
+
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import TableComponent from "../../../common/components/table.component";
 import { AppContext } from "../../../common/contexts/app.context";
@@ -29,6 +31,7 @@ import {
   formaterNumberToCurrency,
 } from "../../../common/utils/helpers";
 import { InputNumberComponent } from "../../../common/components/Form/input-number.component";
+import { InputEditorComponent } from "../../../common/components/Form/input-editor.component";
 
 interface IContractualInformationProp {
   register: UseFormRegister<any>;
@@ -37,7 +40,7 @@ interface IContractualInformationProp {
   setValueRegister: UseFormSetValue<any>;
   list: any[][];
   action: string;
-  changedData: number;
+  // changedData: number;
   getValueRegister: UseFormGetValues<IVinculation>;
   watch?: UseFormWatch<IVinculation>;
 }
@@ -150,7 +153,7 @@ const ContractualInformationForm = ({
             <TextAreaComponent
               label={"Observaciones"}
               idInput={"observation"}
-              value={data.observation}
+              // value={data.observation}
               className="text-area-basic"
               classNameLabel="text-black big bold"
               disabled={disabledFields}
@@ -165,7 +168,7 @@ const ContractualInformationForm = ({
         setMessage({});
       },
       background: true,
-      size: "large",
+      size: "medium",
     });
   };
   const tableColumns: ITableElement<IEmployment>[] = [
@@ -180,7 +183,7 @@ const ContractualInformationForm = ({
       fieldName: "salary",
       header: "Salario",
       renderCell: (row) => {
-        return <>{formaterNumberToCurrency(row.salary)}</>;
+        return <>{formaterNumberToCurrency(1000)}</>;
       },
     },
     {
@@ -273,6 +276,23 @@ const ContractualInformationForm = ({
           placeholder="Seleccione."
           disabled={disabledFields}
         />
+
+        <SelectComponent
+          idInput={"employment.codDependence"}
+          control={control}
+          errors={errors}
+          data={list[3]}
+          label={
+            <>
+              Dependencia <span>*</span>
+            </>
+          }
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
+        />
+
         <SelectComponent
           idInput={"employment.idCharge"}
           control={control}
@@ -356,11 +376,26 @@ const ContractualInformationForm = ({
           disabled={disabledFields}
         />
 
-        {watch("employment.idTypeContract") != "4" ? (
+        <InputNumberComponent
+          idInput="employment.salary"
+          control={control}
+          label={<>Valor mensual</>}
+          errors={errors}
+          classNameLabel="text-black big bold"
+          className="inputNumber-basic medium"
+          disabled={true}
+          mode="currency"
+          currency="COP"
+          locale="es-CO"
+          minFractionDigits={2}
+          maxFractionDigits={2}
+        />
+
+        {String(watch("employment.idTypeContract")) === "4" && (
           <InputNumberComponent
-            idInput="employment.salary"
+            idInput="employment.totalValue"
             control={control}
-            label={<>Salario</>}
+            label={<>Valor total</>}
             errors={errors}
             classNameLabel="text-black big bold"
             className="inputNumber-basic medium"
@@ -371,36 +406,34 @@ const ContractualInformationForm = ({
             minFractionDigits={2}
             maxFractionDigits={2}
           />
-        ) : (
-          <>
-            <InputNumberComponent
-              idInput="employment.totalValue"
-              control={control}
-              label={<>Valor total</>}
-              errors={errors}
-              classNameLabel="text-black big bold"
-              className="inputNumber-basic medium"
-              disabled={disabledFields}
-              mode="currency"
-              currency="COP"
-              locale="es-CO"
-              minFractionDigits={2}
-              maxFractionDigits={2}
-            />
-            <div className="grid-span-4-columns">
-              <TextAreaComponent
-                label={"Observaciones"}
-                idInput={"employment.observation"}
-                disabled={disabledFields}
-                className="text-area-basic"
-                classNameLabel="text-black big bold"
-                register={register}
-                errors={errors}
-                rows={5}
-              />
-            </div>
-          </>
         )}
+
+        <div className="grid-span-4-columns gap-25">
+          <InputEditorComponent
+            control={control}
+            label={"Obligaciones especificas"}
+            idInput={"employment.specificObligations"}
+            readOnly={disabledFields}
+            className="inputEditor-basic height-150"
+            classNameLabel="text-black big bold"
+          />
+        </div>
+
+        <div className="grid-span-4-columns">
+          <TextAreaComponent
+            label={"Objeto contractual"}
+            idInput={"employment.contractualObject"}
+            disabled={disabledFields}
+            className="text-area-basic"
+            classNameLabel="text-black big bold"
+            register={register}
+            errors={errors}
+            rows={5}
+          />
+          <div className="text-right">
+            <span className="text-span ">Max. {500} carácteres</span>
+          </div>
+        </div>
       </div>
       {action !== "new" ? (
         <div className="container-sections-forms">

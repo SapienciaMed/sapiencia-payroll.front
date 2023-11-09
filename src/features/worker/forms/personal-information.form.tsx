@@ -35,33 +35,51 @@ const InformationPersonalForm = ({
           Datos personales
         </span>
         <div className="form-group column grid-span-4-columns">
-          <label className="text-black big bold">
-            Documento de identidad <span>*</span>
-          </label>
           <div className="payroll-personal-information-document">
-            <SelectComponent
-              idInput={"worker.typeDocument"}
-              control={control}
-              errors={errors}
-              data={list[0].map((item)=>{
-                return {
-                  value:item.value,
-                  name: item.name.slice(0,3)
-                }
-              })}
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              placeholder="Tipo"
-              disabled={disabledFields}
-            />
+            <div className="container-documentId">
+              <label className="text-black big bold" htmlFor="">
+                Documento de identidad <span>*</span>
+              </label>
+              <div className="container-documentId_inputs">
+                <SelectComponent
+                  idInput={"worker.typeDocument"}
+                  control={control}
+                  errors={errors}
+                  direction={EDirection.column}
+                  data={list[0].map((item) => {
+                    return {
+                      value: item.value,
+                      name: item.name.slice(0, 3),
+                    };
+                  })}
+                  className="select-basic medium"
+                  placeholder="Seleccione."
+                  classNameLabel="text-black big bold"
+                  disabled={disabledFields}
+                />
+
+                <InputComponent
+                  idInput="worker.numberDocument"
+                  className="input-basic medium"
+                  typeInput="number"
+                  register={register}
+                  classNameLabel="text-black big bold"
+                  errors={errors}
+                  placeholder={""}
+                  disabled={disabledFields}
+                />
+              </div>
+            </div>
+
             <InputComponent
-              idInput="worker.numberDocument"
+              idInput="worker.fiscalIdentification"
               className="input-basic medium"
               typeInput="text"
               register={register}
               classNameLabel="text-black big bold"
               errors={errors}
               placeholder={""}
+              label={<>Código de identificación fiscal</>}
               disabled={disabledFields}
             />
           </div>

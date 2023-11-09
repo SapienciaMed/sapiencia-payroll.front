@@ -23,6 +23,7 @@ interface IFormStepsProp {
   action: string;
   watch: any;
   navigate: NavigateFunction;
+  control: any;
 }
 
 const FormSteps = ({
@@ -39,7 +40,8 @@ const FormSteps = ({
   action,
   watch,
   navigate,
-}: // watch,
+}: // control,
+// watch,
 IFormStepsProp) => {
   const { step } = useContext(AppContext);
 
@@ -48,91 +50,91 @@ IFormStepsProp) => {
   });
 
   return (
-    <>
-      <form
-        className={`form-steps ${classFormSteb}`}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="title-area">
-          <div className="text-black extra-large bold">{titleForm}</div>
-        </div>
-        <div className="stebs-selection">
-          {stebs.map((infoSteb: FormStebs) => {
+    <form
+      className={`form-steps ${classFormSteb}`}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="title-area">
+        <div className="text-black extra-large bold">{titleForm}</div>
+      </div>
+      <div className="stebs-selection">
+        {stebs.map((infoSteb: FormStebs) => {
+          return (
+            <div key={infoSteb.position}>
+              <div
+                className={`steb-option ${
+                  infoSteb.position === step ? "active" : ""
+                }`}
+              >
+                {infoSteb.titleSteb}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div>
+        {stebs.map((infoStep: FormStebs) => {
+          if (infoStep.position === step) {
             return (
-              <div key={infoSteb.position}>
-                <div
-                  className={`steb-option ${
-                    infoSteb.position === step ? "active" : ""
-                  }`}
-                >
-                  {infoSteb.titleSteb}
+              <div
+                className={infoStep.classContainerStep}
+                key={infoStep.position}
+                {...register(`step-$${step}`, {
+                  shouldUnregister: true,
+                })}
+              >
+                {step === infoStep.position && infoStep.contentStep}
+
+                <div className="container-actions_formTabs">
+                  {step == 0 && action === "new" ? (
+                    <></>
+                  ) : (
+                    <ButtonComponent
+                      value={
+                        step == 0 && action != "new" ? "Regresar" : "Anterior"
+                      }
+                      className={`${"button-save big"}`}
+                      action={() => {
+                        if (step == 0) {
+                          navigate("/");
+                        } else {
+                          handleBackStep();
+                        }
+                      }}
+                      type="button"
+                    />
+                  )}
+
+                  {action === "view" && step === stepsAmount ? (
+                    <></>
+                  ) : (
+                    <ButtonComponent
+                      value={step === stepsAmount ? "Guardar" : "Siguiente"}
+                      className={`${
+                        validForm
+                          ? "button-save big"
+                          : "button-save  invalid big"
+                      } ${
+                        step === stepsAmount && action === "view"
+                          ? "disabled"
+                          : ""
+                      }`}
+                      type={step === stepsAmount ? "submit" : "button"}
+                      action={handleNextStep}
+                    />
+                  )}
                 </div>
               </div>
             );
-          })}
-        </div>
-        <div>
-          {stebs.map((infoStep: FormStebs) => {
-            if (infoStep.position === step) {
-              return (
-                <div
-                  className={infoStep.classContainerStep}
-                  key={infoStep.position}
-                  {...register(`step-$${step}`, {
-                    shouldUnregister: true,
-                  })}
-                >
-                  {step === infoStep.position && infoStep.contentStep}
+          }
+        })}
+      </div>
 
-                  <div className="container-actions_formTabs">
-                    {step == 0 && action === "new" ? (
-                      <></>
-                    ) : (
-                      <ButtonComponent
-                        value={
-                          step == 0 && action != "new" ? "Regresar" : "Anterior"
-                        }
-                        className={`${"button-save big"}`}
-                        action={() => {
-                          if (step == 0) {
-                            navigate("/");
-                          } else {
-                            handleBackStep();
-                          }
-                        }}
-                        type="button"
-                      />
-                    )}
+      {/* <DevTool control={control} /> */}
 
-                    {action === "view" && step === stepsAmount ? (
-                      <></>
-                    ) : (
-                      <ButtonComponent
-                        value={step === stepsAmount ? "Guardar" : "Siguiente"}
-                        className={`${
-                          validForm
-                            ? "button-save big"
-                            : "button-save  invalid big"
-                        } ${
-                          step === stepsAmount && action === "view"
-                            ? "disabled"
-                            : ""
-                        }`}
-                        type={step === stepsAmount ? "submit" : "button"}
-                        action={handleNextStep}
-                      />
-                    )}
-                  </div>
-                </div>
-              );
-            }
-          })}
-        </div>
-
-        {/* <p>{validForm ? "Valid" : "Invalid"}</p>
-        <p>{JSON.stringify(watch())}</p> */}
-      </form>
-    </>
+      {/* <p>{validForm ? "Valid" : "Invalid"}</p>
+      <p>{JSON.stringify(watch())}</p> */}
+    </form>
   );
 };
 

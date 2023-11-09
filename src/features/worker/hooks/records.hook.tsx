@@ -14,7 +14,7 @@ import useEmploymentsData from "./employment.hook";
 import { removeEmptySpace } from "../../../common/utils/helpers";
 import { AppContext } from "../../../common/contexts/app.context";
 export default function useRecordsData() {
-  const { typesContracts, activeWorker } = useEmploymentsData();
+  const { typesContracts, activeWorker } = useEmploymentsData({});
 
   const tableComponentRef = useRef(null);
   const navigate = useNavigate();

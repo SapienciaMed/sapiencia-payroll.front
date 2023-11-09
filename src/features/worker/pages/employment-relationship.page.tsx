@@ -1,18 +1,23 @@
 import React, { useEffect } from "react";
 import FormSteps from "../../../common/components/Form/form-steps.component";
 import { FormStebs } from "../../../common/interfaces/tabs-menu.interface";
-import useEmploymentsData from "../hooks/employment.hook";
+
+import useEmployments from "../hooks/employment.hook";
 import AffiliationsForm from "../forms/other-fields.form";
 import ContractualInformationForm from "../forms/contractual-information.form";
 import FamiliarInformationForm from "../forms/familiar-information.form";
 import InformationPersonalForm from "../forms/personal-information.form";
 
-interface IAppProps {
+interface IPropsEmploymentRelationShip {
   action: "new" | "edit" | "view";
 }
-const EmploymentRelationshipPage = ({ action }: IAppProps) => {
+
+const EmploymentRelationshipPage = ({
+  action,
+}: IPropsEmploymentRelationShip) => {
   const {
     typeDocumentList,
+    dependencesList,
     bloodType,
     nacionality,
     genderList,
@@ -36,22 +41,19 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
     errors,
     trigger,
     handleSubmit,
-    setValueRegister,
     step,
     setStep,
     vinculation,
     handleCreateWorker,
-    changedData,
-    changeData,
     getValueRegister,
-    familyData,
-    setFamilyData,
     handleUpdateWorker,
     watch,
     navigate,
     bankList,
     accountType,
-  } = useEmploymentsData(action);
+    setValueRegister,
+  } = useEmployments({ action });
+
   useEffect(() => {
     setStep(0);
   }, []);
@@ -88,12 +90,10 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
       titleSteb: "2. Informacion familiar",
       contentStep: (
         <FamiliarInformationForm
-          setFamilyData={setFamilyData}
-          list={[genderList, relationship]}
           action={action}
-          getValueRegister={getValueRegister}
-          data={vinculation}
-          familyData={familyData}
+          control={control}
+          setValueRegister={setValueRegister}
+          list={[genderList, relationship]}
         />
       ),
       position: 1,
@@ -107,9 +107,14 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
           errors={errors}
           control={control}
           setValueRegister={setValueRegister}
-          list={[typesContracts, typesChargesList, activeWorker]}
+          list={[
+            typesContracts,
+            typesChargesList,
+            activeWorker,
+            dependencesList,
+          ]}
           action={action}
-          changedData={changedData}
+          // changedData={changedData}
           getValueRegister={getValueRegister}
           watch={watch}
         />
@@ -135,7 +140,7 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
             bankList,
           ]}
           action={action}
-          changedData={changedData}
+          // changedData={changedData}
           getValueRegister={getValueRegister}
         />
       ),
@@ -149,11 +154,6 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
   const handleNextStep = async () => {
     const isValid = await trigger();
 
-    if (step === 1) {
-      if (familyData?.familiar)
-        setValueRegister("relatives", familyData.familiar);
-    }
-
     if (isValid && step < stepsAmount) {
       setStep((cur) => cur + 1);
     }
@@ -166,25 +166,22 @@ const EmploymentRelationshipPage = ({ action }: IAppProps) => {
   };
 
   return (
-    <>
-      <FormSteps
-        titleForm={"Vinculacion trabajador"}
-        classFormSteb="border"
-        stebs={stebs}
-        register={register}
-        handleSubmit={handleSubmit}
-        handleNextStep={handleNextStep}
-        handleBackStep={handleBackStep}
-        validForm={isValid}
-        stepsAmount={stepsAmount}
-        actionSubmit={
-          action === "edit" ? handleUpdateWorker : handleCreateWorker
-        }
-        action={action}
-        watch={watch}
-        navigate={handleNavigation}
-      />
-    </>
+    <FormSteps
+      titleForm={"Vinculacion trabajador"}
+      classFormSteb="border"
+      stebs={stebs}
+      register={register}
+      handleSubmit={handleSubmit}
+      handleNextStep={handleNextStep}
+      handleBackStep={handleBackStep}
+      validForm={isValid}
+      stepsAmount={stepsAmount}
+      actionSubmit={action === "edit" ? handleUpdateWorker : handleCreateWorker}
+      action={action}
+      watch={watch}
+      navigate={handleNavigation}
+      control={control}
+    />
   );
 };
 

@@ -2,6 +2,7 @@ import { useContext, useRef, useState } from "react";
 import { ProgressBar } from "primereact/progressbar";
 import { RiFileExcel2Line } from "react-icons/ri";
 import { BsCheckCircle } from "react-icons/bs";
+import { FaGear } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import {
   IFormPeriod,
@@ -22,7 +23,8 @@ export default function useSearchSpreadSheetHook() {
   // Context
   const { setMessage, validateActionAccess } = useContext(AppContext);
 
-  const { generatePayroll, downloadPayroll } = usePayrollGenerate();
+  const { generatePayroll, downloadPayroll, authorizePayroll } =
+    usePayrollGenerate();
 
   //custom hooks
   const { typesSpreadSheetList, stateSpreadSheetList } = useListData();
@@ -179,24 +181,34 @@ export default function useSearchSpreadSheetHook() {
     {
       onClick: (row) => {
         setMessage({
-          title: `Generar planilla`,
-          description: `¿Estás segur@ de generar
+          title: `Autorizar planilla`,
+          description: `¿Estás segur@ de autorizar la
           planilla ${row.formsType[0].name}?`,
           show: true,
           OkTitle: "Aceptar",
           onOk: () => {
-            handleModalLoad();
-
-            generatePayroll(row.id)
-              .then(({ data, operation }) => {
-                if (operation.code === EResponseCodes.OK) {
-                  handleModalSuccess(data);
-                }
-              })
-              .catch((err) => {
-                handleModalError("Error en la generación de planilla");
-                console.log("algo fallo", err);
+            if (row.state == "Pendiente") {
+              setMessage({
+                title: `Autorizar planilla`,
+                description: `La planilla ${row.formsType[0].name} que deseas autorizar no se ha generado aún`,
+                show: true,
+                OkTitle: "Aceptar",
+                background: true,
               });
+            } else {
+              handleModalLoad();
+
+              authorizePayroll(row.id)
+                .then(({ data, operation }) => {
+                  if (operation.code === EResponseCodes.OK) {
+                    handleModalSuccess(data);
+                  }
+                })
+                .catch((err) => {
+                  handleModalError("Error en la autorización de planilla");
+                  console.log("algo fallo", err);
+                });
+            }
           },
           cancelTitle: "Cancelar",
           background: true,
@@ -205,7 +217,48 @@ export default function useSearchSpreadSheetHook() {
       customIcon: () => {
         return <BsCheckCircle color="#0cae2a" />;
       },
-      hide:!validateActionAccess('PLANILLA_GENERAR')
+      hide: !validateActionAccess("PLANILLA_APROBAR"),
+    },
+    {
+      onClick: (row) => {
+        setMessage({
+          title: `Generar planilla`,
+          description: `¿Estás segur@ de generar
+          planilla ${row.formsType[0].name}?`,
+          show: true,
+          OkTitle: "Aceptar",
+          onOk: () => {
+            if (row.state == "Autorizada") {
+              setMessage({
+                title: `Generar planilla`,
+                description: `La planilla ${row.formsType[0].name} que deseas generar ya se encuentra autorizada`,
+                show: true,
+                OkTitle: "Aceptar",
+                background: true,
+              });
+            } else {
+              handleModalLoad();
+
+              generatePayroll(row.id)
+                .then(({ data, operation }) => {
+                  if (operation.code === EResponseCodes.OK) {
+                    handleModalSuccess(data);
+                  }
+                })
+                .catch((err) => {
+                  handleModalError("Error en la generación de planilla");
+                  console.log("algo fallo", err);
+                });
+            }
+          },
+          cancelTitle: "Cancelar",
+          background: true,
+        });
+      },
+      customIcon: () => {
+        return <FaGear color="#0cae2a" />;
+      },
+      hide: !validateActionAccess("PLANILLA_GENERAR"),
     },
     // {
     //   icon: "Detail",
@@ -217,7 +270,17 @@ export default function useSearchSpreadSheetHook() {
     {
       icon: "Edit",
       onClick: (row) => {
-        navigate(`../edit/${row.id}`);
+        if (row.state == "Autorizada") {
+          setMessage({
+            title: `Generar planilla`,
+            description: `La planilla ${row.formsType[0].name} que deseas editar ya se encuentra autorizada`,
+            show: true,
+            OkTitle: "Aceptar",
+            background: true,
+          });
+        } else {
+          navigate(`../edit/${row.id}`);
+        }
       },
       hide: !validateActionAccess("PLANILLA_EDITAR"),
     },

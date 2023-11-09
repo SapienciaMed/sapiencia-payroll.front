@@ -17,6 +17,15 @@ export function usePayrollGenerate() {
       return new ApiResponse(false, EResponseCodes.FAIL, "Error no controlado");
     }
   }
+
+  async function authorizePayroll(id: number): Promise<ApiResponse<any>> {
+    try {
+      const endpoint: string = `/authorization/${id}`;
+      return await get(`${authUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(false, EResponseCodes.FAIL, "Error no controlado");
+    }
+  }
   async function downloadPayroll(id: number): Promise<ApiResponse<any>> {
     try {
       const endpoint: string = `/download/${id}`;
@@ -44,6 +53,7 @@ export function usePayrollGenerate() {
     generatePayroll,
     downloadPayroll,
     getIncomeTypeByType,
+    authorizePayroll
   };
 }
 

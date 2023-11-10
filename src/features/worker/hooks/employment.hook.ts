@@ -23,6 +23,7 @@ import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import useDependenceService from "../../../common/hooks/dependencies-service.hook";
 import {
   calculateDifferenceDays,
+  calculateDifferenceYear,
   calculateMonthBetweenDates,
 } from "../../../common/utils/helpers";
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
@@ -189,7 +190,9 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
   }, [idTypeContract, idCharge, startDate, endDate, totalValue]);
 
   useEffect(() => {
-    setValueRegister("employment.endDate", null, { shouldValidate: true });
+    if (dirtyFields.employment?.idTypeContract) {
+      setValueRegister("employment.endDate", null, { shouldValidate: true });
+    }
   }, [idTypeContract]);
 
   // departments
@@ -394,7 +397,11 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
       setValueRegister("worker", vinculation?.worker, { shouldValidate: true });
     }
 
-    setValueRegister("relatives", vinculation?.relatives);
+    const relatives = vinculation?.relatives?.map((relative) => {
+      return { ...relative, age: calculateDifferenceYear(relative.birthDate) };
+    });
+
+    setValueRegister("relatives", relatives);
     setValueRegister("employment", vinculation?.employment[0]);
   }, [vinculation]);
 

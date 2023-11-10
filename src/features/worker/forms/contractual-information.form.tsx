@@ -252,7 +252,7 @@ const ContractualInformationForm = ({
           typeInput="text"
           label={
             <>
-              Nro de contrato <span>*</span>
+              Nro de contrato / resolución <span>*</span>
             </>
           }
           register={register}

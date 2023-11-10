@@ -17,6 +17,7 @@ import DeductionsRoutes from "./features/deductions/deductions-routes";
 import SpreadsSheetRoutes from "./features/spreadsheet/spreadsheet-routes";
 import OtherIncomeRoutes from "./features/otherIncome/otherIncome-routes";
 import IncomeDeductions from "./features/incomeDeductions/incomeDeductions-routes";
+import ChargeRoutes from "./features/charge/charge-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 
 function App() {
@@ -81,6 +82,7 @@ function App() {
                 path={"/nomina/deduccion/renta/*"}
                 element={<IncomeDeductions />}
               />
+              <Route path={"/nomina/cargos/*"} element={<ChargeRoutes />} />
             </Routes>
           </Suspense>
         </Router>

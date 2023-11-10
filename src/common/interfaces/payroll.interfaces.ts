@@ -141,10 +141,10 @@ export interface ITypesCharges {
 export interface ICharge {
   id?: number;
   name?: string;
-  codUnit: number;
   codChargeType: number;
+  observations?: string;
   baseSalary: number;
-  state: string;
+  state: boolean;
   userModify?: string;
   dateModified?: DateTime;
   userCreate?: string;
@@ -569,4 +569,8 @@ export interface IDependence {
   id: number;
   name: string;
   depAbove: number;
+}
+
+export interface IChargeFilters {
+  id?: number;
 }

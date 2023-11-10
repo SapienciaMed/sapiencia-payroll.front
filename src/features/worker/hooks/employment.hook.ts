@@ -159,15 +159,12 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
   //Validar tipo de contrato
 
   useEffect(() => {
-    // if (dirtyFields.employment?.idTypeContract) {
     if (Number(idTypeContract) === 4) {
       if (startDate && endDate && totalValue) {
         const days = calculateDifferenceDays(startDate, endDate);
 
         if (days > 30) {
-          const months = calculateMonthBetweenDates(startDate, endDate);
-
-          const salaryMonth = totalValue / months;
+          const salaryMonth = (totalValue / days) * 30;
 
           setValueRegister("employment.salary", salaryMonth);
         } else {
@@ -189,7 +186,6 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
         setValueRegister("employment.salary", 0);
       }
     }
-    // }
   }, [idTypeContract, idCharge, startDate, endDate, totalValue]);
 
   useEffect(() => {

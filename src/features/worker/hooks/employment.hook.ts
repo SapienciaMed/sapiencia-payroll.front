@@ -21,7 +21,10 @@ import { useGenericListService } from "../../../common/hooks/generic-list-servic
 
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import useDependenceService from "../../../common/hooks/dependencies-service.hook";
-import { calculateMonthBetweenDates } from "../../../common/utils/helpers";
+import {
+  calculateDifferenceDays,
+  calculateMonthBetweenDates,
+} from "../../../common/utils/helpers";
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 
 interface IPropsUseEmployments {
@@ -159,10 +162,17 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
     // if (dirtyFields.employment?.idTypeContract) {
     if (Number(idTypeContract) === 4) {
       if (startDate && endDate && totalValue) {
-        const months = calculateMonthBetweenDates(startDate, endDate);
-        const salaryMonth = totalValue / months;
+        const days = calculateDifferenceDays(startDate, endDate);
 
-        setValueRegister("employment.salary", salaryMonth);
+        if (days > 30) {
+          const months = calculateMonthBetweenDates(startDate, endDate);
+
+          const salaryMonth = totalValue / months;
+
+          setValueRegister("employment.salary", salaryMonth);
+        } else {
+          setValueRegister("employment.salary", totalValue);
+        }
       } else {
         setValueRegister("employment.salary", 0);
       }
@@ -181,6 +191,10 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
     }
     // }
   }, [idTypeContract, idCharge, startDate, endDate, totalValue]);
+
+  useEffect(() => {
+    setValueRegister("employment.endDate", null, { shouldValidate: true });
+  }, [idTypeContract]);
 
   // departments
   useEffect(() => {

@@ -1,27 +1,70 @@
-import { useContext, useEffect, useState } from "react";
-import { ApiResponse } from "../../../common/utils/api-response";
-import { AppContext } from "../../../common/contexts/app.context";
+import React, { useContext, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
-import { IGenericList } from "../../../common/interfaces/global.interface";
-import { EResponseCodes } from "../../../common/constants/api.enum";
-import usePayrollService from "../../../common/hooks/payroll-service.hook";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { AppContext } from "../../../common/contexts/app.context";
+import { ApiResponse } from "../../../common/utils/api-response";
+
 import {
   ICharge,
   IVinculation,
   ITypesContracts,
   IRelative,
 } from "../../../common/interfaces/payroll.interfaces";
-import { useForm } from "react-hook-form";
+import { IGenericList } from "../../../common/interfaces/global.interface";
+import { EResponseCodes } from "../../../common/constants/api.enum";
+
 import { formsPayroll } from "../../../common/schemas/employment-schema";
-import { yupResolver } from "@hookform/resolvers/yup";
 
-export default function useEmploymentsData(action?: string) {
+import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
+
+import usePayrollService from "../../../common/hooks/payroll-service.hook";
+import useDependenceService from "../../../common/hooks/dependencies-service.hook";
+import {
+  calculateDifferenceDays,
+  calculateDifferenceYear,
+  calculateMonthBetweenDates,
+} from "../../../common/utils/helpers";
+import { IDropdownProps } from "../../../common/interfaces/select.interface";
+
+interface IPropsUseEmployments {
+  action?: string;
+}
+
+const useEmployments = ({ action }: IPropsUseEmployments) => {
+  // react router dom
   const { id } = useParams();
-  const { step, setStep } = useContext(AppContext);
-  const currentValidationSchema = formsPayroll[step];
+  const navigate = useNavigate();
 
-  /*States*/
+  // context
+  const { step, setStep, setMessage, authorization } = useContext(AppContext);
+
+  // states
+  const [genderList, setGenderList] = useState([]);
+  const [chargesInfo, setChargesInfo] = useState<ICharge[]>([]);
+  const [dependencesList, setDependencesList] = useState<IDropdownProps[]>([]);
+  const [typeDocumentList, setTypeDocumentList] = useState([]);
+  const [deparmentList, setDeparmentList] = useState([]);
+  const [nacionality, setNacionality] = useState([]);
+  const [townList, setTownList] = useState([]);
+  const [neighborhoodList, setNeighborhoodList] = useState([]);
+  const [sending, setSending] = useState(false);
+  const [socioEconomicStatus, setSocioEconomicStatus] = useState([]);
+  const [bloodType, setBloodType] = useState([]);
+  const [relationship, setRelationship] = useState([]);
+  const [housingType, setHousingType] = useState([]);
+  const [typesChargesList, setTypesChargesList] = useState([]);
+  const [epsList, setEpsList] = useState([]);
+  const [arlList, setArlList] = useState([]);
+  const [pensionList, setPensionList] = useState([]);
+  const [layoffList, setLayoffList] = useState([]);
+  const [levelRiskList, setLevelRiskList] = useState([]);
+  const [typesContracts, setTypesContracts] = useState([]);
+  const [activeWorker, setActiveWorker] = useState([]);
+  const [accountType, setAccountType] = useState([]);
+  const [bankList, setBankList] = useState([]);
+
   const [vinculation, setVinculation] = useState<IVinculation>({
     worker: {
       id: null,
@@ -48,26 +91,40 @@ export default function useEmploymentsData(action?: string) {
       arl: "",
       riskLevel: "",
       housingType: "",
+      fiscalIdentification: "",
     },
     relatives: [],
     employment: {
+      codDependence: null,
       idTypeContract: "",
       contractNumber: "",
       institutionalMail: "",
+      specificObligations: "",
+      contractualObject: "",
       startDate: "",
       endDate: "",
       idCharge: "",
       idReasonRetirement: "",
       state: "",
-      salary: null,
-      observation: "",
-      totalValue: null,
+      settlementPaid: null,
     },
   } as IVinculation);
 
-  const [familyData, setFamilyData] = useState<{ familiar: IRelative[] }>({
-    familiar: vinculation.relatives,
-  });
+  //custom hooks
+  const { getListByParent, getListByGroupers } = useGenericListService();
+
+  const {
+    getVinculationById,
+    getCharges,
+    getTypesContracts,
+    createWorker,
+    updateWorker,
+  } = usePayrollService();
+
+  const { getDependences } = useDependenceService();
+
+  //react-hook-form
+  const currentValidationSchema = formsPayroll[step];
 
   const {
     register,
@@ -78,89 +135,67 @@ export default function useEmploymentsData(action?: string) {
     trigger,
     watch,
     setValue: setValueRegister,
-    reset
+    reset,
   } = useForm<IVinculation>({
     defaultValues: vinculation,
     resolver: yupResolver(currentValidationSchema),
     mode: "all",
   });
-  const [changedData, changeData] = useState<number>(null);
-  const [genderList, setGenderList] = useState([]);
-  const [typeDocumentList, setTypeDocumentList] = useState([]);
-  const [deparmentList, setDeparmentList] = useState([]);
-  const [nacionality, setNacionality] = useState([]);
-  const [townList, setTownList] = useState([]);
-  const [neighborhoodList, setNeighborhoodList] = useState([]);
-  const [sending, setSending] = useState(false);
-  const [socioEconomicStatus, setSocioEconomicStatus] = useState([]);
-  const [bloodType, setBloodType] = useState([]);
-  const [relationship, setRelationship] = useState([]);
-  const [housingType, setHousingType] = useState([]);
-  const [typesChargesList, setTypesChargesList] = useState([]);
-  const [epsList, setEpsList] = useState([]);
-  const [arlList, setArlList] = useState([]);
-  const [pensionList, setPensionList] = useState([]);
-  const [layoffList, setLayoffList] = useState([]);
-  const [levelRiskList, setLevelRiskList] = useState([]);
-  const [typesContracts, setTypesContracts] = useState([]);
-  const [activeWorker, setActiveWorker] = useState([]);
-  const [accountType, setAccountType] = useState([]);
-  const [bankList, setBankList] = useState([]);
-
-  /*instances*/
-  const { getListByParent, getListByGroupers } = useGenericListService();
-
-  const navigate = useNavigate();
-
-  const { setMessage, authorization } = useContext(AppContext);
-  const {
-    getVinculationById,
-    getCharges,
-    getTypesContracts,
-    createWorker,
-    updateWorker,
-  } = usePayrollService();
-
-  const handleModal = () => {
-    setMessage({
-      title: "Vincular Trabajador",
-      description: `Trabajador ${id ? "editado" : "vinculado"} con exito`,
-      show: true,
-      OkTitle: "Aceptar",
-      onOk: () => {
-        navigate("../expedientes/");
-        setMessage((prev) => {
-          return { ...prev, show: false };
-        });
-      },
-      onClose: () => {
-        navigate("../expedientes/");
-        setMessage({});
-      },
-      background: true,
-    });
-  };
 
   const [department, municipality] = watch([
     "worker.department",
     "worker.municipality",
   ]);
 
-  const idTypeContract = watch("employment.idTypeContract");
+  const [idTypeContract, idCharge, startDate, endDate, totalValue] = watch([
+    "employment.idTypeContract",
+    "employment.idCharge",
+    "employment.startDate",
+    "employment.endDate",
+    "employment.totalValue",
+  ]);
+
+  // useEffect
+
+  //Validar tipo de contrato
 
   useEffect(() => {
-    if (dirtyFields.employment?.idTypeContract && idTypeContract != "4") {
-      setValueRegister("employment.observation", "");
-      setValueRegister("employment.totalValue", null);
+    if (Number(idTypeContract) === 4) {
+      if (startDate && endDate && totalValue) {
+        const days = calculateDifferenceDays(startDate, endDate);
 
-      return;
+        if (days > 30) {
+          const salaryMonth = (totalValue / days) * 30;
+
+          setValueRegister("employment.salary", salaryMonth);
+        } else {
+          setValueRegister("employment.salary", totalValue);
+        }
+      } else {
+        setValueRegister("employment.salary", 0);
+      }
+    } else {
+      setValueRegister("employment.totalValue", 0);
+
+      if (idCharge) {
+        const infoChargeSelected = chargesInfo.find(
+          (i) => i.id === Number(idCharge)
+        );
+
+        setValueRegister("employment.salary", infoChargeSelected.baseSalary);
+      } else {
+        setValueRegister("employment.salary", 0);
+      }
     }
+  }, [idTypeContract, idCharge, startDate, endDate, totalValue]);
 
-    if (dirtyFields.employment?.idTypeContract && idTypeContract == "4") {
-      setValueRegister("employment.salary", null);
+  useEffect(() => {
+    if (dirtyFields.employment?.idTypeContract) {
+      setValueRegister("employment.endDate", null, { shouldValidate: true });
     }
   }, [idTypeContract]);
 
+  // departments
   useEffect(() => {
     getListByParent({ grouper: "DEPARTAMENTOS", parentItemCode: "COL" })
       .then((response: ApiResponse<IGenericList[]>) => {
@@ -228,6 +263,8 @@ export default function useEmploymentsData(action?: string) {
       .catch((err) => {});
   }, [municipality]);
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     getTypesContracts()
       .then((response: ApiResponse<ITypesContracts[]>) => {
@@ -259,9 +296,13 @@ export default function useEmploymentsData(action?: string) {
               return list;
             })
           );
+
+          setChargesInfo(response.data);
         }
       })
       .catch((err) => {});
+
+    loadDependences();
   }, []);
 
   useEffect(() => {
@@ -301,20 +342,22 @@ export default function useEmploymentsData(action?: string) {
             arl: "",
             riskLevel: "",
             housingType: "",
+            fiscalIdentification: "",
           },
           relatives: [],
           employment: {
+            codDependence: null,
             idTypeContract: "",
             contractNumber: "",
             institutionalMail: "",
+            specificObligations: "",
+            contractualObject: "",
             startDate: "",
             endDate: "",
             idCharge: "",
             idReasonRetirement: "",
             state: "",
-            salary: null,
-            observation: "",
-            totalValue: null,
+            settlementPaid: null,
           },
         } as IVinculation);
       }
@@ -350,11 +393,16 @@ export default function useEmploymentsData(action?: string) {
       return;
     }
 
-    setValueRegister("worker", vinculation?.worker);
-    setValueRegister("relatives", vinculation?.relatives);
-    setValueRegister("employment", vinculation?.employment[0]);
+    if (vinculation.worker.id) {
+      setValueRegister("worker", vinculation?.worker, { shouldValidate: true });
+    }
 
-    setFamilyData({ familiar: vinculation?.relatives });
+    const relatives = vinculation?.relatives?.map((relative) => {
+      return { ...relative, age: calculateDifferenceYear(relative.birthDate) };
+    });
+
+    setValueRegister("relatives", relatives);
+    setValueRegister("employment", vinculation?.employment[0]);
   }, [vinculation]);
 
   /*Functions*/
@@ -379,6 +427,7 @@ export default function useEmploymentsData(action?: string) {
     ];
 
     const response = await getListByGroupers(groupers);
+
     if (response.operation.code === EResponseCodes.OK) {
       setTypeDocumentList(
         response.data
@@ -547,6 +596,21 @@ export default function useEmploymentsData(action?: string) {
       );
     }
   }
+
+  const loadDependences = async (): Promise<void> => {
+    const { data, operation } = await getDependences();
+
+    if (operation.code === EResponseCodes.OK) {
+      const dependencesList = data.map((dependence) => {
+        return { name: dependence.name, value: dependence.id };
+      }) as IDropdownProps[];
+
+      setDependencesList(dependencesList);
+    } else {
+      setDependencesList([]);
+    }
+  };
+
   const handleCreateWorker = async (data: IVinculation) => {
     setSending(true);
     await createWorker(data)
@@ -615,8 +679,29 @@ export default function useEmploymentsData(action?: string) {
       });
   };
 
+  const handleModal = () => {
+    setMessage({
+      title: "Vincular Trabajador",
+      description: `Trabajador ${id ? "editado" : "vinculado"} con exito`,
+      show: true,
+      OkTitle: "Aceptar",
+      onOk: () => {
+        navigate("../expedientes/");
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
+      },
+      onClose: () => {
+        navigate("../expedientes/");
+        setMessage({});
+      },
+      background: true,
+    });
+  };
+
   return {
     genderList,
+    dependencesList,
     typeDocumentList,
     authorization,
     deparmentList,
@@ -648,15 +733,13 @@ export default function useEmploymentsData(action?: string) {
     setStep,
     handleCreateWorker,
     handleUpdateWorker,
-    changedData,
-    changeData,
     getValueRegister,
-    familyData,
-    setFamilyData,
     watch,
     navigate,
     accountType,
     bankList,
-    reset
+    reset,
   };
-}
+};
+
+export default useEmployments;

@@ -17,7 +17,7 @@ export function ButtonComponent({
   action = () => {},
   id,
   form,
-  disabled
+  disabled,
 }: ILabelProps): React.JSX.Element {
   const handleButtonClick = (event: SyntheticEvent) => {
     if (type !== "submit") event.preventDefault();

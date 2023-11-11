@@ -24,7 +24,7 @@ div[id="single-spa-application:@sapiencia/payroll"] {
 .bg-editing {
   background: #f7f4f4;
   border-radius: 8px;
-  padding: 0;
+  padding: 15px;
   margin: 0.5em;
 }
 
@@ -292,8 +292,20 @@ div[id="single-spa-application:@sapiencia/payroll"] {
 
 .payroll-personal-information-document {
   display: flex;
-  gap: 4px;
-  flex-direction: row;
+  gap: 15px;
+  flex-direction: column;
+}
+
+.container-documentId {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .container-documentId_inputs {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+  }
 }
 
 .payroll-relatives-button-confirm {
@@ -344,6 +356,10 @@ div[id="single-spa-application:@sapiencia/payroll"] {
     color: $input-color-border !important;
     opacity: 1;
   }
+}
+
+.payroll-relatives-container-actions {
+  @include generate-flex-container(row, null, center, null, null, null);
 }
 
 .payroll-relatives-button-delete {
@@ -527,7 +543,7 @@ div[id="single-spa-application:@sapiencia/payroll"] {
 
   .button-save-container-display {
     display: flex;
-    justify-content: flex-end;
+    justify-content: end;
     flex-direction: row;
   }
   .container-table-result-responsive {
@@ -540,7 +556,7 @@ div[id="single-spa-application:@sapiencia/payroll"] {
 
   .payroll-personal-information-document {
     display: flex;
-    gap: 12px;
+    gap: 15px;
     flex-direction: row;
   }
 }
@@ -609,6 +625,7 @@ div[id="single-spa-application:@sapiencia/payroll"] {
     display: flex;
     justify-content: center;
   }
+
   .table-row {
     flex-direction: column;
     width: 100%;

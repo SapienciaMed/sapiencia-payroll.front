@@ -38,6 +38,7 @@ const useCreateAndUpdateDeductions = ({
   const [deductionsTypeByTypeList, setDeductionsTypeByTypeList] = useState([]);
   const [indexArrayYupValidator, setIndexArrayYupValidator] = useState(0);
   const [lastPeriodsList, setLastPeriodsList] = useState([]);
+
   //custom hooks
   const { activeWorkerList, workerInfo } = useListData(false);
   const { getLastPeriods } = usePayrollService();

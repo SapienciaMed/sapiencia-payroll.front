@@ -12,9 +12,10 @@ import {
 } from "../../../common/interfaces/payroll.interfaces";
 import useIncapacityService from "../../../common/hooks/incapacity-service.hook";
 
-export default function useListData(temporary = true) {
+export default function useListData(temporary = false) {
   const [listPeriods, setListPeriods] = useState([]);
   const [activeWorkerList, setActiveWorkerList] = useState([]);
+  const [activeContractorsList, setActiveContractorsList] = useState([]);
   const [typesIncapacityList, setTypesIncapacityList] = useState([]);
   const [reasonsForWithdrawal, setReasonsForWithdrawal] = useState([]);
   const [periodsList, setPeriodsList] = useState([]);
@@ -91,6 +92,7 @@ export default function useListData(temporary = true) {
     getReasonsForWithdrawal,
     getPeriods,
     getTypeSpreadSheet,
+    getContractors,
   } = usePayrollService();
   const { typeIncapacity } = useIncapacityService();
 
@@ -137,10 +139,38 @@ export default function useListData(temporary = true) {
       .catch((err) => {});
   };
 
+  const getContractorsActive = () => {
+    getContractors()
+      .then((response: ApiResponse<IWorker[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setWorkerInfo(response.data);
+          setActiveContractorsList(
+            response.data.map((item) => {
+              const list = {
+                name: `${
+                  item.numberDocument +
+                  " - " +
+                  item.firstName +
+                  " " +
+                  item.surname
+                }`,
+                value: item.employment.id,
+              };
+              return list;
+            })
+          );
+        }
+      })
+      .catch((err) => {});
+  };
+
   useEffect(() => {
     getWorkersActive();
   }, []);
 
+  useEffect(() => {
+    getContractorsActive();
+  }, []);
   useEffect(() => {
     getReasonsForWithdrawal()
       .then((response: ApiResponse<IReasonsForWithdrawal[]>) => {
@@ -214,6 +244,7 @@ export default function useListData(temporary = true) {
 
   return {
     activeWorkerList,
+    activeContractorsList,
     listPeriods,
     typesIncapacityList,
     reasonsForWithdrawal,

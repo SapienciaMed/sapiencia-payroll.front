@@ -8,12 +8,14 @@ export interface IEmployment {
   contractNumber: string;
   startDate: DateTime;
   endDate: DateTime;
+  specificObligations?: string;
+  contractualObject?: string;
   state: string;
-  observation?: string;
-  salary?: number;
-  totalValue?: number;
+  settlementPaid?: string;
   idReasonRetirement: string;
   retirementDate?: DateTime;
+  salary?: number;
+  totalValue?: number;
   charges?: ICharge[];
   typesContracts?: ITypesContracts[];
 }
@@ -43,7 +45,9 @@ export interface IRelative {
   name: string;
   relationship: string;
   gender: string;
+  age: number;
   birthDate: DateTime;
+  dependent: boolean;
 }
 
 export interface IWorker {
@@ -54,9 +58,9 @@ export interface IWorker {
   secondName?: string;
   surname: string;
   secondSurname?: string;
+  birthDate: DateTime;
   gender: string;
   bloodType: string;
-  birthDate: Date | string;
   nationality: string;
   email?: string;
   contactNumber: string;
@@ -64,16 +68,17 @@ export interface IWorker {
   municipality: string;
   neighborhood: string;
   address: string;
+  housingType?: string;
   socioEconomic?: string;
+  fiscalIdentification?: string;
   eps?: string;
   severanceFund?: string;
+  fundPension?: string;
   arl?: string;
   riskLevel?: string;
-  housingType?: string;
-  fundPension?: string;
   bank?: string;
-  accountType?: string;
-  accountNumber?: string;
+  accountBankType?: string;
+  accountBankNumber?: string;
   userModified?: string;
   dateModified?: DateTime;
   userCreate?: string;
@@ -136,10 +141,10 @@ export interface ITypesCharges {
 export interface ICharge {
   id?: number;
   name?: string;
-  codUnit: number;
   codChargeType: number;
+  observations?: string;
   baseSalary: number;
-  state: string;
+  state: boolean;
   userModify?: string;
   dateModified?: DateTime;
   userCreate?: string;
@@ -558,4 +563,14 @@ export interface IParameter {
   description?: string;
   value: string;
   aplicationId: number;
+}
+
+export interface IDependence {
+  id: number;
+  name: string;
+  depAbove: number;
+}
+
+export interface IChargeFilters {
+  id?: number;
 }

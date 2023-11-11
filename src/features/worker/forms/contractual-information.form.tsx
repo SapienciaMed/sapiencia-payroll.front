@@ -7,10 +7,12 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+
 import {
   SelectComponent,
   InputComponent,
 } from "../../../common/components/Form";
+
 import { DatePickerComponent } from "../../../common/components/Form/input-date.component";
 import TableComponent from "../../../common/components/table.component";
 import { AppContext } from "../../../common/contexts/app.context";
@@ -29,6 +31,7 @@ import {
   formaterNumberToCurrency,
 } from "../../../common/utils/helpers";
 import { InputNumberComponent } from "../../../common/components/Form/input-number.component";
+import { InputEditorComponent } from "../../../common/components/Form/input-editor.component";
 
 interface IContractualInformationProp {
   register: UseFormRegister<any>;
@@ -37,7 +40,7 @@ interface IContractualInformationProp {
   setValueRegister: UseFormSetValue<any>;
   list: any[][];
   action: string;
-  changedData: number;
+  // changedData: number;
   getValueRegister: UseFormGetValues<IVinculation>;
   watch?: UseFormWatch<IVinculation>;
 }
@@ -64,164 +67,164 @@ const ContractualInformationForm = ({
     "employment.endDate",
   ]);
 
-  const handleModal = (data: IEmployment) => {
-    setMessage({
-      title: "Información contractual",
-      description: (
-        <div className="grid-form-4-container gap-25 p-3em">
-          <InputComponent
-            idInput={"vinculationType"}
-            typeInput={"text"}
-            label={"Tipo de vinculación"}
-            className="input-basic medium"
-            classNameLabel="text-black big bold"
-            value={data.typesContracts[0].name}
-            disabled={disabledFields}
-          />
-          <InputNumberComponent
-            idInput="employment.salary"
-            control={control}
-            label={<>Salario</>}
-            errors={errors}
-            classNameLabel="text-black big bold"
-            className="inputNumber-basic medium"
-            disabled={disabledFields}
-            mode="currency"
-            currency="COP"
-            locale="es-CO"
-            minFractionDigits={2}
-            maxFractionDigits={2}
-          />
-          <InputComponent
-            idInput={"status"}
-            typeInput={"text"}
-            label={"Estado"}
-            className="input-basic medium"
-            classNameLabel="text-black big bold"
-            value={data.state == "1" ? "Activo" : "Inactivo"}
-            disabled={disabledFields}
-          />
-          <InputComponent
-            idInput={"charge"}
-            typeInput={"text"}
-            label={"Cargo"}
-            className="input-basic medium"
-            classNameLabel="text-black big bold"
-            value={data.charges[0].name}
-            disabled={disabledFields}
-          />
-          <InputComponent
-            idInput={"startDate"}
-            typeInput={"text"}
-            label={"Fecha de inicio"}
-            className="input-basic medium"
-            classNameLabel="text-black big bold"
-            value={`${data.startDate}`}
-            disabled={disabledFields}
-          />
-          <InputComponent
-            idInput={"endDate"}
-            typeInput={"text"}
-            label={"Fecha de fin"}
-            className="input-basic medium"
-            classNameLabel="text-black big bold"
-            value={`${data.endDate}`}
-            disabled={disabledFields}
-          />
-          <InputComponent
-            idInput={"antiquity"}
-            typeInput={"text"}
-            label={"Antigüedad"}
-            className="input-basic medium"
-            classNameLabel="text-black big bold"
-            value={`${calculateDifferenceYear(data.startDate, data.endDate)}`}
-            disabled={true}
-          />
-          <InputComponent
-            idInput={"instutionalMail"}
-            typeInput={"text"}
-            label={"Correo institucional"}
-            className="input-basic medium"
-            classNameLabel="text-black big bold"
-            value={data.institutionalMail}
-            disabled={disabledFields}
-          />
-          <div className="grid-span-4-columns">
-            <TextAreaComponent
-              label={"Observaciones"}
-              idInput={"observation"}
-              value={data.observation}
-              className="text-area-basic"
-              classNameLabel="text-black big bold"
-              disabled={disabledFields}
-              rows={5}
-            />
-          </div>
-        </div>
-      ),
-      show: true,
-      OkTitle: "Aceptar",
-      onClose: () => {
-        setMessage({});
-      },
-      background: true,
-      size: "large",
-    });
-  };
-  const tableColumns: ITableElement<IEmployment>[] = [
-    {
-      fieldName: "idTypeContract",
-      header: "Tipo de vinculación",
-      renderCell: (row) => {
-        return <>{row.typesContracts[0].name}</>;
-      },
-    },
-    {
-      fieldName: "salary",
-      header: "Salario",
-      renderCell: (row) => {
-        return <>{formaterNumberToCurrency(row.salary)}</>;
-      },
-    },
-    {
-      fieldName: "idCharge",
-      header: "Cargo",
-      renderCell: (row) => {
-        return <>{row.charges[0].name}</>;
-      },
-    },
-    {
-      fieldName: "startDate",
-      header: "Fecha inicio",
-      renderCell: (row) => {
-        return <>{row.startDate}</>;
-      },
-    },
-    {
-      fieldName: "endDate",
-      header: "Fecha fin",
-      renderCell: (row) => {
-        return <>{row.endDate}</>;
-      },
-    },
-  ];
-  const tableActions: ITableAction<IEmployment>[] = [
-    {
-      icon: "Detail",
-      onClick: (row) => {
-        handleModal(row);
-      },
-    },
-  ];
+  // const handleModal = (data: IEmployment) => {
+  //   setMessage({
+  //     title: "Información contractual",
+  //     description: (
+  //       <div className="grid-form-4-container gap-25 p-3em">
+  //         <InputComponent
+  //           idInput={"vinculationType"}
+  //           typeInput={"text"}
+  //           label={"Tipo de vinculación"}
+  //           className="input-basic medium"
+  //           classNameLabel="text-black big bold"
+  //           value={data.typesContracts[0].name}
+  //           disabled={disabledFields}
+  //         />
+  //         <InputNumberComponent
+  //           idInput="employment.salary"
+  //           control={control}
+  //           label={<>Salario</>}
+  //           errors={errors}
+  //           classNameLabel="text-black big bold"
+  //           className="inputNumber-basic medium"
+  //           disabled={disabledFields}
+  //           mode="currency"
+  //           currency="COP"
+  //           locale="es-CO"
+  //           minFractionDigits={2}
+  //           maxFractionDigits={2}
+  //         />
+  //         <InputComponent
+  //           idInput={"status"}
+  //           typeInput={"text"}
+  //           label={"Estado"}
+  //           className="input-basic medium"
+  //           classNameLabel="text-black big bold"
+  //           value={data.state == "1" ? "Activo" : "Inactivo"}
+  //           disabled={disabledFields}
+  //         />
+  //         <InputComponent
+  //           idInput={"charge"}
+  //           typeInput={"text"}
+  //           label={"Cargo"}
+  //           className="input-basic medium"
+  //           classNameLabel="text-black big bold"
+  //           value={data.charges[0].name}
+  //           disabled={disabledFields}
+  //         />
+  //         <InputComponent
+  //           idInput={"startDate"}
+  //           typeInput={"text"}
+  //           label={"Fecha de inicio"}
+  //           className="input-basic medium"
+  //           classNameLabel="text-black big bold"
+  //           value={`${data.startDate}`}
+  //           disabled={disabledFields}
+  //         />
+  //         <InputComponent
+  //           idInput={"endDate"}
+  //           typeInput={"text"}
+  //           label={"Fecha de fin"}
+  //           className="input-basic medium"
+  //           classNameLabel="text-black big bold"
+  //           value={`${data.endDate}`}
+  //           disabled={disabledFields}
+  //         />
+  //         <InputComponent
+  //           idInput={"antiquity"}
+  //           typeInput={"text"}
+  //           label={"Antigüedad"}
+  //           className="input-basic medium"
+  //           classNameLabel="text-black big bold"
+  //           value={`${calculateDifferenceYear(data.startDate, data.endDate)}`}
+  //           disabled={true}
+  //         />
+  //         <InputComponent
+  //           idInput={"instutionalMail"}
+  //           typeInput={"text"}
+  //           label={"Correo institucional"}
+  //           className="input-basic medium"
+  //           classNameLabel="text-black big bold"
+  //           value={data.institutionalMail}
+  //           disabled={disabledFields}
+  //         />
+  //         <div className="grid-span-4-columns">
+  //           <TextAreaComponent
+  //             label={"Observaciones"}
+  //             idInput={"observation"}
+  //             // value={data.observation}
+  //             className="text-area-basic"
+  //             classNameLabel="text-black big bold"
+  //             disabled={disabledFields}
+  //             rows={5}
+  //           />
+  //         </div>
+  //       </div>
+  //     ),
+  //     show: true,
+  //     OkTitle: "Aceptar",
+  //     onClose: () => {
+  //       setMessage({});
+  //     },
+  //     background: true,
+  //     size: "medium",
+  //   });
+  // };
+  // const tableColumns: ITableElement<IEmployment>[] = [
+  //   {
+  //     fieldName: "idTypeContract",
+  //     header: "Tipo de vinculación",
+  //     renderCell: (row) => {
+  //       return <>{row.typesContracts[0].name}</>;
+  //     },
+  //   },
+  //   {
+  //     fieldName: "salary",
+  //     header: "Salario",
+  //     renderCell: (row) => {
+  //       return <>{formaterNumberToCurrency(1000)}</>;
+  //     },
+  //   },
+  //   {
+  //     fieldName: "idCharge",
+  //     header: "Cargo",
+  //     renderCell: (row) => {
+  //       return <>{row.charges[0].name}</>;
+  //     },
+  //   },
+  //   {
+  //     fieldName: "startDate",
+  //     header: "Fecha inicio",
+  //     renderCell: (row) => {
+  //       return <>{row.startDate}</>;
+  //     },
+  //   },
+  //   {
+  //     fieldName: "endDate",
+  //     header: "Fecha fin",
+  //     renderCell: (row) => {
+  //       return <>{row.endDate}</>;
+  //     },
+  //   },
+  // ];
+  // const tableActions: ITableAction<IEmployment>[] = [
+  //   {
+  //     icon: "Detail",
+  //     onClick: (row) => {
+  //       handleModal(row);
+  //     },
+  //   },
+  // ];
 
-  function loadTableData(searchCriteria?: object): void {
-    if (tableComponentRef.current) {
-      tableComponentRef.current.loadData(searchCriteria);
-    }
-  }
-  useEffect(() => {
-    loadTableData({ workerId: id });
-  }, []);
+  // function loadTableData(searchCriteria?: object): void {
+  //   if (tableComponentRef.current) {
+  //     tableComponentRef.current.loadData(searchCriteria);
+  //   }
+  // }
+  // useEffect(() => {
+  //   loadTableData({ workerId: id });
+  // }, []);
 
   return (
     <div>
@@ -249,7 +252,7 @@ const ContractualInformationForm = ({
           typeInput="text"
           label={
             <>
-              Numero de contrato <span>*</span>
+              Nro de contrato / resolución <span>*</span>
             </>
           }
           register={register}
@@ -273,6 +276,23 @@ const ContractualInformationForm = ({
           placeholder="Seleccione."
           disabled={disabledFields}
         />
+
+        <SelectComponent
+          idInput={"employment.codDependence"}
+          control={control}
+          errors={errors}
+          data={list[3]}
+          label={
+            <>
+              Dependencia <span>*</span>
+            </>
+          }
+          className="select-basic medium"
+          classNameLabel="text-black big bold"
+          placeholder="Seleccione."
+          disabled={disabledFields}
+        />
+
         <SelectComponent
           idInput={"employment.idCharge"}
           control={control}
@@ -293,7 +313,7 @@ const ContractualInformationForm = ({
           control={control}
           label={
             <>
-              Fecha inicio de contrato <span>*</span>
+              Fecha inicio <span>*</span>
             </>
           }
           errors={errors}
@@ -310,7 +330,12 @@ const ContractualInformationForm = ({
           control={control}
           label={
             <>
-              Fecha fin de contrato <span>*</span>
+              Fecha de terminación{" "}
+              {String(watch("employment.idTypeContract")) === "4" ? (
+                <span>*</span>
+              ) : (
+                ""
+              )}
             </>
           }
           errors={errors}
@@ -356,11 +381,26 @@ const ContractualInformationForm = ({
           disabled={disabledFields}
         />
 
-        {watch("employment.idTypeContract") != "4" ? (
+        <InputNumberComponent
+          idInput="employment.salary"
+          control={control}
+          label={<>Valor mensual</>}
+          errors={errors}
+          classNameLabel="text-black big bold"
+          className="inputNumber-basic medium"
+          disabled={true}
+          mode="currency"
+          currency="COP"
+          locale="es-CO"
+          minFractionDigits={2}
+          maxFractionDigits={2}
+        />
+
+        {String(watch("employment.idTypeContract")) === "4" && (
           <InputNumberComponent
-            idInput="employment.salary"
+            idInput="employment.totalValue"
             control={control}
-            label={<>Salario</>}
+            label={<>Valor total</>}
             errors={errors}
             classNameLabel="text-black big bold"
             className="inputNumber-basic medium"
@@ -371,38 +411,48 @@ const ContractualInformationForm = ({
             minFractionDigits={2}
             maxFractionDigits={2}
           />
-        ) : (
-          <>
-            <InputNumberComponent
-              idInput="employment.totalValue"
-              control={control}
-              label={<>Valor total</>}
-              errors={errors}
-              classNameLabel="text-black big bold"
-              className="inputNumber-basic medium"
+        )}
+
+        <div className="grid-span-4-columns gap-25">
+          <TextAreaComponent
+            label={"Obligaciones especificas"}
+            idInput={"employment.specificObligations"}
+            disabled={disabledFields}
+            className="text-area-basic"
+            classNameLabel="text-black big bold"
+            register={register}
+            errors={errors}
+            rows={5}
+          />
+          {/* <InputEditorComponent
+            control={control}
+            label={"Obligaciones especificas"}
+            idInput={"employment.specificObligations"}
+            readOnly={disabledFields}
+            className="inputEditor-basic height-150"
+            classNameLabel="text-black big bold"
+          /> */}
+        </div>
+
+        {String(watch("employment.idTypeContract")) === "4" && (
+          <div className="grid-span-4-columns">
+            <TextAreaComponent
+              label={"Objeto contractual"}
+              idInput={"employment.contractualObject"}
               disabled={disabledFields}
-              mode="currency"
-              currency="COP"
-              locale="es-CO"
-              minFractionDigits={2}
-              maxFractionDigits={2}
+              className="text-area-basic"
+              classNameLabel="text-black big bold"
+              register={register}
+              errors={errors}
+              rows={5}
             />
-            <div className="grid-span-4-columns">
-              <TextAreaComponent
-                label={"Observaciones"}
-                idInput={"employment.observation"}
-                disabled={disabledFields}
-                className="text-area-basic"
-                classNameLabel="text-black big bold"
-                register={register}
-                errors={errors}
-                rows={5}
-              />
+            <div className="text-right">
+              <span className="text-span ">Max. {500} carácteres</span>
             </div>
-          </>
+          </div>
         )}
       </div>
-      {action !== "new" ? (
+      {/* {action !== "new" ? (
         <div className="container-sections-forms">
           <TableComponent
             url={`${process.env.urlApiPayroll}/api/v1/vinculation/employment/get-paginated`}
@@ -414,7 +464,7 @@ const ContractualInformationForm = ({
         </div>
       ) : (
         <></>
-      )}
+      )} */}
     </div>
   );
 };

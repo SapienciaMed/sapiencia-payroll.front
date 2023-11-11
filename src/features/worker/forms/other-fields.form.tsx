@@ -19,7 +19,7 @@ interface IOtherInformationProp {
   list: any[];
   setValueRegister: UseFormSetValue<any>;
   action: string;
-  changedData: number;
+  // changedData: number;
   getValueRegister: UseFormGetValues<IVinculation>;
 }
 

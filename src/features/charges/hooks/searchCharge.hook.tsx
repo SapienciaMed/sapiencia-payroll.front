@@ -53,11 +53,11 @@ export default function useSearchSpreadSheetHook() {
 
   //functions
   const redirectCreate = () => {
-    if (validateActionAccess("PLANILLA_CREAR")) {
+    if (validateActionAccess("CREAR_CARGOS")) {
       navigate("../crear");
     } else {
       setMessage({
-        title: "Crear Planilla",
+        title: "Crear Cargo",
         show: true,
         OkTitle: "Aceptar",
         description: "No tienes permisos para esta acción",
@@ -129,7 +129,7 @@ export default function useSearchSpreadSheetHook() {
       onClick: (row) => {
         navigate(`../edit/${row.id}`);
       },
-      hide: !validateActionAccess("PLANILLA_EDITAR"),
+      hide: !validateActionAccess("EDITAR_CARGOS"),
     },
   ];
 

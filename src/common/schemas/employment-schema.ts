@@ -86,7 +86,13 @@ const contractualInformation = yup.object({
       .typeError("Fecha invalida"),
     endDate: yup
       .date()
-      .required("El campo es obligatorio")
+      .when("idTypeContract", ([idTypeContract], schema) => {
+        if (idTypeContract === "4") {
+          return schema.required("El campo es obligatorio");
+        } else {
+          return schema.nullable();
+        }
+      })
       .typeError("Fecha invalida"),
     institutionalMail: yup
       .string()

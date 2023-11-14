@@ -106,7 +106,7 @@ export function InputComponent({
           disabled={disabled}
           max={max}
           min={min}
-          checked={checked}
+          checked={typeInput === "checkbox" ? field.value : null}
           value={field.value}
           onChange={field.onChange}
           onBlur={field.onBlur}

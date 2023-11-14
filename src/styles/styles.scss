@@ -24,7 +24,7 @@ div[id="single-spa-application:@sapiencia/payroll"] {
 .bg-editing {
   background: #f7f4f4;
   border-radius: 8px;
-  padding: 0;
+  padding: 15px;
   margin: 0.5em;
 }
 
@@ -292,8 +292,8 @@ div[id="single-spa-application:@sapiencia/payroll"] {
 
 .payroll-personal-information-document {
   display: flex;
-  gap: 4px;
-  flex-direction: row;
+  gap: 15px;
+  flex-direction: column;
 }
 
 .container-documentId {
@@ -556,7 +556,7 @@ div[id="single-spa-application:@sapiencia/payroll"] {
 
   .payroll-personal-information-document {
     display: flex;
-    gap: 12px;
+    gap: 15px;
     flex-direction: row;
   }
 }
@@ -625,6 +625,7 @@ div[id="single-spa-application:@sapiencia/payroll"] {
     display: flex;
     justify-content: center;
   }
+
   .table-row {
     flex-direction: column;
     width: 100%;

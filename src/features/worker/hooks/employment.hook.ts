@@ -21,7 +21,11 @@ import { useGenericListService } from "../../../common/hooks/generic-list-servic
 
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import useDependenceService from "../../../common/hooks/dependencies-service.hook";
-import { calculateMonthBetweenDates } from "../../../common/utils/helpers";
+import {
+  calculateDifferenceDays,
+  calculateDifferenceYear,
+  calculateMonthBetweenDates,
+} from "../../../common/utils/helpers";
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 
 interface IPropsUseEmployments {
@@ -156,13 +160,17 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
   //Validar tipo de contrato
 
   useEffect(() => {
-    // if (dirtyFields.employment?.idTypeContract) {
     if (Number(idTypeContract) === 4) {
       if (startDate && endDate && totalValue) {
-        const months = calculateMonthBetweenDates(startDate, endDate);
-        const salaryMonth = totalValue / months;
+        const days = calculateDifferenceDays(startDate, endDate);
 
-        setValueRegister("employment.salary", salaryMonth);
+        if (days > 30) {
+          const salaryMonth = (totalValue / days) * 30;
+
+          setValueRegister("employment.salary", salaryMonth);
+        } else {
+          setValueRegister("employment.salary", totalValue);
+        }
       } else {
         setValueRegister("employment.salary", 0);
       }
@@ -179,8 +187,13 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
         setValueRegister("employment.salary", 0);
       }
     }
-    // }
   }, [idTypeContract, idCharge, startDate, endDate, totalValue]);
+
+  useEffect(() => {
+    if (dirtyFields.employment?.idTypeContract) {
+      setValueRegister("employment.endDate", null, { shouldValidate: true });
+    }
+  }, [idTypeContract]);
 
   // departments
   useEffect(() => {
@@ -382,9 +395,15 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
 
     if (vinculation.worker.id) {
       setValueRegister("worker", vinculation?.worker, { shouldValidate: true });
+    } else {
+      setValueRegister("worker", vinculation?.worker);
     }
 
-    setValueRegister("relatives", vinculation?.relatives);
+    const relatives = vinculation?.relatives?.map((relative) => {
+      return { ...relative, age: calculateDifferenceYear(relative.birthDate) };
+    });
+
+    setValueRegister("relatives", relatives);
     setValueRegister("employment", vinculation?.employment[0]);
   }, [vinculation]);
 

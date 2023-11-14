@@ -578,3 +578,7 @@ export interface IDependence {
   name: string;
   depAbove: number;
 }
+
+export interface IChargeFilters {
+  id?: number;
+}

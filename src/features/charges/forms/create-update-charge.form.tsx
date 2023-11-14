@@ -55,6 +55,7 @@ export const CreateUpdateChargeForm = ({
             className="select-basic medium"
             classNameLabel="text-black big bold"
             placeholder="Seleccione."
+            disabled={action === "edit"}
           />
           <Controller
             control={control}
@@ -75,6 +76,7 @@ export const CreateUpdateChargeForm = ({
                   className="input-basic medium"
                   classNameLabel="text-black big bold"
                   typeInput={""}
+                  disabled={action === "edit"}
                 />
               );
             }}

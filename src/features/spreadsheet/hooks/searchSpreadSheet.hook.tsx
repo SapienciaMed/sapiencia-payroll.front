@@ -86,12 +86,12 @@ export default function useSearchSpreadSheetHook() {
     // handleModalLoad();
   };
 
-  const handleModalLoad = () => {
+  const handleModalLoad = (authorize?: boolean) => {
     setMessage({
-      title: `Generar planilla`,
+      title: `${authorize ? "Autorizar" : "Generar"} planilla`,
       description: (
         <div className="container-modal_load">
-          <h3>Generando planilla quincenal</h3>
+          <h3>{`${authorize ? "autorizando" : "Generando"} planilla`}</h3>
           <ProgressBar
             mode="indeterminate"
             style={{ height: "6px" }}
@@ -100,7 +100,7 @@ export default function useSearchSpreadSheetHook() {
       ),
       show: true,
       size: "small",
-      OkTitle: "Generando...",
+      OkTitle: `${authorize ? "Autorizando..." : "Generando..."}`,
       onOk: () => {
         return false;
       },
@@ -110,9 +110,9 @@ export default function useSearchSpreadSheetHook() {
     });
   };
 
-  const handleModalSuccess = (data: any) => {
+  const handleModalSuccess = (data: any,authorize?:boolean) => {
     setMessage({
-      title: `Generar planilla`,
+      title: `${authorize?"Autorizar":"Generar"} planilla`,
       description: <div>{JSON.stringify(data)}</div>,
       show: true,
       OkTitle: "Aceptar",
@@ -196,12 +196,12 @@ export default function useSearchSpreadSheetHook() {
                 background: true,
               });
             } else {
-              handleModalLoad();
+              handleModalLoad(true);
 
               authorizePayroll(row.id)
                 .then(({ data, operation }) => {
                   if (operation.code === EResponseCodes.OK) {
-                    handleModalSuccess(data);
+                    handleModalSuccess(data,true);
                   }
                 })
                 .catch((err) => {

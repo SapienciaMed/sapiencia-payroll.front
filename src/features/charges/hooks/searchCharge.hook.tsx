@@ -15,6 +15,7 @@ import { AppContext } from "../../../common/contexts/app.context";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 import useChargesService from "../../../common/hooks/charges-service.hook";
 import { ApiResponse } from "../../../common/utils/api-response";
+import { formaterNumberToCurrency } from "../../../common/utils/helpers";
 
 export default function useSearchSpreadSheetHook() {
   // Context
@@ -104,7 +105,7 @@ export default function useSearchSpreadSheetHook() {
       fieldName: "baseSalary",
       header: "Salario Base",
       renderCell: (row) => {
-        return <>{row.baseSalary}</>;
+        return <>{formaterNumberToCurrency(row.baseSalary)}</>;
       },
     },
     {

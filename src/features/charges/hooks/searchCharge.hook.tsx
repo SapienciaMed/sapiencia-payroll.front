@@ -87,8 +87,8 @@ export default function useSearchSpreadSheetHook() {
   //variables
   const tableColumns: ITableElement<ICharge>[] = [
     {
-      fieldName: "name",
-      header: "typeCharge.name",
+      fieldName: "typeCharge.name",
+      header: "Tipo Cargo",
       renderCell: (row) => {
         return <>{row.typeCharge.name}</>;
       },

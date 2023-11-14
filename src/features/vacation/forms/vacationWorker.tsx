@@ -312,6 +312,7 @@ const SearchWorker = () => {
     },
   ];
 
+  console.log(startVacation);
   return (
     <>
       <div className="main-page">
@@ -403,7 +404,7 @@ const SearchWorker = () => {
                 placeholder="DD/MM/YYYY"
                 dateFormat="dd/mm/yy"
                 disabledDays={[0, 6]}
-                minDate={startVacation}
+                minDate={new Date(startVacation)}
                 maxDate={addBusinessDays(
                   startVacation || new Date(),
                   Number(vacation?.available || 0) +

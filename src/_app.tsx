@@ -19,6 +19,7 @@ import OtherIncomeRoutes from "./features/otherIncome/otherIncome-routes";
 import IncomeDeductions from "./features/incomeDeductions/incomeDeductions-routes";
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 import ChargeRoutes from "./features/charges/charge-routes";
+import ReportRoutes from "./features/reports/report-routes";
 
 function App() {
   const { publish } = useAppCominicator();
@@ -82,10 +83,8 @@ function App() {
                 path={"/nomina/deduccion/renta/*"}
                 element={<IncomeDeductions />}
               />
-              <Route
-                path={"/nomina/cargos/*"}
-                element={<ChargeRoutes />}
-              />
+              <Route path={"/nomina/cargos/*"} element={<ChargeRoutes />} />
+              <Route path={"/nomina/reportes/*"} element={<ReportRoutes />} />
             </Routes>
           </Suspense>
         </Router>

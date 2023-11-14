@@ -119,7 +119,7 @@ const createVacationPage = () => {
                 placeholder="DD/MM/YYYY"
                 dateFormat="dd/mm/yy"
                 disabledDays={[0, 6]}
-                minDate={startVacation}
+                minDate={new Date(startVacation)}
                 maxDate={addBusinessDays(
                   startVacation || new Date(),
                   Number(vacation?.available || 0) +
@@ -207,23 +207,25 @@ const createVacationPage = () => {
             </div>
             <div>
               <Controller
-              control={control}
-              name={"observation"}
-              defaultValue={""}
-              render={({ field }) => {
-                return (
-                  <TextAreaComponent
-                    idInput={field.name}
-                    className="text-area-basic"
-                    classNameLabel="text-black big bold"
-                    label="Observaciones"
-                    register={register}
-                    value={`${field.value}`}
-                    onChange={field.onChange}
-                    disabled={!checkCompensatoryDays && !checkEnjoyedDays}
-                    errors={errors}
-                    rows={5}
-                  />)}}
+                control={control}
+                name={"observation"}
+                defaultValue={""}
+                render={({ field }) => {
+                  return (
+                    <TextAreaComponent
+                      idInput={field.name}
+                      className="text-area-basic"
+                      classNameLabel="text-black big bold"
+                      label="Observaciones"
+                      register={register}
+                      value={`${field.value}`}
+                      onChange={field.onChange}
+                      disabled={!checkCompensatoryDays && !checkEnjoyedDays}
+                      errors={errors}
+                      rows={5}
+                    />
+                  );
+                }}
               />
             </div>
           </FormComponent>

@@ -86,12 +86,12 @@ export default function useSearchSpreadSheetHook() {
     // handleModalLoad();
   };
 
-  const handleModalLoad = () => {
+  const handleModalLoad = (typeSpreadSheet: string) => {
     setMessage({
       title: `Generar planilla`,
       description: (
         <div className="container-modal_load">
-          <h3>Generando planilla quincenal</h3>
+          <h3>Generando {typeSpreadSheet}</h3>
           <ProgressBar
             mode="indeterminate"
             style={{ height: "6px" }}
@@ -99,7 +99,7 @@ export default function useSearchSpreadSheetHook() {
         </div>
       ),
       show: true,
-      size: "small",
+      size: "medium",
       OkTitle: "Generando...",
       onOk: () => {
         return false;
@@ -110,13 +110,14 @@ export default function useSearchSpreadSheetHook() {
     });
   };
 
-  const handleModalSuccess = (data: any) => {
+  const handleModalSuccess = (data: any, typeSpreadSheet: string) => {
     setMessage({
       title: `Generar planilla`,
-      description: <div>{JSON.stringify(data)}</div>,
+      description: `Se ha generado planilla ${typeSpreadSheet} con éxito`,
+      // description: <div>{JSON.stringify(data)}</div>,
       show: true,
       OkTitle: "Aceptar",
-      size: "extra-large",
+      // size: "extra-large",
     });
   };
 
@@ -196,12 +197,12 @@ export default function useSearchSpreadSheetHook() {
                 background: true,
               });
             } else {
-              handleModalLoad();
+              handleModalLoad(row.formsType[0].name);
 
               authorizePayroll(row.id)
                 .then(({ data, operation }) => {
                   if (operation.code === EResponseCodes.OK) {
-                    handleModalSuccess(data);
+                    handleModalSuccess(data, row.formsType[0].name);
                   }
                 })
                 .catch((err) => {
@@ -237,12 +238,12 @@ export default function useSearchSpreadSheetHook() {
                 background: true,
               });
             } else {
-              handleModalLoad();
+              handleModalLoad(row.formsType[0].name);
 
               generatePayroll(row.id)
                 .then(({ data, operation }) => {
                   if (operation.code === EResponseCodes.OK) {
-                    handleModalSuccess(data);
+                    handleModalSuccess(data, row.formsType[0].name);
                   } else {
                     handleModalError("Error en la generación de planilla");
                   }

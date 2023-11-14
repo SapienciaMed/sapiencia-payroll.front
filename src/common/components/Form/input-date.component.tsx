@@ -105,6 +105,7 @@ export function DatePickerComponent({
             const formattedDate = DateTime.fromJSDate(e.value).toFormat(
               "yyyy/MM/dd"
             );
+
             field.onChange(formattedDate);
             if (onChange) onChange(e);
           }}

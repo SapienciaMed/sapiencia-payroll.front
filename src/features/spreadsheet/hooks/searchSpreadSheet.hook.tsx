@@ -86,12 +86,14 @@ export default function useSearchSpreadSheetHook() {
     // handleModalLoad();
   };
 
-  const handleModalLoad = () => {
+  const handleModalLoad = (typeSpreadSheet: string, authorize?: boolean) => {
     setMessage({
-      title: `Generar planilla`,
+      title: `${authorize ? "Autorizar" : "Generar"} planilla`,
       description: (
         <div className="container-modal_load">
-          <h3>Generando planilla quincenal</h3>
+          <h3>{`${
+            authorize ? "autorizando" : "Generando"
+          } ${typeSpreadSheet}`}</h3>
           <ProgressBar
             mode="indeterminate"
             style={{ height: "6px" }}
@@ -99,8 +101,8 @@ export default function useSearchSpreadSheetHook() {
         </div>
       ),
       show: true,
-      size: "small",
-      OkTitle: "Generando...",
+      size: "medium",
+      OkTitle: `${authorize ? "Autorizando..." : "Generando..."}`,
       onOk: () => {
         return false;
       },
@@ -110,13 +112,34 @@ export default function useSearchSpreadSheetHook() {
     });
   };
 
-  const handleModalSuccess = (data: any) => {
+  const handleModalSuccess = (
+    data: any,
+    typeSpreadSheet: string,
+    authorize?: boolean
+  ) => {
     setMessage({
-      title: `Generar planilla`,
-      description: <div>{JSON.stringify(data)}</div>,
+      title: `${authorize ? "Autorizar" : "Generar"} planilla`,
+      description: `Se ha ${
+        authorize ? "autorizado" : "generado"
+      } planilla ${typeSpreadSheet} con éxito`,
+      // description: <div>{JSON.stringify(data)}</div>,
       show: true,
       OkTitle: "Aceptar",
-      size: "extra-large",
+      onOk: () => {
+        if (authorize) {
+          reset();
+          tableComponentRef.current?.emptyData();
+          setshowTable(false);
+          setMessage((prev) => {
+            return { ...prev, show: false };
+          });
+        } else {
+          setMessage((prev) => {
+            return { ...prev, show: false };
+          });
+        }
+      },
+      // size: "extra-large",
     });
   };
 
@@ -196,12 +219,12 @@ export default function useSearchSpreadSheetHook() {
                 background: true,
               });
             } else {
-              handleModalLoad();
+              handleModalLoad(row.formsType[0].name, true);
 
               authorizePayroll(row.id)
                 .then(({ data, operation }) => {
                   if (operation.code === EResponseCodes.OK) {
-                    handleModalSuccess(data);
+                    handleModalSuccess(data, row.formsType[0].name, true);
                   }
                 })
                 .catch((err) => {
@@ -237,12 +260,14 @@ export default function useSearchSpreadSheetHook() {
                 background: true,
               });
             } else {
-              handleModalLoad();
+              handleModalLoad(row.formsType[0].name);
 
               generatePayroll(row.id)
                 .then(({ data, operation }) => {
                   if (operation.code === EResponseCodes.OK) {
-                    handleModalSuccess(data);
+                    handleModalSuccess(data, row.formsType[0].name);
+                  } else {
+                    handleModalError("Error en la generación de planilla");
                   }
                 })
                 .catch((err) => {

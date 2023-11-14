@@ -2,8 +2,10 @@ import React, { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "../../common/utils/auth-private-guard";
 
-function ChargeRoutes() {
-  const SearchChargePage = lazy(() => import("./pages/search-charge.page"));
+function ChargesRoutes() {
+  const SearchChargePage = lazy(
+    () => import("./pages/search-charge.page")
+  );
 
   const CreateUpdateChargePage = lazy(
     () => import("./pages/create-update-charge.page")
@@ -20,20 +22,22 @@ function ChargeRoutes() {
           />
         }
       />
+
       <Route
         path={"/crear"}
         element={
           <PrivateRoute
-            element={<CreateUpdateChargePage action="new" />}
+            element={<CreateUpdateChargePage action={"new"} />}
             allowedAction={"CREAR_CARGOS"}
           />
         }
       />
+
       <Route
         path={"/edit/:id"}
         element={
           <PrivateRoute
-            element={<CreateUpdateChargePage action="edit" />}
+            element={<CreateUpdateChargePage action={"edit"} />}
             allowedAction={"EDITAR_CARGOS"}
           />
         }
@@ -42,4 +46,4 @@ function ChargeRoutes() {
   );
 }
 
-export default React.memo(ChargeRoutes);
+export default React.memo(ChargesRoutes);

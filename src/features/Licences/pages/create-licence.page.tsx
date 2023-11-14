@@ -92,7 +92,7 @@ const CreateLicencePage = () => {
                       Fecha inicio <span>*</span>
                     </>
                   }
-                  errors={errors}
+                  //errors={errors}
                   classNameLabel="text-black big break-line bold"
                   className="dataPicker-basic  medium "
                   disabled={false}
@@ -115,7 +115,7 @@ const CreateLicencePage = () => {
                   placeholder="DD/MM/YYYY"
                   dateFormat="dd/mm/yy"
                   disabledDays={typeDays == "Habil" ? [0, 6] : []}
-                  minDate={dateStart}
+                  minDate={new Date(dateStart)}
                   maxDate={
                     numberDays !== 0
                       ? typeDays === "Habil"

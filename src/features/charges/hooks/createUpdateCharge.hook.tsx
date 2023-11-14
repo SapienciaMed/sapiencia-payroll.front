@@ -3,21 +3,25 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { AppContext } from "../../../common/contexts/app.context";
-
-import { ICharge } from "../../../common/interfaces/payroll.interfaces";
-import { ApiResponse } from "../../../common/utils/api-response";
-
-import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
-import useChargeService from "../../../common/hooks/charge-service.hook";
+import {
+  ICharge,
+  ITypesCharges,
+} from "../../../common/interfaces/payroll.interfaces";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
-interface IPropsUseCreateAndUpdateDeductions {
+import { createOrUpdateSpreadSheetSchema, createUpdateChargeSchema } from "../../../common/schemas";
+
+import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
+import useChargesService from "../../../common/hooks/charges-service.hook";
+import { ApiResponse } from "../../../common/utils/api-response";
+
+interface IPropsUseCreateOrUpdateCharge {
   action: string;
 }
 
-const useCreateAndUpdateCharge = ({
+const useCreateOrUpdateChargeHook = ({
   action,
-}: IPropsUseCreateAndUpdateDeductions) => {
+}: IPropsUseCreateOrUpdateCharge) => {
   //react router dom
   const navigate = useNavigate();
   const { id } = useParams();
@@ -26,27 +30,36 @@ const useCreateAndUpdateCharge = ({
   const { setMessage } = useContext(AppContext);
 
   //useState
-
+  const [typesChargesList, setTypesChargesList] = useState([]);
   //custom hooks
-
-  const { createCharge, getChargeById, updateCharge } = useChargeService();
+  const { createCharge, updateCharge, getChargeById, getTypesChargeList } =
+    useChargesService();
 
   //variables
 
   //use form
-  // const resolver = useYupValidationResolver(currentValidationSchema);
+  const resolver = useYupValidationResolver(createUpdateChargeSchema);
 
   const { control, formState, handleSubmit } = useForm<ICharge>({
     defaultValues: async () => loadDefaultValues(),
     mode: "all",
-    // resolver,
+    resolver,
   });
 
-  //watch
-
   //useEffect
-
+  useEffect(() => {
+    getTypesChargeList().then((response: ApiResponse<ITypesCharges[]>) => {
+      if (response && response?.operation?.code === EResponseCodes.OK) {
+        setTypesChargesList(
+          response.data.map((item) => {
+            return { name: item.name, value: item.id };
+          })
+        );
+      }
+    });
+  }, []);
   //functions
+
   const renderTitleDeduction = () => {
     return action === "edit" ? "Editar cargo" : "Crear cargo";
   };
@@ -57,8 +70,8 @@ const useCreateAndUpdateCharge = ({
         id: null,
         name: "",
         codChargeType: null,
-        state: false,
-        baseSalary: 0,
+        state: true,
+        baseSalary: null,
         observations: "",
       };
     }
@@ -67,14 +80,14 @@ const useCreateAndUpdateCharge = ({
       const { data, operation } = await getChargeById(Number(id));
 
       if (operation.code === EResponseCodes.OK) {
-        if (data.length > 0) {
+        if (data) {
           return {
-            id: data[0].id,
-            name: "",
-            codChargeType: null,
-            state: false,
-            baseSalary: 0,
-            observations: "",
+            id: data.id,
+            name: data?.name,
+            codChargeType: data.codChargeType,
+            state: data.state,
+            baseSalary: data.baseSalary,
+            observations: data?.observations,
           };
         } else {
           handleModalError("No se han cargado los datos");
@@ -83,8 +96,8 @@ const useCreateAndUpdateCharge = ({
             id: null,
             name: "",
             codChargeType: null,
-            state: false,
-            baseSalary: 0,
+            state: true,
+            baseSalary: null,
             observations: "",
           };
         }
@@ -95,8 +108,8 @@ const useCreateAndUpdateCharge = ({
           id: null,
           name: "",
           codChargeType: null,
-          state: false,
-          baseSalary: 0,
+          state: true,
+          baseSalary: null,
           observations: "",
         };
       }
@@ -107,7 +120,7 @@ const useCreateAndUpdateCharge = ({
     setMessage({
       title: "Cancelar",
       description: `¿Estás segur@ que deseas 
-      cancelar el cargo?`,
+      cancelar?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -152,8 +165,8 @@ const useCreateAndUpdateCharge = ({
     setMessage({
       title: ` ${action === "edit" ? "Editado" : "Guardado"}`,
       description: `Cargo ${
-        action === "edit" ? "editado" : "ejecutado"
-      } exitosamente`,
+        action === "edit" ? "editado" : "guardado"
+      } exitosamente en el sistema`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -170,17 +183,15 @@ const useCreateAndUpdateCharge = ({
     });
   };
 
-  const handleSubmitDeduction = handleSubmit((data: ICharge) => {
+  const handleSubmitCharge = handleSubmit((data: ICharge) => {
     setMessage({
-      title: "Confirmación de deducción",
-      description: `¿Estás segur@ de ${
-        action === "edit" ? "editar" : "ejecutar"
-      }
-      la deducción?`,
+      title: `${action === "edit" ? "Editar" : "Crear"} Cargo`,
+      description: `¿Estás segur@ de ${action === "edit" ? "editar" : "crear"}
+      el cargo?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
-        handleCreateOrUpdateDeduction(data);
+        handleCreateOrUpdateCharge(data);
         setMessage((prev) => {
           return { ...prev, show: false };
         });
@@ -190,25 +201,25 @@ const useCreateAndUpdateCharge = ({
     });
   });
 
-  const handleCreateOrUpdateDeduction = async (data: ICharge) => {
-    // const { data: dataResponse, operation } =
-    //   action === "edit"
-    //     ? await updateDeduction(data)
-    //     : await createDeduction(data);
-    // if (operation.code === EResponseCodes.OK) {
-    //   handleModalSuccess();
-    // } else {
-    //   handleModalError(operation.message, false);
-    // }
+  const handleCreateOrUpdateCharge = async (data: ICharge) => {
+    const { data: dataResponse, operation } =
+      action === "edit" ? await updateCharge(data) : await createCharge(data);
+
+    if (operation.code === EResponseCodes.OK) {
+      handleModalSuccess();
+    } else {
+      handleModalError(operation.message, false);
+    }
   };
 
   return {
     control,
     formState,
+    typesChargesList,
     renderTitleDeduction,
     redirectCancel,
-    handleSubmitDeduction,
+    handleSubmitCharge,
   };
 };
 
-export default useCreateAndUpdateCharge;
+export default useCreateOrUpdateChargeHook;

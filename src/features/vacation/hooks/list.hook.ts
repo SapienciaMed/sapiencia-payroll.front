@@ -8,15 +8,18 @@ import {
   IFormPeriod,
   IIncapacityTypes,
   IReasonsForWithdrawal,
+  ITypesCharges,
   IWorker,
 } from "../../../common/interfaces/payroll.interfaces";
 import useIncapacityService from "../../../common/hooks/incapacity-service.hook";
+import useChargesService from "../../../common/hooks/charges-service.hook";
 
 export default function useListData(temporary = false) {
   const [listPeriods, setListPeriods] = useState([]);
   const [activeWorkerList, setActiveWorkerList] = useState([]);
   const [activeContractorsList, setActiveContractorsList] = useState([]);
   const [typesIncapacityList, setTypesIncapacityList] = useState([]);
+
   const [reasonsForWithdrawal, setReasonsForWithdrawal] = useState([]);
   const [periodsList, setPeriodsList] = useState([]);
   const [workerInfo, setWorkerInfo] = useState([]);
@@ -95,6 +98,7 @@ export default function useListData(temporary = false) {
     getContractors,
   } = usePayrollService();
   const { typeIncapacity } = useIncapacityService();
+  const { getTypesChargeList } = useChargesService();
 
   useEffect(() => {
     getListByGrouper("PERIODOS")

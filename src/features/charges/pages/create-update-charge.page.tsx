@@ -1,38 +1,41 @@
 import React from "react";
-
-import useCreateAndUpdateCharge from "../hooks/createAndUpdateCharge.hook";
 import { CreateUpdateChargeForm } from "../forms/create-update-charge.form";
+import useCreateOrUpdateChargeHook from "../hooks/createUpdateCharge.hook";
 
-interface IPropsCreateUpdateCharge {
+interface IPropsCreateUpdateChargePage {
   action: string;
 }
 
 const CreateUpdateChargePage = ({
   action,
-}: IPropsCreateUpdateCharge): React.JSX.Element => {
+}: IPropsCreateUpdateChargePage): React.JSX.Element => {
   const {
     control,
     formState,
-    renderTitleDeduction,
+    typesChargesList,
+    handleSubmitCharge,
     redirectCancel,
-    handleSubmitDeduction,
-  } = useCreateAndUpdateCharge({ action });
+    renderTitleDeduction,
+  } = useCreateOrUpdateChargeHook({ action });
 
   return (
     <div className="main-page">
       <div className="card-table">
         <div className="title-area">
-          <label className="text-black biggest bold">
+          <label className="text-black extra-large bold">
             {renderTitleDeduction()}
           </label>
         </div>
 
         <CreateUpdateChargeForm
-          control={control}
-          formState={formState}
-          action={action}
-          redirectCancel={redirectCancel}
-          handleSubmitDeduction={handleSubmitDeduction}
+          {...{
+            action,
+            control,
+            formState,
+            typesChargesList,
+            handleSubmitCharge,
+            redirectCancel,
+          }}
         />
       </div>
     </div>

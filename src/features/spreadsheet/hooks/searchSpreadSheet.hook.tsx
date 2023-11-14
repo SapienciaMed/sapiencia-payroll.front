@@ -243,6 +243,8 @@ export default function useSearchSpreadSheetHook() {
                 .then(({ data, operation }) => {
                   if (operation.code === EResponseCodes.OK) {
                     handleModalSuccess(data);
+                  } else {
+                    handleModalError("Error en la generación de planilla");
                   }
                 })
                 .catch((err) => {

@@ -337,3 +337,15 @@ export const createOrUpdateOtherIncome = yup.object({
     )
     .required("El campo es obligatorio"),
 });
+
+export const createUpdateChargeSchema = yup.object({
+  codChargeType: yup.string().required("El campo es obligatorio"),
+  name: yup.string().required("El campo es obligatorio"),
+  baseSalary: yup
+    .string()
+    .required("El campo es obligatorio"),
+    state: yup
+    .boolean()
+    .required("El campo es obligatorio"),
+    observations: yup.string().max(500, "Solo se permiten 500 caracteres").optional(),
+});

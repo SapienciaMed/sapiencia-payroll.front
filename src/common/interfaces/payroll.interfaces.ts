@@ -141,14 +141,22 @@ export interface ITypesCharges {
 export interface ICharge {
   id?: number;
   name?: string;
-  codUnit: number;
   codChargeType: number;
   baseSalary: number;
-  state: string;
+  state: boolean;
+  observations?: string;
+  typeCharge?: ITypesCharges;
   userModify?: string;
   dateModified?: DateTime;
   userCreate?: string;
   dateCreate?: DateTime;
+}
+
+export interface IChargeFilters {
+  codChargeType?: number;
+  name?: string;
+  page: number;
+  perPage: number;
 }
 
 export interface IFilterVinculation {

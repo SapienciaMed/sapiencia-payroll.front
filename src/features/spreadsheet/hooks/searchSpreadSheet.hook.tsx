@@ -91,8 +91,9 @@ export default function useSearchSpreadSheetHook() {
       title: `${authorize ? "Autorizar" : "Generar"} planilla`,
       description: (
         <div className="container-modal_load">
-          <h3>{`${authorize ? "autorizando" : "Generando"} planilla`}</h3>
-          <h3>Generando {typeSpreadSheet}</h3>
+          <h3>{`${
+            authorize ? "autorizando" : "Generando"
+          } ${typeSpreadSheet}`}</h3>
           <ProgressBar
             mode="indeterminate"
             style={{ height: "6px" }}
@@ -118,10 +119,26 @@ export default function useSearchSpreadSheetHook() {
   ) => {
     setMessage({
       title: `${authorize ? "Autorizar" : "Generar"} planilla`,
-      description: `Se ha generado planilla ${typeSpreadSheet} con éxito`,
+      description: `Se ha ${
+        authorize ? "autorizado" : "generado"
+      } planilla ${typeSpreadSheet} con éxito`,
       // description: <div>{JSON.stringify(data)}</div>,
       show: true,
       OkTitle: "Aceptar",
+      onOk: () => {
+        if (authorize) {
+          reset();
+          tableComponentRef.current?.emptyData();
+          setshowTable(false);
+          setMessage((prev) => {
+            return { ...prev, show: false };
+          });
+        } else {
+          setMessage((prev) => {
+            return { ...prev, show: false };
+          });
+        }
+      },
       // size: "extra-large",
     });
   };

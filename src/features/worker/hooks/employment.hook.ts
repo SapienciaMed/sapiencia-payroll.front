@@ -395,6 +395,8 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
 
     if (vinculation.worker.id) {
       setValueRegister("worker", vinculation?.worker, { shouldValidate: true });
+    } else {
+      setValueRegister("worker", vinculation?.worker);
     }
 
     const relatives = vinculation?.relatives?.map((relative) => {

@@ -202,7 +202,7 @@ const SearchWorker = () => {
       setMessage({
         type: EResponseCodes.OK,
         title: "Vacaciones.",
-        description: "periodo de vacaciones creado con exito.",
+        description: "periodo de vacaciones creado satisfactoriamente.",
         show: true,
         OkTitle: "Aceptar",
         onClose() {

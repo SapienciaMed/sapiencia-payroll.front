@@ -157,8 +157,8 @@ const useCreateAndUpdateDeductions = ({
   useEffect(() => {
     if (codEmployment) {
       const contractType = workerInfo.find(
-        (item) => item.employment.id == codEmployment
-      ).employment?.idTypeContract;
+        (item) => item?.employment?.id == codEmployment
+      )?.employment?.idTypeContract;
       getLastPeriods(contractType)
         .then((response: ApiResponse<IFormPeriod[]>) => {
           if (response && response?.operation?.code === EResponseCodes.OK) {
@@ -205,6 +205,7 @@ const useCreateAndUpdateDeductions = ({
       const { data, operation } = await getDeductionById(Number(id));
 
       if (operation.code === EResponseCodes.OK) {
+        console.log(data);
         if (data.length > 0) {
           return {
             id: data[0].id,

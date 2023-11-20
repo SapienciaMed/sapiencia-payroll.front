@@ -94,6 +94,14 @@ const contractualInformation = yup.object({
         }
       })
       .typeError("Fecha invalida"),
+    specificObligations: yup
+      .string()
+      .optional()
+      .max(10000, "Solo se permiten 10000 caracteres"),
+    contractualObject: yup
+      .string()
+      .optional()
+      .max(5000, "Solo se permiten 5000 caracteres"),
     institutionalMail: yup
       .string()
       .required("El campo es obligatorio")
@@ -347,11 +355,10 @@ export const createOrUpdateOtherIncome = yup.object({
 export const createUpdateChargeSchema = yup.object({
   codChargeType: yup.string().required("El campo es obligatorio"),
   name: yup.string().required("El campo es obligatorio"),
-  baseSalary: yup
+  baseSalary: yup.string().required("El campo es obligatorio"),
+  state: yup.boolean().required("El campo es obligatorio"),
+  observations: yup
     .string()
-    .required("El campo es obligatorio"),
-    state: yup
-    .boolean()
-    .required("El campo es obligatorio"),
-    observations: yup.string().max(500, "Solo se permiten 500 caracteres").optional(),
+    .max(500, "Solo se permiten 500 caracteres")
+    .optional(),
 });

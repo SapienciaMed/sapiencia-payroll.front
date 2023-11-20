@@ -1,7 +1,6 @@
 import * as yup from "yup";
 import { calculateLimiteEdad, calculateMayorEdad } from "../utils/helpers";
 import { EIncomeType } from "../constants/otherincome.enum";
-import useCreateAndUpdateOtherIncome from "../../features/otherIncome/hooks/createAndUpdateOtherIncome.hook";
 import { IParameter } from "../interfaces/payroll.interfaces";
 
 const personalInformationLocalization = yup.object({
@@ -361,4 +360,17 @@ export const createUpdateChargeSchema = yup.object({
     .string()
     .max(500, "Solo se permiten 500 caracteres")
     .optional(),
+});
+
+export const generateReporSchema = yup.object({
+  period: yup
+    .string()
+    .min(4, "Debe digitar 4 caracteres")
+    .max(4, "Solo se permiten 4 caracteres")
+    .required("El campo es obligatorio"),
+  codEmployment: yup.string().required("El campo es obligatorio"),
+  typeReport: yup
+    .number()
+    .typeError("El campo es obligatorio")
+    .required("El campo es obligatorio"),
 });

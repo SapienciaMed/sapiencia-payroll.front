@@ -10,6 +10,7 @@ import {
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
 import { InputComponent } from "../../../common/components/Form/input-refactor.component";
 import { EDirection } from "../../../common/constants/input.enum";
+import { ETypeReport } from "../../../common/constants/report.enum";
 
 interface IPropsCreateUpdateDeductionsForm {
   control: Control<any, any>;
@@ -18,6 +19,7 @@ interface IPropsCreateUpdateDeductionsForm {
   handleSubmitOtherIncome: (
     e?: BaseSyntheticEvent<object, any, any>
   ) => Promise<void>;
+  clearFields: () => void;
 }
 
 export const ReportForm = ({
@@ -25,6 +27,7 @@ export const ReportForm = ({
   formState,
   activeWorkerList,
   handleSubmitOtherIncome,
+  clearFields,
 }: IPropsCreateUpdateDeductionsForm): React.JSX.Element => {
   const { errors, isValid } = formState;
 
@@ -83,7 +86,8 @@ export const ReportForm = ({
             <div className="check-label">
               <InputComponent
                 control={control}
-                idInput={`period`}
+                idInput={`typeReport`}
+                value={ETypeReport.Colilla}
                 direction={EDirection.row}
                 typeInput="radio"
                 className="checkbox-basic"
@@ -99,7 +103,8 @@ export const ReportForm = ({
             <div className="check-label">
               <InputComponent
                 control={control}
-                idInput={`period`}
+                idInput={`typeReport`}
+                value={ETypeReport.ResolucionVacaciones}
                 direction={EDirection.row}
                 typeInput="radio"
                 className="checkbox-basic"
@@ -115,7 +120,8 @@ export const ReportForm = ({
             <div className="check-label">
               <InputComponent
                 control={control}
-                idInput={`period`}
+                idInput={`typeReport`}
+                value={ETypeReport.ResolucionLiquidacionDefinitiva}
                 direction={EDirection.row}
                 typeInput="radio"
                 className="checkbox-basic"
@@ -131,7 +137,8 @@ export const ReportForm = ({
             <div className="check-label">
               <InputComponent
                 control={control}
-                idInput={`period`}
+                idInput={`typeReport`}
+                value={ETypeReport.CertificadoLaboral}
                 direction={EDirection.row}
                 typeInput="radio"
                 className="checkbox-basic"
@@ -143,11 +150,12 @@ export const ReportForm = ({
                   htmlFor="state"
                 />
               </InputComponent>
-            </div>{" "}
+            </div>
             <div className="check-label">
               <InputComponent
                 control={control}
-                idInput={`period`}
+                idInput={`typeReport`}
+                value={ETypeReport.CertificadoIngresosRetenciones}
                 direction={EDirection.row}
                 typeInput="radio"
                 className="checkbox-basic"
@@ -163,7 +171,8 @@ export const ReportForm = ({
             <div className="check-label">
               <InputComponent
                 control={control}
-                idInput={`period`}
+                idInput={`typeReport`}
+                value={ETypeReport.ConstanciaContratos}
                 direction={EDirection.row}
                 typeInput="radio"
                 className="checkbox-basic"
@@ -181,10 +190,10 @@ export const ReportForm = ({
       </div>
       <div className="button-save-container-display m-top-20">
         <ButtonComponent
-          value={"Cancelar"}
+          value={"Limpiar campos"}
           className="button-clean bold"
           type="button"
-          // action={redirectCancel}
+          action={clearFields}
         />
         <ButtonComponent
           value={`Generar`}

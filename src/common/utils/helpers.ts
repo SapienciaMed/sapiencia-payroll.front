@@ -184,3 +184,15 @@ export function caculatePorcentual(valueOriginal: number, valueNew: number) {
 
   return porcentajeAumento;
 }
+
+export function descargarArchivo(buffer: number[], nombreArchivo: string) {
+  const bufferConvert = new Uint8Array(buffer); // Convierte el Array del búfer en Uint8Array
+  const blob = new Blob([bufferConvert]);
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = nombreArchivo;
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+}

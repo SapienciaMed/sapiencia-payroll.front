@@ -582,3 +582,17 @@ export interface IDependence {
 export interface IChargeFilters {
   id?: number;
 }
+
+export interface IReport {
+  period: string;
+  codEmployment: string;
+  typeReport: number;
+}
+
+export interface IReportResponse {
+  bufferFile: {
+    type: string;
+    data: number[];
+  };
+  nameFile: string;
+}

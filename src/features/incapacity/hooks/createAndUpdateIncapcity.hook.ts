@@ -27,7 +27,7 @@ export default function useCreateAndUpdateIncapacityHook(action: string) {
       title: "Incapacidad",
       description: `Incapacidad ${
         action !== "new" ? "editada" : "creada"
-      } con exito`,
+      } satisfactoriamente `,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {

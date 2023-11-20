@@ -684,7 +684,7 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
   const handleModal = () => {
     setMessage({
       title: "Vincular Trabajador",
-      description: `Trabajador ${id ? "editado" : "vinculado"} con exito`,
+      description: `Trabajador ${id ? "editado" : "vinculado"} satisfactoriamente`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {

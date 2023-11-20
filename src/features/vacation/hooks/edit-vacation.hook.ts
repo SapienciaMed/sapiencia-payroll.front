@@ -135,7 +135,7 @@ export default function useEditVacationData() {
           setMessage({
             type: EResponseCodes.OK,
             title: "Vacaciones.",
-            description: "periodo de vacaciones editado con exito.",
+            description: "periodo de vacaciones editado satisfactoriamente.",
             show: true,
             OkTitle: "Aceptar",
             onOk() {

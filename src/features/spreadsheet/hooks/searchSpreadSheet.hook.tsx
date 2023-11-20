@@ -126,18 +126,12 @@ export default function useSearchSpreadSheetHook() {
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
-        if (authorize) {
-          reset();
-          tableComponentRef.current?.emptyData();
-          setshowTable(false);
-          setMessage((prev) => {
-            return { ...prev, show: false };
-          });
-        } else {
-          setMessage((prev) => {
-            return { ...prev, show: false };
-          });
-        }
+        reset();
+        tableComponentRef.current?.emptyData();
+        setshowTable(false);
+        setMessage((prev) => {
+          return { ...prev, show: false };
+        });
       },
       // size: "extra-large",
     });

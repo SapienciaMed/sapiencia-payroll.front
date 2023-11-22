@@ -95,10 +95,12 @@ const contractualInformation = yup.object({
       .typeError("Fecha invalida"),
     specificObligations: yup
       .string()
+      .nullable()
       .optional()
       .max(10000, "Solo se permiten 10000 caracteres"),
     contractualObject: yup
       .string()
+      .nullable()
       .optional()
       .max(5000, "Solo se permiten 5000 caracteres"),
     institutionalMail: yup
@@ -365,7 +367,6 @@ export const createUpdateChargeSchema = yup.object({
 export const generateReporSchema = yup.object({
   period: yup
     .string()
-    .min(4, "Debe digitar 4 caracteres")
     .max(4, "Solo se permiten 4 caracteres")
     .required("El campo es obligatorio"),
   codEmployment: yup.string().required("El campo es obligatorio"),

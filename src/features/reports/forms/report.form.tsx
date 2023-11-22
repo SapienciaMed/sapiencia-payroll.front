@@ -16,6 +16,8 @@ interface IPropsCreateUpdateDeductionsForm {
   control: Control<any, any>;
   formState: FormState<any>;
   activeWorkerList: any[];
+  periodList: any[];
+  typeReport: number;
   handleSubmitOtherIncome: (
     e?: BaseSyntheticEvent<object, any, any>
   ) => Promise<void>;
@@ -26,9 +28,13 @@ export const ReportForm = ({
   control,
   formState,
   activeWorkerList,
+  periodList,
+  typeReport,
   handleSubmitOtherIncome,
   clearFields,
 }: IPropsCreateUpdateDeductionsForm): React.JSX.Element => {
+  console.log(typeReport);
+
   const { errors, isValid } = formState;
 
   return (
@@ -52,19 +58,36 @@ export const ReportForm = ({
               filter={true}
               disabled={action === "edit" ? true : false}
             /> */}
-
-            <InputComponent
-              control={control}
-              idInput={`period`}
-              typeInput="text"
-              className="input-basic medium"
-              classNameLabel="text-black big break-line bold"
-              label={
-                <>
-                  Periodo <span>*</span>
-                </>
-              }
-            />
+            {Number(typeReport) === ETypeReport.Colilla ? (
+              <SelectComponent
+                idInput={"period"}
+                control={control}
+                errors={errors}
+                data={periodList}
+                label={
+                  <>
+                    Periodo. <span>*</span>
+                  </>
+                }
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
+                filter={true}
+              />
+            ) : (
+              <InputComponent
+                control={control}
+                idInput={`period`}
+                typeInput="text"
+                className="input-basic medium"
+                classNameLabel="text-black big break-line bold"
+                label={
+                  <>
+                    Periodo <span>*</span>
+                  </>
+                }
+              />
+            )}
 
             <SelectComponent
               idInput={"codEmployment"}

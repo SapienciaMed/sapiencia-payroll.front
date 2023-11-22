@@ -40,7 +40,7 @@ const useReport = ({}: IPropsUseReport) => {
 
   const resolver = useYupValidationResolver(generateReporSchema);
 
-  const { control, formState, handleSubmit, reset, watch, getFieldState } =
+  const { control, formState, handleSubmit, reset, watch, setValue } =
     useForm<IReport>({
       defaultValues: {
         period: "",
@@ -51,7 +51,14 @@ const useReport = ({}: IPropsUseReport) => {
       resolver,
     });
 
+  const typeReport = watch("typeReport");
+
   //useEffect
+
+  useEffect(() => {
+    if (formState.dirtyFields.typeReport)
+      setValue("period", null, { shouldValidate: true });
+  }, [typeReport]);
 
   //functions
 
@@ -132,7 +139,7 @@ const useReport = ({}: IPropsUseReport) => {
 
   const handleSubmitOtherIncome = handleSubmit((data: IReport) => {
     setMessage({
-      title: "Confirmación de repporte",
+      title: "Confirmación de reporte",
       description: `¿Estás segur@ de ejecutar el reporte?`,
       show: true,
       OkTitle: "Aceptar",
@@ -152,7 +159,7 @@ const useReport = ({}: IPropsUseReport) => {
     if (operation.code === EResponseCodes.OK) {
       descargarArchivo(data.bufferFile.data, data.nameFile);
     } else {
-      handleModalError("Error al generar el reporte");
+      handleModalError("Error al generar el reporte", false);
     }
   };
 
@@ -161,6 +168,7 @@ const useReport = ({}: IPropsUseReport) => {
     formState,
     periodsList,
     activeWorkerList,
+    typeReport,
     redirectCancel,
     handleSubmitOtherIncome,
     clearFields,

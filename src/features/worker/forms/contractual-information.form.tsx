@@ -424,6 +424,9 @@ const ContractualInformationForm = ({
             errors={errors}
             rows={5}
           />
+          <div className="text-right">
+            <span className="text-span ">Max. {10000} carácteres</span>
+          </div>
           {/* <InputEditorComponent
             control={control}
             label={"Obligaciones especificas"}
@@ -447,7 +450,7 @@ const ContractualInformationForm = ({
               rows={5}
             />
             <div className="text-right">
-              <span className="text-span ">Max. {500} carácteres</span>
+              <span className="text-span ">Max. {5000} carácteres</span>
             </div>
           </div>
         )}

@@ -4,23 +4,29 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { AppContext } from "../../../common/contexts/app.context";
 
-import { IOtherIncome } from "../../../common/interfaces/payroll.interfaces";
+import {
+  IOtherIncome,
+  IReport,
+} from "../../../common/interfaces/payroll.interfaces";
 
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
-import { createOrUpdateOtherIncome } from "../../../common/schemas";
+import {
+  createOrUpdateOtherIncome,
+  generateReporSchema,
+} from "../../../common/schemas";
 
 import useListData from "../../vacation/hooks/list.hook";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
+import useReportService from "../../../common/hooks/report-service..hook";
+import { descargarArchivo } from "../../../common/utils/helpers";
 
 interface IPropsUseReport {}
 
 const useReport = ({}: IPropsUseReport) => {
   //react router dom
   const navigate = useNavigate();
-  const { id } = useParams();
-
   // Context
   const { setMessage } = useContext(AppContext);
 
@@ -28,20 +34,36 @@ const useReport = ({}: IPropsUseReport) => {
 
   //custom hooks
   const { activeWorkerList, periodsList } = useListData(false);
+  const { generateReport } = useReportService();
 
   //use form
 
-  const resolver = useYupValidationResolver(createOrUpdateOtherIncome);
+  const resolver = useYupValidationResolver(generateReporSchema);
 
-  const { control, formState, handleSubmit } = useForm<any>({
-    defaultValues: {},
-    mode: "all",
-    resolver,
-  });
+  const { control, formState, handleSubmit, reset, watch, getFieldState } =
+    useForm<IReport>({
+      defaultValues: {
+        period: "",
+        codEmployment: "",
+        typeReport: null,
+      },
+      mode: "all",
+      resolver,
+    });
 
   //useEffect
 
   //functions
+
+  const clearFields = () => {
+    const radios = document.getElementsByName(
+      "typeReport"
+    ) as NodeListOf<HTMLInputElement>;
+
+    radios.forEach((e) => (e.checked = false));
+
+    reset();
+  };
 
   const redirectCancel = () => {
     setMessage({
@@ -108,16 +130,14 @@ const useReport = ({}: IPropsUseReport) => {
     });
   };
 
-  const handleSubmitOtherIncome = handleSubmit((data: IOtherIncome) => {
+  const handleSubmitOtherIncome = handleSubmit((data: IReport) => {
     setMessage({
       title: "Confirmación de repporte",
-      description: `¿Estás segur@ de ejecutar el reporte"
-      }
-      el ingreso?`,
+      description: `¿Estás segur@ de ejecutar el reporte?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
-        // handleCreateOrUpdateOtherIncome(data);
+        handleGenerateReport(data);
         setMessage((prev) => {
           return { ...prev, show: false };
         });
@@ -127,18 +147,14 @@ const useReport = ({}: IPropsUseReport) => {
     });
   });
 
-  // const handleCreateOrUpdateOtherIncome = async (data: IOtherIncome) => {
-  //   const { data: dataResponse, operation } =
-  //     action === "edit"
-  //       ? await updateOtherIncome(data)
-  //       : await createOtherIncome(data);
-
-  //   if (operation.code === EResponseCodes.OK) {
-  //     handleModalSuccess();
-  //   } else {
-  //     handleModalError(operation.message, false);
-  //   }
-  // };
+  const handleGenerateReport = async (report: IReport) => {
+    const { data, operation } = await generateReport(report);
+    if (operation.code === EResponseCodes.OK) {
+      descargarArchivo(data.bufferFile.data, data.nameFile);
+    } else {
+      handleModalError("Error al generar el reporte");
+    }
+  };
 
   return {
     control,
@@ -147,6 +163,7 @@ const useReport = ({}: IPropsUseReport) => {
     activeWorkerList,
     redirectCancel,
     handleSubmitOtherIncome,
+    clearFields,
   };
 };
 

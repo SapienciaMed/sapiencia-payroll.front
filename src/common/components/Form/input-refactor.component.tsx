@@ -16,8 +16,9 @@ interface IInputProps<T> {
   control: Control<any>;
   // register?: UseFormRegister<T>;
   className?: string;
+  name?: string;
   placeholder?: string;
-  // value?: string | boolean | number;
+  value?: string | boolean | number;
   // defaultValue?: string;
   label?: string | React.JSX.Element;
   classNameLabel?: string;
@@ -53,7 +54,8 @@ export function InputComponent({
   // register,
   className = "input-basic",
   placeholder,
-  // value,
+  name,
+  value,
   label,
   classNameLabel = "text-main",
   direction = EDirection.column,
@@ -101,13 +103,14 @@ export function InputComponent({
           // value={value}
           id={id}
           type={typeInput}
+          name={name ?? field.name}
           className={error?.message ? `${className} error` : className}
           placeholder={placeholder}
           disabled={disabled}
           max={max}
           min={min}
           checked={typeInput === "checkbox" ? field.value : null}
-          value={field.value}
+          value={value ?? field.value}
           onChange={field.onChange}
           onBlur={field.onBlur}
         />

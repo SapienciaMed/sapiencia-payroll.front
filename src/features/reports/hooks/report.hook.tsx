@@ -160,7 +160,10 @@ const useReport = ({}: IPropsUseReport) => {
     if (operation.code === EResponseCodes.OK) {
       descargarArchivo(data.bufferFile.data, data.nameFile);
     } else {
-      handleModalError("Error al generar el reporte", false);
+      handleModalError(
+        "Error al generar el reporte, puede no tener historicos de planilla asociado el usuario o se encuentran en estado fallido",
+        false
+      );
     }
   };
 

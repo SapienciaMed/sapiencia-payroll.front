@@ -22,6 +22,8 @@ export default function useListData(temporary = false) {
 
   const [reasonsForWithdrawal, setReasonsForWithdrawal] = useState([]);
   const [periodsList, setPeriodsList] = useState([]);
+  const [periodsListBiweeklyAuthorized, setPeriodsListBiweeklyAuthorized] =
+    useState([]);
   const [workerInfo, setWorkerInfo] = useState([]);
   const [typesSpreadSheetList, setTypesSpreadSheetList] = useState([]);
   const [stateSpreadSheetList, setStateSpreadSheetList] = useState([
@@ -227,6 +229,20 @@ export default function useListData(temporary = false) {
               return list;
             })
           );
+
+          setPeriodsListBiweeklyAuthorized(
+            response.data
+              .map((item) => {
+                if (item.state === "Autorizada" && item.idFormType === 1) {
+                  const list = {
+                    name: `${item.dateStart} - ${item.dateEnd}`,
+                    value: item.id,
+                  };
+                  return list;
+                }
+              })
+              .filter((i) => i)
+          );
         }
       })
       .catch((err) => {});
@@ -258,5 +274,6 @@ export default function useListData(temporary = false) {
     monthList,
     getWorkersActive,
     workerInfo,
+    periodsListBiweeklyAuthorized,
   };
 }

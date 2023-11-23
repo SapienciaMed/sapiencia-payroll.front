@@ -9,7 +9,7 @@ const ReportPage = ({}: IPropsReportPage): React.JSX.Element => {
     control,
     formState,
     activeWorkerList,
-    periodsList,
+    periodsListBiweeklyAuthorized,
     typeReport,
     handleSubmitOtherIncome,
     redirectCancel,
@@ -28,7 +28,7 @@ const ReportPage = ({}: IPropsReportPage): React.JSX.Element => {
           formState={formState}
           activeWorkerList={activeWorkerList}
           clearFields={clearFields}
-          periodList={periodsList}
+          periodsListBiweeklyAuthorized={periodsListBiweeklyAuthorized}
           typeReport={typeReport}
           // redirectCancel={redirectCancel}
           handleSubmitOtherIncome={handleSubmitOtherIncome}

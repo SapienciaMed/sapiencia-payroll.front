@@ -16,7 +16,7 @@ interface IPropsCreateUpdateDeductionsForm {
   control: Control<any, any>;
   formState: FormState<any>;
   activeWorkerList: any[];
-  periodList: any[];
+  periodsListBiweeklyAuthorized: any[];
   typeReport: number;
   handleSubmitOtherIncome: (
     e?: BaseSyntheticEvent<object, any, any>
@@ -28,7 +28,7 @@ export const ReportForm = ({
   control,
   formState,
   activeWorkerList,
-  periodList,
+  periodsListBiweeklyAuthorized,
   typeReport,
   handleSubmitOtherIncome,
   clearFields,
@@ -63,7 +63,7 @@ export const ReportForm = ({
                 idInput={"period"}
                 control={control}
                 errors={errors}
-                data={periodList}
+                data={periodsListBiweeklyAuthorized}
                 label={
                   <>
                     Periodo. <span>*</span>

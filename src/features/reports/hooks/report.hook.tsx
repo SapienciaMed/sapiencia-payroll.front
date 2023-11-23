@@ -33,7 +33,8 @@ const useReport = ({}: IPropsUseReport) => {
   //useState
 
   //custom hooks
-  const { activeWorkerList, periodsList } = useListData(false);
+  const { activeWorkerList, periodsListBiweeklyAuthorized } =
+    useListData(false);
   const { generateReport } = useReportService();
 
   //use form
@@ -57,7 +58,7 @@ const useReport = ({}: IPropsUseReport) => {
 
   useEffect(() => {
     if (formState.dirtyFields.typeReport)
-      setValue("period", null, { shouldValidate: true });
+      setValue("period", "", { shouldValidate: true });
   }, [typeReport]);
 
   //functions
@@ -166,7 +167,7 @@ const useReport = ({}: IPropsUseReport) => {
   return {
     control,
     formState,
-    periodsList,
+    periodsListBiweeklyAuthorized,
     activeWorkerList,
     typeReport,
     redirectCancel,

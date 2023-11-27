@@ -684,7 +684,9 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
   const handleModal = () => {
     setMessage({
       title: "Vincular Trabajador",
-      description: `Trabajador ${id ? "editado" : "vinculado"} satisfactoriamente`,
+      description: `Trabajador ${
+        id ? "editado" : "vinculado"
+      } satisfactoriamente`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -741,6 +743,7 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
     accountType,
     bankList,
     reset,
+    setMessage,
   };
 };
 

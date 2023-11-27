@@ -65,7 +65,9 @@ export const familiarValidator = yup.object({
         .required("El campo es obligatorio")
         .min(8, "Ingrese al menos 8 caracteres"),
       relationship: yup.string().required("El campo es obligatorio"),
-      dependent: yup.string().required("El campo es obligatorio"),
+      dependent: yup.boolean().required("El campo es obligatorio"),
+      typeDocument: yup.string().required("El campo es obligatorio"),
+      numberDocument: yup.string().required("El campo es obligatorio"),
     })
   ),
 });

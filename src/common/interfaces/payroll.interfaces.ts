@@ -48,6 +48,8 @@ export interface IRelative {
   age: number;
   birthDate: DateTime;
   dependent: boolean;
+  typeDocument: string;
+  numberDocument: string;
 }
 
 export interface IWorker {

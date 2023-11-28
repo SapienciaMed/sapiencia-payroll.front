@@ -312,7 +312,6 @@ const SearchWorker = () => {
     },
   ];
 
-  console.log(startVacation);
   return (
     <>
       <div className="main-page">

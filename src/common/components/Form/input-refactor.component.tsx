@@ -54,7 +54,6 @@ export function InputComponent({
   // register,
   className = "input-basic",
   placeholder,
-  name,
   value,
   label,
   classNameLabel = "text-main",
@@ -64,6 +63,7 @@ export function InputComponent({
   disabled,
   onChange,
   onBlur,
+  name,
   // defaultValue,
   id,
   // fieldArray,
@@ -103,13 +103,12 @@ export function InputComponent({
           // value={value}
           id={id}
           type={typeInput}
-          name={name ?? field.name}
+          checked={typeInput === "checkbox" ? field.value : null}
           className={error?.message ? `${className} error` : className}
           placeholder={placeholder}
           disabled={disabled}
           max={max}
           min={min}
-          checked={typeInput === "checkbox" ? field.value : null}
           value={value ?? field.value}
           onChange={field.onChange}
           onBlur={field.onBlur}

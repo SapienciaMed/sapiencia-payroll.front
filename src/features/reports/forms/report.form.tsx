@@ -33,8 +33,6 @@ export const ReportForm = ({
   handleSubmitOtherIncome,
   clearFields,
 }: IPropsCreateUpdateDeductionsForm): React.JSX.Element => {
-  console.log(typeReport);
-
   const { errors, isValid } = formState;
 
   return (

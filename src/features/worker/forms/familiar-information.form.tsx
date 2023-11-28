@@ -2,7 +2,7 @@ import React from "react";
 
 import { HiOutlineTrash } from "react-icons/hi";
 
-import { Control, FieldErrors, UseFormSetValue } from "react-hook-form";
+import { Control, UseFormSetValue } from "react-hook-form";
 
 import {
   SelectComponent,
@@ -134,7 +134,6 @@ const FamiliarInformationForm = ({
                     placeholder="Seleccione."
                     disabled={handleDisabledFields()}
                   />
-
                   <SelectComponent
                     idInput={`relatives.${index}.typeDocument` as const}
                     control={control}
@@ -149,11 +148,10 @@ const FamiliarInformationForm = ({
                     placeholder="Seleccione."
                     disabled={handleDisabledFields()}
                   />
-
                   <InputComponent
                     control={control}
                     idInput={`relatives.${index}.numberDocument` as const}
-                    typeInput="text"
+                    typeInput="number"
                     className="input-basic medium"
                     classNameLabel="text-black big break-line bold"
                     label={
@@ -164,7 +162,7 @@ const FamiliarInformationForm = ({
                     disabled={handleDisabledFields()}
                   />
                 </div>
-                <div>
+                <div className="grid-span-4-columns">
                   <label
                     htmlFor=""
                     className="text-black big bold display-justify-flex-center"

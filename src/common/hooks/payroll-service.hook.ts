@@ -1,5 +1,4 @@
 import { EResponseCodes } from "../constants/api.enum";
-import { IAuthorization } from "../interfaces/auth.interfaces";
 import {
   ICharge,
   IVinculation,
@@ -12,6 +11,7 @@ import {
   IContractSuspensionData,
   IFormPeriod,
   IFormTypes,
+  IHistoricalPayroll,
 } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
@@ -268,6 +268,21 @@ export function usePayrollService() {
     }
   }
 
+  async function getEmploymentsByPayroll(
+    idPayroll: number
+  ): Promise<ApiResponse<IHistoricalPayroll[]>> {
+    try {
+      const endpoint: string = `/employmentByPayroll/`;
+      return await get(`${authUrl}${endpoint}${idPayroll}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IHistoricalPayroll[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   return {
     getTypesContracts,
     getCharges,
@@ -285,7 +300,8 @@ export function usePayrollService() {
     createSpreadSheet,
     updateSpreadSheet,
     getByIdSpreadSheet,
-    getContractors
+    getContractors,
+    getEmploymentsByPayroll,
   };
 }
 

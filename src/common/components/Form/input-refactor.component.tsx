@@ -63,7 +63,7 @@ export function InputComponent({
   disabled,
   onChange,
   onBlur,
-  name,
+  name = null,
   // defaultValue,
   id,
   // fieldArray,

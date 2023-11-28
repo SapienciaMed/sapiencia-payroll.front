@@ -22,6 +22,7 @@ interface IPropsCreateUpdateDeductionsForm {
     e?: BaseSyntheticEvent<object, any, any>
   ) => Promise<void>;
   clearFields: () => void;
+  handleDisabledEmployment: () => boolean;
 }
 
 export const ReportForm = ({
@@ -31,6 +32,7 @@ export const ReportForm = ({
   periodsListBiweeklyAuthorized,
   typeReport,
   handleSubmitOtherIncome,
+  handleDisabledEmployment,
   clearFields,
 }: IPropsCreateUpdateDeductionsForm): React.JSX.Element => {
   const { errors, isValid } = formState;
@@ -101,6 +103,7 @@ export const ReportForm = ({
               classNameLabel="text-black big bold"
               placeholder="Seleccione."
               filter={true}
+              disabled={handleDisabledEmployment()}
             />
           </div>
           <div className="grid-form-3-container gap-25">

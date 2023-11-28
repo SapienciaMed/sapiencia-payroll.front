@@ -21,6 +21,8 @@ import useListData from "../../vacation/hooks/list.hook";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import useReportService from "../../../common/hooks/report-service..hook";
 import { descargarArchivo } from "../../../common/utils/helpers";
+import usePayrollService from "../../../common/hooks/payroll-service.hook";
+import { ETypeReport } from "../../../common/constants/report.enum";
 
 interface IPropsUseReport {}
 
@@ -30,11 +32,16 @@ const useReport = ({}: IPropsUseReport) => {
   // Context
   const { setMessage } = useContext(AppContext);
 
-  //useState
-
   //custom hooks
   const { activeWorkerList, periodsListBiweeklyAuthorized } =
     useListData(false);
+
+  //useState
+  const [workerList, setWorkerList] =
+    useState<IDropdownProps[]>(activeWorkerList);
+
+  const { getEmploymentsByPayroll } = usePayrollService();
+
   const { generateReport } = useReportService();
 
   //use form
@@ -52,9 +59,17 @@ const useReport = ({}: IPropsUseReport) => {
       resolver,
     });
 
-  const typeReport = watch("typeReport");
+  const [typeReport, period] = watch(["typeReport", "period"]);
 
   //useEffect
+  useEffect(() => {
+    if (Number(typeReport) === ETypeReport.Colilla) {
+      getWorkerPayroll();
+      setValue("codEmployment", null, { shouldValidate: true });
+    } else {
+      setWorkerList(activeWorkerList);
+    }
+  }, [period]);
 
   useEffect(() => {
     if (formState.dirtyFields.typeReport)
@@ -62,6 +77,36 @@ const useReport = ({}: IPropsUseReport) => {
   }, [typeReport]);
 
   //functions
+
+  const getWorkerPayroll = async () => {
+    setWorkerList([]);
+
+    const { data, operation } = await getEmploymentsByPayroll(Number(period));
+
+    if (operation.code === EResponseCodes.OK) {
+      setWorkerList(
+        data.map((item) => {
+          const list = {
+            name: `${
+              item?.employment?.worker?.numberDocument +
+              " - " +
+              item?.employment?.worker.firstName +
+              " " +
+              item?.employment?.worker?.surname
+            }`,
+            value: item?.employment?.id,
+          };
+          return list;
+        })
+      );
+    } else {
+      setWorkerList([]);
+    }
+  };
+
+  const handleDisabledEmployment = (): boolean => {
+    return !period;
+  };
 
   const clearFields = () => {
     const radios = document.getElementsByName(
@@ -171,10 +216,11 @@ const useReport = ({}: IPropsUseReport) => {
     control,
     formState,
     periodsListBiweeklyAuthorized,
-    activeWorkerList,
+    workerList,
     typeReport,
     redirectCancel,
     handleSubmitOtherIncome,
+    handleDisabledEmployment,
     clearFields,
   };
 };

@@ -10,7 +10,7 @@ export function useReportService() {
   const baseURL: string = process.env.urlApiPayroll;
   const authUrl: string = "/api/v1/reports";
 
-  const { get, post, put } = useCrudService(baseURL);
+  const { post } = useCrudService(baseURL);
 
   async function generateReport(
     data: IReport

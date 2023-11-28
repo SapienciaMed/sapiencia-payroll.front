@@ -8,11 +8,12 @@ const ReportPage = ({}: IPropsReportPage): React.JSX.Element => {
   const {
     control,
     formState,
-    activeWorkerList,
+    workerList,
     periodsListBiweeklyAuthorized,
     typeReport,
     handleSubmitOtherIncome,
     redirectCancel,
+    handleDisabledEmployment,
     clearFields,
   } = useReport({});
 
@@ -26,10 +27,11 @@ const ReportPage = ({}: IPropsReportPage): React.JSX.Element => {
         <ReportForm
           control={control}
           formState={formState}
-          activeWorkerList={activeWorkerList}
+          activeWorkerList={workerList}
           clearFields={clearFields}
           periodsListBiweeklyAuthorized={periodsListBiweeklyAuthorized}
           typeReport={typeReport}
+          handleDisabledEmployment={handleDisabledEmployment}
           // redirectCancel={redirectCancel}
           handleSubmitOtherIncome={handleSubmitOtherIncome}
         />

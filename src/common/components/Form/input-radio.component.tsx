@@ -17,6 +17,7 @@ interface IRadioProps {
   readonly optionsRegister?: {};
   readonly shouldUnregister?: boolean;
   readonly onChange?: (e: any) => void;
+  readonly disabled?: boolean;
 }
 
 function LabelElement({ label, idInput, classNameLabel }): React.JSX.Element {
@@ -41,6 +42,7 @@ export function InputRadioComponent({
   children,
   optionsRegister,
   shouldUnregister,
+  disabled,
   onChange,
 }: IRadioProps): React.JSX.Element {
   const {
@@ -63,6 +65,7 @@ export function InputRadioComponent({
         inputRef={field.ref}
         value={value}
         checked={field.value === value}
+        disabled={disabled}
       />
       <LabelElement
         label={label}

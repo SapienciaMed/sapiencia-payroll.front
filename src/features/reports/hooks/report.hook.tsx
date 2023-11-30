@@ -30,11 +30,14 @@ const useReport = ({}: IPropsUseReport) => {
   //react router dom
   const navigate = useNavigate();
   // Context
-  const { setMessage } = useContext(AppContext);
+  const { setMessage, validateActionAccess } = useContext(AppContext);
 
   //custom hooks
-  const { activeWorkerList, periodsListBiweeklyAuthorized } =
-    useListData(false);
+  const {
+    activeWorkerList,
+    periodsListBiweeklyAuthorized,
+    activeContractorsList,
+  } = useListData(false);
 
   //useState
   const [workerList, setWorkerList] =
@@ -217,11 +220,13 @@ const useReport = ({}: IPropsUseReport) => {
     formState,
     periodsListBiweeklyAuthorized,
     workerList,
+    activeContractorsList,
     typeReport,
     redirectCancel,
     handleSubmitOtherIncome,
     handleDisabledEmployment,
     clearFields,
+    validateActionAccess,
   };
 };
 

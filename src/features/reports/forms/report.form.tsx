@@ -16,6 +16,7 @@ interface IPropsCreateUpdateDeductionsForm {
   control: Control<any, any>;
   formState: FormState<any>;
   activeWorkerList: any[];
+  activeContractorsList: any[];
   periodsListBiweeklyAuthorized: any[];
   typeReport: number;
   handleSubmitOtherIncome: (
@@ -23,17 +24,20 @@ interface IPropsCreateUpdateDeductionsForm {
   ) => Promise<void>;
   clearFields: () => void;
   handleDisabledEmployment: () => boolean;
+  validateActionAccess: (indicator: string) => boolean;
 }
 
 export const ReportForm = ({
   control,
   formState,
   activeWorkerList,
+  activeContractorsList,
   periodsListBiweeklyAuthorized,
   typeReport,
   handleSubmitOtherIncome,
   handleDisabledEmployment,
   clearFields,
+  validateActionAccess,
 }: IPropsCreateUpdateDeductionsForm): React.JSX.Element => {
   const { errors, isValid } = formState;
 
@@ -88,73 +92,122 @@ export const ReportForm = ({
                 }
               />
             )}
-
-            <SelectComponent
-              idInput={"codEmployment"}
-              control={control}
-              errors={errors}
-              data={activeWorkerList}
-              label={
-                <>
-                  Documento - Nombre del empleado. <span>*</span>
-                </>
-              }
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              placeholder="Seleccione."
-              filter={true}
-              disabled={handleDisabledEmployment()}
-            />
+            {Number(typeReport) === ETypeReport.ConstanciaContratos ? (
+              <SelectComponent
+                idInput={"codEmployment"}
+                control={control}
+                errors={errors}
+                data={activeContractorsList}
+                label={
+                  <>
+                    Documento - Nombre del empleado. <span>*</span>
+                  </>
+                }
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
+                filter={true}
+                // disabled={handleDisabledEmployment()}
+              />
+            ) : (
+              <SelectComponent
+                idInput={"codEmployment"}
+                control={control}
+                errors={errors}
+                data={activeWorkerList}
+                label={
+                  <>
+                    Documento - Nombre del empleado. <span>*</span>
+                  </>
+                }
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
+                filter={true}
+                // disabled={//handleDisabledEmployment()}
+              />
+            )}
           </div>
           <div className="grid-form-3-container gap-25">
-            <InputRadioComponent
-              control={control}
-              idInput="typeReport"
-              value={ETypeReport.Colilla}
-              direction={EDirection.row}
-              label={"Colilla"}
-              classNameLabel="text-black big bold"
-            />
-            <InputRadioComponent
-              control={control}
-              idInput="typeReport"
-              value={ETypeReport.ResolucionVacaciones}
-              direction={EDirection.row}
-              label={"Resolución de vacaciones"}
-              classNameLabel="text-black big bold"
-            />
-            <InputRadioComponent
-              control={control}
-              idInput="typeReport"
-              value={ETypeReport.ResolucionLiquidacionDefinitiva}
-              direction={EDirection.row}
-              label={"Resolución de liquidación definitiva"}
-              classNameLabel="text-black big bold"
-            />
-            <InputRadioComponent
-              control={control}
-              idInput="typeReport"
-              value={ETypeReport.CertificadoLaboral}
-              direction={EDirection.row}
-              label={"Certificado laboral"}
-              classNameLabel="text-black big bold"
-            />
-            <InputRadioComponent
-              control={control}
-              idInput="typeReport"
-              value={ETypeReport.CertificadoIngresosRetenciones}
-              direction={EDirection.row}
-              label={"Certificado de ingresos y retenciones"}
-              classNameLabel="text-black big bold"
-            />
-            <InputRadioComponent
-              control={control}
-              idInput="typeReport"
-              value={ETypeReport.ConstanciaContratos}
-              direction={EDirection.row}
-              label={"Constancia de contratos"}
-              classNameLabel="text-black big bold"
-            />
+            {validateActionAccess("GENERAR_COLILLA_NOMINA") && (
+              <InputRadioComponent
+                control={control}
+                idInput="typeReport"
+                value={ETypeReport.Colilla}
+                direction={EDirection.row}
+                label={"Colilla"}
+                classNameLabel="text-black big bold"
+                disabled={!validateActionAccess("GENERAR_COLILLA_NOMINA")}
+              />
+            )}
+
+            {validateActionAccess("GENERAR_RESOLUCION_VACACIONES_NOMINA") && (
+              <InputRadioComponent
+                control={control}
+                idInput="typeReport"
+                value={ETypeReport.ResolucionVacaciones}
+                direction={EDirection.row}
+                label={"Resolución de vacaciones"}
+                classNameLabel="text-black big bold"
+                disabled={
+                  !validateActionAccess("GENERAR_RESOLUCION_VACACIONES_NOMINA")
+                }
+              />
+            )}
+            {validateActionAccess("GENERAR_RESOLUCION_LIQUIDACION_NOMINA") && (
+              <InputRadioComponent
+                control={control}
+                idInput="typeReport"
+                value={ETypeReport.ResolucionLiquidacionDefinitiva}
+                direction={EDirection.row}
+                label={"Resolución de liquidación definitiva"}
+                classNameLabel="text-black big bold"
+                disabled={
+                  !validateActionAccess("GENERAR_RESOLUCION_LIQUIDACION_NOMINA")
+                }
+              />
+            )}
+            {validateActionAccess("GENERAR_CERTIFICADO_LABORAL_NOMINA") && (
+              <InputRadioComponent
+                control={control}
+                idInput="typeReport"
+                value={ETypeReport.CertificadoLaboral}
+                direction={EDirection.row}
+                label={"Certificado laboral"}
+                classNameLabel="text-black big bold"
+                disabled={
+                  !validateActionAccess("GENERAR_CERTIFICADO_LABORAL_NOMINA")
+                }
+              />
+            )}
+            {validateActionAccess("GENERAR_CERTIFICADO_RETENCIONES_NOMINA") && (
+              <InputRadioComponent
+                control={control}
+                idInput="typeReport"
+                value={ETypeReport.CertificadoIngresosRetenciones}
+                direction={EDirection.row}
+                label={"Certificado de ingresos y retenciones"}
+                classNameLabel="text-black big bold"
+                disabled={
+                  !validateActionAccess(
+                    "GENERAR_CERTIFICADO_RETENCIONES_NOMINA"
+                  )
+                }
+              />
+            )}
+            {validateActionAccess("GENERAR_CONSTANCIA_CONTRATOS_NOMINA") && (
+              <InputRadioComponent
+                control={control}
+                idInput="typeReport"
+                value={ETypeReport.ConstanciaContratos}
+                direction={EDirection.row}
+                label={"Constancia de contratos"}
+                classNameLabel="text-black big bold"
+                disabled={
+                  !validateActionAccess("GENERAR_CONSTANCIA_CONTRATOS_NOMINA")
+                }
+              />
+            )}
           </div>
         </div>
       </div>

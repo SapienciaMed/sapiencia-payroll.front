@@ -374,7 +374,7 @@ export const generateReporSchema = yup.object({
     .string()
     .max(4, "Solo se permiten 4 caracteres")
     .required("El campo es obligatorio"),
-  codEmployment: yup.string().required("El campo es obligatorio"),
+  codEmployment: yup.string().optional().nullable(),
   typeReport: yup
     .number()
     .typeError("El campo es obligatorio")

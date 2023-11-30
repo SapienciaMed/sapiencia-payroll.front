@@ -270,13 +270,13 @@ export function usePayrollService() {
 
   async function getEmploymentsByPayroll(
     idPayroll: number
-  ): Promise<ApiResponse<IHistoricalPayroll[]>> {
+  ): Promise<ApiResponse<IEmploymentWorker[]>> {
     try {
       const endpoint: string = `/employmentByPayroll/`;
       return await get(`${authUrl}${endpoint}${idPayroll}`);
     } catch (error) {
       return new ApiResponse(
-        {} as IHistoricalPayroll[],
+        {} as IEmploymentWorker[],
         EResponseCodes.FAIL,
         "Error no controlado"
       );

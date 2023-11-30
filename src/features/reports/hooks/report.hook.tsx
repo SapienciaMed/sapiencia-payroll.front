@@ -88,13 +88,13 @@ const useReport = ({}: IPropsUseReport) => {
         data.map((item) => {
           const list = {
             name: `${
-              item?.employment?.worker?.numberDocument +
+              item?.worker?.numberDocument +
               " - " +
-              item?.employment?.worker.firstName +
+              item?.worker.firstName +
               " " +
-              item?.employment?.worker?.surname
+              item?.worker?.surname
             }`,
-            value: item?.employment?.id,
+            value: item?.id,
           };
           return list;
         })

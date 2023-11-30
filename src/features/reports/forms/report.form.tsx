@@ -7,10 +7,10 @@ import {
   SelectComponent,
 } from "../../../common/components/Form";
 
-import { IDropdownProps } from "../../../common/interfaces/select.interface";
 import { InputComponent } from "../../../common/components/Form/input-refactor.component";
 import { EDirection } from "../../../common/constants/input.enum";
 import { ETypeReport } from "../../../common/constants/report.enum";
+import { InputRadioComponent } from "../../../common/components/Form/input-radio.component";
 
 interface IPropsCreateUpdateDeductionsForm {
   control: Control<any, any>;
@@ -107,108 +107,54 @@ export const ReportForm = ({
             />
           </div>
           <div className="grid-form-3-container gap-25">
-            <div className="check-label">
-              <InputComponent
-                control={control}
-                idInput={`typeReport`}
-                value={ETypeReport.Colilla}
-                direction={EDirection.row}
-                typeInput="radio"
-                className="checkbox-basic"
-                classNameLabel="text-black big break-line bold"
-              >
-                <LabelComponent
-                  value="Colilla"
-                  className="text-black big bold"
-                  htmlFor="state"
-                />
-              </InputComponent>
-            </div>
-            <div className="check-label">
-              <InputComponent
-                control={control}
-                idInput={`typeReport`}
-                value={ETypeReport.ResolucionVacaciones}
-                direction={EDirection.row}
-                typeInput="radio"
-                className="checkbox-basic"
-                classNameLabel="text-black big break-line bold"
-              >
-                <LabelComponent
-                  value="Resolución de vacaciones"
-                  className="text-black big bold"
-                  htmlFor="state"
-                />
-              </InputComponent>
-            </div>
-            <div className="check-label">
-              <InputComponent
-                control={control}
-                idInput={`typeReport`}
-                value={ETypeReport.ResolucionLiquidacionDefinitiva}
-                direction={EDirection.row}
-                typeInput="radio"
-                className="checkbox-basic"
-                classNameLabel="text-black big break-line bold"
-              >
-                <LabelComponent
-                  value="Resolución de liquidación definitiva"
-                  className="text-black big bold"
-                  htmlFor="state"
-                />
-              </InputComponent>
-            </div>
-            <div className="check-label">
-              <InputComponent
-                control={control}
-                idInput={`typeReport`}
-                value={ETypeReport.CertificadoLaboral}
-                direction={EDirection.row}
-                typeInput="radio"
-                className="checkbox-basic"
-                classNameLabel="text-black big break-line bold"
-              >
-                <LabelComponent
-                  value="Certificado laboral"
-                  className="text-black big bold"
-                  htmlFor="state"
-                />
-              </InputComponent>
-            </div>
-            <div className="check-label">
-              <InputComponent
-                control={control}
-                idInput={`typeReport`}
-                value={ETypeReport.CertificadoIngresosRetenciones}
-                direction={EDirection.row}
-                typeInput="radio"
-                className="checkbox-basic"
-                classNameLabel="text-black big break-line bold"
-              >
-                <LabelComponent
-                  value="Certificado de ingresos y retenciones"
-                  className="text-black big bold"
-                  htmlFor="state"
-                />
-              </InputComponent>
-            </div>
-            <div className="check-label">
-              <InputComponent
-                control={control}
-                idInput={`typeReport`}
-                value={ETypeReport.ConstanciaContratos}
-                direction={EDirection.row}
-                typeInput="radio"
-                className="checkbox-basic"
-                classNameLabel="text-black big break-line bold"
-              >
-                <LabelComponent
-                  value="Constancia de contratos"
-                  className="text-black big bold"
-                  htmlFor="state"
-                />
-              </InputComponent>
-            </div>
+            <InputRadioComponent
+              control={control}
+              idInput="typeReport"
+              value={ETypeReport.Colilla}
+              direction={EDirection.row}
+              label={"Colilla"}
+              classNameLabel="text-black big bold"
+            />
+            <InputRadioComponent
+              control={control}
+              idInput="typeReport"
+              value={ETypeReport.ResolucionVacaciones}
+              direction={EDirection.row}
+              label={"Resolución de vacaciones"}
+              classNameLabel="text-black big bold"
+            />
+            <InputRadioComponent
+              control={control}
+              idInput="typeReport"
+              value={ETypeReport.ResolucionLiquidacionDefinitiva}
+              direction={EDirection.row}
+              label={"Resolución de liquidación definitiva"}
+              classNameLabel="text-black big bold"
+            />
+            <InputRadioComponent
+              control={control}
+              idInput="typeReport"
+              value={ETypeReport.CertificadoLaboral}
+              direction={EDirection.row}
+              label={"Certificado laboral"}
+              classNameLabel="text-black big bold"
+            />
+            <InputRadioComponent
+              control={control}
+              idInput="typeReport"
+              value={ETypeReport.CertificadoIngresosRetenciones}
+              direction={EDirection.row}
+              label={"Certificado de ingresos y retenciones"}
+              classNameLabel="text-black big bold"
+            />
+            <InputRadioComponent
+              control={control}
+              idInput="typeReport"
+              value={ETypeReport.ConstanciaContratos}
+              direction={EDirection.row}
+              label={"Constancia de contratos"}
+              classNameLabel="text-black big bold"
+            />
           </div>
         </div>
       </div>

@@ -161,6 +161,17 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
 
   useEffect(() => {
     if (Number(idTypeContract) === 4) {
+      if (idCharge) {
+        const infoChargeSelected = chargesInfo.find(
+          (i) => i.id === Number(idCharge)
+        );
+
+        setValueRegister(
+          "employment.totalValue",
+          infoChargeSelected.baseSalary
+        );
+      }
+
       if (startDate && endDate && totalValue) {
         const days = calculateDifferenceDays(startDate, endDate);
 

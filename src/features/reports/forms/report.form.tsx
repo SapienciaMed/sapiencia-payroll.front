@@ -16,18 +16,18 @@ interface IPropsCreateUpdateDeductionsForm {
   control: Control<any, any>;
   formState: FormState<any>;
   activeWorkerList: any[];
-  activeContractorsList: any[];
   inactiveWorkerList: any[];
+  activeContractorsList: any[];
   vacationPeriods: any[];
-  workerList: any[];
   periodsListBiweeklyAuthorized: any[];
   typeReport: number;
+  workerList: any[];
   handleSubmitOtherIncome: (
     e?: BaseSyntheticEvent<object, any, any>
   ) => Promise<void>;
   clearFields: () => void;
-  handleDisabledEmployment: () => boolean;
   handleDisabledPeriod: () => boolean;
+  handleDisabledEmployment: () => boolean;
   validateActionAccess: (indicator: string) => boolean;
 }
 
@@ -54,44 +54,17 @@ export const ReportForm = ({
       <div className="container-sections-forms">
         <div className="grid gap-25">
           <div className="grid-form-2-container gap-25">
-            {/* <SelectComponent
-              idInput={"codPayroll"}
-              control={control}
-              errors={errors}
-              data={periodsList}
-              label={
-                <>
-                  Periodo de planilla <span>*</span>
-                </>
-              }
-              className="select-basic medium"
-              classNameLabel="text-black big bold"
-              placeholder="Seleccione."
-              filter={true}
-              disabled={action === "edit" ? true : false}
-            /> */}
-            {Number(typeReport) === ETypeReport.Colilla ? (
+            {Number(typeReport) === ETypeReport.Colilla ||
+            Number(typeReport) === ETypeReport.ResolucionVacaciones ? (
               <SelectComponent
                 idInput={"period"}
                 control={control}
                 errors={errors}
-                data={periodsListBiweeklyAuthorized}
-                label={
-                  <>
-                    Periodo. <span>*</span>
-                  </>
+                data={
+                  Number(typeReport) === ETypeReport.Colilla
+                    ? periodsListBiweeklyAuthorized
+                    : vacationPeriods
                 }
-                className="select-basic medium"
-                classNameLabel="text-black big bold"
-                placeholder="Seleccione."
-                filter={true}
-              />
-            ) : Number(typeReport) === ETypeReport.ResolucionVacaciones ? (
-              <SelectComponent
-                idInput={"period"}
-                control={control}
-                errors={errors}
-                data={vacationPeriods}
                 label={
                   <>
                     Periodo. <span>*</span>
@@ -115,6 +88,7 @@ export const ReportForm = ({
                     Periodo <span>*</span>
                   </>
                 }
+                disabled={handleDisabledPeriod()}
               />
             )}
             {Number(typeReport) === ETypeReport.ConstanciaContratos ? (

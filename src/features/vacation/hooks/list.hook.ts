@@ -130,10 +130,8 @@ export default function useListData(temporary = false) {
   const getWorkersActive = async () => {
     await getWorkers(temporary)
       .then((response: ApiResponse<IWorker[]>) => {
-        console.log(response);
         if (response.operation.code === EResponseCodes.OK) {
           setWorkerInfo(response.data);
-          console.log(workerInfo);
           setActiveWorkerList(
             response.data.map((item) => {
               const list = {
@@ -149,14 +147,12 @@ export default function useListData(temporary = false) {
               return list;
             })
           );
-          console.log(activeWorkerList);
         }
       })
       .catch((err) => {});
   };
 
   useEffect(() => {
-    console.log("ingresa");
     getWorkersActive();
   }, []);
 

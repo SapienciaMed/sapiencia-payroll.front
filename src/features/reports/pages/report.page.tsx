@@ -16,9 +16,8 @@ const ReportPage = ({}: IPropsReportPage): React.JSX.Element => {
     typeReport,
     periodVacation,
     handleSubmitOtherIncome,
-    handleDisabledPeriod,
-    redirectCancel,
     handleDisabledEmployment,
+    handleDisabledPeriod,
     clearFields,
     validateActionAccess,
   } = useReport({});
@@ -40,10 +39,9 @@ const ReportPage = ({}: IPropsReportPage): React.JSX.Element => {
           clearFields={clearFields}
           periodsListBiweeklyAuthorized={periodsListBiweeklyAuthorized}
           typeReport={typeReport}
-          handleDisabledEmployment={handleDisabledEmployment}
-          handleDisabledPeriod={handleDisabledPeriod}
-          // redirectCancel={redirectCancel}
           vacationPeriods={periodVacation}
+          handleDisabledPeriod={handleDisabledPeriod}
+          handleDisabledEmployment={handleDisabledEmployment}
           handleSubmitOtherIncome={handleSubmitOtherIncome}
           validateActionAccess={validateActionAccess}
         />

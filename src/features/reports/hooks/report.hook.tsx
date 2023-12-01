@@ -68,37 +68,46 @@ const useReport = ({}: IPropsUseReport) => {
   ]);
 
   const { generateReport } = useReportService();
-  vacationPeriods.filter(
-    (vacation) => vacation.employment == Number(codEmployment)
-  );
+
   //useEffect
   useEffect(() => {
+    const vacationsPeriodsEmployment =
+      vacationPeriods.filter(
+        (vacation) => vacation.employment == Number(codEmployment)
+      ) ?? [];
+
     setPeriodVacation(
-      vacationPeriods
-        .filter((vacation) => vacation.employment == Number(codEmployment))
-        ?.map((item) => {
-          const list = {
-            name: `${item.periods}`,
-            value: item.payroll,
-          };
-          return list ?? null;
-        }) ?? []
+      vacationsPeriodsEmployment.map((item) => {
+        const list = {
+          name: `${item.periods}`,
+          value: item.payroll,
+        };
+        return list ?? null;
+      }) ?? []
     );
   }, [codEmployment]);
 
   useEffect(() => {
-    console.log(activeWorkerList);
     if (Number(typeReport) === ETypeReport.Colilla) {
       getWorkerPayroll();
-      setValue("codEmployment", null, { shouldValidate: true });
+    } else if (Number(typeReport) === ETypeReport.ConstanciaContratos) {
+      setWorkerList(activeContractorsList);
+    } else if (
+      Number(typeReport) === ETypeReport.ResolucionLiquidacionDefinitiva
+    ) {
+      setWorkerList(inactiveWorkerList);
     } else {
+      console.log("Entro");
+      console.log(activeWorkerList);
       setWorkerList(activeWorkerList);
     }
   }, [period]);
 
   useEffect(() => {
-    if (formState.dirtyFields.typeReport)
+    if (formState.dirtyFields.typeReport) {
       setValue("period", "", { shouldValidate: true });
+      setValue("codEmployment", null, { shouldValidate: true });
+    }
   }, [typeReport]);
 
   //functions
@@ -130,11 +139,21 @@ const useReport = ({}: IPropsUseReport) => {
   };
 
   const handleDisabledEmployment = (): boolean => {
+    if (
+      Number(typeReport) === ETypeReport.ResolucionVacaciones ||
+      Number(typeReport) === ETypeReport.CertificadoLaboral
+    ) {
+      return false;
+    }
     return !period;
   };
 
   const handleDisabledPeriod = (): boolean => {
-    return !codEmployment;
+    if (Number(typeReport) === ETypeReport.ResolucionVacaciones) {
+      return !codEmployment;
+    }
+
+    return false;
   };
 
   const clearFields = () => {

@@ -17,6 +17,8 @@ interface IPropsCreateUpdateDeductionsForm {
   formState: FormState<any>;
   activeWorkerList: any[];
   activeContractorsList: any[];
+  inactiveWorkerList: any[];
+  vacationPeriods: any[];
   periodsListBiweeklyAuthorized: any[];
   typeReport: number;
   handleSubmitOtherIncome: (
@@ -24,6 +26,7 @@ interface IPropsCreateUpdateDeductionsForm {
   ) => Promise<void>;
   clearFields: () => void;
   handleDisabledEmployment: () => boolean;
+  handleDisabledPeriod: () => boolean;
   validateActionAccess: (indicator: string) => boolean;
 }
 
@@ -32,9 +35,12 @@ export const ReportForm = ({
   formState,
   activeWorkerList,
   activeContractorsList,
+  inactiveWorkerList,
   periodsListBiweeklyAuthorized,
+  vacationPeriods,
   typeReport,
   handleSubmitOtherIncome,
+  handleDisabledPeriod,
   handleDisabledEmployment,
   clearFields,
   validateActionAccess,
@@ -78,6 +84,23 @@ export const ReportForm = ({
                 placeholder="Seleccione."
                 filter={true}
               />
+            ) : Number(typeReport) === ETypeReport.ResolucionVacaciones ? (
+              <SelectComponent
+                idInput={"period"}
+                control={control}
+                errors={errors}
+                data={vacationPeriods}
+                label={
+                  <>
+                    Periodo. <span>*</span>
+                  </>
+                }
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
+                filter={true}
+                disabled={handleDisabledPeriod()}
+              />
             ) : (
               <InputComponent
                 control={control}
@@ -107,7 +130,23 @@ export const ReportForm = ({
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
                 filter={true}
-                // disabled={handleDisabledEmployment()}
+              />
+            ) : Number(typeReport) ===
+              ETypeReport.ResolucionLiquidacionDefinitiva ? (
+              <SelectComponent
+                idInput={"codEmployment"}
+                control={control}
+                errors={errors}
+                data={inactiveWorkerList}
+                label={
+                  <>
+                    Documento - Nombre del empleado. <span>*</span>
+                  </>
+                }
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
+                filter={true}
               />
             ) : (
               <SelectComponent
@@ -124,7 +163,6 @@ export const ReportForm = ({
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
                 filter={true}
-                // disabled={//handleDisabledEmployment()}
               />
             )}
           </div>

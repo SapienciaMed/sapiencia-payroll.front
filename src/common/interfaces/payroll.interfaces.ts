@@ -612,3 +612,9 @@ export interface IHistoricalPayroll {
   observation: string;
   employment?: IEmploymentWorker;
 }
+
+export interface IVacationPeriods {
+  periods: string;
+  payroll: number;
+  employment: number;
+}

@@ -37,15 +37,14 @@ const useReport = ({}: IPropsUseReport) => {
     activeWorkerList,
     periodsListBiweeklyAuthorized,
     activeContractorsList,
+    vacationPeriods,
+    inactiveWorkerList,
   } = useListData(false);
 
   //useState
-  const [workerList, setWorkerList] =
-    useState<IDropdownProps[]>(activeWorkerList);
-
+  const [workerList, setWorkerList] = useState(activeWorkerList);
+  const [periodVacation, setPeriodVacation] = useState([]);
   const { getEmploymentsByPayroll } = usePayrollService();
-
-  const { generateReport } = useReportService();
 
   //use form
 
@@ -62,10 +61,33 @@ const useReport = ({}: IPropsUseReport) => {
       resolver,
     });
 
-  const [typeReport, period] = watch(["typeReport", "period"]);
+  const [typeReport, period, codEmployment] = watch([
+    "typeReport",
+    "period",
+    "codEmployment",
+  ]);
 
+  const { generateReport } = useReportService();
+  vacationPeriods.filter(
+    (vacation) => vacation.employment == Number(codEmployment)
+  );
   //useEffect
   useEffect(() => {
+    setPeriodVacation(
+      vacationPeriods
+        .filter((vacation) => vacation.employment == Number(codEmployment))
+        ?.map((item) => {
+          const list = {
+            name: `${item.periods}`,
+            value: item.payroll,
+          };
+          return list ?? null;
+        }) ?? []
+    );
+  }, [codEmployment]);
+
+  useEffect(() => {
+    console.log(activeWorkerList);
     if (Number(typeReport) === ETypeReport.Colilla) {
       getWorkerPayroll();
       setValue("codEmployment", null, { shouldValidate: true });
@@ -109,6 +131,10 @@ const useReport = ({}: IPropsUseReport) => {
 
   const handleDisabledEmployment = (): boolean => {
     return !period;
+  };
+
+  const handleDisabledPeriod = (): boolean => {
+    return !codEmployment;
   };
 
   const clearFields = () => {
@@ -220,11 +246,14 @@ const useReport = ({}: IPropsUseReport) => {
     formState,
     periodsListBiweeklyAuthorized,
     workerList,
+    inactiveWorkerList,
     activeContractorsList,
     typeReport,
+    periodVacation,
     redirectCancel,
     handleSubmitOtherIncome,
     handleDisabledEmployment,
+    handleDisabledPeriod,
     clearFields,
     validateActionAccess,
   };

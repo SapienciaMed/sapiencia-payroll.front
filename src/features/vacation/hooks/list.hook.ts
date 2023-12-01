@@ -127,8 +127,8 @@ export default function useListData(temporary = false) {
       .catch((e) => {});
   }, []);
 
-  const getWorkersActive = () => {
-    getWorkers(temporary)
+  const getWorkersActive = async () => {
+    await getWorkers(temporary)
       .then((response: ApiResponse<IWorker[]>) => {
         console.log(response);
         if (response.operation.code === EResponseCodes.OK) {
@@ -153,13 +153,13 @@ export default function useListData(temporary = false) {
         }
       })
       .catch((err) => {});
-    };
-    
-    useEffect(() => {
-      console.log("ingresa");
-      getWorkersActive();
-    }, []);
-    
+  };
+
+  useEffect(() => {
+    console.log("ingresa");
+    getWorkersActive();
+  }, []);
+
   useEffect(() => {
     getInactiveWorkers()
       .then((response: ApiResponse<IWorker[]>) => {
@@ -178,11 +178,11 @@ export default function useListData(temporary = false) {
               };
               return list;
             })
-            );
-          }
-        })
-        .catch((err) => {});
-      }, []);
+          );
+        }
+      })
+      .catch((err) => {});
+  }, []);
   useEffect(() => {
     getPeriodVacationByEmployment()
       .then((response: ApiResponse<IVacationPeriods[]>) => {
@@ -217,7 +217,6 @@ export default function useListData(temporary = false) {
       })
       .catch((err) => {});
   };
-
 
   useEffect(() => {
     getContractorsActive();

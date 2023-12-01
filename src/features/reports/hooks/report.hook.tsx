@@ -42,7 +42,7 @@ const useReport = ({}: IPropsUseReport) => {
   } = useListData(false);
 
   //useState
-  const [workerList, setWorkerList] = useState(activeWorkerList);
+  const [workerList, setWorkerList] = useState([]);
   const [periodVacation, setPeriodVacation] = useState([]);
   const { getEmploymentsByPayroll } = usePayrollService();
 
@@ -245,9 +245,10 @@ const useReport = ({}: IPropsUseReport) => {
     control,
     formState,
     periodsListBiweeklyAuthorized,
-    workerList,
+    activeWorkerList,
     inactiveWorkerList,
     activeContractorsList,
+    workerList,
     typeReport,
     periodVacation,
     redirectCancel,

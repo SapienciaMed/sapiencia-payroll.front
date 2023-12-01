@@ -19,6 +19,7 @@ interface IPropsCreateUpdateDeductionsForm {
   activeContractorsList: any[];
   inactiveWorkerList: any[];
   vacationPeriods: any[];
+  workerList: any[];
   periodsListBiweeklyAuthorized: any[];
   typeReport: number;
   handleSubmitOtherIncome: (
@@ -36,6 +37,7 @@ export const ReportForm = ({
   activeWorkerList,
   activeContractorsList,
   inactiveWorkerList,
+  workerList,
   periodsListBiweeklyAuthorized,
   vacationPeriods,
   typeReport,
@@ -146,6 +148,23 @@ export const ReportForm = ({
                 className="select-basic medium"
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
+                filter={true}
+              />
+            ) : Number(typeReport) === ETypeReport.Colilla ? (
+              <SelectComponent
+                idInput={"codEmployment"}
+                control={control}
+                errors={errors}
+                data={workerList}
+                label={
+                  <>
+                    Documento - Nombre del empleado. <span>*</span>
+                  </>
+                }
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
+                disabled={handleDisabledEmployment()}
                 filter={true}
               />
             ) : (

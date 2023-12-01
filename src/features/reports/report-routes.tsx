@@ -12,7 +12,14 @@ function ReportRoutes() {
         element={
           <PrivateRoute
             element={<ReportPage />}
-            allowedAction={"GENERAR_REPORTES_NOMINA"}
+            allowedAction={
+              "GENERAR_COLILLA_NOMINA" ||
+              "GENERAR_CERTIFICADO_LABORAL_NOMINA" ||
+              "GENERAR_CONSTANCIA_CONTRATOS_NOMINA" ||
+              "GENERAR_RESOLUCION_LIQUIDACION_NOMINA" ||
+              "GENERAR_CERTIFICADO_RETENCIONES_NOMINA" ||
+              "GENERAR_RESOLUCION_VACACIONES_NOMINA"
+            }
           />
         }
       />

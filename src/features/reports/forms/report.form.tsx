@@ -20,6 +20,7 @@ interface IPropsCreateUpdateDeductionsForm {
   activeContractorsList: any[];
   vacationPeriods: any[];
   periodsListBiweeklyAuthorized: any[];
+  periodsListVacationAuthorized: any[];
   typeReport: number;
   workerList: any[];
   handleSubmitOtherIncome: (
@@ -39,6 +40,7 @@ export const ReportForm = ({
   inactiveWorkerList,
   workerList,
   periodsListBiweeklyAuthorized,
+  periodsListVacationAuthorized,
   vacationPeriods,
   typeReport,
   handleSubmitOtherIncome,
@@ -54,8 +56,7 @@ export const ReportForm = ({
       <div className="container-sections-forms">
         <div className="grid gap-25">
           <div className="grid-form-2-container gap-25">
-            {Number(typeReport) === ETypeReport.Colilla ||
-            Number(typeReport) === ETypeReport.ResolucionVacaciones ? (
+            {Number(typeReport) === ETypeReport.Colilla ? (
               <SelectComponent
                 idInput={"period"}
                 control={control}
@@ -63,7 +64,7 @@ export const ReportForm = ({
                 data={
                   Number(typeReport) === ETypeReport.Colilla
                     ? periodsListBiweeklyAuthorized
-                    : vacationPeriods
+                    : periodsListVacationAuthorized
                 }
                 label={
                   <>
@@ -75,6 +76,22 @@ export const ReportForm = ({
                 placeholder="Seleccione."
                 filter={true}
                 disabled={handleDisabledPeriod()}
+              />
+            ) : Number(typeReport) === ETypeReport.ResolucionVacaciones ? (
+              <SelectComponent
+                idInput={"period"}
+                control={control}
+                errors={errors}
+                data={periodsListVacationAuthorized}
+                label={
+                  <>
+                    Periodo. <span>*</span>
+                  </>
+                }
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
+                filter={true}
               />
             ) : (
               <InputComponent
@@ -123,6 +140,23 @@ export const ReportForm = ({
                 errors={errors}
                 data={workerList}
                 label={<>Documento - Nombre del empleado.</>}
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
+                disabled={handleDisabledEmployment()}
+                filter={true}
+              />
+            ) : Number(typeReport) === ETypeReport.ResolucionVacaciones ? (
+              <SelectComponent
+                idInput={"codEmployment"}
+                control={control}
+                errors={errors}
+                data={workerList}
+                label={
+                  <>
+                    Documento - Nombre del empleado. <span>*</span>
+                  </>
+                }
                 className="select-basic medium"
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."

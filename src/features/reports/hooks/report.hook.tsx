@@ -39,6 +39,7 @@ const useReport = ({}: IPropsUseReport) => {
     activeContractorsList,
     vacationPeriods,
     inactiveWorkerList,
+    periodsListVacationAuthorized,
   } = useListData(false);
 
   //useState
@@ -88,7 +89,7 @@ const useReport = ({}: IPropsUseReport) => {
   }, [codEmployment]);
 
   useEffect(() => {
-    if (Number(typeReport) === ETypeReport.Colilla) {
+    if (Number(typeReport) === ETypeReport.Colilla || Number(typeReport) === ETypeReport.ResolucionVacaciones) {
       getWorkerPayroll();
     } else if (Number(typeReport) === ETypeReport.ConstanciaContratos) {
       setWorkerList(activeContractorsList);
@@ -97,8 +98,6 @@ const useReport = ({}: IPropsUseReport) => {
     ) {
       setWorkerList(inactiveWorkerList);
     } else {
-      console.log("Entro");
-      console.log(activeWorkerList);
       setWorkerList(activeWorkerList);
     }
   }, [period]);
@@ -264,6 +263,7 @@ const useReport = ({}: IPropsUseReport) => {
     control,
     formState,
     periodsListBiweeklyAuthorized,
+    periodsListVacationAuthorized,
     activeWorkerList,
     inactiveWorkerList,
     activeContractorsList,

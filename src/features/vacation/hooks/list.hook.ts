@@ -29,6 +29,8 @@ export default function useListData(temporary = false) {
   const [periodsList, setPeriodsList] = useState([]);
   const [periodsListBiweeklyAuthorized, setPeriodsListBiweeklyAuthorized] =
     useState([]);
+  const [periodsListVacationAuthorized, setPeriodsListVacationAuthorized] =
+    useState([]);
   const [workerInfo, setWorkerInfo] = useState([]);
   const [typesSpreadSheetList, setTypesSpreadSheetList] = useState([]);
   const [stateSpreadSheetList, setStateSpreadSheetList] = useState([
@@ -104,6 +106,7 @@ export default function useListData(temporary = false) {
     getTypeSpreadSheet,
     getContractors,
     getInactiveWorkers,
+    getVacationPeriods,
   } = usePayrollService();
   const { typeIncapacity } = useIncapacityService();
   const { getTypesChargeList } = useChargesService();
@@ -289,6 +292,38 @@ export default function useListData(temporary = false) {
   }, []);
 
   useEffect(() => {
+    getVacationPeriods()
+      .then((response: ApiResponse<IFormPeriod[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setPeriodsList(
+            response.data.map((item) => {
+              const list = {
+                name: `${item.dateStart} - ${item.dateEnd}`,
+                value: item.id,
+              };
+              return list;
+            })
+          );
+
+          setPeriodsListVacationAuthorized(
+            response.data
+              .map((item) => {
+                if (item.state === "Autorizada") {
+                  const list = {
+                    name: `${item.dateStart} - ${item.dateEnd}`,
+                    value: item.id,
+                  };
+                  return list;
+                }
+              })
+              .filter((i) => i)
+          );
+        }
+      })
+      .catch((err) => {});
+  }, []);
+
+  useEffect(() => {
     typeIncapacity()
       .then((response: ApiResponse<IIncapacityTypes[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
@@ -317,5 +352,6 @@ export default function useListData(temporary = false) {
     getWorkersActive,
     workerInfo,
     periodsListBiweeklyAuthorized,
+    periodsListVacationAuthorized,
   };
 }

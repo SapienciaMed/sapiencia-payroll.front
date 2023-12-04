@@ -223,6 +223,19 @@ export function usePayrollService() {
     }
   }
 
+  async function getVacationPeriods(): Promise<ApiResponse<IFormPeriod[]>> {
+    try {
+      const endpoint: string = `/vacations-payrolls`;
+      return await get(`${payrollUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   async function getTypeSpreadSheet(): Promise<ApiResponse<IFormTypes[]>> {
     try {
       const endpoint: string = `/types`;
@@ -316,6 +329,7 @@ export function usePayrollService() {
     getContractors,
     getEmploymentsByPayroll,
     getInactiveWorkers,
+    getVacationPeriods,
   };
 }
 

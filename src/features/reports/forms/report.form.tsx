@@ -114,11 +114,7 @@ export const ReportForm = ({
                 control={control}
                 errors={errors}
                 data={activeContractorsList}
-                label={
-                  <>
-                    Documento - Nombre del empleado. <span>*</span>
-                  </>
-                }
+                label={<>Documento - Nombre del empleado.</>}
                 className="select-basic medium"
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
@@ -131,11 +127,7 @@ export const ReportForm = ({
                 control={control}
                 errors={errors}
                 data={inactiveWorkerList}
-                label={
-                  <>
-                    Documento - Nombre del empleado. <span>*</span>
-                  </>
-                }
+                label={<>Documento - Nombre del empleado.</>}
                 className="select-basic medium"
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
@@ -147,11 +139,7 @@ export const ReportForm = ({
                 control={control}
                 errors={errors}
                 data={workerList}
-                label={
-                  <>
-                    Documento - Nombre del empleado. <span>*</span>
-                  </>
-                }
+                label={<>Documento - Nombre del empleado.</>}
                 className="select-basic medium"
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
@@ -181,11 +169,7 @@ export const ReportForm = ({
                 control={control}
                 errors={errors}
                 data={activeWorkerList}
-                label={
-                  <>
-                    Documento - Nombre del empleado. <span>*</span>
-                  </>
-                }
+                label={<>Documento - Nombre del empleado.</>}
                 className="select-basic medium"
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."

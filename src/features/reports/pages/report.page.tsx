@@ -26,7 +26,7 @@ const ReportPage = ({}: IPropsReportPage): React.JSX.Element => {
     <div className="main-page">
       <div className="card-table">
         <div className="title-area">
-          <label className="text-black biggest bold">Reportes</label>
+          <label className="text-black biggest bold">Reportes1</label>
         </div>
 
         <ReportForm

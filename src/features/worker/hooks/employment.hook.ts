@@ -174,13 +174,13 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
       if (startDate && endDate && salary) {
         const days = calculateDifferenceDays(startDate, endDate);
 
-        if (days > 30) {
-          const salaryMonth = (salary / days) * 30;
+        // if (days > 30) {
+        const salaryMonth = (salary / 30) * days;
 
-          setValueRegister("employment.totalValue", salaryMonth);
-        } else {
-          setValueRegister("employment.totalValue", totalValue);
-        }
+        setValueRegister("employment.totalValue", salaryMonth);
+        // } else {
+        //   setValueRegister("employment.totalValue", totalValue);
+        // }
       } else {
         setValueRegister("employment.totalValue", 0);
       }

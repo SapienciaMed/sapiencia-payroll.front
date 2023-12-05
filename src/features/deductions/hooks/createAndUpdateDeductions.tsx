@@ -205,7 +205,6 @@ const useCreateAndUpdateDeductions = ({
       const { data, operation } = await getDeductionById(Number(id));
 
       if (operation.code === EResponseCodes.OK) {
-        console.log(data);
         if (data.length > 0) {
           return {
             id: data[0].id,

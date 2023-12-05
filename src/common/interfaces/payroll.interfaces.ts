@@ -48,6 +48,8 @@ export interface IRelative {
   age: number;
   birthDate: DateTime;
   dependent: boolean;
+  typeDocument: string;
+  numberDocument: string;
 }
 
 export interface IWorker {
@@ -581,4 +583,38 @@ export interface IDependence {
 
 export interface IChargeFilters {
   id?: number;
+}
+
+export interface IReport {
+  period: string;
+  codEmployment: string;
+  typeReport: number;
+}
+
+export interface IReportResponse {
+  bufferFile: {
+    type: string;
+    data: number[];
+  };
+  nameFile: string;
+}
+
+export interface IHistoricalPayroll {
+  id?: number;
+  idTypePayroll: number;
+  idEmployment: number;
+  workedDay: number;
+  salary: number;
+  totalIncome: number;
+  totalDeduction: number;
+  total: number;
+  state: string;
+  observation: string;
+  employment?: IEmploymentWorker;
+}
+
+export interface IVacationPeriods {
+  periods: string;
+  payroll: number;
+  employment: number;
 }

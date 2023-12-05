@@ -1,7 +1,6 @@
 import * as yup from "yup";
 import { calculateLimiteEdad, calculateMayorEdad } from "../utils/helpers";
 import { EIncomeType } from "../constants/otherincome.enum";
-import useCreateAndUpdateOtherIncome from "../../features/otherIncome/hooks/createAndUpdateOtherIncome.hook";
 import { IParameter } from "../interfaces/payroll.interfaces";
 
 const personalInformationLocalization = yup.object({
@@ -66,7 +65,12 @@ export const familiarValidator = yup.object({
         .required("El campo es obligatorio")
         .min(8, "Ingrese al menos 8 caracteres"),
       relationship: yup.string().required("El campo es obligatorio"),
-      dependent: yup.string().required("El campo es obligatorio"),
+      dependent: yup.boolean().typeError("El campo es obligatorio"),
+      typeDocument: yup.string().required("El campo es obligatorio"),
+      numberDocument: yup
+        .string()
+        .max(15, "Solo se permiten 15 caracteres")
+        .required("El campo es obligatorio"),
     })
   ),
 });
@@ -94,6 +98,16 @@ const contractualInformation = yup.object({
         }
       })
       .typeError("Fecha invalida"),
+    specificObligations: yup
+      .string()
+      .nullable()
+      .optional()
+      .max(10000, "Solo se permiten 10000 caracteres"),
+    contractualObject: yup
+      .string()
+      .nullable()
+      .optional()
+      .max(5000, "Solo se permiten 5000 caracteres"),
     institutionalMail: yup
       .string()
       .required("El campo es obligatorio")
@@ -347,11 +361,22 @@ export const createOrUpdateOtherIncome = yup.object({
 export const createUpdateChargeSchema = yup.object({
   codChargeType: yup.string().required("El campo es obligatorio"),
   name: yup.string().required("El campo es obligatorio"),
-  baseSalary: yup
+  baseSalary: yup.string().required("El campo es obligatorio"),
+  state: yup.boolean().required("El campo es obligatorio"),
+  observations: yup
     .string()
+    .max(500, "Solo se permiten 500 caracteres")
+    .optional(),
+});
+
+export const generateReporSchema = yup.object({
+  period: yup
+    .string()
+    .max(4, "Solo se permiten 4 caracteres")
     .required("El campo es obligatorio"),
-    state: yup
-    .boolean()
+  codEmployment: yup.string().optional().nullable(),
+  typeReport: yup
+    .number()
+    .typeError("El campo es obligatorio")
     .required("El campo es obligatorio"),
-    observations: yup.string().max(500, "Solo se permiten 500 caracteres").optional(),
 });

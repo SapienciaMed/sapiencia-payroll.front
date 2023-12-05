@@ -5,6 +5,7 @@ import {
   IEditVacation,
   IVacation,
   IVacationDay,
+  IVacationPeriods,
   IVacationResult,
 } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
@@ -14,7 +15,7 @@ export function useVacationService() {
   const baseURL: string = process.env.urlApiPayroll;
   const authUrl: string = "/api/v1/vacations";
 
-  const { get, post, put } = useCrudService( baseURL);
+  const { get, post, put } = useCrudService(baseURL);
 
   async function getWorkerVacatioByParam(
     params
@@ -46,6 +47,21 @@ export function useVacationService() {
     }
   }
 
+  async function getPeriodVacationByEmployment(): Promise<
+    ApiResponse<IVacationPeriods[]>
+  > {
+    try {
+      const endpoint: string = `/periods`;
+      return await get(`${authUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        [{}] as IVacationPeriods[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   async function updateVacation(
     data: IEditVacation
   ): Promise<ApiResponse<IEditVacation>> {
@@ -65,6 +81,7 @@ export function useVacationService() {
     getWorkerVacatioByParam,
     createVacation,
     updateVacation,
+    getPeriodVacationByEmployment,
   };
 }
 

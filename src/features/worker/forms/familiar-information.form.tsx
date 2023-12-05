@@ -53,88 +53,116 @@ const FamiliarInformationForm = ({
         <form>
           {fields.map((fieldMap, index) => {
             return (
-              <div
-                key={fieldMap.id}
-                className={`grid-form-7-container bg-editing`}
-              >
-                <InputComponent
-                  control={control}
-                  idInput={`relatives.${index}.name` as const}
-                  typeInput="text"
-                  className="input-basic medium"
-                  classNameLabel="text-black big break-line bold"
-                  label={
-                    <>
-                      Nombre completo <span>*</span>
-                    </>
-                  }
-                  disabled={handleDisabledFields()}
-                />
+              <div key={fieldMap.id} className={`grid gap-25 bg-editing`}>
+                <div className="grid-form-4-container gap-25">
+                  <InputComponent
+                    control={control}
+                    idInput={`relatives.${index}.name` as const}
+                    typeInput="text"
+                    className="input-basic medium"
+                    classNameLabel="text-black big break-line bold"
+                    label={
+                      <>
+                        Nombre completo <span>*</span>
+                      </>
+                    }
+                    disabled={handleDisabledFields()}
+                  />
 
-                <DatePickerComponent
-                  idInput={`relatives.${index}.birthDate` as const}
-                  control={control}
-                  label="Fecha de Nacimiento"
-                  classNameLabel="text-black big break-line bold"
-                  className="dataPicker-basic medium"
-                  placeholder="DD/MM/YYYY"
-                  dateFormat="dd/mm/yy"
-                  maxDate={new Date()}
-                  onChange={handleChangeAge}
-                  disabled={handleDisabledFields()}
-                />
+                  <DatePickerComponent
+                    idInput={`relatives.${index}.birthDate` as const}
+                    control={control}
+                    label="Fecha de Nacimiento"
+                    classNameLabel="text-black big break-line bold"
+                    className="dataPicker-basic medium"
+                    placeholder="DD/MM/YYYY"
+                    dateFormat="dd/mm/yy"
+                    maxDate={new Date()}
+                    onChange={handleChangeAge}
+                    disabled={handleDisabledFields()}
+                  />
 
-                <InputComponent
-                  control={control}
-                  idInput={`relatives.${index}.age` as const}
-                  typeInput="text"
-                  className="input-basic medium"
-                  classNameLabel="text-black big bold"
-                  label={<>Edad</>}
-                  disabled={true}
-                />
+                  <InputComponent
+                    control={control}
+                    idInput={`relatives.${index}.age` as const}
+                    typeInput="text"
+                    className="input-basic medium"
+                    classNameLabel="text-black big bold"
+                    label={<>Edad</>}
+                    disabled={true}
+                  />
 
-                <SelectComponent
-                  idInput={`relatives.${index}.gender` as const}
-                  control={control}
-                  data={list[0]}
-                  label={<>Género</>}
-                  className="select-basic medium"
-                  classNameLabel="text-black big bold"
-                  placeholder="Seleccione."
-                  disabled={handleDisabledFields()}
-                />
+                  <SelectComponent
+                    idInput={`relatives.${index}.gender` as const}
+                    control={control}
+                    data={list[0]}
+                    label={<>Género</>}
+                    className="select-basic medium"
+                    classNameLabel="text-black big bold"
+                    placeholder="Seleccione."
+                    disabled={handleDisabledFields()}
+                  />
+                </div>
 
-                <SelectComponent
-                  idInput={`relatives.${index}.relationship` as const}
-                  control={control}
-                  data={list[1]}
-                  label={
-                    <>
-                      Parentesco <span>*</span>
-                    </>
-                  }
-                  className="select-basic medium"
-                  classNameLabel="text-black big bold"
-                  placeholder="Seleccione."
-                  disabled={handleDisabledFields()}
-                />
+                <div className="grid-form-4-container gap-25">
+                  <SelectComponent
+                    idInput={`relatives.${index}.relationship` as const}
+                    control={control}
+                    data={list[1]}
+                    label={
+                      <>
+                        Parentesco <span>*</span>
+                      </>
+                    }
+                    className="select-basic medium"
+                    classNameLabel="text-black big bold"
+                    placeholder="Seleccione."
+                    disabled={handleDisabledFields()}
+                  />
 
-                <SelectComponent
-                  idInput={`relatives.${index}.dependent` as const}
-                  control={control}
-                  data={dependentList}
-                  label={
-                    <>
-                      Dependiente <span>*</span>
-                    </>
-                  }
-                  className="select-basic medium"
-                  classNameLabel="text-black big bold"
-                  placeholder="Seleccione."
-                  disabled={handleDisabledFields()}
-                />
-                <div>
+                  <SelectComponent
+                    idInput={`relatives.${index}.dependent` as const}
+                    control={control}
+                    data={dependentList}
+                    label={
+                      <>
+                        Dependiente <span>*</span>
+                      </>
+                    }
+                    className="select-basic medium"
+                    classNameLabel="text-black big bold"
+                    placeholder="Seleccione."
+                    disabled={handleDisabledFields()}
+                  />
+                  <SelectComponent
+                    idInput={`relatives.${index}.typeDocument` as const}
+                    control={control}
+                    data={list[2]}
+                    label={
+                      <>
+                        Tipo de documento <span>*</span>
+                      </>
+                    }
+                    className="select-basic medium"
+                    classNameLabel="text-black big bold"
+                    placeholder="Seleccione."
+                    disabled={handleDisabledFields()}
+                  />
+                  <InputComponent
+                    control={control}
+                    idInput={`relatives.${index}.numberDocument` as const}
+                    typeInput="number"
+                    className="input-basic medium"
+                    classNameLabel="text-black big break-line bold"
+                    label={
+                      <>
+                        Numero de documento <span>*</span>
+                      </>
+                    }
+                    disabled={handleDisabledFields()}
+                  />
+                </div>
+                <div className="grid-span-4-columns">
                   <label
                     htmlFor=""
                     className="text-black big bold display-justify-flex-center"
@@ -169,6 +197,8 @@ const FamiliarInformationForm = ({
                   age: 0,
                   relationship: "",
                   dependent: null,
+                  numberDocument: "",
+                  typeDocument: "",
                 })
               }
               className="button-save extra_large disabled-black"

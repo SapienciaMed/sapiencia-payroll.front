@@ -9,19 +9,28 @@ import {
   IIncapacityTypes,
   IReasonsForWithdrawal,
   ITypesCharges,
+  IVacationPeriods,
   IWorker,
 } from "../../../common/interfaces/payroll.interfaces";
 import useIncapacityService from "../../../common/hooks/incapacity-service.hook";
 import useChargesService from "../../../common/hooks/charges-service.hook";
+import useVacationService from "../../../common/hooks/vacation-service.hook";
 
 export default function useListData(temporary = false) {
   const [listPeriods, setListPeriods] = useState([]);
   const [activeWorkerList, setActiveWorkerList] = useState([]);
+  const [inactiveWorkerList, setInactiveWorkerList] = useState([]);
   const [activeContractorsList, setActiveContractorsList] = useState([]);
   const [typesIncapacityList, setTypesIncapacityList] = useState([]);
-
+  const [vacationPeriods, setVacationPeriods] = useState<IVacationPeriods[]>(
+    []
+  );
   const [reasonsForWithdrawal, setReasonsForWithdrawal] = useState([]);
   const [periodsList, setPeriodsList] = useState([]);
+  const [periodsListBiweeklyAuthorized, setPeriodsListBiweeklyAuthorized] =
+    useState([]);
+  const [periodsListVacationAuthorized, setPeriodsListVacationAuthorized] =
+    useState([]);
   const [workerInfo, setWorkerInfo] = useState([]);
   const [typesSpreadSheetList, setTypesSpreadSheetList] = useState([]);
   const [stateSpreadSheetList, setStateSpreadSheetList] = useState([
@@ -96,9 +105,12 @@ export default function useListData(temporary = false) {
     getPeriods,
     getTypeSpreadSheet,
     getContractors,
+    getInactiveWorkers,
+    getVacationPeriods,
   } = usePayrollService();
   const { typeIncapacity } = useIncapacityService();
   const { getTypesChargeList } = useChargesService();
+  const { getPeriodVacationByEmployment } = useVacationService();
 
   useEffect(() => {
     getListByGrouper("PERIODOS")
@@ -118,10 +130,10 @@ export default function useListData(temporary = false) {
       .catch((e) => {});
   }, []);
 
-  const getWorkersActive = () => {
-    getWorkers(temporary)
+  const getWorkersActive = async () => {
+    await getWorkers(temporary)
       .then((response: ApiResponse<IWorker[]>) => {
-        if (response && response?.operation?.code === EResponseCodes.OK) {
+        if (response.operation.code === EResponseCodes.OK) {
           setWorkerInfo(response.data);
           setActiveWorkerList(
             response.data.map((item) => {
@@ -142,6 +154,43 @@ export default function useListData(temporary = false) {
       })
       .catch((err) => {});
   };
+
+  useEffect(() => {
+    getWorkersActive();
+  }, []);
+
+  useEffect(() => {
+    getInactiveWorkers()
+      .then((response: ApiResponse<IWorker[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setInactiveWorkerList(
+            response.data.map((item) => {
+              const list = {
+                name: `${
+                  item.numberDocument +
+                  " - " +
+                  item.firstName +
+                  " " +
+                  item.surname
+                }`,
+                value: item.employment.id,
+              };
+              return list;
+            })
+          );
+        }
+      })
+      .catch((err) => {});
+  }, []);
+  useEffect(() => {
+    getPeriodVacationByEmployment()
+      .then((response: ApiResponse<IVacationPeriods[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setVacationPeriods(response.data);
+        }
+      })
+      .catch((err) => {});
+  }, []);
 
   const getContractorsActive = () => {
     getContractors()
@@ -167,10 +216,6 @@ export default function useListData(temporary = false) {
       })
       .catch((err) => {});
   };
-
-  useEffect(() => {
-    getWorkersActive();
-  }, []);
 
   useEffect(() => {
     getContractorsActive();
@@ -227,6 +272,52 @@ export default function useListData(temporary = false) {
               return list;
             })
           );
+
+          setPeriodsListBiweeklyAuthorized(
+            response.data
+              .map((item) => {
+                if (item.state === "Autorizada" && item.idFormType === 1) {
+                  const list = {
+                    name: `${item.dateStart} - ${item.dateEnd}`,
+                    value: item.id,
+                  };
+                  return list;
+                }
+              })
+              .filter((i) => i)
+          );
+        }
+      })
+      .catch((err) => {});
+  }, []);
+
+  useEffect(() => {
+    getVacationPeriods()
+      .then((response: ApiResponse<IFormPeriod[]>) => {
+        if (response && response?.operation?.code === EResponseCodes.OK) {
+          setPeriodsList(
+            response.data.map((item) => {
+              const list = {
+                name: `${item.dateStart} - ${item.dateEnd}`,
+                value: item.id,
+              };
+              return list;
+            })
+          );
+
+          setPeriodsListVacationAuthorized(
+            response.data
+              .map((item) => {
+                if (item.state === "Autorizada") {
+                  const list = {
+                    name: `${item.dateStart} - ${item.dateEnd}`,
+                    value: item.id,
+                  };
+                  return list;
+                }
+              })
+              .filter((i) => i)
+          );
         }
       })
       .catch((err) => {});
@@ -249,14 +340,18 @@ export default function useListData(temporary = false) {
   return {
     activeWorkerList,
     activeContractorsList,
+    inactiveWorkerList,
     listPeriods,
     typesIncapacityList,
     reasonsForWithdrawal,
     periodsList,
+    vacationPeriods,
     typesSpreadSheetList,
     stateSpreadSheetList,
     monthList,
     getWorkersActive,
     workerInfo,
+    periodsListBiweeklyAuthorized,
+    periodsListVacationAuthorized,
   };
 }

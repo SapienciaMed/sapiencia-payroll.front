@@ -52,6 +52,7 @@ const EmploymentRelationshipPage = ({
     bankList,
     accountType,
     setValueRegister,
+    setMessage,
   } = useEmployments({ action });
 
   useEffect(() => {
@@ -93,7 +94,7 @@ const EmploymentRelationshipPage = ({
           action={action}
           control={control}
           setValueRegister={setValueRegister}
-          list={[genderList, relationship]}
+          list={[genderList, relationship, typeDocumentList]}
         />
       ),
       position: 1,
@@ -153,6 +154,32 @@ const EmploymentRelationshipPage = ({
 
   const handleNextStep = async () => {
     const isValid = await trigger();
+
+    if (step === 1) {
+      const values = getValueRegister("relatives");
+
+      const relativesDependent = values.filter((i) => i.dependent);
+
+      if (relativesDependent.length > 4) {
+        setMessage({
+          title: "Error",
+          description: "No se pueden agregar mas de 4 familiares dependientes",
+          show: true,
+          OkTitle: "cerrar",
+          onOk: () => {
+            setMessage((prev) => {
+              return { ...prev, show: false };
+            });
+          },
+          onClose: () => {
+            setMessage({});
+          },
+          background: true,
+        });
+
+        return;
+      }
+    }
 
     if (isValid && step < stepsAmount) {
       setStep((cur) => cur + 1);

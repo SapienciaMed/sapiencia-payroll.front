@@ -4,44 +4,166 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { AppContext } from "../../../common/contexts/app.context";
 
-import { IOtherIncome } from "../../../common/interfaces/payroll.interfaces";
+import {
+  IOtherIncome,
+  IReport,
+} from "../../../common/interfaces/payroll.interfaces";
 
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
 import { IDropdownProps } from "../../../common/interfaces/select.interface";
-import { createOrUpdateOtherIncome } from "../../../common/schemas";
+import {
+  createOrUpdateOtherIncome,
+  generateReporSchema,
+} from "../../../common/schemas";
 
 import useListData from "../../vacation/hooks/list.hook";
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
+import useReportService from "../../../common/hooks/report-service..hook";
+import { descargarArchivo } from "../../../common/utils/helpers";
+import usePayrollService from "../../../common/hooks/payroll-service.hook";
+import { ETypeReport } from "../../../common/constants/report.enum";
 
 interface IPropsUseReport {}
 
 const useReport = ({}: IPropsUseReport) => {
   //react router dom
   const navigate = useNavigate();
-  const { id } = useParams();
-
   // Context
-  const { setMessage } = useContext(AppContext);
-
-  //useState
+  const { setMessage, validateActionAccess } = useContext(AppContext);
 
   //custom hooks
-  const { activeWorkerList, periodsList } = useListData(false);
+  const {
+    activeWorkerList,
+    periodsListBiweeklyAuthorized,
+    activeContractorsList,
+    vacationPeriods,
+    inactiveWorkerList,
+    periodsListVacationAuthorized,
+  } = useListData(false);
+
+  //useState
+  const [workerList, setWorkerList] = useState([]);
+  const [periodVacation, setPeriodVacation] = useState([]);
+  const { getEmploymentsByPayroll } = usePayrollService();
 
   //use form
 
-  const resolver = useYupValidationResolver(createOrUpdateOtherIncome);
+  const resolver = useYupValidationResolver(generateReporSchema);
 
-  const { control, formState, handleSubmit } = useForm<any>({
-    defaultValues: {},
-    mode: "all",
-    resolver,
-  });
+  const { control, formState, handleSubmit, reset, watch, setValue } =
+    useForm<IReport>({
+      defaultValues: {
+        period: "",
+        codEmployment: "",
+        typeReport: null,
+      },
+      mode: "all",
+      resolver,
+    });
+
+  const [typeReport, period, codEmployment] = watch([
+    "typeReport",
+    "period",
+    "codEmployment",
+  ]);
+
+  const { generateReport } = useReportService();
 
   //useEffect
+  useEffect(() => {
+    const vacationsPeriodsEmployment =
+      vacationPeriods.filter(
+        (vacation) => vacation.employment == Number(codEmployment)
+      ) ?? [];
+
+    setPeriodVacation(
+      vacationsPeriodsEmployment.map((item) => {
+        const list = {
+          name: `${item.periods}`,
+          value: item.payroll,
+        };
+        return list ?? null;
+      }) ?? []
+    );
+  }, [codEmployment]);
+
+  useEffect(() => {
+    if (Number(typeReport) === ETypeReport.Colilla || Number(typeReport) === ETypeReport.ResolucionVacaciones) {
+      getWorkerPayroll();
+    } else if (Number(typeReport) === ETypeReport.ConstanciaContratos) {
+      setWorkerList(activeContractorsList);
+    } else if (
+      Number(typeReport) === ETypeReport.ResolucionLiquidacionDefinitiva
+    ) {
+      setWorkerList(inactiveWorkerList);
+    } else {
+      setWorkerList(activeWorkerList);
+    }
+  }, [period]);
+
+  useEffect(() => {
+    if (formState.dirtyFields.typeReport) {
+      setValue("period", "", { shouldValidate: true });
+      setValue("codEmployment", null, { shouldValidate: true });
+    }
+  }, [typeReport]);
 
   //functions
+
+  const getWorkerPayroll = async () => {
+    setWorkerList([]);
+
+    const { data, operation } = await getEmploymentsByPayroll(Number(period));
+
+    if (operation.code === EResponseCodes.OK) {
+      setWorkerList(
+        data.map((item) => {
+          const list = {
+            name: `${
+              item?.worker?.numberDocument +
+              " - " +
+              item?.worker.firstName +
+              " " +
+              item?.worker?.surname
+            }`,
+            value: item?.id,
+          };
+          return list;
+        })
+      );
+    } else {
+      setWorkerList([]);
+    }
+  };
+
+  const handleDisabledEmployment = (): boolean => {
+    if (
+      Number(typeReport) === ETypeReport.ResolucionVacaciones ||
+      Number(typeReport) === ETypeReport.CertificadoLaboral
+    ) {
+      return false;
+    }
+    return !period;
+  };
+
+  const handleDisabledPeriod = (): boolean => {
+    if (Number(typeReport) === ETypeReport.ResolucionVacaciones) {
+      return !codEmployment;
+    }
+
+    return false;
+  };
+
+  const clearFields = () => {
+    const radios = document.getElementsByName(
+      "typeReport"
+    ) as NodeListOf<HTMLInputElement>;
+
+    radios.forEach((e) => (e.checked = false));
+
+    reset();
+  };
 
   const redirectCancel = () => {
     setMessage({
@@ -108,16 +230,14 @@ const useReport = ({}: IPropsUseReport) => {
     });
   };
 
-  const handleSubmitOtherIncome = handleSubmit((data: IOtherIncome) => {
+  const handleSubmitOtherIncome = handleSubmit((data: IReport) => {
     setMessage({
-      title: "Confirmación de repporte",
-      description: `¿Estás segur@ de ejecutar el reporte"
-      }
-      el ingreso?`,
+      title: "Confirmación de reporte",
+      description: `¿Estás segur@ de ejecutar el reporte?`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
-        // handleCreateOrUpdateOtherIncome(data);
+        handleGenerateReport(data);
         setMessage((prev) => {
           return { ...prev, show: false };
         });
@@ -127,26 +247,35 @@ const useReport = ({}: IPropsUseReport) => {
     });
   });
 
-  // const handleCreateOrUpdateOtherIncome = async (data: IOtherIncome) => {
-  //   const { data: dataResponse, operation } =
-  //     action === "edit"
-  //       ? await updateOtherIncome(data)
-  //       : await createOtherIncome(data);
-
-  //   if (operation.code === EResponseCodes.OK) {
-  //     handleModalSuccess();
-  //   } else {
-  //     handleModalError(operation.message, false);
-  //   }
-  // };
+  const handleGenerateReport = async (report: IReport) => {
+    const { data, operation } = await generateReport(report);
+    if (operation.code === EResponseCodes.OK) {
+      descargarArchivo(data.bufferFile.data, data.nameFile);
+    } else {
+      handleModalError(
+        "Error al generar el reporte, puede no tener historicos de planilla asociado el usuario o se encuentran en estado fallido",
+        false
+      );
+    }
+  };
 
   return {
     control,
     formState,
-    periodsList,
+    periodsListBiweeklyAuthorized,
+    periodsListVacationAuthorized,
     activeWorkerList,
+    inactiveWorkerList,
+    activeContractorsList,
+    workerList,
+    typeReport,
+    periodVacation,
     redirectCancel,
     handleSubmitOtherIncome,
+    handleDisabledEmployment,
+    handleDisabledPeriod,
+    clearFields,
+    validateActionAccess,
   };
 };
 

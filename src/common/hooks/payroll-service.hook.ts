@@ -1,5 +1,4 @@
 import { EResponseCodes } from "../constants/api.enum";
-import { IAuthorization } from "../interfaces/auth.interfaces";
 import {
   ICharge,
   IVinculation,
@@ -12,6 +11,7 @@ import {
   IContractSuspensionData,
   IFormPeriod,
   IFormTypes,
+  IHistoricalPayroll,
 } from "../interfaces/payroll.interfaces";
 import { ApiResponse } from "../utils/api-response";
 import useCrudService from "./crud-service.hook";
@@ -82,6 +82,19 @@ export function usePayrollService() {
   async function getContractors(): Promise<ApiResponse<IWorker[]>> {
     try {
       const endpoint: string = `/contractors`;
+      return await get(`${authUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IWorker[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
+  async function getInactiveWorkers(): Promise<ApiResponse<IWorker[]>> {
+    try {
+      const endpoint: string = `/inactiveWorker`;
       return await get(`${authUrl}${endpoint}`);
     } catch (error) {
       return new ApiResponse(
@@ -210,6 +223,19 @@ export function usePayrollService() {
     }
   }
 
+  async function getVacationPeriods(): Promise<ApiResponse<IFormPeriod[]>> {
+    try {
+      const endpoint: string = `/vacations-payrolls`;
+      return await get(`${payrollUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IFormPeriod[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   async function getTypeSpreadSheet(): Promise<ApiResponse<IFormTypes[]>> {
     try {
       const endpoint: string = `/types`;
@@ -268,6 +294,21 @@ export function usePayrollService() {
     }
   }
 
+  async function getEmploymentsByPayroll(
+    idPayroll: number
+  ): Promise<ApiResponse<IEmploymentWorker[]>> {
+    try {
+      const endpoint: string = `/employmentByPayroll/`;
+      return await get(`${authUrl}${endpoint}${idPayroll}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IEmploymentWorker[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   return {
     getTypesContracts,
     getCharges,
@@ -285,7 +326,10 @@ export function usePayrollService() {
     createSpreadSheet,
     updateSpreadSheet,
     getByIdSpreadSheet,
-    getContractors
+    getContractors,
+    getEmploymentsByPayroll,
+    getInactiveWorkers,
+    getVacationPeriods,
   };
 }
 

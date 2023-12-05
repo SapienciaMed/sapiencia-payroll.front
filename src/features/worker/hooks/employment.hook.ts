@@ -147,13 +147,15 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
     "worker.municipality",
   ]);
 
-  const [idTypeContract, idCharge, startDate, endDate, totalValue] = watch([
-    "employment.idTypeContract",
-    "employment.idCharge",
-    "employment.startDate",
-    "employment.endDate",
-    "employment.totalValue",
-  ]);
+  const [idTypeContract, idCharge, startDate, endDate, totalValue, salary] =
+    watch([
+      "employment.idTypeContract",
+      "employment.idCharge",
+      "employment.startDate",
+      "employment.endDate",
+      "employment.totalValue",
+      "employment.salary",
+    ]);
 
   // useEffect
 
@@ -161,18 +163,26 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
 
   useEffect(() => {
     if (Number(idTypeContract) === 4) {
-      if (startDate && endDate && totalValue) {
+      if (idCharge) {
+        const infoChargeSelected = chargesInfo.find(
+          (i) => i.id === Number(idCharge)
+        );
+
+        setValueRegister("employment.salary", infoChargeSelected.baseSalary);
+      }
+
+      if (startDate && endDate && salary) {
         const days = calculateDifferenceDays(startDate, endDate);
 
-        if (days > 30) {
-          const salaryMonth = (totalValue / days) * 30;
+        // if (days > 30) {
+        const salaryMonth = (salary / 30) * days;
 
-          setValueRegister("employment.salary", salaryMonth);
-        } else {
-          setValueRegister("employment.salary", totalValue);
-        }
+        setValueRegister("employment.totalValue", salaryMonth);
+        // } else {
+        //   setValueRegister("employment.totalValue", totalValue);
+        // }
       } else {
-        setValueRegister("employment.salary", 0);
+        setValueRegister("employment.totalValue", 0);
       }
     } else {
       setValueRegister("employment.totalValue", 0);
@@ -187,7 +197,7 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
         setValueRegister("employment.salary", 0);
       }
     }
-  }, [idTypeContract, idCharge, startDate, endDate, totalValue]);
+  }, [idTypeContract, idCharge, startDate, endDate, salary]);
 
   useEffect(() => {
     if (dirtyFields.employment?.idTypeContract) {
@@ -684,7 +694,9 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
   const handleModal = () => {
     setMessage({
       title: "Vincular Trabajador",
-      description: `Trabajador ${id ? "editado" : "vinculado"} satisfactoriamente`,
+      description: `Trabajador ${
+        id ? "editado" : "vinculado"
+      } satisfactoriamente`,
       show: true,
       OkTitle: "Aceptar",
       onOk: () => {
@@ -741,6 +753,7 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
     accountType,
     bankList,
     reset,
+    setMessage,
   };
 };
 

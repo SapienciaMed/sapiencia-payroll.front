@@ -67,165 +67,6 @@ const ContractualInformationForm = ({
     "employment.endDate",
   ]);
 
-  // const handleModal = (data: IEmployment) => {
-  //   setMessage({
-  //     title: "Información contractual",
-  //     description: (
-  //       <div className="grid-form-4-container gap-25 p-3em">
-  //         <InputComponent
-  //           idInput={"vinculationType"}
-  //           typeInput={"text"}
-  //           label={"Tipo de vinculación"}
-  //           className="input-basic medium"
-  //           classNameLabel="text-black big bold"
-  //           value={data.typesContracts[0].name}
-  //           disabled={disabledFields}
-  //         />
-  //         <InputNumberComponent
-  //           idInput="employment.salary"
-  //           control={control}
-  //           label={<>Salario</>}
-  //           errors={errors}
-  //           classNameLabel="text-black big bold"
-  //           className="inputNumber-basic medium"
-  //           disabled={disabledFields}
-  //           mode="currency"
-  //           currency="COP"
-  //           locale="es-CO"
-  //           minFractionDigits={2}
-  //           maxFractionDigits={2}
-  //         />
-  //         <InputComponent
-  //           idInput={"status"}
-  //           typeInput={"text"}
-  //           label={"Estado"}
-  //           className="input-basic medium"
-  //           classNameLabel="text-black big bold"
-  //           value={data.state == "1" ? "Activo" : "Inactivo"}
-  //           disabled={disabledFields}
-  //         />
-  //         <InputComponent
-  //           idInput={"charge"}
-  //           typeInput={"text"}
-  //           label={"Cargo"}
-  //           className="input-basic medium"
-  //           classNameLabel="text-black big bold"
-  //           value={data.charges[0].name}
-  //           disabled={disabledFields}
-  //         />
-  //         <InputComponent
-  //           idInput={"startDate"}
-  //           typeInput={"text"}
-  //           label={"Fecha de inicio"}
-  //           className="input-basic medium"
-  //           classNameLabel="text-black big bold"
-  //           value={`${data.startDate}`}
-  //           disabled={disabledFields}
-  //         />
-  //         <InputComponent
-  //           idInput={"endDate"}
-  //           typeInput={"text"}
-  //           label={"Fecha de fin"}
-  //           className="input-basic medium"
-  //           classNameLabel="text-black big bold"
-  //           value={`${data.endDate}`}
-  //           disabled={disabledFields}
-  //         />
-  //         <InputComponent
-  //           idInput={"antiquity"}
-  //           typeInput={"text"}
-  //           label={"Antigüedad"}
-  //           className="input-basic medium"
-  //           classNameLabel="text-black big bold"
-  //           value={`${calculateDifferenceYear(data.startDate, data.endDate)}`}
-  //           disabled={true}
-  //         />
-  //         <InputComponent
-  //           idInput={"instutionalMail"}
-  //           typeInput={"text"}
-  //           label={"Correo institucional"}
-  //           className="input-basic medium"
-  //           classNameLabel="text-black big bold"
-  //           value={data.institutionalMail}
-  //           disabled={disabledFields}
-  //         />
-  //         <div className="grid-span-4-columns">
-  //           <TextAreaComponent
-  //             label={"Observaciones"}
-  //             idInput={"observation"}
-  //             // value={data.observation}
-  //             className="text-area-basic"
-  //             classNameLabel="text-black big bold"
-  //             disabled={disabledFields}
-  //             rows={5}
-  //           />
-  //         </div>
-  //       </div>
-  //     ),
-  //     show: true,
-  //     OkTitle: "Aceptar",
-  //     onClose: () => {
-  //       setMessage({});
-  //     },
-  //     background: true,
-  //     size: "medium",
-  //   });
-  // };
-  // const tableColumns: ITableElement<IEmployment>[] = [
-  //   {
-  //     fieldName: "idTypeContract",
-  //     header: "Tipo de vinculación",
-  //     renderCell: (row) => {
-  //       return <>{row.typesContracts[0].name}</>;
-  //     },
-  //   },
-  //   {
-  //     fieldName: "salary",
-  //     header: "Salario",
-  //     renderCell: (row) => {
-  //       return <>{formaterNumberToCurrency(1000)}</>;
-  //     },
-  //   },
-  //   {
-  //     fieldName: "idCharge",
-  //     header: "Cargo",
-  //     renderCell: (row) => {
-  //       return <>{row.charges[0].name}</>;
-  //     },
-  //   },
-  //   {
-  //     fieldName: "startDate",
-  //     header: "Fecha inicio",
-  //     renderCell: (row) => {
-  //       return <>{row.startDate}</>;
-  //     },
-  //   },
-  //   {
-  //     fieldName: "endDate",
-  //     header: "Fecha fin",
-  //     renderCell: (row) => {
-  //       return <>{row.endDate}</>;
-  //     },
-  //   },
-  // ];
-  // const tableActions: ITableAction<IEmployment>[] = [
-  //   {
-  //     icon: "Detail",
-  //     onClick: (row) => {
-  //       handleModal(row);
-  //     },
-  //   },
-  // ];
-
-  // function loadTableData(searchCriteria?: object): void {
-  //   if (tableComponentRef.current) {
-  //     tableComponentRef.current.loadData(searchCriteria);
-  //   }
-  // }
-  // useEffect(() => {
-  //   loadTableData({ workerId: id });
-  // }, []);
-
   return (
     <div>
       <div className="grid-form-4-container gap-25 container-sections-forms ">
@@ -341,7 +182,11 @@ const ContractualInformationForm = ({
           errors={errors}
           classNameLabel="text-black big bold"
           className="dataPicker-basic  medium "
-          disabled={disabledFields}
+          disabled={
+            String(watch("employment.idTypeContract")) === "4"
+              ? disabledFields
+              : true
+          }
           placeholder="DD/MM/YYYY"
           dateFormat="dd/mm/yy"
           minDate={new Date(startDate)}
@@ -404,7 +249,7 @@ const ContractualInformationForm = ({
             errors={errors}
             classNameLabel="text-black big bold"
             className="inputNumber-basic medium"
-            disabled={disabledFields}
+            disabled={true}
             mode="currency"
             currency="COP"
             locale="es-CO"
@@ -424,6 +269,9 @@ const ContractualInformationForm = ({
             errors={errors}
             rows={5}
           />
+          <div className="text-right">
+            <span className="text-span ">Max. {10000} carácteres</span>
+          </div>
           {/* <InputEditorComponent
             control={control}
             label={"Obligaciones especificas"}
@@ -447,7 +295,7 @@ const ContractualInformationForm = ({
               rows={5}
             />
             <div className="text-right">
-              <span className="text-span ">Max. {500} carácteres</span>
+              <span className="text-span ">Max. {5000} carácteres</span>
             </div>
           </div>
         )}

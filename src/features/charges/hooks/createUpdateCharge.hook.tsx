@@ -9,11 +9,16 @@ import {
 } from "../../../common/interfaces/payroll.interfaces";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
-import { createOrUpdateSpreadSheetSchema, createUpdateChargeSchema } from "../../../common/schemas";
+import {
+  createOrUpdateSpreadSheetSchema,
+  createUpdateChargeSchema,
+} from "../../../common/schemas";
 
 import useYupValidationResolver from "../../../common/hooks/form-validator.hook";
 import useChargesService from "../../../common/hooks/charges-service.hook";
 import { ApiResponse } from "../../../common/utils/api-response";
+import useListData from "../../vacation/hooks/list.hook";
+import usePayrollService from "../../../common/hooks/payroll-service.hook";
 
 interface IPropsUseCreateOrUpdateCharge {
   action: string;
@@ -31,10 +36,12 @@ const useCreateOrUpdateChargeHook = ({
 
   //useState
   const [typesChargesList, setTypesChargesList] = useState([]);
+  const [typesContractsList, setTypesContractsList] = useState([]);
   //custom hooks
   const { createCharge, updateCharge, getChargeById, getTypesChargeList } =
     useChargesService();
 
+  const { getTypesContracts } = usePayrollService();
   //variables
 
   //use form
@@ -58,6 +65,17 @@ const useCreateOrUpdateChargeHook = ({
       }
     });
   }, []);
+  useEffect(() => {
+    getTypesContracts().then((response: ApiResponse<ITypesCharges[]>) => {
+      if (response && response?.operation?.code === EResponseCodes.OK) {
+        setTypesContractsList(
+          response.data.map((item) => {
+            return { name: item.name, value: item.id };
+          })
+        );
+      }
+    });
+  }, []);
   //functions
 
   const renderTitleDeduction = () => {
@@ -70,6 +88,7 @@ const useCreateOrUpdateChargeHook = ({
         id: null,
         name: "",
         codChargeType: null,
+        codContractType: null,
         state: true,
         baseSalary: null,
         observations: "",
@@ -85,6 +104,7 @@ const useCreateOrUpdateChargeHook = ({
             id: data.id,
             name: data?.name,
             codChargeType: data.codChargeType,
+            codContractType: null,
             state: data.state,
             baseSalary: data.baseSalary,
             observations: data?.observations,
@@ -96,6 +116,7 @@ const useCreateOrUpdateChargeHook = ({
             id: null,
             name: "",
             codChargeType: null,
+            codContractType: null,
             state: true,
             baseSalary: null,
             observations: "",
@@ -108,6 +129,7 @@ const useCreateOrUpdateChargeHook = ({
           id: null,
           name: "",
           codChargeType: null,
+          codContractType: null,
           state: true,
           baseSalary: null,
           observations: "",
@@ -216,6 +238,7 @@ const useCreateOrUpdateChargeHook = ({
     control,
     formState,
     typesChargesList,
+    typesContractsList,
     renderTitleDeduction,
     redirectCancel,
     handleSubmitCharge,

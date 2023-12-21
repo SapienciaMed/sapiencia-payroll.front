@@ -411,6 +411,19 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   }
 }
 
+.p-spinner{
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (min-width: 1024px) {
   div[id="single-spa-application:@sapiencia/payroll"] {
     width: initial;

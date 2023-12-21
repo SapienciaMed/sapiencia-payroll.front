@@ -147,15 +147,23 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
     "worker.municipality",
   ]);
 
-  const [idTypeContract, idCharge, startDate, endDate, totalValue, salary] =
-    watch([
-      "employment.idTypeContract",
-      "employment.idCharge",
-      "employment.startDate",
-      "employment.endDate",
-      "employment.totalValue",
-      "employment.salary",
-    ]);
+  const [
+    idTypeContract,
+    idCharge,
+    startDate,
+    endDate,
+    totalValue,
+    salary,
+    typeContract,
+  ] = watch([
+    "employment.idTypeContract",
+    "employment.idCharge",
+    "employment.startDate",
+    "employment.endDate",
+    "employment.totalValue",
+    "employment.salary",
+    "employment.idTypeContract",
+  ]);
 
   // useEffect
 
@@ -299,11 +307,15 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           setTypesChargesList(
             response.data.map((item) => {
-              const list = {
-                name: item.name,
-                value: item.id,
-              };
-              return list;
+              if (item.state) {
+                const list = {
+                  name: item.name,
+                  value: item.id,
+                };
+                return list;
+              } else {
+                return null;
+              }
             })
           );
 
@@ -314,6 +326,23 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
 
     loadDependences();
   }, []);
+
+  useEffect(() => {
+    setTypesChargesList(
+      chargesInfo
+        .filter(
+          (charge) =>
+            charge.codContractType == Number(typeContract) && charge.state
+        )
+        .map((item) => {
+          const list = {
+            name: item.name,
+            value: item.id,
+          };
+          return list;
+        })
+    );
+  }, [typeContract]);
 
   useEffect(() => {
     loadInitList().then(() => {

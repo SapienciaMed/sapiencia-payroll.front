@@ -9,6 +9,7 @@ import { DatePickerComponent } from "../../../common/components/Form/input-date.
 import { InputGroupComponent } from "../../../common/components/Form/input-group.component";
 import { EDirection } from "../../../common/constants/input.enum";
 import { AppContext } from "../../../common/contexts/app.context";
+import { Spinner } from "../../../common/components/spinner.component";
 
 interface IPersonalInformationProp {
   register: UseFormRegister<any>;
@@ -308,6 +309,7 @@ const InformationPersonalForm = ({
           disabled={disabledFields}
         />
         <div />
+        
       </div>
     </>
   );

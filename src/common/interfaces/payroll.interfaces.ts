@@ -144,6 +144,7 @@ export interface ICharge {
   id?: number;
   name?: string;
   codChargeType: number;
+  codContractType: number;
   baseSalary: number;
   state: boolean;
   observations?: string;

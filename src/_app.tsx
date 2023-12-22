@@ -20,6 +20,7 @@ import IncomeDeductions from "./features/incomeDeductions/incomeDeductions-route
 import useAppCominicator from "./common/hooks/app-communicator.hook";
 import ChargeRoutes from "./features/charges/charge-routes";
 import ReportRoutes from "./features/reports/report-routes";
+import SpinnerComponent from "./common/components/spinner.component";
 
 function App() {
   const { publish } = useAppCominicator();
@@ -37,6 +38,7 @@ function App() {
   return (
     <AppContextProvider>
       <ModalMessageComponent />
+      <SpinnerComponent />
       <ApplicationProvider>
         <Router>
           <Suspense fallback={<p>Loading...</p>}>

@@ -20,6 +20,35 @@ export function calculateDifferenceDays(
   const differenceInDays = differenceInMilliseconds / (24 * 60 * 60 * 1000) + 1;
   return Math.floor(differenceInDays);
 }
+//para meses de 30 dias
+export function calculateDifferenceAdjustDays(
+  dateInit: string | Date,
+  dateEnd?: string | Date
+) {
+  // Convertir fechas a timestamps
+  const timestampInicio = new Date(dateInit).getTime();
+  const timestampFin = new Date(dateEnd).getTime();
+
+  // Calcular la diferencia en milisegundos
+  let diferenciaEnMilisegundos = timestampFin - timestampInicio;
+
+  // Calcular la diferencia en días
+  let diferenciaEnDias = Math.floor(
+    diferenciaEnMilisegundos / (1000 * 60 * 60 * 24)
+  );
+
+  // Iterar sobre los días y restar 1 por cada día 31
+  for (let i = 0; i <= diferenciaEnDias; i++) {
+    const fechaActual = new Date(timestampInicio + i * 24 * 60 * 60 * 1000);
+    const diaDelMes = fechaActual.getDate();
+
+    if (diaDelMes === 31) {
+      diferenciaEnDias--;
+    }
+  }
+
+  return diferenciaEnDias;
+}
 
 export function calculateMonthBetweenDates(
   fechaInicioDate: string | Date,

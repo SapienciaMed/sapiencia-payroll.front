@@ -79,6 +79,22 @@ export function usePayrollService() {
     }
   }
 
+  async function getWorkersByDocument(
+    documentNumber:string,
+    documentType:string
+  ): Promise<ApiResponse<IWorker[]>> {
+    try {
+      const endpoint: string = `/workerByDocument`;
+      return await post(`${authUrl}${endpoint}`,{documentNumber,documentType} );
+    } catch (error) {
+      return new ApiResponse(
+        {} as IWorker[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   async function getContractors(): Promise<ApiResponse<IWorker[]>> {
     try {
       const endpoint: string = `/contractors`;
@@ -316,6 +332,7 @@ export function usePayrollService() {
     getVinculationById,
     updateWorker,
     getWorkers,
+    getWorkersByDocument,
     getEmploymentById,
     getReasonsForWithdrawal,
     retirementEmployment,

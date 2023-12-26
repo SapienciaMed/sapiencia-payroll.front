@@ -1,3 +1,35 @@
+import axios, { AxiosResponse, AxiosError } from "axios";
+import { useContext } from "react";
+import { AppContext } from "../contexts/app.context";
+const token = localStorage.getItem("token");
+// Realiza la petición POST utilizando Axios
+export const postRequest = async (apiUrl, userData) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      permissions: token,
+    },
+  };
+  const res = await axios
+    .post(`${process.env.urlApiPayroll}${apiUrl}`, userData, config)
+    .then((response: AxiosResponse) => {
+      return response.data;
+    })
+    .catch((error: AxiosError) => {
+      if (error.response) {
+        console.error("Error de respuesta:", error.response.data);
+        return error.response.data;
+      } else if (error.request) {
+        console.error("Error de solicitud:", error.request);
+        return error.request;
+      } else {
+        console.error("Error:", error.message);
+        return error.message;
+      }
+    });
+  return res;
+};
 export function calculateDifferenceYear(
   dateInit: string | Date,
   dateEnd?: string | Date

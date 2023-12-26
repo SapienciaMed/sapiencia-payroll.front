@@ -76,8 +76,8 @@ const useCreateOrUpdateSpreadSheetHook = ({
   } => {
     if (month && year) {
       return {
-        validateDateStart: new Date(year, month - 1, 1),
-        validateDateEnd: new Date(year, month, 0),
+        validateDateStart: new Date(year, 0, 1),
+        validateDateEnd: new Date(year, 12, 0),
       };
     }
   };

@@ -1,5 +1,9 @@
 import * as yup from "yup";
-import { calculateLimiteEdad, calculateMayorEdad } from "../utils/helpers";
+import {
+  calculateLimiteEdad,
+  calculateMayorEdad,
+  postRequest,
+} from "../utils/helpers";
 import { EIncomeType } from "../constants/otherincome.enum";
 import { IParameter } from "../interfaces/payroll.interfaces";
 
@@ -12,7 +16,24 @@ const personalInformationLocalization = yup.object({
       .required("El campo es obligatorio")
       .matches(/^[0-9]+$/, "Solo se permiten numeros")
       .min(5, "Ingrese al menos 5 caracteres")
-      .max(15, "Solo se permiten 15 caracteres"),
+      .max(15, "Solo se permiten 15 caracteres")
+
+      .test(
+        "El Trabajador no ha sido creado aún",
+        "El número de documento ya se encuentra registrado",
+        async (value, context) => {
+          const { typeDocument } = context.parent;
+          const verified = await postRequest(
+            "/api/v1/vinculation/workerByDocument",
+            { documentNumber: value, typeDocument }
+          );
+          if (verified.data.length > 0) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      ),
     firstName: yup
       .string()
       .required("El campo es obligatorio")

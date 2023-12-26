@@ -18,6 +18,7 @@ interface IPropsCreateUpdateChargeForm {
   control: Control<ICharge, any>;
   formState: FormState<ICharge>;
   typesChargesList: any[];
+  typesContractsList: any[];
   handleSubmitCharge: (
     e?: React.BaseSyntheticEvent<object, any, any>
   ) => Promise<void>;
@@ -29,6 +30,7 @@ export const CreateUpdateChargeForm = ({
   control,
   formState,
   typesChargesList,
+  typesContractsList,
   handleSubmitCharge,
   redirectCancel,
 }: IPropsCreateUpdateChargeForm): React.JSX.Element => {
@@ -41,7 +43,7 @@ export const CreateUpdateChargeForm = ({
         className="form-signIn"
         action={handleSubmitCharge}
       >
-        <div className="grid-form-4-container gap-25">
+        <div className="grid-form-3-container gap-25">
           <SelectComponent
             idInput={"codChargeType"}
             control={control}
@@ -81,6 +83,22 @@ export const CreateUpdateChargeForm = ({
               );
             }}
           />
+          <SelectComponent
+            idInput={"codContractType"}
+            control={control}
+            errors={errors}
+            data={typesContractsList}
+            label={
+              <>
+                Tipo de contrato <span>*</span>
+              </>
+            }
+            className="select-basic medium"
+            classNameLabel="text-black big bold"
+            placeholder="Seleccione."
+            disabled={action === "edit"}
+          />
+
           <InputNumberComponent
             idInput="baseSalary"
             control={control}
@@ -128,7 +146,7 @@ export const CreateUpdateChargeForm = ({
             }}
           />
 
-          <div className="grid-span-4-columns">
+          <div className="grid-span-3-columns">
             <Controller
               control={control}
               name={"observations"}

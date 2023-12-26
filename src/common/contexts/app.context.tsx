@@ -8,12 +8,15 @@ import {
 } from "react";
 import { IMessage } from "../interfaces/global.interface";
 import { IAuthorization } from "../interfaces/auth.interfaces";
+import { ISpinner } from "../interfaces/spinner.interfaces";
 
 interface IAppContext {
   authorization: IAuthorization;
   setAuthorization: Dispatch<SetStateAction<IAuthorization>>;
   message: IMessage;
   setMessage: Dispatch<SetStateAction<IMessage>>;
+  spinner: ISpinner;
+  setSpinner: Dispatch<SetStateAction<ISpinner>>;
   validateActionAccess: (indicator: string) => boolean;
   step: number;
   setStep: Dispatch<SetStateAction<number>>;
@@ -30,6 +33,8 @@ export const AppContext = createContext<IAppContext>({
   setAuthorization: () => {},
   message: {} as IMessage,
   setMessage: () => {},
+  spinner: {} as ISpinner,
+  setSpinner: () => {},
   validateActionAccess: () => true,
   step: {} as number,
   setStep: () => {},
@@ -40,6 +45,7 @@ export const AppContext = createContext<IAppContext>({
 export function AppContextProvider({ children }: IProps) {
   // States
   const [message, setMessage] = useState<IMessage>({} as IMessage);
+  const [spinner, setSpinner] = useState<ISpinner>({} as ISpinner);
   const [authorization, setAuthorization] = useState<IAuthorization>(
     {} as IAuthorization
   );
@@ -57,6 +63,8 @@ export function AppContextProvider({ children }: IProps) {
       setAuthorization,
       message,
       setMessage,
+      spinner,
+      setSpinner,
       validateActionAccess,
       step,
       setStep,
@@ -66,6 +74,8 @@ export function AppContextProvider({ children }: IProps) {
   }, [
     message,
     setMessage,
+    spinner,
+    setSpinner,
     authorization,
     setAuthorization,
     step,

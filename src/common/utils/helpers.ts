@@ -1,6 +1,5 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
-import { useContext } from "react";
-import { AppContext } from "../contexts/app.context";
+
 const token = localStorage.getItem("token");
 // Realiza la petición POST utilizando Axios
 export const postRequest = async (apiUrl, userData) => {

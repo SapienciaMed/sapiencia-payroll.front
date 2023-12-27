@@ -78,6 +78,60 @@ const personalInformationLocalization = yup.object({
   }),
 });
 
+const personalInformationLocalizationEdit = yup.object({
+  worker: yup.object({
+    //datospersonales
+    typeDocument: yup.string().required("El campo es obligatorio"),
+    numberDocument: yup
+      .string()
+      .required("El campo es obligatorio")
+      .matches(/^[0-9]+$/, "Solo se permiten numeros")
+      .min(5, "Ingrese al menos 5 caracteres")
+      .max(15, "Solo se permiten 15 caracteres"),
+    firstName: yup
+      .string()
+      .required("El campo es obligatorio")
+      .min(3, "Ingrese al menos 3 caracteres")
+      .max(50, "Solo se permiten 50 caracteres"),
+    secondName: yup
+      .string()
+      .optional()
+      .nullable()
+      .max(50, "Solo se permiten 50 caracteres"),
+    surname: yup
+      .string()
+      .required("El campo es obligatorio")
+      .min(3, "Ingrese al menos 3 caracteres")
+      .max(50, "Solo se permiten 50 caracteres"),
+    secondSurName: yup
+      .string()
+      .optional()
+      .max(50, "Solo se permiten 50 caracteres"),
+    gender: yup.string().required("El campo es obligatorio"),
+    bloodType: yup.string().required("El campo es obligatorio"),
+    birthDate: yup
+      .date()
+      .required("El campo es obligatorio")
+      .typeError("Fecha invalida")
+      .test("mayor-edad", "Debe ser mayor de edad", calculateMayorEdad)
+      .test("limite-edad", "Debe ser menor de 80 años", calculateLimiteEdad),
+    nationality: yup.string().required("El campo es obligatorio"),
+    //localizacion
+    department: yup.string().required("El campo es obligatorio"),
+    municipality: yup.string().required("El campo es obligatorio"),
+    address: yup
+      .string()
+      .max(100, "Solo se permiten 100 caracteres")
+      .required("El campo es obligatorio"),
+    neighborhood: yup.string().required("El campo es obligatorio"),
+    contactNumber: yup
+      .string()
+      .matches(/^[0-9]+$/, "Solo se permiten numeros")
+      .max(10, "Solo se permiten 10 caracteres")
+      .required("El campo es obligatorio"),
+  }),
+});
+
 export const familiarValidator = yup.object({
   relatives: yup.array().of(
     yup.object().shape({
@@ -154,6 +208,13 @@ export const searchRecord = yup.object({
 
 export const formsPayroll = [
   personalInformationLocalization,
+  familiarValidator,
+  contractualInformation,
+  afiliaciones,
+];
+
+export const formsPayrollEdit = [
+  personalInformationLocalizationEdit,
   familiarValidator,
   contractualInformation,
   afiliaciones,

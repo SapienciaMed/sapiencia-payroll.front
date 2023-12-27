@@ -15,7 +15,10 @@ import {
 import { IGenericList } from "../../../common/interfaces/global.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
-import { formsPayroll } from "../../../common/schemas/employment-schema";
+import {
+  formsPayroll,
+  formsPayrollEdit,
+} from "../../../common/schemas/employment-schema";
 
 import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
 
@@ -126,7 +129,8 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
   const { getDependences } = useDependenceService();
 
   //react-hook-form
-  const currentValidationSchema = formsPayroll[step];
+  const currentValidationSchema =
+    action == "new" ? formsPayroll[step] : formsPayrollEdit[step];
 
   const {
     register,

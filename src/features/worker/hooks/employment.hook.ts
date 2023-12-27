@@ -15,13 +15,17 @@ import {
 import { IGenericList } from "../../../common/interfaces/global.interface";
 import { EResponseCodes } from "../../../common/constants/api.enum";
 
-import { formsPayroll } from "../../../common/schemas/employment-schema";
+import {
+  formsPayroll,
+  formsPayrollEdit,
+} from "../../../common/schemas/employment-schema";
 
 import { useGenericListService } from "../../../common/hooks/generic-list-service.hook";
 
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import useDependenceService from "../../../common/hooks/dependencies-service.hook";
 import {
+  calculateDifferenceAdjustDays,
   calculateDifferenceDays,
   calculateDifferenceYear,
   calculateMonthBetweenDates,
@@ -38,7 +42,8 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
   const navigate = useNavigate();
 
   // context
-  const { step, setStep, setMessage, authorization } = useContext(AppContext);
+  const { step, setStep, setMessage, setSpinner, authorization } =
+    useContext(AppContext);
 
   // states
   const [genderList, setGenderList] = useState([]);
@@ -124,7 +129,8 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
   const { getDependences } = useDependenceService();
 
   //react-hook-form
-  const currentValidationSchema = formsPayroll[step];
+  const currentValidationSchema =
+    action == "new" ? formsPayroll[step] : formsPayrollEdit[step];
 
   const {
     register,
@@ -172,7 +178,7 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
       }
 
       if (startDate && endDate && salary) {
-        const days = calculateDifferenceDays(startDate, endDate);
+        const days = calculateDifferenceAdjustDays(startDate, endDate);
 
         // if (days > 30) {
         const salaryMonth = (salary / 30) * days;
@@ -298,13 +304,15 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
       .then((response: ApiResponse<ICharge[]>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           setTypesChargesList(
-            response.data.map((item) => {
-              const list = {
-                name: item.name,
-                value: item.id,
-              };
-              return list;
-            })
+            response.data
+              .filter((charge) => charge.state)
+              .map((item) => {
+                const list = {
+                  name: item.name,
+                  value: item.id,
+                };
+                return list;
+              })
           );
 
           setChargesInfo(response.data);
@@ -314,6 +322,25 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
 
     loadDependences();
   }, []);
+
+  useEffect(() => {
+    if (idTypeContract) {
+      setTypesChargesList(
+        chargesInfo
+          .filter(
+            (charge) =>
+              charge.codContractType == Number(idTypeContract) && charge.state
+          )
+          .map((item) => {
+            const list = {
+              name: item.name,
+              value: item.id,
+            };
+            return list;
+          })
+      );
+    }
+  }, [idTypeContract]);
 
   useEffect(() => {
     loadInitList().then(() => {
@@ -625,6 +652,11 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
 
   const handleCreateWorker = async (data: IVinculation) => {
     setSending(true);
+    setSpinner({
+      active: true,
+      duration: ".5",
+      hidden: false,
+    });
     await createWorker(data)
       .then((response: ApiResponse<IVinculation>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
@@ -641,6 +673,11 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
             background: true,
           });
           setSending(false);
+          setSpinner({
+            active: false,
+            duration: ".5",
+            hidden: false,
+          });
         }
       })
       .catch((err) => {
@@ -654,11 +691,21 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
           background: true,
         });
         setSending(false);
+        setSpinner({
+          active: false,
+          duration: ".5",
+          hidden: false,
+        });
       });
   };
 
   const handleUpdateWorker = async (data: IVinculation) => {
     setSending(true);
+    setSpinner({
+      active: true,
+      duration: ".5",
+      hidden: false,
+    });
     await updateWorker(data)
       .then((response: ApiResponse<IVinculation>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
@@ -676,6 +723,11 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
           });
           setSending(false);
         }
+        setSpinner({
+          active: false,
+          duration: ".5",
+          hidden: false,
+        });
       })
       .catch((err) => {
         setMessage({
@@ -688,6 +740,11 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
           background: true,
         });
         setSending(false);
+        setSpinner({
+          active: false,
+          duration: ".5",
+          hidden: false,
+        });
       });
   };
 
@@ -754,6 +811,7 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
     bankList,
     reset,
     setMessage,
+    setSpinner,
   };
 };
 

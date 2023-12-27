@@ -411,11 +411,45 @@ div[id="single-spa-application:@sapiencia/payroll"] {
   }
 }
 
+.p-spinner {
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0em;
+}
+
+.p-spinner-active {
+  display: flex;
+}
+
 @media (min-width: 1024px) {
   div[id="single-spa-application:@sapiencia/payroll"] {
     width: initial;
   }
 
+  .p-spinner {
+    position: absolute;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding-left: 22em;
+  }
+  .p-spinner-active {
+    display: flex;
+  }
   .container-text {
     display: flex;
     flex-direction: row;
@@ -607,6 +641,19 @@ div[id="single-spa-application:@sapiencia/payroll"] {
 }
 
 @media (min-width: 768px) {
+  // .p-spinner{
+  //   position: absolute;
+  //   z-index: 9999;
+  //   top: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   min-height: 100vh;
+  //   background-color: rgba(0, 0, 0, 0.1);
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   padding-left: 22em;
+  // }
   .responsive-table {
     flex-direction: row;
     border: none #ddd;

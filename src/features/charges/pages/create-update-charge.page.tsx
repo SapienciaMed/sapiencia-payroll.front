@@ -13,6 +13,7 @@ const CreateUpdateChargePage = ({
     control,
     formState,
     typesChargesList,
+    typesContractsList,
     handleSubmitCharge,
     redirectCancel,
     renderTitleDeduction,
@@ -33,6 +34,7 @@ const CreateUpdateChargePage = ({
             control,
             formState,
             typesChargesList,
+            typesContractsList,
             handleSubmitCharge,
             redirectCancel,
           }}

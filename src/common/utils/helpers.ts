@@ -1,3 +1,34 @@
+import axios, { AxiosResponse, AxiosError } from "axios";
+
+const token = localStorage.getItem("token");
+// Realiza la petición POST utilizando Axios
+export const postRequest = async (apiUrl, userData) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      permissions: token,
+    },
+  };
+  const res = await axios
+    .post(`${process.env.urlApiPayroll}${apiUrl}`, userData, config)
+    .then((response: AxiosResponse) => {
+      return response.data;
+    })
+    .catch((error: AxiosError) => {
+      if (error.response) {
+        console.error("Error de respuesta:", error.response.data);
+        return error.response.data;
+      } else if (error.request) {
+        console.error("Error de solicitud:", error.request);
+        return error.request;
+      } else {
+        console.error("Error:", error.message);
+        return error.message;
+      }
+    });
+  return res;
+};
 export function calculateDifferenceYear(
   dateInit: string | Date,
   dateEnd?: string | Date
@@ -19,6 +50,35 @@ export function calculateDifferenceDays(
     currentDate.getTime() - new Date(dateInit).getTime();
   const differenceInDays = differenceInMilliseconds / (24 * 60 * 60 * 1000) + 1;
   return Math.floor(differenceInDays);
+}
+//para meses de 30 dias
+export function calculateDifferenceAdjustDays(
+  dateInit: string | Date,
+  dateEnd?: string | Date
+) {
+  // Convertir fechas a timestamps
+  const timestampInicio = new Date(dateInit).getTime();
+  const timestampFin = new Date(dateEnd).getTime();
+
+  // Calcular la diferencia en milisegundos
+  let diferenciaEnMilisegundos = timestampFin - timestampInicio;
+
+  // Calcular la diferencia en días
+  let diferenciaEnDias = Math.floor(
+    diferenciaEnMilisegundos / (1000 * 60 * 60 * 24)
+  );
+
+  // Iterar sobre los días y restar 1 por cada día 31
+  for (let i = 0; i <= diferenciaEnDias; i++) {
+    const fechaActual = new Date(timestampInicio + i * 24 * 60 * 60 * 1000);
+    const diaDelMes = fechaActual.getDate();
+
+    if (diaDelMes === 31) {
+      diferenciaEnDias--;
+    }
+  }
+
+  return diferenciaEnDias;
 }
 
 export function calculateMonthBetweenDates(

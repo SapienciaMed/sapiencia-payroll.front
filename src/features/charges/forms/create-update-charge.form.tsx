@@ -90,7 +90,7 @@ export const CreateUpdateChargeForm = ({
             data={typesContractsList}
             label={
               <>
-                Tipo de contrato <span>*</span>
+                Tipo de vinculación <span>*</span>
               </>
             }
             className="select-basic medium"

@@ -182,11 +182,11 @@ const ContractualInformationForm = ({
           errors={errors}
           classNameLabel="text-black big bold"
           className="dataPicker-basic  medium "
-          // disabled={
-          //   String(watch("employment.idTypeContract")) === "4"
-          //     ? disabledFields
-          //     : true
-          // }
+          disabled={
+            String(watch("employment.idTypeContract")) === "4"
+              ? disabledFields
+              : true
+          }
           placeholder="DD/MM/YYYY"
           dateFormat="dd/mm/yy"
           minDate={new Date(startDate)}

@@ -104,7 +104,7 @@ const useCreateOrUpdateChargeHook = ({
             id: data.id,
             name: data?.name,
             codChargeType: data.codChargeType,
-            codContractType: null,
+            codContractType: data.codContractType,
             state: data.state,
             baseSalary: data.baseSalary,
             observations: data?.observations,

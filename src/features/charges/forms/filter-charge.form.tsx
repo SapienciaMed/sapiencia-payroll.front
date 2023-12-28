@@ -100,7 +100,7 @@ export const FilterChargeForm = ({
             <ButtonComponent
               value={"Buscar"}
               className="button-save disabled-black big"
-              disabled={!codChargeType && !name}
+              // disabled={!codChargeType && !name}
             />
           </div>
         </FormComponent>

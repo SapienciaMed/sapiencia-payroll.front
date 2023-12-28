@@ -661,6 +661,11 @@ const useEmployments = ({ action }: IPropsUseEmployments) => {
       .then((response: ApiResponse<IVinculation>) => {
         if (response && response?.operation?.code === EResponseCodes.OK) {
           handleModal();
+          setSpinner({
+            active: false,
+            duration: ".5",
+            hidden: false,
+          });
           setSending(false);
         } else {
           setMessage({

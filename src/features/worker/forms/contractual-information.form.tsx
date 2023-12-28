@@ -58,7 +58,7 @@ const ContractualInformationForm = ({
 
   const { setDisabledFields, disabledFields } = useContext(AppContext);
 
-  setDisabledFields(action == "new" ? false : true);
+  setDisabledFields(action == "view" ? true : false);
 
   const { setMessage } = useContext(AppContext);
 
@@ -86,7 +86,7 @@ const ContractualInformationForm = ({
           className="select-basic medium"
           classNameLabel="text-black big bold"
           placeholder="Seleccione."
-          // disabled={disabledFields}
+          disabled={disabledFields}
         />
         <InputComponent
           idInput="employment.contractNumber"
@@ -100,7 +100,7 @@ const ContractualInformationForm = ({
           errors={errors}
           classNameLabel="text-black big bold"
           className="input-basic medium"
-          // disabled={disabledFields}
+          disabled={disabledFields}
         />
         <SelectComponent
           idInput={"employment.state"}
@@ -115,7 +115,7 @@ const ContractualInformationForm = ({
           className="select-basic medium"
           classNameLabel="text-black big bold"
           placeholder="Seleccione."
-          // disabled={disabledFields}
+          disabled={disabledFields}
         />
 
         <SelectComponent
@@ -131,7 +131,7 @@ const ContractualInformationForm = ({
           className="select-basic medium"
           classNameLabel="text-black big bold"
           placeholder="Seleccione."
-          // disabled={disabledFields}
+          disabled={disabledFields}
         />
 
         <SelectComponent
@@ -147,7 +147,7 @@ const ContractualInformationForm = ({
           className="select-basic medium"
           classNameLabel="text-black big bold"
           placeholder="Seleccione."
-          // disabled={disabledFields}
+          disabled={disabledFields}
         />
         <DatePickerComponent
           idInput={"employment.startDate"}
@@ -160,7 +160,7 @@ const ContractualInformationForm = ({
           errors={errors}
           classNameLabel="text-black big bold"
           className="dataPicker-basic  medium "
-          // disabled={disabledFields}
+          disabled={disabledFields}
           placeholder="DD/MM/YYYY"
           dateFormat="dd/mm/yy"
           maxDate={new Date()}
@@ -182,11 +182,11 @@ const ContractualInformationForm = ({
           errors={errors}
           classNameLabel="text-black big bold"
           className="dataPicker-basic  medium "
-          // disabled={
-          //   String(watch("employment.idTypeContract")) === "4"
-          //     ? disabledFields
-          //     : true
-          // }
+          disabled={
+            String(watch("employment.idTypeContract")) === "4"
+              ? disabledFields
+              : true
+          }
           placeholder="DD/MM/YYYY"
           dateFormat="dd/mm/yy"
           minDate={new Date(startDate)}
@@ -223,7 +223,7 @@ const ContractualInformationForm = ({
           errors={errors}
           classNameLabel="text-black big bold"
           className="input-basic medium"
-          // disabled={disabledFields}
+          disabled={disabledFields}
         />
 
         <InputNumberComponent
@@ -262,7 +262,7 @@ const ContractualInformationForm = ({
           <TextAreaComponent
             label={"Obligaciones especificas"}
             idInput={"employment.specificObligations"}
-            // disabled={disabledFields}
+            disabled={disabledFields}
             className="text-area-basic"
             classNameLabel="text-black big bold"
             register={register}
@@ -287,7 +287,7 @@ const ContractualInformationForm = ({
             <TextAreaComponent
               label={"Objeto contractual"}
               idInput={"employment.contractualObject"}
-              // disabled={disabledFields}
+              disabled={disabledFields}
               className="text-area-basic"
               classNameLabel="text-black big bold"
               register={register}

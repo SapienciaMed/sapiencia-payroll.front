@@ -442,6 +442,7 @@ export const createOrUpdateOtherIncome = yup.object({
 
 export const createUpdateChargeSchema = yup.object({
   codChargeType: yup.string().required("El campo es obligatorio"),
+  codContractType: yup.string().required("El campo es obligatorio"),
   name: yup.string().required("El campo es obligatorio"),
   baseSalary: yup.string().required("El campo es obligatorio"),
   state: yup.boolean().required("El campo es obligatorio"),

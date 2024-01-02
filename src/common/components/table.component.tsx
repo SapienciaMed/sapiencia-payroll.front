@@ -27,6 +27,7 @@ import * as Icons from "react-icons/fa";
 import { Dropdown } from "primereact/dropdown";
 import { useWidth } from "../hooks/use-width";
 import { AppContext } from "../contexts/app.context";
+import { Tooltip } from "primereact/tooltip";
 
 interface IProps<T> {
   url: string;
@@ -252,25 +253,49 @@ function getIconElement(icon: string, element: "name" | "src") {
       return element == "name" ? (
         "Detalle"
       ) : (
-        <Icons.FaEye className="button grid-button button-detail" />
+        <div>
+          <Tooltip target=".button-detail" mouseTrack mouseTrackLeft={10} />
+          <Icons.FaEye
+            className="button grid-button button-detail"
+            data-pr-tooltip="Detalle"
+          />
+        </div>
       );
     case "Edit":
       return element == "name" ? (
         "Editar"
       ) : (
-        <Icons.FaPencilAlt className="button grid-button button-edit" />
+        <div>
+          <Tooltip target=".button-edit" mouseTrack mouseTrackLeft={10} />
+          <Icons.FaPencilAlt
+            className="button grid-button button-edit"
+            data-pr-tooltip="Editar"
+          />
+        </div>
       );
     case "Delete":
       return element == "name" ? (
         "Eliminar"
       ) : (
-        <Icons.FaTrashAlt className="button grid-button button-delete" />
+        <div>
+          <Tooltip target=".button-delete" mouseTrack mouseTrackLeft={10} />
+          <Icons.FaTrashAlt
+            className="button grid-button button-delete"
+            data-pr-tooltip="Eliminar"
+          />
+        </div>
       );
     case "Link":
       return element == "name" ? (
         "Vincular"
       ) : (
-        <Icons.FaLink className="button grid-button button-link" />
+        <div>
+          <Tooltip target=".button-link" mouseTrack mouseTrackLeft={10} />
+          <Icons.FaLink
+            className="button grid-button button-link"
+            data-pr-tooltip="Vincular"
+          />
+        </div>
       );
     default:
       return "";
@@ -390,6 +415,11 @@ const ActionComponent = (props: {
         >
           {action.customIcon ? (
             <div className="button grid-button button-link">
+              <Tooltip
+                target={`.${action.tooltipClass}`}
+                mouseTrack
+                mouseTrackLeft={10}
+              />
               {action.customIcon()}
             </div>
           ) : (

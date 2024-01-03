@@ -45,7 +45,8 @@ const useReport = ({}: IPropsUseReport) => {
   //useState
   const [workerList, setWorkerList] = useState([]);
   const [periodVacation, setPeriodVacation] = useState([]);
-  const { getEmploymentsByPayroll } = usePayrollService();
+  const [allWorkers, setAllWorkers] = useState([]);
+  const { getEmploymentsByPayroll, getAllWorkers } = usePayrollService();
 
   //use form
 
@@ -89,7 +90,10 @@ const useReport = ({}: IPropsUseReport) => {
   }, [codEmployment]);
 
   useEffect(() => {
-    if (Number(typeReport) === ETypeReport.Colilla || Number(typeReport) === ETypeReport.ResolucionVacaciones) {
+    if (
+      Number(typeReport) === ETypeReport.Colilla ||
+      Number(typeReport) === ETypeReport.ResolucionVacaciones
+    ) {
       getWorkerPayroll();
     } else if (Number(typeReport) === ETypeReport.ConstanciaContratos) {
       setWorkerList(activeContractorsList);
@@ -101,6 +105,10 @@ const useReport = ({}: IPropsUseReport) => {
       setWorkerList(activeWorkerList);
     }
   }, [period]);
+
+  useEffect(() => {
+    getAllworker();
+  }, []);
 
   useEffect(() => {
     if (formState.dirtyFields.typeReport) {
@@ -118,6 +126,32 @@ const useReport = ({}: IPropsUseReport) => {
 
     if (operation.code === EResponseCodes.OK) {
       setWorkerList(
+        data.map((item) => {
+          const list = {
+            name: `${
+              item?.worker?.numberDocument +
+              " - " +
+              item?.worker.firstName +
+              " " +
+              item?.worker?.surname
+            }`,
+            value: item?.id,
+          };
+          return list;
+        })
+      );
+    } else {
+      setWorkerList([]);
+    }
+  };
+
+  const getAllworker = async () => {
+    setWorkerList([]);
+
+    const { data, operation } = await getAllWorkers();
+
+    if (operation.code === EResponseCodes.OK) {
+      setAllWorkers(
         data.map((item) => {
           const list = {
             name: `${
@@ -270,6 +304,7 @@ const useReport = ({}: IPropsUseReport) => {
     workerList,
     typeReport,
     periodVacation,
+    allWorkers,
     redirectCancel,
     handleSubmitOtherIncome,
     handleDisabledEmployment,

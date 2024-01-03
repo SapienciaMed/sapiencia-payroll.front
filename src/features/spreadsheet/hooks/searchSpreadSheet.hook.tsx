@@ -232,9 +232,16 @@ export default function useSearchSpreadSheetHook() {
         });
       },
       customIcon: () => {
-        return <BsCheckCircle color="#0cae2a" />;
+        return (
+          <BsCheckCircle
+            color="#0cae2a"
+            className="autorizar"
+            data-pr-tooltip="Autorizar"
+          />
+        );
       },
       hide: !validateActionAccess("PLANILLA_APROBAR"),
+      tooltipClass: "autorizar",
     },
     {
       onClick: (row) => {
@@ -261,11 +268,11 @@ export default function useSearchSpreadSheetHook() {
                   if (operation.code === EResponseCodes.OK) {
                     handleModalSuccess(data, row.formsType[0].name);
                   } else {
-                    handleModalError("Error en la generación de planilla");
+                    handleModalError(operation.message == "No hay empleados para esta planilla" ? operation.message:"Error con el servicio");
                   }
                 })
                 .catch((err) => {
-                  handleModalError("Error en la generación de planilla");
+                  handleModalError(err);
                   console.log("algo fallo", err);
                 });
             }
@@ -275,9 +282,16 @@ export default function useSearchSpreadSheetHook() {
         });
       },
       customIcon: () => {
-        return <FaGear color="#0cae2a" />;
+        return (
+          <FaGear
+            color="#0cae2a"
+            className="generate"
+            data-pr-tooltip="Generar"
+          />
+        );
       },
       hide: !validateActionAccess("PLANILLA_GENERAR"),
+      tooltipClass: "generate",
     },
     // {
     //   icon: "Detail",
@@ -346,8 +360,15 @@ export default function useSearchSpreadSheetHook() {
           });
       },
       customIcon: () => {
-        return <RiFileExcel2Line color="#21A366" />;
+        return (
+          <RiFileExcel2Line
+            color="#21A366"
+            className="xlsxDownload"
+            data-pr-tooltip="Exportar a excel"
+          />
+        );
       },
+      tooltipClass: "xlsxDownload",
       hide: !validateActionAccess("PLANILLA_DESCARGAR"),
     },
   ];

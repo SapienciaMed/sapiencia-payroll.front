@@ -268,11 +268,11 @@ export default function useSearchSpreadSheetHook() {
                   if (operation.code === EResponseCodes.OK) {
                     handleModalSuccess(data, row.formsType[0].name);
                   } else {
-                    handleModalError("Error en la generación de planilla");
+                    handleModalError(operation.message == "No hay empleados para esta planilla" ? operation.message:"Error con el servicio");
                   }
                 })
                 .catch((err) => {
-                  handleModalError("Error en la generación de planilla");
+                  handleModalError(err);
                   console.log("algo fallo", err);
                 });
             }

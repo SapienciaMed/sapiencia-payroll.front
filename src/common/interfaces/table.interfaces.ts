@@ -29,4 +29,5 @@ export interface ITableAction<T> {
   customName?: string;
   customIcon?: () => JSX.Element;
   hide?: boolean;
+  tooltipClass?: string;
 }

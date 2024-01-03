@@ -5,6 +5,7 @@ import { useGenericListService } from "../../../common/hooks/generic-list-servic
 import { IGenericList } from "../../../common/interfaces/global.interface";
 import usePayrollService from "../../../common/hooks/payroll-service.hook";
 import {
+  IEmploymentWorker,
   IFormPeriod,
   IIncapacityTypes,
   IReasonsForWithdrawal,
@@ -32,6 +33,7 @@ export default function useListData(temporary = false) {
   const [periodsListVacationAuthorized, setPeriodsListVacationAuthorized] =
     useState([]);
   const [workerInfo, setWorkerInfo] = useState([]);
+  const [allWorkers, setAllWorkers] = useState([]);
   const [typesSpreadSheetList, setTypesSpreadSheetList] = useState([]);
   const [stateSpreadSheetList, setStateSpreadSheetList] = useState([
     {
@@ -107,6 +109,7 @@ export default function useListData(temporary = false) {
     getContractors,
     getInactiveWorkers,
     getVacationPeriods,
+    getAllWorkers,
   } = usePayrollService();
   const { typeIncapacity } = useIncapacityService();
   const { getTypesChargeList } = useChargesService();
@@ -154,6 +157,30 @@ export default function useListData(temporary = false) {
       })
       .catch((err) => {});
   };
+
+  useEffect(() => {
+    getAllWorkers()
+      .then((response: ApiResponse<IEmploymentWorker[]>) => {
+        if (response.operation.code === EResponseCodes.OK) {
+          setAllWorkers(
+            response.data.map((item) => {
+              const list = {
+                name: `${
+                  item.worker.numberDocument +
+                  " - " +
+                  item.worker.firstName +
+                  " " +
+                  item.worker.surname
+                }`,
+                value: item.worker.employment.id,
+              };
+              return list;
+            })
+          );
+        }
+      })
+      .catch((err) => {});
+  }, []);
 
   useEffect(() => {
     getWorkersActive();
@@ -353,5 +380,7 @@ export default function useListData(temporary = false) {
     workerInfo,
     periodsListBiweeklyAuthorized,
     periodsListVacationAuthorized,
+    allWorkers,
+    setAllWorkers,
   };
 }

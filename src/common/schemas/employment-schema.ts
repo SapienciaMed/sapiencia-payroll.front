@@ -380,7 +380,7 @@ export const createOrUpdateSpreadSheetSchema = yup.object({
     .test("is-year-actual", "El año debe ser el actual", (value) => {
       const yearActual = new Date().getFullYear();
 
-      if (value === yearActual) {
+      if (value === yearActual || value === yearActual - 1) {
         return true;
       }
 

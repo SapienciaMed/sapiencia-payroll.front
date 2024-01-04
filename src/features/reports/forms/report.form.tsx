@@ -19,6 +19,7 @@ interface IPropsCreateUpdateDeductionsForm {
   inactiveWorkerList: any[];
   activeContractorsList: any[];
   vacationPeriods: any[];
+  allWorkers: any[];
   periodsListBiweeklyAuthorized: any[];
   periodsListVacationAuthorized: any[];
   typeReport: number;
@@ -42,6 +43,7 @@ export const ReportForm = ({
   periodsListBiweeklyAuthorized,
   periodsListVacationAuthorized,
   vacationPeriods,
+  allWorkers,
   typeReport,
   handleSubmitOtherIncome,
   handleDisabledPeriod,
@@ -50,7 +52,7 @@ export const ReportForm = ({
   validateActionAccess,
 }: IPropsCreateUpdateDeductionsForm): React.JSX.Element => {
   const { errors, isValid } = formState;
-
+console.log(allWorkers)
   return (
     <FormComponent className="form-signIn" action={handleSubmitOtherIncome}>
       <div className="container-sections-forms">
@@ -161,6 +163,19 @@ export const ReportForm = ({
                 classNameLabel="text-black big bold"
                 placeholder="Seleccione."
                 disabled={handleDisabledEmployment()}
+                filter={true}
+              />
+            ) : Number(typeReport) ===
+              ETypeReport.CertificadoIngresosRetenciones ? (
+              <SelectComponent
+                idInput={"codEmployment"}
+                control={control}
+                errors={errors}
+                data={allWorkers}
+                label={<>Documento - Nombre del empleado.</>}
+                className="select-basic medium"
+                classNameLabel="text-black big bold"
+                placeholder="Seleccione."
                 filter={true}
               />
             ) : (

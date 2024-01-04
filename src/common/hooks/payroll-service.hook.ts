@@ -79,13 +79,29 @@ export function usePayrollService() {
     }
   }
 
+  async function getAllWorkers(): Promise<ApiResponse<IEmploymentWorker[]>> {
+    try {
+      const endpoint: string = `/allWorkers`;
+      return await get(`${authUrl}${endpoint}`);
+    } catch (error) {
+      return new ApiResponse(
+        {} as IEmploymentWorker[],
+        EResponseCodes.FAIL,
+        "Error no controlado"
+      );
+    }
+  }
+
   async function getWorkersByDocument(
-    documentNumber:string,
-    documentType:string
+    documentNumber: string,
+    documentType: string
   ): Promise<ApiResponse<IWorker[]>> {
     try {
       const endpoint: string = `/workerByDocument`;
-      return await post(`${authUrl}${endpoint}`,{documentNumber,documentType} );
+      return await post(`${authUrl}${endpoint}`, {
+        documentNumber,
+        documentType,
+      });
     } catch (error) {
       return new ApiResponse(
         {} as IWorker[],
@@ -347,6 +363,7 @@ export function usePayrollService() {
     getEmploymentsByPayroll,
     getInactiveWorkers,
     getVacationPeriods,
+    getAllWorkers,
   };
 }
 
